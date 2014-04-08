@@ -1,0 +1,112 @@
+/*CitYsens*/
+.dia,
+.dia-cabecera-izq,
+.dia-cabecera-cntr,
+.dia-cabecera-dch 
+{
+	width: 800px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:15px;
+	color: white;
+}
+
+.dia
+{
+	box-shadow: 7px 7px 10px #888888;	
+	border-radius: 8px;
+	margin-bottom: 20px;
+}
+
+.dia-cabecera 
+{
+	background-color:#932626;
+	height: 20px;
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+}	
+
+.dia-cabecera-izq 
+{
+	position:absolute;
+	font-style: italic;
+	margin-left: 10px;
+}
+
+.dia-cabecera-cntr 
+{
+	position:absolute;
+	text-align:center;
+	font-weight: bold;
+}
+
+.dia-cabecera-dch 
+{
+	position:absolute;
+	text-align:right;
+	color:#c99393;
+}
+.dia-filas
+{
+	position: relative;	
+	color: black;
+}
+
+.dia-fila
+.dia-fila-puntual
+.dia-fila-periodico
+.dia-fila-iniciativa
+.dia-fila-reunion
+{
+	padding:2px;	
+}
+
+.dia-fila-puntual
+{
+	background-color:#FFEEEE; 	
+	border-bottom:thin solid #CCCCCC;
+}
+.dia-fila-periodico
+{
+	background-color:#EEEEFF; 	
+	border-bottom:thin solid #CCCCCC;
+}
+.dia-fila-iniciativa
+{
+	background-color:#EEFFEE; 	
+	border-bottom:thin solid #CCCCCC;
+}
+.dia-fila-reunion
+{
+	background-color:#FFEEFF; 	
+	border-bottom:thin solid #CCCCCC;
+}
+
+.dia-fila-last
+{
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
+}
+
+.dia-fila-hora
+{
+	position:absolute;
+}
+
+.dia-fila-titulo
+{
+	margin-left: 70px;
+	}
+
+.dia-fila-texto
+{
+	margin-left: 70px;
+	height: 30px;
+}
+
+.dia-fila-lugar
+{
+	position: relative;
+	text-align: right;
+	margin-top: -16px;
+}
+

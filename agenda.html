@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>CitYsens</title>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+ </head>
+
+<body>
+	
+<a onclick='$(".dia-fila-puntual").slideToggle("fast", function() {});'>Puntuales</a>
+<a onclick='$(".dia-fila-periodico").slideToggle("fast", function() {});'>Periódicos</a>
+<a onclick='$(".dia-fila-iniciativa").slideToggle("fast", function() {});'>Iniciativas</a>
+<a onclick='$(".dia-fila-reunion").slideToggle("fast", function() {});'>Reuniones</a>
+<hr>
+
+<div class='agenda'>	
+
+<div class='dia' id='dia-template' style='display:none;'>
+ <div class='dia-cabecera'>
+  <div class='dia-cabecera-izq'>
+    Hoy
+  </div>
+  <div class='dia-cabecera-cntr'>
+   Miércoles 18
+  </div>
+  <div class='dia-cabecera-dch'>
+   Marzo
+  </div>
+ </div>
+ 
+ <div class='dia-filas'>
+	 <div class='dia-fila-puntual' id='dia-fila-template' style='display:none;'>
+	 	<div class='dia-fila-hora'>
+	 		11:00
+		</div>
+	 	<div class='dia-fila-titulo'>
+	 		Titulo frase
+		</div>
+	 	<div class='dia-fila-lugar'>
+	 		Lugar
+		</div>
+	 	<div class='dia-fila-texto'>
+	 		Texto frase
+		</div>
+	 </div>
+ </div>
+</div>
+
+</div>
+
+<script>
+
+function createDay(dia,left,center,right)
+{
+	var clone=$("#dia-template").clone();
+	clone.attr('id',dia);
+	clone.find('.dia-fila-puntual').remove();
+	clone.find('.dia-cabecera-izq').html(left);
+	clone.find('.dia-cabecera-cntr').html(center);
+	clone.find('.dia-cabecera-dch').html(right);
+	clone.appendTo(".agenda");
+	clone.show();
+}
+
+function createLine(tipo,dia,hora,titulo,lugar,texto,animated)
+{
+	var clone=$("#dia-fila-template").clone();
+	clone.hide();
+	clone.removeClass();
+
+	clone.addClass("dia-fila-"+tipo);
+
+	clone.find('.dia-fila-hora').html(hora);
+	clone.find('.dia-fila-titulo').html(titulo);
+	clone.find('.dia-fila-lugar').html(lugar);
+	clone.find('.dia-fila-texto').html(texto);
+	
+	clone.appendTo("#"+dia+">.dia-filas");
+	if(animated>0)
+		clone.slideDown("fast", function() {});
+	else
+		clone.show();
+};
+</script>
+<script>
+ var getAgenda = "http://localhost:8888/citysens/getAgendaXML.php?";
+  $.getJSON( getAgenda, 
+  {
+    location: "Alcalá",
+    date: "any",
+    format: "json"
+  })
+    .done(function( data ) 
+    {
+      $.each(data.dias, function(dia,eventos)
+      {
+      	console.log(dia);
+      	createDay(dia,dia,dia,dia);
+      	$.each(eventos,function(i,item)
+      	{
+      		createLine(item.tipo,dia,item.hora,item.titulo,item.lugar,item.texto,0);
+      	});
+      });
+    });
+</script>
+
+Hola
+
+</body>
+</html>

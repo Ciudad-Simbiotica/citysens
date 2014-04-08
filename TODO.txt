@@ -1,0 +1,7 @@
+TODO
+----
+- Hacer que la función en JS cargue los datos desde un JSON
+ - Que genere también días (Clonado del día entero)
+- Que el mostrar no muestre el template
+- Que se redondee el que toque y se quite el redondeado a los que no
+- Que desaparezcan los días sin eventos, o con todos ocultados
