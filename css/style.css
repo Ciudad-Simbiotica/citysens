@@ -1,4 +1,18 @@
 /*CitYsens*/
+
+.switch-filas,
+.switch-filas-on
+{
+	font-family: Arial, Helvetica, sans-serif;
+	cursor: pointer; 
+}
+
+.switch-filas-on
+{
+	font-weight: bold;
+}
+
+
 .dia,
 .dia-cabecera-izq,
 .dia-cabecera-cntr,

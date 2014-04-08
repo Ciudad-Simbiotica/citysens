@@ -9,10 +9,10 @@
 
 <body>
 	
-<a onclick='$(".dia-fila-puntual").slideToggle("fast", function() {});'>Puntuales</a>
-<a onclick='$(".dia-fila-periodico").slideToggle("fast", function() {});'>Periódicos</a>
-<a onclick='$(".dia-fila-iniciativa").slideToggle("fast", function() {});'>Iniciativas</a>
-<a onclick='$(".dia-fila-reunion").slideToggle("fast", function() {});'>Reuniones</a>
+<a id="switch-puntuales" class='switch-filas switch-filas-on'>Puntuales</a>
+<a id="switch-periodicos" class='switch-filas switch-filas-on'>Periódicos</a>
+<a id="switch-iniciativas" class='switch-filas switch-filas-on'>Iniciativas</a>
+<a id="switch-reuniones" class='switch-filas switch-filas-on'>Reuniones</a>
 <hr>
 
 <div class='agenda'>	
@@ -51,6 +51,31 @@
 </div>
 
 <script>
+
+$("#switch-puntuales").click(function()
+{
+  $("#switch-puntuales").toggleClass("switch-filas-on");
+  $(".dia-fila-puntual").slideToggle("fast", function() {});
+});
+
+$("#switch-periodicos").click(function()
+{
+  $("#switch-periodicos").toggleClass("switch-filas-on");
+  $(".dia-fila-periodico").slideToggle("fast", function() {});
+});
+
+$("#switch-iniciativas").click(function()
+{
+  $("#switch-iniciativas").toggleClass("switch-filas-on");
+  $(".dia-fila-iniciativa").slideToggle("fast", function() {});
+});
+
+$("#switch-reuniones").click(function()
+{
+  $("#switch-reuniones").toggleClass("switch-filas-on");
+  $(".dia-fila-reunion").slideToggle("fast", function() {});
+});
+
 
 function createDay(dia,left,center,right)
 {
@@ -97,16 +122,14 @@ function createLine(tipo,dia,hora,titulo,lugar,texto,animated)
       $.each(data.dias, function(dia,eventos)
       {
       	console.log(dia);
-      	createDay(dia,dia,dia,dia);
-      	$.each(eventos,function(i,item)
+      	createDay(dia,eventos.cabeceraIzq,eventos.cabeceraCntr,eventos.cabeceraDch);
+      	$.each(eventos.eventos,function(i,item)
       	{
       		createLine(item.tipo,dia,item.hora,item.titulo,item.lugar,item.texto,0);
       	});
       });
     });
 </script>
-
-Hola
 
 </body>
 </html>
