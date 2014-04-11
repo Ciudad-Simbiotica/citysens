@@ -1,11 +1,11 @@
 TODO
 ----
-- Quitar las referencias a día/cambiarlo por group
- - Quitar las referencias a eventos/cambiarlo por filas
- - clone.find('.dia-fila-hora').html(hora); --> Que no se haga 4 veces. Que haga un each de los elementos de las filas, para hacerlo agnóstico para asociaciones
- - Probar a cargar unas falsas asociaciones
+- Probar a cargar unas falsas asociaciones
 
+- Que los márgenes se respeten: Quitar cosas duplicadas del CSS
 - Que se redondee el que toque y se quite el redondeado a los que no
 - Que desaparezcan los días sin eventos, o con todos ocultados
+
+- Que el menú de filtros se redimensione según su propio tamaño, y no con -152
 
 - Hacer búsquedas

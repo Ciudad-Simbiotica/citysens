@@ -1,135 +1,173 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>CitYsens</title>
-<link href="css/style.css" rel="stylesheet" type="text/css" />
- <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
- </head>
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+ <title>CitYsens</title>
+ <link href="css/style.css" rel="stylesheet" type="text/css" />
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+ <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+ <script src="js/jquery.custom-animations.js"></script>
+ 
+</head>
 
-<body>
-	
-<a id="switch-puntuales" class='switch-filas switch-filas-on'>Puntuales</a>
-<a id="switch-periodicos" class='switch-filas switch-filas-on'>Periódicos</a>
-<a id="switch-iniciativas" class='switch-filas switch-filas-on'>Iniciativas</a>
-<a id="switch-reuniones" class='switch-filas switch-filas-on'>Reuniones</a>
+<body>  
+ 
+ <div class='filtros'>
+ 	<div class='boton-accion-entidad' id="boton-accion-entidad">
+ 		<img src="icons/icon_accion-entidad.png" id="imagen-accion-entidad" title="Ver entidades">
+ 	</div>
+ 	<div class='filtros-area'>
+ 	 <div class='filtros-area2'>
+	 	<div class='filtros-accion'>
+	 		<img src="icons/icon_puntual.png" class="switch-filas" id="switch-puntuales" title="Ocultar eventos puntuales">
+	 		<img src="icons/icon_recurrente.png" class="switch-filas" id="switch-recurrentes" title="Ocultar eventos recurrentes">
+	 		<img src="icons/icon_iniciativa.png" class="switch-filas switch-filas-off" id="switch-iniciativas" title="Mostrar iniciativas">
+	 	</div>
+	 	<div class='filtros-entidad'>
+	 		<img src="icons/icon_institucion.png" class="switch-filas switch-filas-off" id="switch-instituciones" title="Mostrar instituciones">
+	 		<img src="icons/icon_organizacion.png" class="switch-filas" id="switch-organizaciones" title="Ocultar organizaciones">
+	 		<img src="icons/icon_colectivo.png" class="switch-filas" id="switch-colectivos" title="Ocultar colectivos">
+	 	</div>
+ 	 </div>
+ 	</div>
+ </div>
+
+ 
 <hr>
 
-<div class='agenda'>	
-
-<div class='dia' id='dia-template' style='display:none;'>
- <div class='dia-cabecera'>
-  <div class='dia-cabecera-izq'>
-    Hoy
-  </div>
-  <div class='dia-cabecera-cntr'>
-   Miércoles 18
-  </div>
-  <div class='dia-cabecera-dch'>
-   Marzo
+ <div class='agenda'>	
+  <div class='grupo' id='grupo-template' style='display:none;'>
+	 <div class='grupo-cabecera'>
+	  <div class='grupo-cabecera-izq'>
+	    Izq
+	  </div>
+	  <div class='grupo-cabecera-cntr'>
+	   Centro
+	  </div>
+	  <div class='grupo-cabecera-dch'>
+	   Dch
+	  </div>
+	 </div>
+	 
+	 <div class='grupo-filas'>
+		 <div class='grupo-fila-convocatoria' id='grupo-fila-template-convocatoria'>
+		 	<div class='grupo-elemento-hora'>
+		 		11:00
+			</div>
+		 	<div class='grupo-elemento-titulo'>
+		 		Convocatoria
+			</div>
+		 	<div class='grupo-elemento-lugar'>
+		 		Lugar
+			</div>
+		 	<div class='grupo-elemento-texto'>
+		 		Descripción
+			</div>
+		 </div>
+		 <div class='grupo-fila-recurrente' id='grupo-fila-template-recurrente'>
+		 	<div class='grupo-elemento-hora'>
+		 		11:00
+			</div>
+		 	<div class='grupo-elemento-titulo'>
+		 		Recurrente
+			</div>
+		 	<div class='grupo-elemento-lugar'>
+		 		Lugar
+			</div>
+		 	<div class='grupo-elemento-texto'>
+		 		Descripción
+			</div>
+		 </div>
+		 <div class='grupo-fila-iniciativa' id='grupo-fila-template-iniciativa'>
+		 	<div class='grupo-elemento-hora'>
+		 		11:00
+			</div>
+		 	<div class='grupo-elemento-titulo'>
+		 		Iniciativa
+			</div>
+		 	<div class='grupo-elemento-lugar'>
+		 		Lugar
+			</div>
+		 	<div class='grupo-elemento-texto'>
+		 		Descripción
+			</div>
+		 </div>
+		 <div class='grupo-fila-reunion' id='grupo-fila-template-reunion'>
+		 	<div class='grupo-elemento-hora'>
+		 		11:00
+			</div>
+		 	<div class='grupo-elemento-titulo'>
+		 		Reunión
+			</div>
+		 	<div class='grupo-elemento-lugar'>
+		 		Lugar
+			</div>
+		 	<div class='grupo-elemento-texto'>
+		 		Descripción
+			</div>
+		 </div>
+		 <div class='grupo-fila-institucion' id='grupo-fila-template-institucion'>
+		 	<div class='grupo-elemento-hora'>
+		 		11:00
+			</div>
+		 	<div class='grupo-elemento-titulo'>
+		 		Institución
+			</div>
+		 	<div class='grupo-elemento-lugar'>
+		 		Lugar
+			</div>
+		 	<div class='grupo-elemento-texto'>
+		 		Descripción
+			</div>
+		 </div>
+		 <div class='grupo-fila-organizacion' id='grupo-fila-template-organizacion'>
+		 	<div class='grupo-elemento-hora'>
+		 		11:00
+			</div>
+		 	<div class='grupo-elemento-titulo'>
+		 		Organización
+			</div>
+		 	<div class='grupo-elemento-lugar'>
+		 		Lugar
+			</div>
+		 	<div class='grupo-elemento-texto'>
+		 		Descripción
+			</div>
+		 </div>
+		 <div class='grupo-fila-colectivo' id='grupo-fila-template-colectivo'>
+		 	<div class='grupo-elemento-hora'>
+		 		11:00
+			</div>
+		 	<div class='grupo-elemento-titulo'>
+		 		Colectivo
+			</div>
+		 	<div class='grupo-elemento-lugar'>
+		 		Lugar
+			</div>
+		 	<div class='grupo-elemento-texto'>
+		 		Descripción
+			</div>
+		 </div>
+		 <div class='grupo-fila-persona' id='grupo-fila-template-persona'>
+		 	<div class='grupo-elemento-hora'>
+		 		11:00
+			</div>
+		 	<div class='grupo-elemento-titulo'>
+		 		Persona
+			</div>
+		 	<div class='grupo-elemento-lugar'>
+		 		Lugar
+			</div>
+		 	<div class='grupo-elemento-texto'>
+		 		Descripción
+			</div>
+		 </div>
+	 </div>
   </div>
  </div>
  
- <div class='dia-filas'>
-	 <div class='dia-fila-puntual' id='dia-fila-template' style='display:none;'>
-	 	<div class='dia-fila-hora'>
-	 		11:00
-		</div>
-	 	<div class='dia-fila-titulo'>
-	 		Titulo frase
-		</div>
-	 	<div class='dia-fila-lugar'>
-	 		Lugar
-		</div>
-	 	<div class='dia-fila-texto'>
-	 		Texto frase
-		</div>
-	 </div>
- </div>
-</div>
-
-</div>
-
-<script>
-
-$("#switch-puntuales").click(function()
-{
-  $("#switch-puntuales").toggleClass("switch-filas-on");
-  $(".dia-fila-puntual").slideToggle("fast", function() {});
-});
-
-$("#switch-periodicos").click(function()
-{
-  $("#switch-periodicos").toggleClass("switch-filas-on");
-  $(".dia-fila-periodico").slideToggle("fast", function() {});
-});
-
-$("#switch-iniciativas").click(function()
-{
-  $("#switch-iniciativas").toggleClass("switch-filas-on");
-  $(".dia-fila-iniciativa").slideToggle("fast", function() {});
-});
-
-$("#switch-reuniones").click(function()
-{
-  $("#switch-reuniones").toggleClass("switch-filas-on");
-  $(".dia-fila-reunion").slideToggle("fast", function() {});
-});
-
-
-function createDay(dia,left,center,right)
-{
-	var clone=$("#dia-template").clone();
-	clone.attr('id',dia);
-	clone.find('.dia-fila-puntual').remove();
-	clone.find('.dia-cabecera-izq').html(left);
-	clone.find('.dia-cabecera-cntr').html(center);
-	clone.find('.dia-cabecera-dch').html(right);
-	clone.appendTo(".agenda");
-	clone.show();
-}
-
-function createLine(tipo,dia,hora,titulo,lugar,texto,animated)
-{
-	var clone=$("#dia-fila-template").clone();
-	clone.hide();
-	clone.removeClass();
-
-	clone.addClass("dia-fila-"+tipo);
-
-	clone.find('.dia-fila-hora').html(hora);
-	clone.find('.dia-fila-titulo').html(titulo);
-	clone.find('.dia-fila-lugar').html(lugar);
-	clone.find('.dia-fila-texto').html(texto);
-	
-	clone.appendTo("#"+dia+">.dia-filas");
-	if(animated>0)
-		clone.slideDown("fast", function() {});
-	else
-		clone.show();
-};
-</script>
-<script>
- var getAgenda = "http://localhost:8888/citysens/getAgendaXML.php?";
-  $.getJSON( getAgenda, 
-  {
-    location: "Alcalá",
-    date: "any",
-    format: "json"
-  })
-    .done(function( data ) 
-    {
-      $.each(data.dias, function(dia,eventos)
-      {
-      	console.log(dia);
-      	createDay(dia,eventos.cabeceraIzq,eventos.cabeceraCntr,eventos.cabeceraDch);
-      	$.each(eventos.eventos,function(i,item)
-      	{
-      		createLine(item.tipo,dia,item.hora,item.titulo,item.lugar,item.texto,0);
-      	});
-      });
-    });
-</script>
+ <script src="js/agenda.js"></script>
 
 </body>
 </html>
