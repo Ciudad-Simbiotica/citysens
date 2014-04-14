@@ -94,11 +94,23 @@ function ocultarGruposSinElementos()
     $(this).find("div[class^=grupo-fila-]").each(function(index2) 
     {
       if($(this).css('display')=="block")
+      {
         atLeastOneVisible=true;
+      }
+      else
+      {
+      }
     });
-    if(!atLeastOneVisible)
-    {      
-      console.log($(this).attr("id"));
+    if($(this).attr("id")!="grupo-template")
+    {
+      if(!atLeastOneVisible)
+      {
+        $(this).slideUp("fast");      
+      }
+      else
+      {
+        $(this).slideDown("fast");      
+      }
     }
   });
 };
@@ -110,7 +122,6 @@ $("#switch-puntuales").click(function()
 {
   $("#switch-puntuales").toggleClass("switch-filas-off");
   $(".grupo-fila-convocatoria").slideToggle("fast", function() {});
-  ocultarGruposSinElementos();
 });
 
 $("#switch-recurrentes").click(function()

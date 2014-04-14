@@ -1,10 +1,12 @@
 TODO
 ----
+- Pie de grupo
+ - Que desaparezcan los días sin eventos, o con todos ocultados
+ - Que se redondee el que toque y se quite el redondeado a los que no
+- Quitar ID de templates a las filas
 - Probar a cargar unas falsas asociaciones
 
 - Que los márgenes se respeten: Quitar cosas duplicadas del CSS
-- Que se redondee el que toque y se quite el redondeado a los que no
-- Que desaparezcan los días sin eventos, o con todos ocultados
 
 - Que el menú de filtros se redimensione según su propio tamaño, y no con -152
 
