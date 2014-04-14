@@ -137,7 +137,7 @@ $("#switch-iniciativas").click(function()
 });
 
 
-var getAgenda = "http://localhost:8888/citysens/getAgendaXML.php?";
+var getAgenda = "getAgendaXML.php?";
 $.getJSON(getAgenda, 
 {
   location: "Alcalá",
