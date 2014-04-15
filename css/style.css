@@ -1,4 +1,117 @@
 /*CitYsens*/
+html,body 
+{ 
+	height: 100%; 
+	margin: 0px; 
+	padding: 0px;
+	background-color: #EEEEEE;
+}
+
+.cabecera
+{
+	position:fixed;
+	background-color: #6666ff;
+	width:100%;
+	height: 46px;
+	top:0px;
+	z-index: 100;
+ 	font-family: Arial, Helvetica, sans-serif;
+}
+
+.cabecera-cuerpo
+{
+	width:960px;
+ 	height: 100%;
+ 	margin: 0 auto;
+	position: relative;
+}
+
+
+.cabecera-logo
+{
+	margin-top:4px;
+	position: absolute;
+}
+.cabecera-busqueda
+{
+	margin-left: 65px;
+	margin-top: 4px;
+	position: absolute;
+}
+.cabecera-lupa
+{
+	margin-left: 762px;
+	margin-top: 7px;
+	position: absolute;
+}
+.cabecera-derecha
+{
+	top:16px;
+	right:20px;
+	position: absolute;
+	color:white;
+	
+}
+.input-busqueda
+{
+	font-size: 20px;
+    width:685px;
+    height:32px;
+}
+
+.scroll-curtain
+{
+	background-color: #EEEEEE;
+ 	width:100%;
+ 	height: 73px;
+ 	left:0px;
+ 	top:46px;
+ 	position: fixed; 	
+ 	z-index: 20;
+}
+
+
+.cuerpo
+{
+	/*background-color: #FFFF00;*/
+	width:960px;
+ 	height: 100%;
+ 	margin: 0 auto;
+	margin-top: 55px;
+	position: relative;
+}
+
+
+
+
+.agenda
+{
+	/*background-color: #FF0000;*/
+	width: 640px;
+	position: absolute;
+	margin-top: 75px;
+	height: 100%;
+}
+
+.map
+{
+	position: fixed;
+	left:67.3%;
+	top: 55px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	z-index: 25;
+}
+.map-breadcrumbs
+{
+	margin-top: 5px;
+	margin-left: 5px;
+}
+
+.map-map
+{
+}
+
 
 .switch-filas,
 .switch-filas-on
@@ -11,11 +124,23 @@
 	opacity:0.3;
 }
 
+.filtros,.map,.grupo
+{
+  box-shadow:0 2px 3px #aaa;
+  background:white;
+  border-radius:3px;
+}
+
 .filtros
 {
-	width: 330px;
+	width: 655px;
 	height: 64px;
-	margin-bottom: 10px;
+	top:55px;
+	z-index: 51;
+	margin-left:-10px;
+	
+	position:fixed;
+
 
 }
 
@@ -51,22 +176,66 @@
 	margin-left:-304px;
 }
 
+.ordenar
+{
+	height: 64px;
+	right: 5px;
+	top:5px;
+	position:absolute;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+
+.ordenar-correo
+{
+	position:absolute;
+	border: solid;
+	border-width: 2px;
+	font-weight: bold;
+	right:90px;
+	width:70px;
+	top:16px;
+	box-shadow: 3px 3px 1px #888888;	
+	text-align: center;
+}
+.boton-ordenar
+{
+	position:absolute;
+	right:0px;
+	width:66px;
+
+}
+.boton-ordenar-texto
+{
+	position:absolute;
+	width:66px;
+
+}
+.boton-ordenar-imagen
+{
+	position:absolute;
+	top:17px;
+	right: 19px;
+}
 
 .grupo,
 .grupo-cabecera-izq,
 .grupo-cabecera-cntr,
 .grupo-cabecera-dch 
+.grupo-pie
 {
-	width: 800px;
+	width: 635px;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size:15px;
 	color: white;
+	margin-top: 
 }
 
 .grupo
 {
-	box-shadow: 7px 7px 10px #888888;	
-	border-radius: 8px;
+	position:relative;
+	/*box-shadow: 7px 7px 10px #888888;	
+	border-radius: 8px;*/
 	margin-bottom: 20px;
 }
 
@@ -74,8 +243,9 @@
 {
 	background-color:#932626;
 	height: 20px;
-	border-top-left-radius: 8px;
-	border-top-right-radius: 8px;
+	
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
 }	
 
 .grupo-cabecera-izq 
@@ -96,8 +266,21 @@
 {
 	position:absolute;
 	text-align:right;
+	width:630px;
 	color:#c99393;
 }
+
+.grupo-pie 
+{
+	background-color:#DDDDDD;
+	height: 20px;
+	
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+	
+}	
+
+
 .grupo-filas
 {
 	position: relative;	
@@ -111,10 +294,12 @@
 .grupo-fila-reunion
 {
 	padding:2px;	
+	position:absolute;
 }
 
 .grupo-fila-convocatoria
 {
+	position: relative;
 	background-color:#FFCCCC; 	
 	border-bottom:thin solid #CCCCCC;
 }
@@ -166,24 +351,62 @@
 
 .grupo-elemento-hora
 {
-	position:absolute;
+	font-weight: bold;
+	margin-left: 80px;
+}
+
+.grupo-elemento-handup
+{
+	left: 5px;
+	top: 3px;
+	position: absolute;
+}
+
+.grupo-elemento-handdown
+{
+	left: 5px;
+	top: 24px;
+	position: absolute;
+}
+
+.grupo-elemento-temp
+{
+	left: 29px;
+	top:3px;
+	position: absolute;
+}
+
+.grupo-elemento-logo
+{
+	right: 5px;
+	top: 3px;
+	position: absolute;
+	z-index: 10;
 }
 
 .grupo-elemento-titulo
 {
-	margin-left: 70px;
-	}
+	margin-left: 160px;
+	margin-top: -16px;
+	color:#6666ff;
+	font-weight: bold;
+}
 
 .grupo-elemento-texto
 {
-	margin-left: 70px;
+	margin-left: 160px;
+	margin-top: -16px;
 	height: 30px;
 }
 
 .grupo-elemento-lugar
 {
-	position: relative;
-	text-align: right;
-	margin-top: -16px;
+	font-weight: bold;
+	margin-left: 80px;
+	margin-top: 0px;
+	width:75px;
+	height: 16px;
+	overflow: hidden;
+	white-space: nowrap;
+  text-overflow: ellipsis;
 }
-

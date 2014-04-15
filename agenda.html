@@ -13,7 +13,22 @@
 
 <body>  
  
- <div class='filtros'>
+ <div class='cabecera'>
+ 	<div class='cabecera-cuerpo'>
+	 	<div class='cabecera-logo'><IMG SRC='icons/citysens.logoPrincipal.png' width='49px' height='40px'></div> 
+	 	<div class='cabecera-busqueda'>
+	 		<INPUT TYPE=TEXT class='input-busqueda' placeholder="Buscar en todos los eventos..."></INPUT> 
+	 	</div>
+	 	<div class='cabecera-lupa'>
+	 		<IMG SRC='icons/icon_lupa.png'>
+	 	</div>
+	 	<div class='cabecera-derecha'>Mi CitYsens</div>
+	</div>
+ </div>
+ 
+ <div class='cuerpo'>
+ 	
+  <div class='filtros'>
  	<div class='boton-accion-entidad' id="boton-accion-entidad">
  		<img src="icons/icon_accion-entidad.png" id="imagen-accion-entidad" title="Ver entidades">
  	</div>
@@ -31,12 +46,27 @@
 	 	</div>
  	 </div>
  	</div>
- </div>
+ 	<div class='ordenar'>
+ 	<div class='ordenar-correo'>
+ 		Recibir por correo
+ 	</div>
+ 	<div class='boton-ordenar'>
+ 	 <div class='boton-ordenar-texto'>
+ 	 	Ordenar por
+ 	 </div>
+ 	 <div class='boton-ordenar-imagen'>
+	 	<img src="icons/icon_vdk-32.png" title="Haz click para elegir el criterio de ordenación">
+ 	 </div>
+ 	</div>
+</div>	
+ 	
+</div>
+
+<div class='scroll-curtain'></div>
 
  
-<hr>
+ <div class='agenda'>
 
- <div class='agenda'>	
   <div class='grupo' id='grupo-template' style='display:none;'>
 	 <div class='grupo-cabecera'>
 	  <div class='grupo-cabecera-izq'>
@@ -55,6 +85,15 @@
 		 	<div class='grupo-elemento-hora'>
 		 		11:00
 			</div>
+		 	<div class='grupo-elemento-handup'>
+		 		<IMG SRC='icons/icon_handup.png' width='20px' height='20px'>
+			</div>
+		 	<div class='grupo-elemento-handdown'>
+		 		<IMG SRC='icons/icon_handown.png' width='20px' height='20px'>
+			</div>
+		 	<div class='grupo-elemento-temp'>
+		 		<IMG SRC='icons/icon_temp1.png' width='41px' height='41px'>
+			</div>
 		 	<div class='grupo-elemento-titulo'>
 		 		Convocatoria
 			</div>
@@ -63,6 +102,9 @@
 			</div>
 		 	<div class='grupo-elemento-texto'>
 		 		Descripción
+			</div>
+		 	<div class='grupo-elemento-logo'>
+		 		<IMG SRC='icons/icon_logo1.png' width='41px' height='41px'>
 			</div>
 		 </div>
 		 <div class='grupo-fila-recurrente' id='grupo-fila-template-recurrente'>
@@ -164,10 +206,24 @@
 			</div>
 		 </div>
 	 </div>
+	 
+	 <div class='grupo-pie'>
+	  Texto en el pie
+	 </div>
+	 
   </div>
- </div>
  
  <script src="js/agenda.js"></script>
+</div>
 
-</body>
+ <div class='map'>
+ 	<div class='map-breadcrumbs'>
+	 	España > Madrid > Madrid Este > Alcalá +
+ 	</div>
+ 	<div class='map-map'>
+	 	<IMG SRC='icons/map.png' width=315px height=315px>
+	</div>
+ </div>
+ </div>
+ </body>
 </html>
