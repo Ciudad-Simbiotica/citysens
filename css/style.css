@@ -17,6 +17,7 @@ html,body
 	z-index: 100;
  	font-family: Arial, Helvetica, sans-serif;
 	border-bottom:thick solid #6A94D4;
+	box-shadow:0 2px 3px #aaa;
 }
 
 .cabecera-cuerpo
@@ -53,14 +54,14 @@ html,body
 	cursor: pointer; cursor: hand;	
 }
 
-
 .cabecera-pestania-izq
 {
 	width: 33%;
 	height:41px;
 	position: absolute;
-	background-color: #FFE890;
-	border-bottom:thick solid #FFD840;
+	box-shadow:0 2px 3px 0px #aaa;
+	border-bottom:thick solid #6A94D4;
+	z-index: 10;
 }
 .cabecera-pestania-ctr
 {
@@ -68,6 +69,9 @@ html,body
 	height:41px;
 	margin-left: 33%;
 	position: absolute;
+	border-bottom:thick solid #6A94D4;
+	box-shadow:0 2px 3px 0px #aaa;
+	z-index: 10;
 	/*background-color: #FFAA73;
 	border-bottom:thick solid #FF8B40;*/
 }
@@ -77,9 +81,19 @@ html,body
 	height:41px;
 	margin-left: 66%;
 	position: absolute;;
+	border-bottom:thick solid #6A94D4;
+	box-shadow:0 2px 3px 0px #aaa;
+	z-index: 10;
 	/*background-color: #8070D8;
 	border-bottom:thick solid #604BD8;*/
 }
+
+.cabecera-pestania-seleccionada
+{
+	background-color: #FFE890;
+	border-bottom:thick solid #FFD840;	
+}
+
 
 
 
@@ -110,7 +124,6 @@ html,body
     height:24px;
 }
 
-
 .subcabecera-pestania-izq
 {
 	top: 46px;
@@ -127,24 +140,34 @@ html,body
 }
 .subcabecera-pestania-ctr
 {
-	width: 33%;
-	height:41px;
 	top: 46px;
-	visibility: hidden;
-	margin-left: 33%;
+	height:32px;
+	text-align: left;
 	position: absolute;
-	background-color: #FFE373;
+	background-color: #FFE890;
+	color:black;
+	text-shadow: none;
+	display: none;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+	box-shadow:0 2px 3px #aaa;
+	padding: 5px;
 }
 
 .subcabecera-pestania-dch
 {
-	width: 33%;
-	height:41px;
 	top: 46px;
-	visibility: hidden;
-	margin-left: 66%;
-	position: absolute;;
-	background-color: #8070D8;
+	height:32px;
+	right: 3px;
+	position: absolute;
+	background-color: #FFE890;
+	color:black;
+	display: none;
+	text-shadow: none;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+	box-shadow:0 2px 3px #aaa;
+	padding: 5px;
 }
 
 .scroll-curtain

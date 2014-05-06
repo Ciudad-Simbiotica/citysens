@@ -86,6 +86,7 @@ function mostrarAcciones()
    });
 };
 
+
 function ocultarGruposSinElementos()
 {
   $(".grupo").each(function(index) 
@@ -135,6 +136,50 @@ $("#switch-iniciativas").click(function()
   $("#switch-iniciativas").toggleClass("switch-filas-off");
   $(".grupo-fila-iniciativa").slideToggle("fast", function() {});
 });
+
+
+
+$(".cabecera-pestania-izq").click(function()
+{
+  console.log("Mostrando Eventos");
+
+  $("#cabecera-pestania-izq").addClass("cabecera-pestania-seleccionada",150);
+  $("#cabecera-pestania-ctr").removeClass("cabecera-pestania-seleccionada",150);
+  $("#cabecera-pestania-dch").removeClass("cabecera-pestania-seleccionada",150);
+
+  $(".subcabecera-pestania-dch").slideUp("fast",function() 
+  {
+    // Animation complete.
+    $(".subcabecera-pestania-izq").slideDown("fast");
+  });
+});
+
+$(".cabecera-pestania-ctr").click(function()
+{
+  console.log("Mostrando Organizaciones");
+  $("#cabecera-pestania-ctr").addClass("cabecera-pestania-seleccionada",150);
+  $("#cabecera-pestania-dch").removeClass("cabecera-pestania-seleccionada",150);
+  $("#cabecera-pestania-izq").removeClass("cabecera-pestania-seleccionada",150);
+
+  $(".subcabecera-pestania-izq").slideUp("fast");
+  $(".subcabecera-pestania-dch").slideUp("fast");
+});
+
+$(".cabecera-pestania-dch").click(function()
+{
+  console.log("Mostrando Organizaciones");
+  $("#cabecera-pestania-dch").addClass("cabecera-pestania-seleccionada",150);
+  $("#cabecera-pestania-ctr").removeClass("cabecera-pestania-seleccionada",150);
+  $("#cabecera-pestania-izq").removeClass("cabecera-pestania-seleccionada",150);
+
+  $(".subcabecera-pestania-izq").slideUp("fast",function() 
+  {
+    // Animation complete.
+    $(".subcabecera-pestania-dch").slideDown("fast");
+  });
+});
+
+
 
 
 var getAgenda = "getAgendaXML.php?";
