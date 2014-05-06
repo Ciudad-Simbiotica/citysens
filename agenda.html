@@ -15,7 +15,19 @@
  
  <div class='cabecera'>
  	<div class='cabecera-cuerpo'>
-	 	<div class='cabecera-logo'><IMG SRC='icons/citysens.logoPrincipal.png' width='49px' height='40px'></div> 
+	 	<div class='cabecera-logo'><IMG SRC='icons/citysens.logoPrincipal.png' width='49px' height='40px'></div>
+	 	<div class='cabecera-pestanias'>
+	 		<div class='cabecera-pestania-izq'>Eventos</div>
+	 		<div class='subcabecera-pestania-izq'>
+	 			<img src='icons/icon_puntual.png' width=32px height=32px>
+	 			<img src='icons/icon_recurrente.png' width=32px height=32px>
+	 			<img src='icons/icon_iniciativa.png' width=32px height=32px>
+	 		</div>
+	 		<div class='cabecera-pestania-ctr'>Procesos</div>
+	 		<div class='subcabecera-pestania-ctr'>Procesos</div>
+	 		<div class='cabecera-pestania-dch'>Organ.</div>
+	 		<div class='subcabecera-pestania-dch'>Organ.</div>
+	 	</div> 
 	 	<div class='cabecera-busqueda'>
 	 		<INPUT TYPE=TEXT class='input-busqueda' placeholder="Buscar en todos los eventos..."></INPUT> 
 	 	</div>
@@ -28,41 +40,20 @@
  
  <div class='cuerpo'>
  	
-  <div class='filtros'>
- 	<div class='boton-accion-entidad' id="boton-accion-entidad">
- 		<img src="icons/icon_accion-entidad.png" id="imagen-accion-entidad" title="Ver entidades">
- 	</div>
- 	<div class='filtros-area'>
- 	 <div class='filtros-area2'>
-	 	<div class='filtros-accion'>
-	 		<img src="icons/icon_puntual.png" class="switch-filas" id="switch-puntuales" title="Ocultar eventos puntuales">
-	 		<img src="icons/icon_recurrente.png" class="switch-filas" id="switch-recurrentes" title="Ocultar eventos recurrentes">
-	 		<img src="icons/icon_iniciativa.png" class="switch-filas switch-filas-off" id="switch-iniciativas" title="Mostrar iniciativas">
+ 	<div class='botonesSuperiores'>
+	 	
+	 	<div class='nuevoEvento'>
+	 		Propón un evento
 	 	</div>
-	 	<div class='filtros-entidad'>
-	 		<img src="icons/icon_institucion.png" class="switch-filas switch-filas-off" id="switch-instituciones" title="Mostrar instituciones">
-	 		<img src="icons/icon_organizacion.png" class="switch-filas" id="switch-organizaciones" title="Ocultar organizaciones">
-	 		<img src="icons/icon_colectivo.png" class="switch-filas" id="switch-colectivos" title="Ocultar colectivos">
+
+	 	<div class='correo'>
+	 		Recibir por correo
 	 	</div>
- 	 </div>
- 	</div>
- 	<div class='ordenar'>
- 	<div class='ordenar-correo'>
- 		Recibir por correo
- 	</div>
- 	<div class='boton-ordenar'>
- 	 <div class='boton-ordenar-texto'>
- 	 	Ordenar por
- 	 </div>
- 	 <div class='boton-ordenar-imagen'>
-	 	<img src="icons/icon_vdk-32.png" title="Haz click para elegir el criterio de ordenación">
- 	 </div>
- 	</div>
-</div>	
- 	
-</div>
+	 	
+	</div>
 
 <div class='scroll-curtain'></div>
+<div class='scroll-curtain-gradient'></div>
 
  
  <div class='agenda'>
@@ -86,13 +77,13 @@
 		 		11:00
 			</div>
 		 	<div class='grupo-elemento-handup'>
-		 		<IMG SRC='icons/icon_handup.png' width='20px' height='20px'>
+		 		<IMG SRC='icons/flecha_arriba.png'>
 			</div>
 		 	<div class='grupo-elemento-handdown'>
-		 		<IMG SRC='icons/icon_handown.png' width='20px' height='20px'>
+		 		<IMG SRC='icons/flecha_abajo.png'>
 			</div>
 		 	<div class='grupo-elemento-temp'>
-		 		<IMG SRC='icons/icon_temp1.png' width='41px' height='41px'>
+		 		<IMG SRC='icons/icon_CitYsens.temperatura-2.fw.png' height='32px'>
 			</div>
 		 	<div class='grupo-elemento-titulo'>
 		 		Convocatoria
@@ -102,9 +93,6 @@
 			</div>
 		 	<div class='grupo-elemento-texto'>
 		 		Descripción
-			</div>
-		 	<div class='grupo-elemento-logo'>
-		 		<IMG SRC='icons/icon_logo1.png' width='41px' height='41px'>
 			</div>
 		 </div>
 		 <div class='grupo-fila-recurrente' id='grupo-fila-template-recurrente'>
