@@ -128,6 +128,7 @@ html,body
 {
 	top: 46px;
 	height:32px;
+	left:5px;
 	text-align: left;
 	position: absolute;
 	background-color: #FFE890;
@@ -158,7 +159,7 @@ html,body
 {
 	top: 46px;
 	height:32px;
-	right: 3px;
+	right: 8px;
 	position: absolute;
 	background-color: #FFE890;
 	color:black;
