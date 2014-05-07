@@ -31,61 +31,6 @@ function createLine(grupo,datos,animated)
 		clone.show();
 };
 
-function mostrarEntidades()
-{
-  console.log("Mostrando Entidades");
-  $("#boton-accion-entidad").unbind('click',mostrarEntidades);
-
-  $("#imagen-accion-entidad").fadeTo(150,0,function()
-    {
-      $("#imagen-accion-entidad").attr("src", "icons/icon_entidad-accion.png");
-      $("#imagen-accion-entidad").fadeTo(150,1,function()
-      {
-        //Aquí ya no hay que hacer nada
-      });
-    });
-
-  $(".filtros-accion").animate({
-    marginLeft:-152,
-  }, 150, function() 
-   {
-    $(".filtros-entidad").animate({
-      marginLeft:0
-    }, 150, function() 
-     {
-        $("#boton-accion-entidad").click(mostrarAcciones);
-     });
-   });
-};
-
-function mostrarAcciones()
-{
-  console.log("Mostrando Acciones");
-  $("#boton-accion-entidad").unbind('click',mostrarAcciones);
-
-  $("#imagen-accion-entidad").fadeTo(150,0,function()
-    {
-      $("#imagen-accion-entidad").attr("src", "icons/icon_accion-entidad.png");
-      $("#imagen-accion-entidad").fadeTo(150,1,function()
-      {
-
-      });
-    });
-
-
-  $(".filtros-entidad").animate({
-    marginLeft:-304
-  }, 150, function() 
-   {
-    $(".filtros-accion").animate({
-      marginLeft:0
-    }, 150, function() 
-     {
-        $("#boton-accion-entidad").click(mostrarEntidades);
-     });
-   });
-};
-
 
 function ocultarGruposSinElementos()
 {
@@ -116,11 +61,9 @@ function ocultarGruposSinElementos()
   });
 };
 
-$("#boton-accion-entidad").click(mostrarEntidades);
-$('<img/>')[0].src="icons/icon_entidad-accion.png"; //Precargamos la otra imagen
-
 $("#switch-puntuales").click(function()
 {
+  console.log("Switch Puntuales");
   $("#switch-puntuales").toggleClass("switch-filas-off");
   $(".grupo-fila-convocatoria").slideToggle("fast", function() {});
 });

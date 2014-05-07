@@ -48,7 +48,7 @@ html,body
 	text-shadow: 1px 1px 6px #000000;
 }
 
-.cabecera-pestanias :hover
+.cabecera-pestania-izq:hover,.cabecera-pestania-ctr:hover,.cabecera-pestania-dch:hover
 {
 	border-bottom:thick solid #FFD840;
 	cursor: pointer; cursor: hand;	
@@ -264,6 +264,8 @@ html,body
 .switch-filas,
 .switch-filas-on
 {
+	width: 32px;
+	height: 32px;
 	cursor: pointer; 
 }
 
@@ -285,7 +287,7 @@ html,body
 	top:55px;
 	width: 635px;
 	height:50px;
-	z-index: 100;
+	z-index: 99;
 }
 
 .nuevoEvento
