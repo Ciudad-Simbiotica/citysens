@@ -4,14 +4,21 @@ $lorem="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 date_default_timezone_set("Europe/Madrid");
 setlocale(LC_ALL, 'es_ES');
 
+if(!in_array($_GET["clase"], array("eventos","procesos","organizaciones")))
+	exit;
 
-$return_data=file_get_contents("returnCache.txt");
+
+$return_data=file_get_contents("returnCache_{$_GET["clase"]}.txt");
+
 
 if($return_data!="")
 {
 	echo $return_data;
 	exit;
 }
+
+
+exit;
 
 $url="http://agendadelhenares.org/widget-json?uid=3";
 $raw_data=file_get_contents($url);
@@ -22,22 +29,25 @@ $data=json_decode($raw_data,true);
 $i=0;
 foreach($data["events"] as $id=>$event)
 {
+	$datos["clase"]="evento";
+
+
 	switch(rand(1,3))
 	{
 		case 1:
-			$datos["tipo"]="convocatoria";
+			$datos["tipo"]="institucion";
 			break;
 		case 2:
-			$datos["tipo"]="recurrente";
+			$datos["tipo"]="organizacion";
 			break;
+		
 		case 3:
-			$datos["tipo"]="iniciativa";
+			$datos["tipo"]="colectivo";
 			break;
-		/*
 		case 4:
 			$datos["tipo"]="reunion";
 			break;
-		*/
+		
 		default:
 			break;
 	}

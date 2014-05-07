@@ -404,67 +404,43 @@ html,body
 	
 }	
 
-
-.grupo-filas
+.grupo-fila-eventos,
+.grupo-fila-procesos,
+.grupo-fila-organizaciones
 {
-	position: relative;	
 	color: black;
-}
-
-.grupo-fila
-.grupo-fila-convocatoria
-.grupo-fila-recurrente
-.grupo-fila-iniciativa
-.grupo-fila-reunion
-{
-	padding:2px;	
-	position:absolute;
-}
-
-.grupo-fila-convocatoria
-{
-	position: relative;
-	border-left:thick solid #FFCCCC; 	
+	position:relative;
 	border-bottom:thin solid #CCCCCC;
 }
+
+.grupo-fila-convocatoria
+{
+	border-left:thick solid #FFCCCC; 	
+}
+
 .grupo-fila-recurrente
 {
 	border-left:thick solid #CCCCFF; 	
-	border-bottom:thin solid #CCCCCC;
 }
+
 .grupo-fila-iniciativa
 {
 	border-left:thick solid #FFFFCC; 	
-	border-bottom:thin solid #CCCCCC;
-}
-.grupo-fila-reunion
-{
-	border-left:thick solid #FFEEFF; 	
-	border-bottom:thin solid #CCCCCC;
 }
 
 .grupo-fila-institucion
 {
-	border-left:thick solid #FFDDBB; 	
-	border-bottom:thin solid #CCCCCC;
+	border-left:thick solid #BBDDFF; 	
 }
 
 .grupo-fila-organizacion
 {
 	border-left:thick solid #CCFFCC; 	
-	border-bottom:thin solid #CCCCCC;
 }
 
 .grupo-fila-colectivo
 {
 	border-left:thick solid #FFBBDD; 	
-	border-bottom:thin solid #CCCCCC;
-}
-
-.grupo-fila-persona
-{
-	border-left:thick solid #FFDDFF; 	
-	border-bottom:thin solid #CCCCCC;
 }
 
 .grupo-fila-last
