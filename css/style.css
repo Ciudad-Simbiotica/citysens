@@ -274,7 +274,7 @@ html,body
 	opacity:0.3;
 }
 
-.map,.grupo,.informacion
+.map,.grupo,.grupo-template,.informacion
 {
   box-shadow:0 2px 3px #aaa;
   background:white;
@@ -340,6 +340,7 @@ html,body
 }
 
 .grupo,
+.grupo-template,
 .grupo-cabecera-izq,
 .grupo-cabecera-cntr,
 .grupo-cabecera-dch 
@@ -352,7 +353,8 @@ html,body
 	margin-top: 
 }
 
-.grupo
+.grupo,
+.grupo-template
 {
 	position:relative;
 	/*box-shadow: 7px 7px 10px #888888;	

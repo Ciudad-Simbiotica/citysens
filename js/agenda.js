@@ -1,6 +1,8 @@
 function createGroup(grupo,left,center,right)
 {
 	var clone=$("#grupo-template").clone();
+  clone.removeClass("grupo-template");
+  clone.addClass("grupo");
 	clone.attr('id',grupo);
 	clone.find('.grupo-filas').empty();
 
@@ -10,7 +12,7 @@ function createGroup(grupo,left,center,right)
 
 	clone.appendTo(".agenda");
 
-	clone.show();
+	//clone.show();
 }
 
 function createLine(grupo,datos,animated)
@@ -29,40 +31,11 @@ function createLine(grupo,datos,animated)
 
 
 	clone.appendTo("#"+grupo+">.grupo-filas");
+
 	if(animated>0)
 		clone.slideDown("fast", function() {});
 	else
 		clone.show();
-};
-
-
-function ocultarGruposSinElementos()
-{
-  $(".grupo").each(function(index) 
-  {
-    var atLeastOneVisible=false;
-    $(this).find("div[class^=grupo-fila-]").each(function(index2) 
-    {
-      if($(this).css('display')=="block")
-      {
-        atLeastOneVisible=true;
-      }
-      else
-      {
-      }
-    });
-    if($(this).attr("id")!="grupo-template")
-    {
-      if(!atLeastOneVisible)
-      {
-        $(this).slideUp("fast");      
-      }
-      else
-      {
-        $(this).slideDown("fast");      
-      }
-    }
-  });
 };
 
 $("#switch-puntuales").click(function()
@@ -112,7 +85,6 @@ $(".cabecera-pestania-izq").click(function()
     $(".subcabecera-pestania-izq").slideDown("fast");
   });
 
-  borrarTodos();
   cargarDatos("eventos");
 
 });
@@ -127,7 +99,6 @@ $(".cabecera-pestania-ctr").click(function()
   $(".subcabecera-pestania-izq").slideUp("fast");
   $(".subcabecera-pestania-dch").slideUp("fast");
 
-  borrarTodos();
   cargarDatos("procesos");
 
 
@@ -147,60 +118,17 @@ $(".cabecera-pestania-dch").click(function()
     $(".subcabecera-pestania-dch").slideDown("fast");
   });
 
-  borrarTodos();
   cargarDatos("organizaciones");
 
 });
 
-function borrarTodos()
-{
-  $(".grupo").fadeOut("slow",function() 
-  {
-
-  });
-}
-
-
-function borrarEventos()
-{
-  $(".grupo-fila-convocatoria").slideUp("fast",function() 
-  {
-    $(".grupo-fila-convocatoria").remove();
-  });
-  $(".grupo-fila-recurrente").slideUp("fast",function() 
-  {
-    $(".grupo-fila-recurrente").remove();
-  });
-}
-
-function borrarIniciativas()
-{
-  $(".grupo-fila-iniciativa").slideUp("fast",function() 
-  {
-    $(".grupo-fila-iniciativa").remove();
-  });
-}
-
-function borrarOrganizaciones()
-{
-  $(".grupo-fila-institucion").slideUp("fast",function() 
-  {
-    $(".grupo-fila-institucion").remove();
-  });
-  $(".grupo-fila-organizacion").slideUp("fast",function() 
-  {
-    $(".grupo-fila-organizacion").remove();
-  });
-  $(".grupo-fila-colectivo").slideUp("fast",function() 
-  {
-    $(".grupo-fila-colectivo").remove();
-  });
-}
-
-
-
 function cargarDatos(clase)
 {
+  $(".grupo").fadeOut("slow",function()
+  {
+    $(this).remove();
+  });  
+
   var getAgenda = "getAgendaXML.php?";
   $.getJSON(getAgenda, 
   {
@@ -210,6 +138,7 @@ function cargarDatos(clase)
   })
     .done(function(data) 
     {
+      //Esperamos a que se hayan borrado los grupos (por si acaba antes) antes de clonar
       $.each(data.grupos, function(grupo,filas)
       {
         createGroup(grupo,filas.cabeceraIzq,filas.cabeceraCntr,filas.cabeceraDch);
@@ -218,6 +147,7 @@ function cargarDatos(clase)
           createLine(grupo,item,0);
         });
       });
+    $(".grupo").fadeIn(1000);
     });  
 }
 
