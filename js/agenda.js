@@ -154,7 +154,7 @@ $(".cabecera-pestania-dch").click(function()
 
 function borrarTodos()
 {
-  $(".grupo").slideUp("slow",function() 
+  $(".grupo").fadeOut("slow",function() 
   {
 
   });
