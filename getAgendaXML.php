@@ -16,9 +16,9 @@ $return_data=file_get_contents("returnCache_{$_GET["clase"]}.txt");
 echo $return_data;
 exit;
 
-
-
 /*
+
+
 //Generar organizaciones
 
 $asociaciones=array();
@@ -92,6 +92,10 @@ foreach($asociaciones as $asociacion)
 	$datos["texto"]=$asociacion["DOMICILIO"];
 	$datos["lugarOrg"]="Distr. ".$asociacion["DISTRITO"];
 	$datos["puntos"]=$puntos;
+	if(rand(1,100)>50)
+		$datos["participante"]=1;
+	else
+		unset($datos["participante"]);
 	array_push($filas,$datos);
 
 	if($i>=50)break;
@@ -104,8 +108,8 @@ echo $returnJSON;
 file_put_contents("returnCache_organizaciones.txt", $returnJSON);
 
 exit();
-
 */
+
 
 
 /*
