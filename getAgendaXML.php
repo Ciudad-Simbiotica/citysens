@@ -11,13 +11,14 @@ if(!in_array($_GET["clase"], array("eventos","procesos","organizaciones")))
 	exit;
 
 
+
 $return_data=file_get_contents("returnCache_{$_GET["clase"]}.txt");
 echo $return_data;
 exit;
 
 
-/*
 
+/*
 //Generar organizaciones
 
 $asociaciones=array();
@@ -47,8 +48,10 @@ if (($gestor = fopen("asociaciones.csv", "r")) !== FALSE)
 }
 
 $i=0;
-$grupoActual="Top-10";
+$grupoActual="Top 10";
 $filas=array();
+
+$puntos=5000;
 
 foreach($asociaciones as $asociacion)
 {
@@ -65,7 +68,7 @@ foreach($asociaciones as $asociacion)
 		$filas=array();
 		$inicio=$i+1;
 		$fin=$inicio+10;
-		$grupoActual="Top-$i-$fin";
+		$grupoActual="Top $inicio-$fin";
 	}
 
 	$datos["clase"]="organizaciones";
@@ -83,9 +86,12 @@ foreach($asociaciones as $asociacion)
 			break;
 	}
 
+	$puntos-=rand(50,150);
+
 	$datos["titulo"]=$asociacion["ASOCIACION"];
 	$datos["texto"]=$asociacion["DOMICILIO"];
-	$datos["lugar"]="Distr. ".$asociacion["DISTRITO"];
+	$datos["lugarOrg"]="Distr. ".$asociacion["DISTRITO"];
+	$datos["puntos"]=$puntos;
 	array_push($filas,$datos);
 
 	if($i>=50)break;
@@ -96,6 +102,9 @@ $returnData["grupos"]=$grupos;
 $returnJSON=json_encode($returnData);
 echo $returnJSON;
 file_put_contents("returnCache_organizaciones.txt", $returnJSON);
+
+exit();
+
 */
 
 

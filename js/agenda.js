@@ -1,9 +1,10 @@
 function createGroup(grupo,left,center,right)
 {
 	var clone=$("#grupo-template").clone();
+  clone.hide();
   clone.removeClass("grupo-template");
   clone.addClass("grupo");
-	clone.attr('id',grupo);
+	clone.attr('id',grupo.replace(" ",""));
 	clone.find('.grupo-filas').empty();
 
 	clone.find('.grupo-cabecera-izq').html(left);
@@ -30,7 +31,7 @@ function createLine(grupo,datos,animated)
   clone.addClass("grupo-fila-"+datos.tipo);
 
 
-	clone.appendTo("#"+grupo+">.grupo-filas");
+	clone.appendTo("#"+grupo.replace(" ","")+">.grupo-filas");
 
 	if(animated>0)
 		clone.slideDown("fast", function() {});
@@ -68,6 +69,13 @@ $("#switch-colectivos").click(function()
   $("#switch-colectivos").toggleClass("switch-filas-off");
   $(".grupo-fila-colectivo").slideToggle("fast", function() {});
 });
+
+$("#switch-participantes").click(function()
+{
+  $("#switch-participantes").toggleClass("switch-filas-off");
+  //$(".grupo-fila-colectivo").slideToggle("fast", function() {});
+});
+
 
 
 
@@ -124,6 +132,8 @@ $(".cabecera-pestania-dch").click(function()
 
 function cargarDatos(clase)
 {
+
+  $(".grupo").attr('id',"");  //Para que no se inserten en esta les quitamos el ID
   $(".grupo").fadeOut("slow",function()
   {
     $(this).remove();

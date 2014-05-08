@@ -261,17 +261,27 @@ html,body
 
 
 
-.switch-filas,
-.switch-filas-on
+
+.switch-filas
 {
 	width: 32px;
-	height: 32px;
+	height: 32px;	
 	cursor: pointer; 
+}
+.switch-organizacionesParticipantes
+{
+	cursor: pointer; 
+	padding-bottom:7px;
 }
 
 .switch-filas-off
 {
 	opacity:0.3;
+}
+
+.grupo-template
+{
+	display:none;	
 }
 
 .map,.grupo,.grupo-template,.informacion
@@ -457,6 +467,16 @@ html,body
 	margin-left: 50px;
 }
 
+.grupo-elemento-puntos
+{
+	font-size: 12px;
+	font-weight: bold;
+	padding-top: 4px;
+	margin-left: 596px;
+}
+
+
+
 .grupo-elemento-handup
 {
 	left: 22px;
@@ -484,6 +504,21 @@ html,body
 	border-width: 1px;
 	position: absolute;
 }
+
+.grupo-elemento-logo
+{
+	left: 80px;
+	top:3px;
+	width: 32px;
+	height: 40px;
+	border: solid;
+	border-radius: 5px;
+	background-color: #FFCCCC;
+	padding-left: 8px;
+	border-width: 1px;
+	position: absolute;
+}
+
 
 .grupo-elemento-logo
 {
@@ -518,6 +553,18 @@ html,body
 {
 	font-weight: bold;
 	margin-left: 50px;
+	margin-top: 0px;
+	width:75px;
+	height: 16px;
+	overflow: hidden;
+	white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.grupo-elemento-lugarOrg
+{
+	font-weight: bold;
+	margin-left: 5px;
 	margin-top: 0px;
 	width:75px;
 	height: 16px;
