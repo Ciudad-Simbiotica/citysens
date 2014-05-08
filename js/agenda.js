@@ -112,8 +112,7 @@ $(".cabecera-pestania-izq").click(function()
     $(".subcabecera-pestania-izq").slideDown("fast");
   });
 
-  borrarIniciativas();
-  borrarOrganizaciones();
+  borrarTodos();
   cargarDatos("eventos");
 
 });
@@ -128,8 +127,7 @@ $(".cabecera-pestania-ctr").click(function()
   $(".subcabecera-pestania-izq").slideUp("fast");
   $(".subcabecera-pestania-dch").slideUp("fast");
 
-  borrarEventos();
-  borrarOrganizaciones();
+  borrarTodos();
   cargarDatos("procesos");
 
 
@@ -149,11 +147,18 @@ $(".cabecera-pestania-dch").click(function()
     $(".subcabecera-pestania-dch").slideDown("fast");
   });
 
-  borrarEventos();
-  borrarIniciativas();
+  borrarTodos();
   cargarDatos("organizaciones");
 
 });
+
+function borrarTodos()
+{
+  $(".grupo").slideUp("slow",function() 
+  {
+
+  });
+}
 
 
 function borrarEventos()
