@@ -39,12 +39,6 @@ function createLine(grupo,datos,animated)
 		clone.show();
 };
 
-function filtrarOrganizaciones()
-{
-  $(".grupo-fila-institucion").slideToggle("fast", function() {});
-  $(".grupo-fila-organizacion").slideToggle("fast", function() {});
-  $(".grupo-fila-colectivo").slideToggle("fast", function() {});  
-}
 
 $("#switch-puntuales").click(function()
 {
@@ -62,25 +56,24 @@ $("#switch-recurrentes").click(function()
 $("#switch-instituciones").click(function()
 {
   $("#switch-instituciones").toggleClass("switch-filas-off");
-  filtrarOrganizaciones();
+  $(".grupo-fila-institucion").slideToggle("fast", function() {});
 });
 
 $("#switch-organizaciones").click(function()
 {
   $("#switch-organizaciones").toggleClass("switch-filas-off");
-  filtrarOrganizaciones();
+  $(".grupo-fila-organizacion").slideToggle("fast", function() {});
 });
 
 $("#switch-colectivos").click(function()
 {
   $("#switch-colectivos").toggleClass("switch-filas-off");
-  filtrarOrganizaciones();
+  $(".grupo-fila-colectivo").slideToggle("fast", function() {});  
 });
 
 $("#switch-participantes").click(function()
 {
   $("#switch-participantes").toggleClass("switch-filas-off");
-  filtrarOrganizaciones();
 });
 
 
