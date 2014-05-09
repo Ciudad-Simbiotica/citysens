@@ -39,6 +39,13 @@ function createLine(grupo,datos,animated)
 		clone.show();
 };
 
+function filtrarOrganizaciones()
+{
+  $(".grupo-fila-institucion").slideToggle("fast", function() {});
+  $(".grupo-fila-organizacion").slideToggle("fast", function() {});
+  $(".grupo-fila-colectivo").slideToggle("fast", function() {});  
+}
+
 $("#switch-puntuales").click(function()
 {
   console.log("Switch Puntuales");
@@ -55,25 +62,25 @@ $("#switch-recurrentes").click(function()
 $("#switch-instituciones").click(function()
 {
   $("#switch-instituciones").toggleClass("switch-filas-off");
-  $(".grupo-fila-institucion").slideToggle("fast", function() {});
+  filtrarOrganizaciones();
 });
 
 $("#switch-organizaciones").click(function()
 {
   $("#switch-organizaciones").toggleClass("switch-filas-off");
-  $(".grupo-fila-organizacion").slideToggle("fast", function() {});
+  filtrarOrganizaciones();
 });
 
 $("#switch-colectivos").click(function()
 {
   $("#switch-colectivos").toggleClass("switch-filas-off");
-  $(".grupo-fila-colectivo").slideToggle("fast", function() {});
+  filtrarOrganizaciones();
 });
 
 $("#switch-participantes").click(function()
 {
   $("#switch-participantes").toggleClass("switch-filas-off");
-  //$(".grupo-fila-colectivo").slideToggle("fast", function() {});
+  filtrarOrganizaciones();
 });
 
 
