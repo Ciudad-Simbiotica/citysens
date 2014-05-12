@@ -27,7 +27,7 @@ function createLine(grupo,datos,animated)
       {
         //Cambiamos las imágenes según el tipo
         if(contenido=="convocatoria")
-          clone.find(".imagen-tipo").attr("src", "icons/UniqueEvent.64.png")
+          clone.find(".imagen-tipo").attr("src", "icons/Event-Unique.64.png")
         else if(contenido=="recurrente")
           clone.find(".imagen-tipo").attr("src", "icons/Event-Recurring.64.png")
         else if(contenido=="institucion")
@@ -36,7 +36,6 @@ function createLine(grupo,datos,animated)
           clone.find(".imagen-tipo").attr("src", "icons/icon_CitYsens.organizacion.png")
         else if(contenido=="colectivo")
           clone.find(".imagen-tipo").attr("src", "icons/CitYsens.People.png")
-
       }
       else if(clase=="participante")
       {
