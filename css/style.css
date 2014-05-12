@@ -478,6 +478,7 @@ div[class*='grupo-fila-']:hover
 {
 	box-shadow:0 2px 3px #aaa, 0 -2px 3px #aaa;
 	z-index:10;
+	background-color: #ffffe2;
 }
 
 .grupo-fila-convocatoria
