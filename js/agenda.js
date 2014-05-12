@@ -23,8 +23,37 @@ function createLine(grupo,datos,animated)
     
   $.each(datos,function(clase,contenido)
   {
-   		if(clase!="tipo")
-			clone.find('.grupo-elemento-'+clase).html(contenido);
+   		if(clase=="tipo")
+      {
+        //Cambiamos las imágenes según el tipo
+        if(contenido=="convocatoria")
+          clone.find(".imagen-tipo").attr("src", "icons/UniqueEvent.64.png")
+        else if(contenido=="recurrente")
+          clone.find(".imagen-tipo").attr("src", "icons/Event-Recurring.64.png")
+        else if(contenido=="institucion")
+          clone.find(".imagen-tipo").attr("src", "icons/icon_CitYsens.institucion.png")
+        else if(contenido=="organizacion")
+          clone.find(".imagen-tipo").attr("src", "icons/icon_CitYsens.organizacion.png")
+        else if(contenido=="colectivo")
+          clone.find(".imagen-tipo").attr("src", "icons/CitYsens.People.png")
+
+      }
+      else if(clase=="participante")
+      {
+        //Si no es participante escondemos el icono
+        if(contenido==0)
+          clone.find(".grupo-elemento-participante").hide();
+      }
+      else if(clase=="temperatura")
+      {
+        //Cambiamos el termometro
+        clone.find(".imagen-temp").attr("src", "icons/termometro_"+contenido+".png");
+      }
+      else
+      {
+        //El resto se sustituye el contenido por lo que se pasa
+  			clone.find('.grupo-elemento-'+clase).html(contenido);
+      }
 	});
 
   clone.removeClass("grupo-fila-template");
@@ -71,12 +100,6 @@ $("#switch-colectivos").click(function()
   $(".grupo-fila-colectivo").slideToggle("fast", function() {});  
 });
 
-$("#switch-participantes").click(function()
-{
-  $("#switch-participantes").toggleClass("switch-filas-off");
-});
-
-
 
 
 $(".cabecera-pestania-izq").click(function()
@@ -86,7 +109,8 @@ $(".cabecera-pestania-izq").click(function()
   $("#cabecera-pestania-izq").addClass("cabecera-pestania-seleccionada",150);
   $("#cabecera-pestania-ctr").removeClass("cabecera-pestania-seleccionada",150);
   $("#cabecera-pestania-dch").removeClass("cabecera-pestania-seleccionada",150);
-
+  $("#switch-puntuales").removeClass("switch-filas-off");
+  $("#switch-recurrentes").removeClass("switch-filas-off");
   $(".subcabecera-pestania-dch").slideUp("fast",function() 
   {
     // Animation complete.
@@ -119,6 +143,9 @@ $(".cabecera-pestania-dch").click(function()
   $("#cabecera-pestania-dch").addClass("cabecera-pestania-seleccionada",150);
   $("#cabecera-pestania-ctr").removeClass("cabecera-pestania-seleccionada",150);
   $("#cabecera-pestania-izq").removeClass("cabecera-pestania-seleccionada",150);
+  $("#switch-instituciones").removeClass("switch-filas-off");
+  $("#switch-organizaciones").removeClass("switch-filas-off");
+  $("#switch-colectivos").removeClass("switch-filas-off");
 
   $(".subcabecera-pestania-izq").slideUp("fast",function() 
   {

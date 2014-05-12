@@ -50,7 +50,7 @@ html,body
 
 .cabecera-pestania-izq:hover,.cabecera-pestania-ctr:hover,.cabecera-pestania-dch:hover
 {
-	border-bottom:thick solid #FFD840;
+	border-bottom:thick solid #FFC830;
 	cursor: pointer; cursor: hand;	
 }
 
@@ -91,7 +91,7 @@ html,body
 .cabecera-pestania-seleccionada
 {
 	background-color: #FFE890;
-	border-bottom:thick solid #FFD840;	
+	border-bottom:thick solid #FFC830;	
 }
 
 
@@ -249,7 +249,7 @@ html,body
 {
 	top: 46px;
 	height:32px;
-	width:120px;
+	width:105px;
 	right: 8px;
 	position: absolute;
 	background-color: #FFE890;
@@ -294,27 +294,14 @@ html,body
 .switch-filas-organizaciones
 {
 	background-color: #CCFFCC;
-	right:54px;
+	right:39px;
 }
 
 .switch-filas-colectivos
 {
 	background-color: #FFBBDD;
-	right:20px;
-}
-
-.switch-organizacionesParticipantes
-{
-	cursor: pointer; 
-	background-color: #ff4369;
-	border-radius: 4px;
-	top:15px;
-	width:13px;
-	height:13px;
-	padding-bottom: 1px;
 	right:5px;
 }
-
 .switch-filas-off
 {
 	opacity:0.3;
@@ -341,34 +328,47 @@ html,body
 	z-index: 99;
 }
 
-.nuevoEvento
+.nuevoEvento,.correo
 {
 	position: absolute;
-	border: solid;
-	border-width: 1px;
 	font-family: Arial, Helvetica, sans-serif;
-	border-radius: 3px;
-	background-color: #ff9686;
-	box-shadow:0 2px 3px #aaa;
 
+	text-align: center;
+	vertical-align: middle;
+	color:gray;
+}
+
+.nuevoEvento
+{
 	left:347px;
 	padding: 5px;
+	border-bottom:thick solid #6A94D4;
 }
+
+.nuevoEvento:hover
+{
+	border-bottom:thick solid #6666FF;
+	cursor: pointer; cursor: hand;	
+	color:black;
+}
+
+
 
 .correo
 {
-	position:absolute;
-	border: solid;
-	border-width: 1px;
-	font-family: Arial, Helvetica, sans-serif;
-	border-radius: 3px;
-	background-color: #ffb77f;
-	box-shadow:0 2px 3px #aaa;
 
 	right:0px;
 	padding: 5px;
 	z-index: 100;
+	border-bottom:thick solid #FFE890;
 }
+.correo:hover
+{
+	border-bottom:thick solid #FFC830;
+	cursor: pointer; cursor: hand;	
+	color:black;
+}
+
 
 .boton-ordenar
 {
@@ -532,7 +532,7 @@ div[class*='grupo-elemento-']
 
 .grupo-elemento-participante
 {
-	left: 25px;
+	left: 28px;
 	top: 6px;
 	width:17px;
 	height:17px;
