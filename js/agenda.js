@@ -110,6 +110,16 @@ function cargarContenido(id)
 
 }
 
+function newEvent()
+{
+  alert("Creando nuevo evento");
+}
+
+function subscribe()
+{
+  alert("Subscribiéndose");
+}
+
 
 $("#switch-puntuales").click(function()
 {
@@ -198,6 +208,17 @@ $(".cabecera-pestania-dch").click(function()
   cargarDatos("organizaciones");
 
 });
+
+$(".nuevoEvento").click(function()
+{
+  newEvent();
+});
+
+$(".correo").click(function()
+{
+  subscribe();
+});
+
 
 function cargarDatos(clase)
 {
