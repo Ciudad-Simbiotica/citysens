@@ -467,6 +467,19 @@ html,body
 	height: 50px;
 }
 
+
+div[class*='grupo-fila-']:hover
+{
+		cursor: pointer; cursor: hand;		
+		background-color: #ffffe2;
+}
+
+.grupo-fila-selected
+{
+	box-shadow:0 2px 3px #aaa, 0 -2px 3px #aaa;
+	z-index:10;
+}
+
 .grupo-fila-convocatoria
 {
 	border-left:thick solid #FFCCCC; 	
@@ -546,6 +559,11 @@ div[class*='grupo-elemento-']
 {
 	left: 27px;
 	bottom: 4px;
+}
+
+.grupo-elemento-handup:hover
+{
+		cursor: pointer; cursor: hand;	
 }
 
 .grupo-elemento-handdown

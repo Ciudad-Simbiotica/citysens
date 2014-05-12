@@ -73,6 +73,7 @@ if($_GET["clase"]=="organizaciones")
 			$grupoActual="Top $inicio-$fin";
 		}
 
+		$datos["id"]=$i;
 		$datos["clase"]="organizaciones";
 		switch(rand(1,3))
 		{
@@ -127,6 +128,7 @@ else if($_GET["clase"]=="eventos")
 	foreach($data["events"] as $id=>$event)
 	{
 
+		$datos["id"]=$event["id"];
 		$datos["clase"]="eventos";
 
 		switch(rand(1,2))

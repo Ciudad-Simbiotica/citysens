@@ -23,7 +23,19 @@ function createLine(grupo,datos,animated)
     
   $.each(datos,function(clase,contenido)
   {
-   		if(clase=="tipo")
+   		if(clase=="id")
+      {
+        clone.attr("id",contenido); //Ponemos ID a la fila
+        clone.find(".grupo-elemento-handup").click(function() //Añadimos la función de click al botón
+        {
+          clickHandUp(contenido);
+        });
+        clone.click(function() //Añadimos la función de click a la fila
+        {
+          clickFila(contenido);
+        });
+      }
+      else if(clase=="tipo")
       {
         //Cambiamos las imágenes según el tipo
         if(contenido=="convocatoria")
@@ -66,6 +78,37 @@ function createLine(grupo,datos,animated)
 	else
 		clone.show();
 };
+
+function clickHandUp(id)
+{
+  alert("Click 'Me gusta': "+id);
+  event.stopPropagation();
+}
+
+function clickFila(id)
+{
+  //alert("Click Fila: "+id);
+  $("[class^=grupo-fila-]").removeClass("grupo-fila-selected");
+  $("#"+id).addClass("grupo-fila-selected");
+  $(".informacion-cabecera").html("Cargando contenido: "+id);
+  cargarContenido(id);
+}
+
+function cargarContenido(id)
+{
+  $.ajax({
+
+     type: "GET",
+     url: 'getDatos.php',
+     data: "id=" + id, // appears as $_GET['id'] @ ur backend side
+     success: function(data) {
+           // data is ur summary
+          $(".informacion-cabecera").html(data);
+     }
+
+   });
+
+}
 
 
 $("#switch-puntuales").click(function()
