@@ -590,11 +590,25 @@ div[class*='grupo-elemento-']
 
 .grupo-elemento-puntos
 {
-	font-size: 12px;
+	font-size: 14px;
 	font-weight: bold;
-	top: 4px;
+	top: 6px;
 	right: 5px;
 }
+
+.grupo-elemento-copa
+{
+	background-image: url("/citysens/icons/copaBig.png");	
+	background-size: contain;
+	background-repeat: no-repeat;
+    background-position: center;
+    width: 16px;
+    height: 16px;
+
+	top: 5px;
+	right: 38px;
+}
+
 
 .grupo-elemento-tipo
 {
