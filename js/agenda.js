@@ -1,4 +1,4 @@
-function createGroup(grupo,left,center,right)
+function createGroup(grupo,left,center,right,totalFilas)
 {
 	var clone=$("#grupo-template").clone();
   clone.hide();
@@ -11,6 +11,32 @@ function createGroup(grupo,left,center,right)
 	clone.find('.grupo-cabecera-cntr').html(center);
 	clone.find('.grupo-cabecera-dch').html(right);
 
+
+  clone.find('.grupo-pie').html("");
+
+  if(!(typeof totalFilas==='undefined'))
+  {
+    $.each(totalFilas,function(tipo,cantidad)
+    {
+      var cadenaTipo=tipo;
+      if(cantidad>1)
+      {
+        if((tipo=="organizacion")||(tipo=="institucion"))
+          cadenaTipo+="es";
+        else
+          cadenaTipo+="s";
+      }
+
+      clone.find('.grupo-pie').append("<div class='grupo-pie-"+tipo+"'><div class='grupo-pie-"+tipo+"-imagen'></div><div class='grupo-pie-"+tipo+"-texto'>+"+cantidad+" "+cadenaTipo+"</div></div>");
+      clone.find(".grupo-pie-"+tipo).hide();
+      clone.find(".grupo-pie-"+tipo).click(function()
+      {
+        $("#"+grupo.replace(" ","")).find(".grupo-fila-"+tipo).slideDown("fast");
+        $(this).slideUp("fast");
+      });
+    });
+  }
+  
 	clone.appendTo(".agenda");
 
 	//clone.show();
@@ -38,6 +64,7 @@ function createLine(grupo,datos,animated)
       else if(clase=="tipo")
       {
         //Cambiamos las imágenes según el tipo
+        //ToDo: Sustituir el IMG por DIV y cambiar el background por CSS
         if(contenido=="convocatoria")
           clone.find(".imagen-tipo").attr("src", "icons/Event-Unique.64.png")
         else if(contenido=="recurrente")
@@ -120,36 +147,46 @@ function subscribe()
   alert("Subscribiéndose");
 }
 
+function switchFilas(clase,tipo)
+{
+  console.log("Switch "+clase);
+  $("#switch-"+clase).toggleClass("switch-filas-off");
+  if($("#switch-"+clase).hasClass("switch-filas-off"))
+  {
+    $(".grupo-fila-"+tipo).slideUp("fast", function() {});
+    $(".grupo-pie-"+tipo).slideDown("fast", function() {});
+  }
+  else
+  {
+    $(".grupo-fila-"+tipo).slideDown("fast", function() {});
+    $(".grupo-pie-"+tipo).slideUp("fast", function() {});    
+  }  
+}
+
 
 $("#switch-puntuales").click(function()
 {
-  console.log("Switch Puntuales");
-  $("#switch-puntuales").toggleClass("switch-filas-off");
-  $(".grupo-fila-convocatoria").slideToggle("fast", function() {});
+  switchFilas("puntuales","convocatoria");
 });
 
 $("#switch-recurrentes").click(function()
 {
-  $("#switch-recurrentes").toggleClass("switch-filas-off");
-  $(".grupo-fila-recurrente").slideToggle("fast", function() {});
+  switchFilas("recurrentes","recurrente");
 });
 
 $("#switch-instituciones").click(function()
 {
-  $("#switch-instituciones").toggleClass("switch-filas-off");
-  $(".grupo-fila-institucion").slideToggle("fast", function() {});
+  switchFilas("instituciones","institucion");
 });
 
 $("#switch-organizaciones").click(function()
 {
-  $("#switch-organizaciones").toggleClass("switch-filas-off");
-  $(".grupo-fila-organizacion").slideToggle("fast", function() {});
+  switchFilas("organizaciones","organizacion");
 });
 
 $("#switch-colectivos").click(function()
 {
-  $("#switch-colectivos").toggleClass("switch-filas-off");
-  $(".grupo-fila-colectivo").slideToggle("fast", function() {});  
+  switchFilas("colectivos","colectivo");
 });
 
 
@@ -241,10 +278,11 @@ function cargarDatos(clase)
       //Esperamos a que se hayan borrado los grupos (por si acaba antes) antes de clonar
       $.each(data.grupos, function(grupo,filas)
       {
-        createGroup(grupo,filas.cabeceraIzq,filas.cabeceraCntr,filas.cabeceraDch);
+        createGroup(grupo,filas.cabeceraIzq,filas.cabeceraCntr,filas.cabeceraDch,filas.totalFilas);
         $.each(filas.filas,function(i,item)
         {
           createLine(grupo,item,0);
+
         });
       });
     $(".grupo").fadeIn(1000);

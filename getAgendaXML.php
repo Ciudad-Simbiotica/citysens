@@ -1,6 +1,7 @@
 <?php
 
 error_reporting(E_ALL);
+
 $lorem="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 date_default_timezone_set("Europe/Madrid");
 setlocale(LC_ALL, 'es_ES');
@@ -52,6 +53,9 @@ if($_GET["clase"]=="organizaciones")
 	$i=0;
 	$grupoActual="Top 10";
 	$filas=array();
+	$grupos[$grupoActual]["totalFilas"]["institucion"]=0;
+	$grupos[$grupoActual]["totalFilas"]["organizacion"]=0;
+	$grupos[$grupoActual]["totalFilas"]["colectivo"]=0;
 
 	$puntos=5000;
 
@@ -59,18 +63,28 @@ if($_GET["clase"]=="organizaciones")
 	{
 		//echo $grupoActual;
 		$i++;
-		if(($i%10)==0)
+		if((($i%10)==1)&($i>1))
 		{
 			//echo $grupoActual;
 			$grupos[$grupoActual]["cabeceraIzq"]="";
 			$grupos[$grupoActual]["cabeceraCntr"]=$grupoActual;
 			$grupos[$grupoActual]["cabeceraDch"]="";
 			$grupos[$grupoActual]["filas"]=$filas;
+			foreach($grupos[$grupoActual]["totalFilas"] as $key=>$value)
+			{
+				//Quitamos los que valgan cero
+				if($value==0)
+					unset($grupos[$grupoActual]["totalFilas"][$key]);
+			}
 			unset($filas);
 			$filas=array();
-			$inicio=$i+1;
-			$fin=$inicio+10;
+			$inicio=$i;
+			$fin=$inicio+9;
 			$grupoActual="Top $inicio-$fin";
+			if($i==51)break;
+			$grupos[$grupoActual]["totalFilas"]["institucion"]=0;
+			$grupos[$grupoActual]["totalFilas"]["organizacion"]=0;
+			$grupos[$grupoActual]["totalFilas"]["colectivo"]=0;
 		}
 
 		$datos["id"]=$i;
@@ -88,6 +102,7 @@ if($_GET["clase"]=="organizaciones")
 				$datos["tipo"]="colectivo";
 				break;
 		}
+		$grupos[$grupoActual]["totalFilas"][$datos["tipo"]]++;
 
 		$puntos-=rand(50,150);
 
@@ -100,11 +115,9 @@ if($_GET["clase"]=="organizaciones")
 		else
 			$datos["participante"]=0;
 		array_push($filas,$datos);
-
-		if($i>=50)break;
 	}
 
-	$returnData["tipo"]="eventos";
+	$returnData["tipo"]="organizaciones";
 	$returnData["grupos"]=$grupos;
 	$returnJSON=json_encode($returnData);
 	echo $returnJSON;
@@ -118,7 +131,8 @@ else if($_GET["clase"]=="eventos")
 
 	//GENERAR EVENTOS
 
-	$url="http://agendadelhenares.org/widget-json?uid=3";
+	//$url="http://agendadelhenares.org/widget-json?uid=3";
+	$url="eventos.json";
 	$raw_data=file_get_contents($url);
 
 	$data=json_decode($raw_data,true);
@@ -127,9 +141,10 @@ else if($_GET["clase"]=="eventos")
 	$i=0;
 	foreach($data["events"] as $id=>$event)
 	{
-
 		$datos["id"]=$event["id"];
 		$datos["clase"]="eventos";
+
+		//echo $id."<BR>";
 
 		switch(rand(1,2))
 		{
@@ -145,6 +160,15 @@ else if($_GET["clase"]=="eventos")
 		}
 
 		$grupo=date("Y-m-d",$event["start_time"]);
+
+		
+		if(!isset($returnData["grupos"][$grupo]["totalFilas"]))
+		{
+			$returnData["grupos"][$grupo]["totalFilas"]["convocatoria"]=0;
+			$returnData["grupos"][$grupo]["totalFilas"]["recurrente"]=0;
+		}
+		
+
 		$datos["titulo"]=$event["title"];
 		$datos["texto"]=$event["title"];//$lorem;
 		$datos["hora"]=date("H:i",$event["start_time"]);
@@ -158,16 +182,36 @@ else if($_GET["clase"]=="eventos")
 		else
 			$cabeceraIzq="";
 
+
+
 		$returnData["grupos"][$grupo]["cabeceraIzq"]=$cabeceraIzq;
 		$returnData["grupos"][$grupo]["cabeceraCntr"]=ucfirst(strftime("%A %e",$event["start_time"]));
 		$returnData["grupos"][$grupo]["cabeceraDch"]=ucfirst(strftime("%B",$event["start_time"]));
+		$returnData["grupos"][$grupo]["totalFilas"][$datos["tipo"]]++;
 
+		
 		if(!is_array($returnData["grupos"][$grupo]["filas"]))
 			$returnData["grupos"][$grupo]["filas"]=array();
 		array_push($returnData["grupos"][$grupo]["filas"],$datos);
+		
 		$i++;
-		if($i==50)break;
+		
+		if($i>=50)
+			break;
+		
 	}
+	
+
+	foreach($returnData["grupos"] as $id=>$grupo)
+	foreach($grupo["totalFilas"] as $key=>$value)
+	{
+		if($value==0)
+		{
+			unset($returnData["grupos"][$id]["totalFilas"][$key]);			
+		}
+	}
+	
+
 	$returnData["tipo"]="eventos";
 	$returnJSON=json_encode($returnData);
 	echo $returnJSON;
