@@ -592,7 +592,7 @@ div[class*='grupo-elemento-']
 {
 	font-size: 14px;
 	font-weight: bold;
-	top: 6px;
+	top: 4px;
 	right: 5px;
 }
 
@@ -605,7 +605,7 @@ div[class*='grupo-elemento-']
     width: 16px;
     height: 16px;
 
-	top: 5px;
+	top: 3px;
 	right: 38px;
 }
 
@@ -670,7 +670,7 @@ div[class*='grupo-elemento-']
 {
 	top:2px;
 	left: 130px;
-	width: 480px;
+	width: 440px;
 	height: 18px;
 	overflow: hidden;
 	white-space: nowrap;
