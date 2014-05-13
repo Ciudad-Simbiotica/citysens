@@ -90,7 +90,7 @@ html,body
 
 .cabecera-pestania-seleccionada
 {
-	background-color: #FFE890;
+	background-color: #FFE890; 
 	border-bottom:thick solid #FFC830;	
 }
 
@@ -345,13 +345,19 @@ html,body
 	border-bottom:thick solid #6A94D4;
 }
 
-.nuevoEvento:hover, .correo:hover
+.nuevoEvento:hover
 {
 	border-bottom:thick solid #6666FF;
 	cursor: pointer; cursor: hand;	
 	color:black;
 }
 
+.correo:hover
+{
+	border-bottom:thick solid #FFC830;
+	cursor: pointer; cursor: hand;	
+	color:black;
+}
 
 
 .correo
@@ -360,7 +366,7 @@ html,body
 	left:347px;
 	padding: 5px;
 	z-index: 100;
-	border-bottom:thick solid #6A94D4; /*FFE890;*/
+	border-bottom:thick solid #FFD880;
 }
 
 
