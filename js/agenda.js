@@ -163,6 +163,73 @@ function switchFilas(clase,tipo)
   }  
 }
 
+function suggestBusqueda(texto)
+{
+  //TODO: Chapuza - Usa una variable global, cambiarlo
+  if(window.previousSuggestText==texto)
+  {
+    return;
+  }
+
+  window.previousSuggestText=texto;
+  if(texto=="")
+  {
+    $("#cabecera-suggest").empty();
+    return;    
+  }
+
+  //Que cargue las sugerencias usando AJAX
+  var getAgenda = "getSuggestions.php?";
+  $.getJSON(getAgenda, 
+  {
+    query: texto,
+    date: "any",
+    format: "json"
+  })
+  .done(function(data) 
+  {
+    $("#cabecera-suggest").empty();
+  
+    //Que esto lo clone de una fila por defecto      
+    var posTrasSeparador=0;
+    $.each(data.suggestions, function(key, value)
+    {
+      if((value.tipo=="institucion")|(value.tipo=="organizacion")|(value.tipo=="colectivo"))
+      {
+        if(posTrasSeparador==0)
+        {
+          //Creamos la fila con la búsqueda actual
+          $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1'>"+texto+"</div><div class='cabecera-suggest-texto2'></div></div>");
+          $("#cabecera-suggest").find(".cabecera-suggest-icono:last").addClass("cabecera-suggest-icono-busqueda");
+          posTrasSeparador=1;
+          $("#cabecera-suggest").find(".cabecera-suggest-fila:last").addClass("cabecera-suggest-separador");
+        }
+      }
+
+      //Creamos la sugerencia
+      $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1'>"+value.texto1+"</div><div class='cabecera-suggest-texto2'>"+value.texto2+"</div></div>");
+      $("#cabecera-suggest").find(".cabecera-suggest-icono:last").addClass("cabecera-suggest-icono-"+value.tipo);
+    
+      //¿Animarlo?
+      //$("#cabecera-suggest").find(".cabecera-suggest-fila").slideDown("fast");
+    });
+
+    if(posTrasSeparador==0)
+    {
+      //Creamos la fila con la búsqueda actual en caso de que no haya separador
+      $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1'>"+texto+"</div><div class='cabecera-suggest-texto2'></div></div>");
+      $("#cabecera-suggest").find(".cabecera-suggest-icono:last").addClass("cabecera-suggest-icono-busqueda");
+    }
+
+  
+  });
+
+
+
+
+}
+
+
 
 $("#switch-puntuales").click(function()
 {
@@ -254,6 +321,11 @@ $(".nuevoEvento").click(function()
 $(".correo").click(function()
 {
   subscribe();
+});
+
+$("#input-busqueda").keyup(function()
+{
+  suggestBusqueda($(this).val());
 });
 
 

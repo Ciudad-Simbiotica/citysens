@@ -103,11 +103,102 @@ html,body
 	margin-top: 4px;
 	position: absolute;
 }
+
+.cabecera-suggest
+{
+	width: 485px;
+	background-color: #FFFFFF;
+	position: absolute;
+	margin-left: 288px;
+	margin-top: 34px;
+	box-shadow:0 2px 3px 0px #aaa, 2px 0px 3px 0px #aaa, -2px 0px 3px 0px #aaa ;
+}
+
+.cabecera-suggest-fila
+{
+	width:100%;
+	height:40px;
+}
+
+.cabecera-suggest-separador
+{
+	border-bottom:thin solid #aaa;		
+}
+
+.cabecera-suggest-icono
+{
+	background-size: 80%;
+	background-repeat: no-repeat;
+    background-position: center;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    margin-left:5px;
+    margin-top:5px;
+}
+
+.cabecera-suggest-icono-busqueda
+{
+	background-image: url("/citysens/icons/lupa.png");	
+}
+
+.cabecera-suggest-icono-lugar
+{
+	background-image: url("/citysens/icons/lugar.png");	
+}
+
+.cabecera-suggest-icono-sanidad
+{
+	background-image: url("/citysens/icons/sanidad.png");	
+}
+
+.cabecera-suggest-icono-organizacion
+{
+	background-image: url("/citysens/icons/icon_CitYsens.organizacion.png");	
+}
+
+.cabecera-suggest-icono-institucion
+{
+	background-image: url("/citysens/icons/icon_CitYsens.institucion.png");	
+}
+
+.cabecera-suggest-icono-colectivo
+{
+	background-image: url("/citysens/icons/CitYsens.people.png");	
+}
+
+
+.cabecera-suggest-texto1
+{
+    position: absolute;
+    margin-left:40px;
+    margin-top:5px;
+
+}
+.cabecera-suggest-texto2
+{
+    position: absolute;
+    margin-left:40px;
+    margin-top:20px;
+    font-size: 14px;
+}
+
 .cabecera-lupa
 {
-	margin-left: 782px;
-	margin-top: 3px;
+	left: 777px;
+	top: 4px;
+
+	background-image: url("/citysens/icons/lupa.png");	
+	background-size: 80%;
+	background-repeat: no-repeat;
+    background-position: center;
+    width: 30px;
+    height: 30px;
+	
+	background-color: #6A94D4;
+	border-radius: 3px;
 	position: absolute;
+	cursor:hand;cursor:pointer;
 }
 .cabecera-derecha
 {
@@ -529,6 +620,7 @@ html,body
 	color: black;
 	position:relative;
 	border-bottom:thin solid #CCCCCC;
+
 	height: 50px;
 }
 
