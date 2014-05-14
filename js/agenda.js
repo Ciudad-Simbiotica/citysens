@@ -191,37 +191,33 @@ function suggestBusqueda(texto)
     $("#cabecera-suggest").empty();
   
     //Que esto lo clone de una fila por defecto      
-    var posTrasSeparador=0;
+    //Añadimos la búsqueda tal cual
+    $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1 cabecera-suggest-texto1-sinTexto2'><strong>"+texto+"</strong></div></div>");
+    $("#cabecera-suggest").find(".cabecera-suggest-icono:last").addClass("cabecera-suggest-icono-busqueda");
     $.each(data.suggestions, function(key, value)
     {
-      if((value.tipo=="institucion")|(value.tipo=="organizacion")|(value.tipo=="colectivo"))
-      {
-        if(posTrasSeparador==0)
-        {
-          //Creamos la fila con la búsqueda actual
-          $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1'>"+texto+"</div><div class='cabecera-suggest-texto2'></div></div>");
-          $("#cabecera-suggest").find(".cabecera-suggest-icono:last").addClass("cabecera-suggest-icono-busqueda");
-          posTrasSeparador=1;
-          $("#cabecera-suggest").find(".cabecera-suggest-fila:last").addClass("cabecera-suggest-separador");
-        }
-      }
-
       //Creamos la sugerencia
-      $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1'>"+value.texto1+"</div><div class='cabecera-suggest-texto2'>"+value.texto2+"</div></div>");
+      $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1'>"+value.texto1.replace(texto,"<strong>"+texto+"</strong>")+"</div><div class='cabecera-suggest-texto2'>"+value.texto2+"</div></div>");
       $("#cabecera-suggest").find(".cabecera-suggest-icono:last").addClass("cabecera-suggest-icono-"+value.tipo);
+      if(value.texto2=="")
+      {
+        $("#cabecera-suggest").find(".cabecera-suggest-texto1:last").addClass("cabecera-suggest-texto1-sinTexto2");
+
+      }
     
       //¿Animarlo?
       //$("#cabecera-suggest").find(".cabecera-suggest-fila").slideDown("fast");
     });
 
-    if(posTrasSeparador==0)
+    
+    if(texto=="san")//IrAMadrid
     {
-      //Creamos la fila con la búsqueda actual en caso de que no haya separador
-      $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1'>"+texto+"</div><div class='cabecera-suggest-texto2'></div></div>");
-      $("#cabecera-suggest").find(".cabecera-suggest-icono:last").addClass("cabecera-suggest-icono-busqueda");
+      //Creamos la fila de ir a Madrid
+      $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1 cabecera-suggest-texto1-sinTexto2'>Ir a "+texto.replace(texto,"<strong>"+texto+"</strong>")+"</div></div>");
+      $("#cabecera-suggest").find(".cabecera-suggest-fila:last").addClass("cabecera-suggest-fila-IrA");
+      $("#cabecera-suggest").find(".cabecera-suggest-icono:last").addClass("cabecera-suggest-icono-IrA");
     }
-
-  
+    
   });
 
 

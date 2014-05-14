@@ -118,12 +118,50 @@ html,body
 {
 	width:100%;
 	height:40px;
+    vertical-align: middle
+	cursor: pointer; cursor: hand;		
 }
 
-.cabecera-suggest-separador
+.cabecera-suggest-fila:hover
 {
-	border-bottom:thin solid #aaa;		
+	background-color: #ffffe2;	
+	cursor: pointer; cursor: hand;		
 }
+
+.cabecera-suggest-texto1
+{
+	position:relative;
+	left:40px;
+	top:5px;
+}
+.cabecera-suggest-texto1-sinTexto2
+{
+	position:relative;
+	left:40px;
+	top:10px;
+}
+
+
+.cabecera-suggest-texto2
+{
+	position:relative;
+	left:40px;
+	top:4px;
+    font-size: 14px;
+}
+
+
+.cabecera-suggest-fila-IrA
+{
+	border-top:thin solid #aaa;	
+	background-color: #e0e9ff;	
+}
+
+.cabecera-suggest-fila-selected
+{
+		background-color: #ffffe2;
+}
+
 
 .cabecera-suggest-icono
 {
@@ -167,20 +205,9 @@ html,body
 	background-image: url("/citysens/icons/CitYsens.people.png");	
 }
 
-
-.cabecera-suggest-texto1
+.cabecera-suggest-icono-IrA
 {
-    position: absolute;
-    margin-left:40px;
-    margin-top:5px;
-
-}
-.cabecera-suggest-texto2
-{
-    position: absolute;
-    margin-left:40px;
-    margin-top:20px;
-    font-size: 14px;
+	background-image: url("/citysens/icons/gps.png");	
 }
 
 .cabecera-lupa

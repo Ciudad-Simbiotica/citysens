@@ -34,13 +34,17 @@ array_push($sugestions,$sugestion);
 $returnSuggestions=array();
 
 
-foreach($sugestions as $sugestion)
-{
-	if(preg_match('/'.$_GET["query"].'/i', $sugestion["texto1"]))
+//$palabras=split(" ",$_GET["query"]);
+//foreach($palabras as $palabra)
+//{
+	foreach($sugestions as $sugestion)
 	{
-		array_push($returnSuggestions, $sugestion);
-	}
-}
+		if(preg_match('/'.$_GET["query"].'/i', $sugestion["texto1"]))
+		{
+			array_push($returnSuggestions, $sugestion);
+		}
+	}	
+//}
 
 $return["suggestions"]=$returnSuggestions;
 
