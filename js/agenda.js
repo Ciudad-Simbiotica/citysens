@@ -163,6 +163,50 @@ function switchFilas(clase,tipo)
   }  
 }
 
+function clickSuggestion(tipo,texto1) //Añadir id, texto buscado
+{
+  window.location = "agenda.html?tipo="+tipo+"&texto1="+texto1;
+  //alert("Has hecho click en una sugerencia de tipo "+tipo+" con el siguiente texto: "+texto1);
+}
+
+
+function prevSuggestion()
+{
+  if((typeof window.selectedSuggestion==='undefined')|(window.selectedSuggestion==0)) //todavía no hay ninguna seleccionada
+  {
+    $("#cabecera-suggest").find(".cabecera-suggest-fila:first").addClass("cabecera-suggest-fila-selected");    
+    window.selectedSuggestion=1;
+  }
+  else
+  {
+    if(window.selectedSuggestion>1)
+    {
+      $("#cabecera-suggest").find(".cabecera-suggest-fila").eq(window.selectedSuggestion-1).removeClass("cabecera-suggest-fila-selected");    
+      $("#cabecera-suggest").find(".cabecera-suggest-fila").eq(window.selectedSuggestion-2).addClass("cabecera-suggest-fila-selected");    
+      window.selectedSuggestion--;
+    }
+  }
+}
+
+function nextSuggestion()
+{
+  if((typeof window.selectedSuggestion==='undefined')|(window.selectedSuggestion==0)) //todavía no hay ninguna seleccionada
+  {
+    $("#cabecera-suggest").find(".cabecera-suggest-fila:first").addClass("cabecera-suggest-fila-selected");    
+    window.selectedSuggestion=1;
+  }
+  else
+  {
+    if($("#cabecera-suggest").find(".cabecera-suggest-fila").length>window.selectedSuggestion)
+    {
+      $("#cabecera-suggest").find(".cabecera-suggest-fila").eq(window.selectedSuggestion-1).removeClass("cabecera-suggest-fila-selected");    
+      $("#cabecera-suggest").find(".cabecera-suggest-fila").eq(window.selectedSuggestion).addClass("cabecera-suggest-fila-selected");    
+      window.selectedSuggestion++;
+    }
+  }
+}
+
+
 function suggestBusqueda(texto)
 {
   //TODO: Chapuza - Usa una variable global, cambiarlo
@@ -190,6 +234,7 @@ function suggestBusqueda(texto)
   {
     $("#cabecera-suggest").empty();
   
+    window.selectedSuggestion=0;
     //Que esto lo clone de una fila por defecto      
     //Añadimos la búsqueda tal cual
     $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1 cabecera-suggest-texto1-sinTexto2'><strong>"+texto+"</strong></div></div>");
@@ -204,6 +249,11 @@ function suggestBusqueda(texto)
         $("#cabecera-suggest").find(".cabecera-suggest-texto1:last").addClass("cabecera-suggest-texto1-sinTexto2");
 
       }
+
+      $("#cabecera-suggest").find(".cabecera-suggest-fila:last").click(function()
+      {
+        clickSuggestion(value.tipo,value.texto1); //Añadir value.id, texto buscado
+      });
     
       //¿Animarlo?
       //$("#cabecera-suggest").find(".cabecera-suggest-fila").slideDown("fast");
@@ -319,8 +369,28 @@ $(".correo").click(function()
   subscribe();
 });
 
-$("#input-busqueda").keyup(function()
+$("#input-busqueda").keyup(function(e)
 {
+  switch (e.which) 
+  {
+    case 13: 
+        clickSuggestion("Intro Key","Sugerencia número "+window.selectedSuggestion);
+        return;
+        break;
+    case 27:
+        $(this).val("");
+        break;
+    case 38:
+        prevSuggestion();
+        return;
+        break;
+    case 40:
+        nextSuggestion();
+        return;
+        break;
+  }
+
+  //Si no es ni arriba ni abajo buscamos nuevas sugerencias
   suggestBusqueda($(this).val());
 });
 
