@@ -6,9 +6,11 @@
  <link href="css/style.css" rel="stylesheet" type="text/css" />
  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
+ <link rel="stylesheet" type="text/css" href="js/tagsinput/jquery.tagsinput.css" />
  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
  <script src="js/jquery.custom-animations.js"></script>
- 
+ <script type="text/javascript" src="js/tagsInput/jquery.tagsinput.js"></script>
+
 </head>
 
 <body>  
@@ -26,11 +28,7 @@
 		 			<img src='icons/Event-Recurring.64.png' width="32px">
 		 		</div>
 	 		</div>
-	 		<div id='cabecera-pestania-ctr'  class='cabecera-pestania-ctr'>Procesos</div>
-	 		<div class='subcabecera-pestania-ctr'>
-	 			<img class='switch-filas' id='switch-puntuales' src='icons/icon_iniciativa.png' width="32px">
-	 		</div>
-	 		<div id='cabecera-pestania-dch'  class='cabecera-pestania-dch'>Organ.</div>
+	 		<div id='cabecera-pestania-dch'  class='cabecera-pestania-dch'>Entidades</div>
 	 		<div class='subcabecera-pestania-dch'>
 	 			<div class='switch-filas switch-filas-instituciones' id='switch-instituciones'>
 	 				<img src='icons/icon_CitYsens.institucion.png' width="32px">	
@@ -42,9 +40,13 @@
 		 			<img src='icons/CitYsens.people.png' width="32px">	 		
 				</div>
 	 		</div>
+	 		<div id='cabecera-pestania-ctr'  class='cabecera-pestania-ctr'>Procesos</div>
+	 		<div class='subcabecera-pestania-ctr'>
+	 			<img class='switch-filas' id='switch-puntuales' src='icons/icon_iniciativa.png' width="32px">
+	 		</div>
 	 	</div> 
 	 	<div class='cabecera-busqueda'>
-	 		<INPUT TYPE=TEXT class='input-busqueda' id='input-busqueda' placeholder="Buscar eventos que tengan que ver con..."></INPUT> 
+	 		<INPUT TYPE=TEXT class='input-busqueda' id='input-busqueda' placeholder="Filtrar eventos..."></INPUT> 
 	 	</div>
 	 	<div class='cabecera-suggest' id='cabecera-suggest'>
 	 	</div>
@@ -141,9 +143,6 @@
 		 		9999
 			</div>
 		 	<div class='grupo-elemento-copa'></div>
-			<div class='grupo-elemento-participante' id='grupo-fila-template-participante'>
-		 		<img src='icons/CitYsens.Monigote.png' width="20px">
-			</div>
 			<div class='grupo-elemento-tipo' id='grupo-fila-template-tipo'>
 		 		<img class="imagen-tipo"  src='icons/UniqueEvent.64.png' width="20px">
 			</div>

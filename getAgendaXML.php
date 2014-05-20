@@ -110,10 +110,13 @@ if($_GET["clase"]=="organizaciones")
 		$datos["texto"]=$asociacion["DOMICILIO"];
 		$datos["lugarOrg"]="Distr. ".$asociacion["DISTRITO"];
 		$datos["puntos"]=$puntos;
+		
+		/*
 		if(rand(1,100)>50)
 			$datos["participante"]=1;
 		else
 			$datos["participante"]=0;
+		*/
 		array_push($filas,$datos);
 	}
 

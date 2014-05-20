@@ -1,4 +1,4 @@
-<?
+<?php
 $sugestions=array();
 
 $sugestion["tipo"]="busqueda";

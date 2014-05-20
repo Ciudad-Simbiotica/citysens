@@ -12,7 +12,7 @@ html,body
 	position:fixed;
 	background-color: #6666ff;
 	width:100%;
-	height: 41px;
+	height: 53px;
 	top:0px;
 	z-index: 100;
  	font-family: Arial, Helvetica, sans-serif;
@@ -31,19 +31,19 @@ html,body
 
 .cabecera-logo
 {
-	margin-top:0px;
+	margin-top:12px;
 	position: absolute;
 }
 .cabecera-pestanias
 {
 	background-color: #6666ff;
 	color: white;
-	width: 220px;
-	height: 39px;
+	width: 240px;
+	height: 51px;
 	left:60px;
 	position: absolute;
 	text-align: center;
-	line-height: 43px;
+	line-height: 78px;
 	vertical-align: middle;
 	text-shadow: 1px 1px 6px #000000;
 }
@@ -57,20 +57,21 @@ html,body
 .cabecera-pestania-izq
 {
 	width: 33%;
-	height:41px;
+	height:53px;
 	position: absolute;
-	box-shadow:0 2px 3px 0px #aaa;
 	border-bottom:thick solid #6A94D4;
+	box-shadow: 0 2px 3px 0 #aaa;
+	overflow: hidden;
 	z-index: 10;
 }
 .cabecera-pestania-ctr
 {
 	width: 33%;
-	height:41px;
-	margin-left: 33%;
+	height:53px;
+	margin-left: 66%;
 	position: absolute;
 	border-bottom:thick solid #6A94D4;
-	box-shadow:0 2px 3px 0px #aaa;
+	box-shadow: 0 2px 3px 0 #aaa;
 	z-index: 10;
 	/*background-color: #FFAA73;
 	border-bottom:thick solid #FF8B40;*/
@@ -78,12 +79,12 @@ html,body
 .cabecera-pestania-dch
 {
 	width: 33%;
-	height:41px;
-	margin-left: 66%;
+	height:53px;
+	margin-left: 33%;
 	position: absolute;;
 	border-bottom:thick solid #6A94D4;
-	box-shadow:0 2px 3px 0px #aaa;
 	z-index: 10;
+	box-shadow: 0 2px 3px 0 #aaa;
 	/*background-color: #8070D8;
 	border-bottom:thick solid #604BD8;*/
 }
@@ -99,19 +100,33 @@ html,body
 
 .cabecera-busqueda
 {
-	margin-left: 285px;
+	margin-left: 305px;
 	margin-top: 4px;
 	position: absolute;
 }
 
 .cabecera-suggest
 {
-	width: 485px;
+	width: 491px;
 	background-color: #FFFFFF;
 	position: absolute;
-	margin-left: 288px;
-	margin-top: 34px;
+	margin-left: 308px;
+	margin-top: 51px;
 	box-shadow:0 2px 3px 0px #aaa, 2px 0px 3px 0px #aaa, -2px 0px 3px 0px #aaa ;
+}
+
+
+.cabecera-suggest-tooltip
+{
+	width:451px;
+	height:18px;
+    font-size: 12px;
+    padding-left: 40px;
+    padding-top: 4px;
+    background-color: #e4e4e4;
+    font-style: italic;
+    font-weight: bold;
+    border-bottom: thin solid #aaa;
 }
 
 .cabecera-suggest-fila
@@ -212,15 +227,15 @@ html,body
 
 .cabecera-lupa
 {
-	left: 777px;
+	left: 807px;
 	top: 4px;
 
 	background-image: url("/citysens/icons/lupa.png");	
 	background-size: 80%;
 	background-repeat: no-repeat;
     background-position: center;
-    width: 30px;
-    height: 30px;
+    width: 43px;
+    height: 43px;
 	
 	background-color: #6A94D4;
 	border-radius: 3px;
@@ -229,12 +244,13 @@ html,body
 }
 .cabecera-derecha
 {
-	top:16px;
+	top:30px;
 	right:20px;
 	position: absolute;
 	color:white;
-	
+	text-shadow: 1px 1px 6px #000000;	
 }
+
 .input-busqueda
 {
 	font-size: 20px;
@@ -263,7 +279,7 @@ html,body
 	width:100%;
  	height: 35px;
  	left:0px;
- 	top:77px;
+ 	top:89px;
  	position: fixed; 	
  	z-index: 20;
 }
@@ -275,7 +291,7 @@ html,body
 	width:960px;
  	height: 100%;
  	margin: 0 auto;
-	margin-top: 55px;
+	margin-top: 67px;
 	position: relative;
 }
 
@@ -295,7 +311,7 @@ html,body
 {
 	position: fixed;
 	left:67.3%;
-	top: 55px;
+	top: 67px;
 	width:320px;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
@@ -315,7 +331,7 @@ html,body
 {
 	position: fixed;
 	left:67.3%;
-	top: 330px;
+	top: 342px;
 	width: 320px;
 	height: 357px;
 	font-family: Arial, Helvetica, sans-serif;
@@ -333,7 +349,7 @@ html,body
 
 .subcabecera-pestania-izq
 {
-	top: 46px;
+	top: 58px;
 	height:32px;
 	width: 68px;
 	left:5px;
@@ -349,7 +365,7 @@ html,body
 }
 .subcabecera-pestania-ctr
 {
-	top: 46px;
+	top: 58px;
 	height:32px;
 	text-align: left;
 	position: absolute;
@@ -365,10 +381,10 @@ html,body
 
 .subcabecera-pestania-dch
 {
-	top: 46px;
+	top: 58px;
 	height:32px;
 	width:105px;
-	right: 8px;
+	left: 85px;
 	position: absolute;
 	background-color: #FFE890;
 	color:black;
@@ -440,7 +456,7 @@ html,body
 .botonesSuperiores
 {
 	position: fixed;
-	top:55px;
+	top:67px;
 	width: 635px;
 	height:50px;
 	z-index: 99;

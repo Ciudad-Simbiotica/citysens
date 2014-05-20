@@ -76,12 +76,14 @@ function createLine(grupo,datos,animated)
         else if(contenido=="colectivo")
           clone.find(".imagen-tipo").attr("src", "icons/CitYsens.People.png")
       }
+      /*
       else if(clase=="participante")
       {
         //Si no es participante escondemos el icono
         if(contenido==0)
           clone.find(".grupo-elemento-participante").hide();
       }
+      */
       else if(clase=="temperatura")
       {
         //Cambiamos el termometro
@@ -235,6 +237,11 @@ function suggestBusqueda(texto)
     $("#cabecera-suggest").empty();
   
     window.selectedSuggestion=0;
+
+    //Añadimos el tooltip
+    $("#cabecera-suggest").append("<div class='cabecera-suggest-tooltip'>Buscar eventos que tengan que ver con...</div>");
+
+
     //Que esto lo clone de una fila por defecto      
     //Añadimos la búsqueda tal cual
     $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1 cabecera-suggest-texto1-sinTexto2'><strong>"+texto+"</strong></div></div>");
@@ -266,7 +273,11 @@ function suggestBusqueda(texto)
       $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1 cabecera-suggest-texto1-sinTexto2'>Ir a "+texto.replace(texto,"<strong>"+texto+"</strong>")+"</div></div>");
       $("#cabecera-suggest").find(".cabecera-suggest-fila:last").addClass("cabecera-suggest-fila-IrA");
       $("#cabecera-suggest").find(".cabecera-suggest-icono:last").addClass("cabecera-suggest-icono-IrA");
-    }
+      $("#cabecera-suggest").find(".cabecera-suggest-fila:last").click(function()
+      {
+        clickSuggestion("Lugar",texto); //Añadir value.id, texto buscado
+      });
+    } 
     
   });
 
@@ -369,6 +380,7 @@ $(".correo").click(function()
   subscribe();
 });
 
+/*
 $("#input-busqueda").keyup(function(e)
 {
   switch (e.which) 
@@ -393,7 +405,7 @@ $("#input-busqueda").keyup(function(e)
   //Si no es ni arriba ni abajo buscamos nuevas sugerencias
   suggestBusqueda($(this).val());
 });
-
+*/
 
 function cargarDatos(clase)
 {
@@ -426,5 +438,26 @@ function cargarDatos(clase)
     $(".grupo").fadeIn(1000);
     });  
 }
+
+
+$('#input-busqueda').tagsInput({
+        'height':'16px',
+        'width':'485px',
+        'defaultText':'',
+        onChange: function(elem, elem_tags)
+        {
+          console.log($(this).val());
+          suggestBusqueda($(this).val());
+          /*
+          var languages = ['php','ruby','javascript'];
+          $('.tag', elem_tags).each(function()
+          {
+            if($(this).text().search(new RegExp('\\b(' + languages.join('|') + ')\\b')) >= 0)
+              $(this).css('background-color', 'yellow');
+          });
+          */
+        }
+      });
+
 
 cargarDatos("eventos");
