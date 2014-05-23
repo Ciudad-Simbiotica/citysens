@@ -524,6 +524,17 @@ html,body
 	right: 19px;
 }
 
+
+.agenda-primera-linea
+{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 20px;
+	margin-bottom: 10px;
+	height: 0px;
+	overflow: hidden;
+	font-style: italic;
+}
+
 .grupo,
 .grupo-template,
 .grupo-cabecera-izq,

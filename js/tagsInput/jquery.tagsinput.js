@@ -74,7 +74,8 @@
     input.css('width', minWidth);
   };
   
-	$.fn.addTag = function(value,options) {
+	$.fn.addTag = function(value,options) 
+	{
 			options = jQuery.extend({focus:false,callback:true},options);
 			this.each(function() { 
 				var id = $(this).attr('id');
@@ -96,12 +97,15 @@
 					var skipTag = false; 
 				}
 				
+
+
 				if (value !='' && skipTag != true) { 
                     $('<span>').addClass('tag').append(
+                    	$('<div>').prepend('<img src="'+options.icon+'">'),
                         $('<span>').text(value).append('&nbsp;&nbsp;'),
                         $('<a>', {
                             href  : '#',
-                            title : 'Removing tag',
+                            title : 'Borrar tag',
                             text  : 'x'
                         }).click(function () {
                             return $('#' + id).removeTag(escape(value));
@@ -133,12 +137,17 @@
 		
 			});		
 			
+			cargarDatos("eventos");
+			$("#input-busqueda_tag").focus();
+
 			return false;
 		};
 		
-	$.fn.removeTag = function(value) { 
+	$.fn.removeTag = function(value) 
+	{ 
 			value = unescape(value);
-			this.each(function() { 
+			this.each(function() 
+			{ 
 				var id = $(this).attr('id');
 	
 				var old = $(this).val().split(delimiter[id]);
@@ -277,15 +286,19 @@
 				} else {
 						// if a user tabs out of the field, create a new tag
 						// this is only available if autocomplete is not used.
-						$(data.fake_input).bind('blur',data,function(event) { 
+						$(data.fake_input).bind('blur',data,function(event) 
+						{
+							/*
 							var d = $(this).attr('data-default');
-							if ($(event.data.fake_input).val()!='' && $(event.data.fake_input).val()!=d) { 
+							if ($(event.data.fake_input).val()!='' && $(event.data.fake_input).val()!=d) 
+							{ 
 								if( (event.data.minChars <= $(event.data.fake_input).val().length) && (!event.data.maxChars || (event.data.maxChars >= $(event.data.fake_input).val().length)) )
 									$(event.data.real_input).addTag($(event.data.fake_input).val(),{focus:true,unique:(settings.unique)});
 							} else {
 								$(event.data.fake_input).val($(event.data.fake_input).attr('data-default'));
 								$(event.data.fake_input).css('color',settings.placeholderColor);
 							}
+							*/
 							return false;
 						});
 				
@@ -317,6 +330,32 @@
 						 $('#' + id).removeTag(escape(last_tag));
 						 $(this).trigger('focus');
 					}
+					switch (event.which) 
+					{
+						case 13: 	//Intro
+							if(window.selectedSuggestion==0)
+								window.selectedSuggestion=1;
+							var fila="#cabecera-suggest-fila-"+(window.selectedSuggestion-1);
+							var icono=$(fila).find(".cabecera-suggest-icono").css('background-image');
+							icono=icono.substring(4,icono.length-1);
+							var texto=$(fila).find(".cabecera-suggest-texto1").text();
+						    clickSuggestion(icono,texto);
+						    return;
+						    break;
+						case 27: 	//Escape
+						    $(this).val("");
+						    break;
+						case 38: 	//Up
+						    prevSuggestion();
+						    //return;
+						    break;
+						case 40: 	//Down
+						    nextSuggestion();
+						    //return;
+						    break;
+					}
+
+
 				});
 
 				$(data.fake_input).bind('keyup', function(event)

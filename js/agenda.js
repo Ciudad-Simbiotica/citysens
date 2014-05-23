@@ -169,6 +169,9 @@ function clickSuggestion(tipo,texto1) //Añadir id, texto buscado
 {
   $("#cabecera-suggest").empty();
   console.log("Clic Sugerencia: "+tipo+"/"+texto1);
+  if(!$('#input-busqueda').tagExist(texto1))
+    $("#input-busqueda").addTag(texto1,{icon:tipo});
+
   //window.location = "agenda.html?tipo="+tipo+"&texto1="+texto1;
   //alert("Has hecho click en una sugerencia de tipo "+tipo+" con el siguiente texto: "+texto1);
 }
@@ -260,15 +263,18 @@ function suggestBusqueda(texto)
     //Añadimos la búsqueda tal cual
     $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1 cabecera-suggest-texto1-sinTexto2'><strong>"+texto+"</strong></div></div>");
     $("#cabecera-suggest").find(".cabecera-suggest-icono:last").addClass("cabecera-suggest-icono-busqueda");
+    $("#cabecera-suggest").find(".cabecera-suggest-fila:last").attr("id","cabecera-suggest-fila-0");
       $("#cabecera-suggest").find(".cabecera-suggest-fila:last").click(function()
       {
-          clickSuggestion("busqueda",texto); //Añadir value.id, texto buscado
+          clickSuggestion("/citysens/icons/lupa.png",texto); //Añadir value.id, texto buscado
       });
+    var i=1;
     $.each(data.suggestions, function(key, value)
     {
       //Creamos la sugerencia
       $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1'>"+value.texto1.replace(texto,"<strong>"+texto+"</strong>")+"</div><div class='cabecera-suggest-texto2'>"+value.texto2+"</div></div>");
       $("#cabecera-suggest").find(".cabecera-suggest-icono:last").addClass("cabecera-suggest-icono-"+value.tipo);
+    $("#cabecera-suggest").find(".cabecera-suggest-fila:last").attr("id","cabecera-suggest-fila-"+i);
       if(value.texto2=="")
       {
         $("#cabecera-suggest").find(".cabecera-suggest-texto1:last").addClass("cabecera-suggest-texto1-sinTexto2");
@@ -276,8 +282,26 @@ function suggestBusqueda(texto)
 
       $("#cabecera-suggest").find(".cabecera-suggest-fila:last").click(function()
       {
-          clickSuggestion(value.tipo,value.texto1); //Añadir value.id, texto buscado
+          var icono="";
+          if(value.tipo=="sanidad")
+            icono="/citysens/icons/sanidad.png";
+          else if(value.tipo=="organizacion")
+            icono="/citysens/icons/icon_CitYsens.organizacion.png";
+          else if(value.tipo=="institucion")
+            icono="/citysens/icons/icon_CitYsens.institucion.png";
+          else if(value.tipo=="colectivo")
+            icono="/citysens/icons/CitYsens.people.png";
+          else if(value.tipo=="lugar")
+            icono="/citysens/icons/lugar.png";
+          else if(value.tipo=="lupa")
+            icono="/citysens/icons/lupa.png";
+          else if(value.tipo=="busqueda")
+            icono="/citysens/icons/lupa.png";
+
+
+          clickSuggestion(icono,value.texto1); //Añadir value.id, texto buscado
       });
+      i++;
     
       //¿Animarlo?
       //$("#cabecera-suggest").find(".cabecera-suggest-fila").slideDown("fast");
@@ -289,9 +313,10 @@ function suggestBusqueda(texto)
       $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1 cabecera-suggest-texto1-sinTexto2'>Ir a "+texto.replace(texto,"<strong>"+texto+"</strong>")+"</div></div>");
       $("#cabecera-suggest").find(".cabecera-suggest-fila:last").addClass("cabecera-suggest-fila-IrA");
       $("#cabecera-suggest").find(".cabecera-suggest-icono:last").addClass("cabecera-suggest-icono-IrA");
+      $("#cabecera-suggest").find(".cabecera-suggest-fila:last").attr("id","cabecera-suggest-fila-"+i);
       $("#cabecera-suggest").find(".cabecera-suggest-fila:last").click(function()
       {
-        clickSuggestion("Lugar",texto); //Añadir value.id, texto buscado
+        clickSuggestion("/citysens/icons/gps.png",texto); //Añadir value.id, texto buscado
       });
     } 
     
@@ -397,37 +422,20 @@ $(".correo").click(function()
 });
 
 /*
-$("#input-busqueda").keyup(function(e)
-{
-  switch (e.which) 
-  {
-    case 13: 
-        clickSuggestion("Intro Key","Sugerencia número "+window.selectedSuggestion);
-        return;
-        break;
-    case 27:
-        $(this).val("");
-        break;
-    case 38:
-        prevSuggestion();
-        return;
-        break;
-    case 40:
-        nextSuggestion();
-        return;
-        break;
-  }
 
-  //Si no es ni arriba ni abajo buscamos nuevas sugerencias
-  suggestBusqueda($(this).val());
-});
 */
 
 function cargarDatos(clase)
 {
+  $(".agenda-primera-linea").html("Eventos sobre <strong>"+$("#input-busqueda").val()+"</strong>:");
+
+  if($("#input-busqueda").val()=="")
+    $(".agenda-primera-linea").height("0px");
+  else
+    $(".agenda-primera-linea").height("auto");
 
   $(".grupo").attr('id',"");  //Para que no se inserten en esta les quitamos el ID
-  $(".grupo").fadeOut("slow",function()
+  $(".grupo").fadeOut("500",function()
   {
     $(this).remove();
   });  
@@ -451,7 +459,7 @@ function cargarDatos(clase)
 
         });
       });
-    $(".grupo").fadeIn(1000);
+    $(".grupo").fadeIn(500);
     });  
 }
 

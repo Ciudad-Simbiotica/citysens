@@ -178,18 +178,19 @@ else if($_GET["clase"]=="eventos")
 		$datos["lugar"]=$event["dboUseForeign_place_id"]["dboUseForeign_cityId"]["name"];
 		$datos["temperatura"]=rand(1,5);
 
-		if($grupo==date("Y-m-d"))
-			$cabeceraIzq="Hoy";
-		else if($grupo==date("Y-m-d",time()+86400))
-			$cabeceraIzq="Mañana";
+		if($grupo==date("Y-m-d",strtotime("2014-05-13")))
+			$cabeceraIzq="Hoy, ";
+		else if($grupo==date("Y-m-d",strtotime("2014-05-13")+86400))
+			$cabeceraIzq="Mañana, ";
 		else
 			$cabeceraIzq="";
 
-
+		$cabeceraIzq.=ucfirst(strftime("%A %e",$event["start_time"]));
+		$cabeceraIzq.=" de ".ucfirst(strftime("%B",$event["start_time"]));
 
 		$returnData["grupos"][$grupo]["cabeceraIzq"]=$cabeceraIzq;
-		$returnData["grupos"][$grupo]["cabeceraCntr"]=ucfirst(strftime("%A %e",$event["start_time"]));
-		$returnData["grupos"][$grupo]["cabeceraDch"]=ucfirst(strftime("%B",$event["start_time"]));
+		$returnData["grupos"][$grupo]["cabeceraCntr"]="";//ucfirst(strftime("%A %e",$event["start_time"]));
+		$returnData["grupos"][$grupo]["cabeceraDch"]="";//ucfirst(strftime("%B",$event["start_time"]));
 		$returnData["grupos"][$grupo]["totalFilas"][$datos["tipo"]]++;
 
 		
