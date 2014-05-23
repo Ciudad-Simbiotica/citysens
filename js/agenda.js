@@ -167,7 +167,9 @@ function switchFilas(clase,tipo)
 
 function clickSuggestion(tipo,texto1) //Añadir id, texto buscado
 {
-  window.location = "agenda.html?tipo="+tipo+"&texto1="+texto1;
+  $("#cabecera-suggest").empty();
+  console.log("Clic Sugerencia: "+tipo+"/"+texto1);
+  //window.location = "agenda.html?tipo="+tipo+"&texto1="+texto1;
   //alert("Has hecho click en una sugerencia de tipo "+tipo+" con el siguiente texto: "+texto1);
 }
 
@@ -235,7 +237,19 @@ function suggestBusqueda(texto)
   .done(function(data) 
   {
     $("#cabecera-suggest").empty();
-  
+
+    //ToDo: Que esto vaya ello solo sin necesidad de recolocarlo
+    //Recolocamos la cabecera, el cuerpo y los botones según los filtros que haya
+    $("#cabecera-suggest").css('margin-top', $("#input-busqueda_tagsinput").position().top+$('#input-busqueda_tagsinput').outerHeight(true)+4);
+    $(".cuerpo").css('margin-top', 20+$('#input-busqueda_tagsinput').outerHeight(true));
+    $(".map").css('top', 20+$('#input-busqueda_tagsinput').outerHeight(true));
+    $(".informacion").css('top', 295+$('#input-busqueda_tagsinput').outerHeight(true));
+    $(".botonesSuperiores").css('top', 20+$('#input-busqueda_tagsinput').outerHeight(true));
+    
+    $(".scroll-curtain-gradient").css('top', 22+$('.botonesSuperiores').position().top);
+    $(".scroll-curtain").css('height', $(".scroll-curtain-gradient").position().top-43);
+    
+
     window.selectedSuggestion=0;
 
     //Añadimos el tooltip
@@ -246,6 +260,10 @@ function suggestBusqueda(texto)
     //Añadimos la búsqueda tal cual
     $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1 cabecera-suggest-texto1-sinTexto2'><strong>"+texto+"</strong></div></div>");
     $("#cabecera-suggest").find(".cabecera-suggest-icono:last").addClass("cabecera-suggest-icono-busqueda");
+      $("#cabecera-suggest").find(".cabecera-suggest-fila:last").click(function()
+      {
+          clickSuggestion("busqueda",texto); //Añadir value.id, texto buscado
+      });
     $.each(data.suggestions, function(key, value)
     {
       //Creamos la sugerencia
@@ -254,19 +272,17 @@ function suggestBusqueda(texto)
       if(value.texto2=="")
       {
         $("#cabecera-suggest").find(".cabecera-suggest-texto1:last").addClass("cabecera-suggest-texto1-sinTexto2");
-
       }
 
       $("#cabecera-suggest").find(".cabecera-suggest-fila:last").click(function()
       {
-        clickSuggestion(value.tipo,value.texto1); //Añadir value.id, texto buscado
+          clickSuggestion(value.tipo,value.texto1); //Añadir value.id, texto buscado
       });
     
       //¿Animarlo?
       //$("#cabecera-suggest").find(".cabecera-suggest-fila").slideDown("fast");
     });
 
-    
     if(texto=="san")//IrAMadrid
     {
       //Creamos la fila de ir a Madrid
@@ -446,8 +462,7 @@ $('#input-busqueda').tagsInput({
         'defaultText':'',
         onChange: function(elem, elem_tags)
         {
-          console.log($(this).val());
-          suggestBusqueda($(this).val());
+          //console.log($(this).val());
           /*
           var languages = ['php','ruby','javascript'];
           $('.tag', elem_tags).each(function()

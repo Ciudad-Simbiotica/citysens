@@ -215,7 +215,7 @@ html,body
 	background-image: url("/citysens/icons/icon_CitYsens.institucion.png");	
 }
 
-.cabecera-suggest-icono-colectivo
+.cabecera-suggest-iconxo-colectivo
 {
 	background-image: url("/citysens/icons/CitYsens.people.png");	
 }
@@ -263,11 +263,11 @@ html,body
 {
 	background-color: #EEEEEE;
  	width:100%;
- 	height: 46px;
  	left:0px;
  	top:46px;
  	position: fixed; 	
  	z-index: 20;
+ 	height: 46px;
 }
 
 .scroll-curtain-gradient
@@ -664,7 +664,7 @@ html,body
 	position:relative;
 	border-bottom:thin solid #CCCCCC;
 
-	height: 50px;
+	height: 40px;
 }
 
 
@@ -725,7 +725,7 @@ div[class*='grupo-elemento-']
 .grupo-elemento-hora
 {
 	font-weight: bold;
-	left: 50px;
+	left: 22px;
 	top:2px;
 }
 
@@ -753,7 +753,7 @@ div[class*='grupo-elemento-']
 
 .grupo-elemento-tipo
 {
-	left: 5px;
+	right: 5px;
 	top: 5px;
 	z-index: 1;
 }
@@ -774,6 +774,7 @@ div[class*='grupo-elemento-']
 {
 	left: 27px;
 	bottom: 4px;
+	visibility: hidden;
 }
 
 .grupo-elemento-handup:hover
@@ -789,7 +790,7 @@ div[class*='grupo-elemento-']
 
 .grupo-elemento-temp
 {
-	left: 10px;
+	left: -13px;
 	top:3px;
 	width: 24px;
 	height: 32px;
@@ -810,8 +811,8 @@ div[class*='grupo-elemento-']
 .grupo-elemento-titulo
 {
 	top:2px;
-	left: 130px;
-	width: 440px;
+	left: 65px;
+	width: 525px;
 	height: 18px;
 	overflow: hidden;
 	white-space: nowrap;
@@ -827,14 +828,15 @@ div[class*='grupo-elemento-']
 	top:22px;
 	font-size: 12px;
 	height: 30px;
+	visibility:hidden;
 }
 
 .grupo-elemento-lugar
 {
-	font-weight: bold;
-	left: 50px;
+	/*font-weight: bold;*/
+	left: 65px;
 	top: 20px;
-	width:75px;
+	width:150px;
 	height: 16px;
 	overflow: hidden;
 	white-space: nowrap;

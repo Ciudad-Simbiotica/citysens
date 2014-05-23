@@ -18,7 +18,8 @@
 
 	var delimiter = new Array();
 	var tags_callbacks = new Array();
-	$.fn.doAutosize = function(o){
+	$.fn.doAutosize = function(o)
+	{
 	    var minWidth = $(this).data('minwidth'),
 	        maxWidth = $(this).data('maxwidth'),
 	        val = '',
@@ -298,7 +299,8 @@
 							$(event.data.real_input).addTag($(event.data.fake_input).val(),{focus:true,unique:(settings.unique)});
 					  	$(event.data.fake_input).resetAutosize(settings);
 						return false;
-					} else if (event.data.autosize) {
+					} else if (event.data.autosize) 
+					{
 			            $(event.data.fake_input).doAutosize(settings);
             
           			}
