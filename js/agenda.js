@@ -435,7 +435,7 @@ function cargarDatos(clase)
     $(".agenda-primera-linea").height("auto");
 
   $(".grupo").attr('id',"");  //Para que no se inserten en esta les quitamos el ID
-  $(".grupo").fadeOut("500",function()
+  $(".grupo").fadeOut("1000",function()
   {
     $(this).remove();
   });  
@@ -459,7 +459,7 @@ function cargarDatos(clase)
 
         });
       });
-    $(".grupo").fadeIn(500);
+    $(".grupo").fadeIn(1000);
     });  
 }
 
