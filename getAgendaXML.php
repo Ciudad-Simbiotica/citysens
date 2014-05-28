@@ -12,6 +12,13 @@ if(!in_array($_GET["clase"], array("eventos","procesos","organizaciones")))
 	exit;
 
 
+if($_GET["clase"]=="eventos")
+{
+	include "getEventos.php";
+	return;
+}
+
+
 if($_GET["regenerar"]=="")
 {
 	$return_data=file_get_contents("returnCache_{$_GET["clase"]}.txt");

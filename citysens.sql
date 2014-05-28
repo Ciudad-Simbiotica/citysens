@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost:8889
--- Tiempo de generación: 28-05-2014 a las 19:09:32
+-- Tiempo de generación: 28-05-2014 a las 20:30:39
 -- Versión del servidor: 5.5.34
 -- Versión de PHP: 5.5.10
 
@@ -26,6 +26,7 @@ SET time_zone = "+00:00";
 -- Estructura de tabla para la tabla `asociaciones`
 --
 
+DROP TABLE IF EXISTS `asociaciones`;
 CREATE TABLE `asociaciones` (
   `idAsociacion` int(11) NOT NULL AUTO_INCREMENT,
   `asociacion` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -604,9 +605,86 @@ INSERT INTO `asociaciones` (`idAsociacion`, `asociacion`, `siglas`, `tipo`, `dom
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `eventos`
+--
+
+DROP TABLE IF EXISTS `eventos`;
+CREATE TABLE `eventos` (
+  `idEvento` int(11) NOT NULL,
+  `fecha` datetime NOT NULL,
+  `clase` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `tipo` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `titulo` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `texto` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `lugar` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `temperatura` int(11) NOT NULL,
+  PRIMARY KEY (`idEvento`),
+  KEY `titulo` (`titulo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `eventos`
+--
+
+INSERT INTO `eventos` (`idEvento`, `fecha`, `clase`, `tipo`, `titulo`, `texto`, `lugar`, `temperatura`) VALUES
+(667, '2014-05-27 20:00:00', 'eventos', 'convocatoria', 'Bicicrítica Torrejón ¡Usa la bici todos los días, celébralo una vez al mes!', 'Bicicrítica Torrejón ¡Usa la bici todos los días, celébralo una vez al mes!', 'Torrejón de Ardoz', 1),
+(737, '2014-05-25 09:00:00', 'eventos', 'convocatoria', 'Elecciones al Parlamento Europeo', 'Elecciones al Parlamento Europeo', '(lugar no definido)', 3),
+(886, '2014-05-16 16:30:00', 'eventos', 'recurrente', 'Lactancia Reunión Grupo Lactard', 'Lactancia Reunión Grupo Lactard', 'Torres, CM', 4),
+(887, '2014-05-23 16:30:00', 'eventos', 'recurrente', 'Lactancia Reunión Grupo Lactard', 'Lactancia Reunión Grupo Lactard', 'Torres, CM', 3),
+(888, '2014-05-30 16:30:00', 'eventos', 'convocatoria', 'Lactancia Reunión Grupo Lactard', 'Lactancia Reunión Grupo Lactard', 'Torres, CM', 2),
+(971, '2014-05-13 19:00:00', 'eventos', 'recurrente', 'Reunión PAH - Corredor del Henares', 'Reunión PAH - Corredor del Henares', 'Alcalá de Henares', 2),
+(972, '2014-05-20 19:00:00', 'eventos', 'convocatoria', 'Reunión PAH - Corredor del Henares', 'Reunión PAH - Corredor del Henares', 'Alcalá de Henares', 4),
+(973, '2014-05-27 19:00:00', 'eventos', 'recurrente', 'Reunión PAH - Corredor del Henares', 'Reunión PAH - Corredor del Henares', 'Alcalá de Henares', 4),
+(1007, '2014-05-14 17:00:00', 'eventos', 'convocatoria', 'Lactancia  Grupo de apoyo de Lactavida', 'Lactancia  Grupo de apoyo de Lactavida', 'Azuqueca', 5),
+(1008, '2014-05-28 17:00:00', 'eventos', 'recurrente', 'Lactancia  Grupo de apoyo de Lactavida', 'Lactancia  Grupo de apoyo de Lactavida', 'Azuqueca', 2),
+(1022, '2014-05-20 11:00:00', 'eventos', 'convocatoria', 'Lactancia  Grupo de apoyo de Lactavida', 'Lactancia  Grupo de apoyo de Lactavida', 'Cabanillas, GU', 2),
+(1042, '2014-05-22 16:30:00', 'eventos', 'convocatoria', 'Lactancia  Grupo de apoyo de Lactavida', 'Lactancia  Grupo de apoyo de Lactavida', 'Guadalajara', 4),
+(1052, '2014-05-28 20:00:00', 'eventos', 'recurrente', 'Bici Crítica Alcalá ¡Usa la bici todos los días, celébralo una vez al mes!', 'Bici Crítica Alcalá ¡Usa la bici todos los días, celébralo una vez al mes!', 'Alcalá de Henares', 1),
+(1090, '2014-05-19 18:00:00', 'eventos', 'recurrente', 'Taller Social de la Bici', 'Taller Social de la Bici', 'Alcalá de Henares', 3),
+(1091, '2014-05-26 18:00:00', 'eventos', 'recurrente', 'Taller Social de la Bici', 'Taller Social de la Bici', 'Alcalá de Henares', 5),
+(1119, '2014-05-18 18:00:00', 'eventos', 'recurrente', 'Taller Social de la Bici', 'Taller Social de la Bici', 'Alcalá de Henares', 1),
+(1120, '2014-05-25 18:00:00', 'eventos', 'convocatoria', 'Taller Social de la Bici', 'Taller Social de la Bici', 'Alcalá de Henares', 2),
+(1151, '2014-05-16 18:30:00', 'eventos', 'convocatoria', 'PAH Reunión-Asesoría', 'PAH Reunión-Asesoría', 'Coslada', 1),
+(1152, '2014-05-23 18:30:00', 'eventos', 'recurrente', 'PAH Reunión-Asesoría', 'PAH Reunión-Asesoría', 'Coslada', 3),
+(1201, '2014-05-19 19:00:00', 'eventos', 'convocatoria', 'Asamblea abierta Red de Solidaridad Popular', 'Asamblea abierta Red de Solidaridad Popular', 'Alcalá de Henares', 4),
+(1202, '2014-05-26 19:00:00', 'eventos', 'convocatoria', 'Asamblea abierta Red de Solidaridad Popular', 'Asamblea abierta Red de Solidaridad Popular', 'Alcalá de Henares', 1),
+(1227, '2014-05-20 17:00:00', 'eventos', 'convocatoria', 'Pleno municipal Ayuntamiento de Alcalá', 'Pleno municipal Ayuntamiento de Alcalá', 'Alcalá de Henares', 3),
+(1340, '2014-05-29 18:00:00', 'eventos', 'convocatoria', 'Plenos en Juntas Municipales de Distrito', 'Plenos en Juntas Municipales de Distrito', 'Alcalá de Henares', 5),
+(1478, '2014-05-24 11:30:00', 'eventos', 'recurrente', 'I Encuentro de Alternativas Fácticas de Vivienda del Henares', 'I Encuentro de Alternativas Fácticas de Vivienda del Henares', 'Alcalá de Henares', 4),
+(1555, '2014-05-19 10:30:00', 'eventos', 'recurrente', 'Lactancia reunión del grupo Lactard', 'Lactancia reunión del grupo Lactard', 'Alcalá de Henares', 5),
+(1556, '2014-05-26 10:30:00', 'eventos', 'recurrente', 'Lactancia reunión del grupo Lactard', 'Lactancia reunión del grupo Lactard', 'Alcalá de Henares', 3),
+(1602, '2014-05-13 11:00:00', 'eventos', 'convocatoria', 'Grupo de apoyo a la lactancia de Lactavida', 'Grupo de apoyo a la lactancia de Lactavida', 'Cabanillas, GU', 1),
+(1603, '2014-05-20 11:00:00', 'eventos', 'convocatoria', 'Grupo de apoyo a la lactancia de Lactavida', 'Grupo de apoyo a la lactancia de Lactavida', 'Cabanillas, GU', 3),
+(1604, '2014-05-27 11:00:00', 'eventos', 'recurrente', 'Grupo de apoyo a la lactancia de Lactavida', 'Grupo de apoyo a la lactancia de Lactavida', 'Cabanillas, GU', 3),
+(1665, '2014-05-27 19:30:00', 'eventos', 'convocatoria', 'Presentación libro Guía de árboles singulares Molina de Aragón y el Alto Tajo', 'Presentación libro Guía de árboles singulares Molina de Aragón y el Alto Tajo', 'Guadalajara', 1),
+(1691, '2014-05-22 20:30:00', 'eventos', 'recurrente', 'Presentación libro El movimiento obrero en Alcalá de Henares, 1868-1939', 'Presentación libro El movimiento obrero en Alcalá de Henares, 1868-1939', 'Alcalá de Henares', 3),
+(1703, '2014-05-23 19:30:00', 'eventos', 'convocatoria', 'Agua de Mayo - Un nuevo espacio en Alcalá', 'Agua de Mayo - Un nuevo espacio en Alcalá', 'Alcalá de Henares', 3),
+(1722, '2014-05-24 20:30:00', 'eventos', 'convocatoria', 'Proyección del documental "Stop! Rodando el cambio"', 'Proyección del documental "Stop! Rodando el cambio"', 'Velilla, CM', 2),
+(1769, '2014-05-13 18:00:00', 'eventos', 'convocatoria', 'Mesa redonda sobre las elecciones europeas y el delegacionismo', 'Mesa redonda sobre las elecciones europeas y el delegacionismo', 'Guadalajara', 3),
+(1774, '2014-05-16 18:00:00', 'eventos', 'convocatoria', 'Presentación del libro “Contrapoder sindical” ', 'Presentación del libro “Contrapoder sindical” ', 'Guadalajara', 5),
+(1781, '2014-05-17 11:00:00', 'eventos', 'recurrente', 'Encuentro con autor "Abriendo brecha. (...) la lucha de las mujeres por su emancipación" ', 'Encuentro con autor "Abriendo brecha. (...) la lucha de las mujeres por su emancipación" ', 'Guadalajara', 1),
+(1799, '2014-05-17 12:00:00', 'eventos', 'recurrente', 'I aniversario de Fraguas Jornada de trabajo y celebración', 'I aniversario de Fraguas Jornada de trabajo y celebración', 'Guadalajara', 4),
+(1805, '2014-05-15 19:30:00', 'eventos', 'recurrente', 'Proyección de la película "SALMOS DESDE LA COCINA"', 'Proyección de la película "SALMOS DESDE LA COCINA"', 'Alcalá de Henares', 4),
+(1807, '2014-05-16 20:30:00', 'eventos', 'recurrente', '¡Vuelve "LA FARMACIA DE ANTON CHEJOV"!', '¡Vuelve "LA FARMACIA DE ANTON CHEJOV"!', 'Alcalá de Henares', 3),
+(1813, '2014-05-26 19:30:00', 'eventos', 'convocatoria', 'Conferencia Protege tu salud, evita los tóxicos', 'Conferencia Protege tu salud, evita los tóxicos', 'Guadalajara', 2),
+(1820, '2014-05-19 18:00:00', 'eventos', 'convocatoria', 'Construcción de un nuevo espacio educativo alternativo en Alcalá (E. Infantil)', 'Construcción de un nuevo espacio educativo alternativo en Alcalá (E. Infantil)', 'Alcalá de Henares', 4),
+(1821, '2014-05-26 18:00:00', 'eventos', 'recurrente', 'Construcción de un nuevo espacio educativo alternativo en Alcalá (E. Primaria)', 'Construcción de un nuevo espacio educativo alternativo en Alcalá (E. Primaria)', 'Alcalá de Henares', 3),
+(1823, '2014-05-18 13:00:00', 'eventos', 'recurrente', 'Mercadillo artesano DIY Y trueque', 'Mercadillo artesano DIY Y trueque', 'Alcalá de Henares', 3),
+(1830, '2014-05-13 17:30:00', 'eventos', 'convocatoria', 'Taller de Economía Doméstica', 'Taller de Economía Doméstica', 'Guadalajara', 1),
+(1831, '2014-05-20 18:00:00', 'eventos', 'recurrente', 'Punto de Información sobre la bellota (moneda social)', 'Punto de Información sobre la bellota (moneda social)', 'Guadalajara', 1),
+(1832, '2014-05-22 18:00:00', 'eventos', 'convocatoria', 'Inauguración de la Exposición “5 años de Rincón Lento”', 'Inauguración de la Exposición “5 años de Rincón Lento”', 'Guadalajara', 2),
+(1833, '2014-05-25 17:30:00', 'eventos', 'convocatoria', 'Taller de economía Doméstica (2ª parte).', 'Taller de economía Doméstica (2ª parte).', 'Guadalajara', 4),
+(1836, '2014-05-18 11:00:00', 'eventos', 'convocatoria', 'Carrera del lápiz verde', 'Carrera del lápiz verde', 'Alcalá de Henares', 2),
+(1839, '2014-05-17 18:00:00', 'eventos', 'convocatoria', 'CIne Forum Precarias a la deriva', 'CIne Forum Precarias a la deriva', 'Alcalá de Henares', 2),
+(1840, '2014-05-18 13:00:00', 'eventos', 'convocatoria', 'Vermú Rock PODEMOS', 'Vermú Rock PODEMOS', 'Alcalá de Henares', 3);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `tematicas`
 --
 
+DROP TABLE IF EXISTS `tematicas`;
 CREATE TABLE `tematicas` (
   `idTematica` int(11) NOT NULL AUTO_INCREMENT,
   `tematica` varchar(255) COLLATE utf8_unicode_ci NOT NULL,

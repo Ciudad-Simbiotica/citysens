@@ -427,6 +427,9 @@ $(".correo").click(function()
 
 function cargarDatos(clase)
 {
+
+  var query=$("#input-busqueda").val();
+
   $(".agenda-primera-linea").html("Eventos sobre <strong>"+$("#input-busqueda").val()+"</strong>:");
 
   if($("#input-busqueda").val()=="")
@@ -445,6 +448,7 @@ function cargarDatos(clase)
   {
     clase: clase,
     date: "any",
+    query: query,
     format: "json"
   })
     .done(function(data) 

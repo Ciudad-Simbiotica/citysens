@@ -137,6 +137,8 @@
 		
 			});		
 			
+			console.log("paso dos veces");
+
 			cargarDatos("eventos");
 			$("#input-busqueda_tag").focus();
 

@@ -42,4 +42,19 @@ function getTematicas($cadena,$cantidad=10)
     return $returnData;
 }
 
+function getEventos($cadena,$cantidad=50)
+{
+    $link=connect();
+    $sql="SELECT * 
+            FROM  eventos 
+            WHERE titulo LIKE '%$cadena%'
+            ORDER BY fecha ASC
+            LIMIT 0,$cantidad";
+    $result=mysql_query($sql,$link);
+    $returnData=array();
+    while($fila=mysql_fetch_assoc($result))
+    	array_push($returnData,$fila);
+    return $returnData;
+}
+
 ?>
