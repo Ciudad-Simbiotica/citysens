@@ -1,6 +1,8 @@
-La direcci&oacute;n ha cambiado a:<BR>
-http://localhost:PUERTO/citysens/ o http://localhost:PUERTO/citysens/index.php
-<!--<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?php
+include "preload.php";
+?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -12,6 +14,9 @@ http://localhost:PUERTO/citysens/ o http://localhost:PUERTO/citysens/index.php
  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
  <script src="js/jquery.custom-animations.js"></script>
  <script type="text/javascript" src="js/tagsInput/jquery.tagsinput.js"></script>
+
+<?php $map->printHeaderJS() ?>
+<?php $map->printMapJS() ?>
 
 </head>
 
@@ -182,7 +187,7 @@ http://localhost:PUERTO/citysens/ o http://localhost:PUERTO/citysens/index.php
 	 	España > Madrid > Madrid Este > Alcalá +
  	</div>
  	<div class='map-map'>
-	 	<IMG SRC='icons/map.png' width=320px height=240px>
+	 	<?include_once "map.php";?>
 	</div>
  </div>
  
@@ -196,4 +201,3 @@ http://localhost:PUERTO/citysens/ o http://localhost:PUERTO/citysens/index.php
  </div>
  </body>
 </html>
--->

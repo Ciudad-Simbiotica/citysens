@@ -1,0 +1,5 @@
+{
+    "require": {
+        "php-google-maps/php-google-maps": "dev-master"
+    }
+}
