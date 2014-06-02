@@ -307,6 +307,11 @@ html,body
 	height: 100%;
 }
 
+#map { 
+	width: 320px;
+	height: 240px; }
+
+
 .map
 {
 	position: fixed;
@@ -325,6 +330,8 @@ html,body
 
 .map-map
 {
+	width: 320px;
+	height: 240px;
 }
 
 .informacion

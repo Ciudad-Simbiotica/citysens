@@ -11,12 +11,13 @@ include "preload.php";
  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
  <link rel="stylesheet" type="text/css" href="js/tagsinput/jquery.tagsinput.css" />
+ <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
  <script src="js/jquery.custom-animations.js"></script>
  <script type="text/javascript" src="js/tagsInput/jquery.tagsinput.js"></script>
-
-<?php $map->printHeaderJS() ?>
-<?php $map->printMapJS() ?>
+ <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+ <script src="http://maps.google.com/maps/api/js?v=3&sensor=false"></script>
+ <script src="js/leaflet-plugins-master/layer/tile/Google.js"></script>
 
 </head>
 
@@ -179,18 +180,18 @@ include "preload.php";
 	 
   </div>
  
- <script src="js/agenda.js"></script>
 </div>
+
 
  <div class='map'>
  	<div class='map-breadcrumbs'>
 	 	España > Madrid > Madrid Este > Alcalá +
  	</div>
  	<div class='map-map'>
-	 	<?include_once "map.php";?>
+	 <div id="map"></div>
 	</div>
  </div>
- 
+
   <div class='informacion'>
   	<div class='informacion-cabecera'>
 	 	Ventana de información
@@ -199,5 +200,8 @@ include "preload.php";
 
  
  </div>
+
+  <script src="js/agenda.js"></script>
+
  </body>
 </html>

@@ -1,4 +1,5 @@
 <?php
+/*
 // Autoload stuff
 require( 'vendor/autoload.php' );
 
@@ -18,4 +19,5 @@ $map->enableInfoWindows();
 $map->setMapTypes(array('roadmap'));
 $map->setWidth(320);
 $map->setHeight(240);
+*/
 ?>

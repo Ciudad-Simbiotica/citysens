@@ -486,5 +486,72 @@ $('#input-busqueda').tagsInput({
         }
       });
 
+function addPolygonToMap(url,texto,color)
+{
+$.ajax({
+    type: "POST",
+    url: url,
+    dataType: 'json',
+    success: function (response) 
+    {
+      //alert(response);
+      geojsonLayer = L.geoJson(response,{fillColor: color,weight: 1}).addTo(map);
+      geojsonLayer.on('click',function()
+      {
+        alert('Esto cargaría la página de '+texto);
+      });
+    }
+});  
+}
+
+function cargarMapa(coordinates,zoom)
+{
+  //Creamos el mapa
+  var map = L.map('map',{zoomControl: false,attributionControl: false}).setView(coordinates,zoom);
+  map.on('click', function() 
+  {
+    alert('Has hecho click en el mapa');
+  });
+  map.dragging.disable();
+  map.touchZoom.disable();
+  map.doubleClickZoom.disable();
+  map.scrollWheelZoom.disable();
+  map.boxZoom.disable();
+  map.keyboard.disable();
+  window.map=map;
+  var ggl = new L.Google();
+  L.Google('roadmap');
+  map.addLayer(ggl);
+
+  //Cargamos los perímetros
+  addPolygonToMap("geoJSON/anchuelo.geojson",'anchuelo','#aaaaff');
+  addPolygonToMap("geoJSON/azuqueca.geojson",'azuqueca','#aaaaff');
+  addPolygonToMap("geoJSON/camarma.geojson",'camarma','#aaaaff');
+  addPolygonToMap("geoJSON/daganzo.geojson",'daganzo','#aaaaff');
+  addPolygonToMap("geoJSON/lossantos.geojson",'lossantos','#aaaaff');
+  addPolygonToMap("geoJSON/meco.geojson",'meco','#aaaaff');
+  addPolygonToMap("geoJSON/sanfernando.geojson",'sanfernando','#aaaaff');
+  addPolygonToMap("geoJSON/torrejon.geojson",'torrejon','#aaaaff');
+  addPolygonToMap("geoJSON/torresalameda.geojson",'torresalameda','#aaaaff');
+  addPolygonToMap("geoJSON/villalbilla.geojson",'villalbilla','#aaaaff');
+
+  //Cargamos los eventos
+  L.marker([40.470,-3.350]).addTo(map)
+      .bindPopup("<b>Esto es un evento</b><br />Soy un evento");//.openPopup();
+  
+}
+
+function irACoordenadas(coordinates,zoom)
+{
+  window.map.panTo(coordinates);
+}
 
 cargarDatos("eventos");
+
+cargarMapa([40.49166,-3.364136], 11);
+//irACoordenadas([30.48166,-3.364136], 13);
+
+
+
+
+
