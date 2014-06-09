@@ -1,0 +1,19 @@
+.leaflet-div-icon {
+	background: #6666ff;
+	border-color: #ddd;
+	border-width: 2px;
+    border-radius: 50%;
+    box-shadow:4px 4px 7px #aaa;
+}
+ 
+.leaflet-marker-icon .number{
+	position: relative;
+	top: 5px;
+	text-align: center;
+	color:white;
+	text-shadow:1px 1px 6px #000000;
+}
+
+.leaflet-target-icon {
+	background: transparent;
+}

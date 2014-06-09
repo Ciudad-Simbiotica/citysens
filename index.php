@@ -12,6 +12,9 @@ include "preload.php";
  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
  <link rel="stylesheet" type="text/css" href="js/tagsinput/jquery.tagsinput.css" />
  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+ <link rel="stylesheet" href="css/leafletCustom.css" />
+
+
  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
  <script src="js/jquery.custom-animations.js"></script>
  <script type="text/javascript" src="js/tagsInput/jquery.tagsinput.js"></script>
@@ -85,7 +88,7 @@ include "preload.php";
  <div class='agenda'>
 
   <div class='agenda-primera-linea'>
-  	Resultados de la búsqueda:
+  	&nbsp;
   </div>
 
   <div class='grupo-template' id='grupo-template'>
@@ -161,13 +164,13 @@ include "preload.php";
 		 	<div class='grupo-elemento-logo'>
 		 		<IMG SRC='icons/icon_logo1.png' height='40px'>
 			</div>
-		 	<div class='grupo-elemento-titulo'>
+		 	<div class='grupo-elemento-tituloOrg'>
 		 		Convocatoria
 			</div>
 		 	<div class='grupo-elemento-lugarOrg'>
 		 		Lugar
 			</div>
-		 	<div class='grupo-elemento-texto'>
+		 	<div class='grupo-elemento-textoOrg'>
 		 		Descripción
 			</div>
 		 </div>
@@ -181,16 +184,10 @@ include "preload.php";
   </div>
  
 </div>
+  <script src="js/agenda.js"></script>
 
 
- <div class='map'>
- 	<div class='map-breadcrumbs'>
-	 	España > Madrid > Madrid Este > Alcalá +
- 	</div>
- 	<div class='map-map'>
-	 <div id="map"></div>
-	</div>
- </div>
+<?php include "map.php";?>
 
   <div class='informacion'>
   	<div class='informacion-cabecera'>
@@ -201,7 +198,6 @@ include "preload.php";
  
  </div>
 
-  <script src="js/agenda.js"></script>
 
  </body>
 </html>

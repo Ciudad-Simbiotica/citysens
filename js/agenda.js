@@ -60,6 +60,14 @@ function createLine(grupo,datos,animated)
         {
           clickFila(contenido);
         });
+        clone.mouseenter(function() //Añadimos la función de click a la fila
+        {
+          enterFila(contenido);
+        })
+        .mouseleave(function() //Añadimos la función de click a la fila
+        {
+          leaveFila(contenido);
+        });
       }
       else if(clase=="tipo")
       {
@@ -121,7 +129,28 @@ function clickFila(id)
   $("#"+id).addClass("grupo-fila-selected");
   $(".informacion-cabecera").html("Cargando contenido: "+id);
   cargarContenido(id);
+  $.each(markers, function( index, value ) 
+  {
+    if(markers[index]!=null)
+      markers[index].setOpacity(0);
+  });
+  if(markers[id]!=null)
+    markers[id].setOpacity(0.9);
 }
+
+function enterFila(id)
+{
+  if(markers[id]!=null)
+    markers[id].setOpacity(0.6);  
+}
+
+function leaveFila(id)
+{
+  if(!($("#"+id).hasClass("grupo-fila-selected")))
+    if(markers[id]!=null)
+      markers[id].setOpacity(0);  
+}
+
 
 function cargarContenido(id)
 {
@@ -133,6 +162,7 @@ function cargarContenido(id)
      success: function(data) {
            // data is ur summary
           $(".informacion-cabecera").html(data);
+          $(".informacion").slideDown("fast");
      }
 
    });
@@ -430,13 +460,12 @@ function cargarDatos(clase)
 
   var query=$("#input-busqueda").val();
 
-  $(".agenda-primera-linea").html("Eventos sobre <strong>"+$("#input-busqueda").val()+"</strong>:");
-
+/*
   if($("#input-busqueda").val()=="")
     $(".agenda-primera-linea").height("0px");
   else
     $(".agenda-primera-linea").height("auto");
-
+*/
   $(".grupo").attr('id',"");  //Para que no se inserten en esta les quitamos el ID
   $(".grupo").fadeOut("1000",function()
   {
@@ -486,7 +515,7 @@ $('#input-busqueda').tagsInput({
         }
       });
 
-function addPolygonToMap(url,texto,color)
+function addPolygonToMap(idLugar,url,texto,color)
 {
 $.ajax({
     type: "POST",
@@ -494,50 +523,240 @@ $.ajax({
     dataType: 'json',
     success: function (response) 
     {
-      //alert(response);
-      geojsonLayer = L.geoJson(response,{fillColor: color,weight: 1}).addTo(map);
+      //console.log(response);
+      geojsonLayer = L.geoJson(response,{fillColor: color, weight: 1}).addTo(map);
       geojsonLayer.on('click',function()
       {
-        alert('Esto cargaría la página de '+texto);
+        //history.pushState(null, null, "http://localhost:8888/citysens/?idLugar="+idLugar);
+        window.location="http://localhost:8888/citysens/?idLugar="+idLugar;
+        //alert('Esto cargaría la página de '+texto);
       });
+      
+      geojsonLayer.on('mouseover', function(e) 
+      {
+        $(".map-footer").html("Ir a "+texto);
+      });
+      
+      geojsonLayer.on('mouseout', function(e) 
+      {
+        $(".map-footer").html("&nbsp;");
+      });
+      
     }
 });  
 }
 
-function cargarMapa(coordinates,zoom)
+function cargarMapa(idLugar)
 {
+  
   //Creamos el mapa
-  var map = L.map('map',{zoomControl: false,attributionControl: false}).setView(coordinates,zoom);
+  var map = L.map('map',{zoomControl: false,attributionControl: false});
   map.on('click', function() 
   {
     alert('Has hecho click en el mapa');
   });
+  
   map.dragging.disable();
   map.touchZoom.disable();
   map.doubleClickZoom.disable();
   map.scrollWheelZoom.disable();
   map.boxZoom.disable();
   map.keyboard.disable();
+  
   window.map=map;
   var ggl = new L.Google();
   L.Google('roadmap');
   map.addLayer(ggl);
 
-  //Cargamos los perímetros
-  addPolygonToMap("geoJSON/anchuelo.geojson",'anchuelo','#aaaaff');
-  addPolygonToMap("geoJSON/azuqueca.geojson",'azuqueca','#aaaaff');
-  addPolygonToMap("geoJSON/camarma.geojson",'camarma','#aaaaff');
-  addPolygonToMap("geoJSON/daganzo.geojson",'daganzo','#aaaaff');
-  addPolygonToMap("geoJSON/lossantos.geojson",'lossantos','#aaaaff');
-  addPolygonToMap("geoJSON/meco.geojson",'meco','#aaaaff');
-  addPolygonToMap("geoJSON/sanfernando.geojson",'sanfernando','#aaaaff');
-  addPolygonToMap("geoJSON/torrejon.geojson",'torrejon','#aaaaff');
-  addPolygonToMap("geoJSON/torresalameda.geojson",'torresalameda','#aaaaff');
-  addPolygonToMap("geoJSON/villalbilla.geojson",'villalbilla','#aaaaff');
 
-  //Cargamos los eventos
-  L.marker([40.470,-3.350]).addTo(map)
-      .bindPopup("<b>Esto es un evento</b><br />Soy un evento");//.openPopup();
+
+  L.NumberedDivIcon = L.Icon.extend(
+  {
+    options: {
+      iconUrl: '',
+      number: '',
+      shadowUrl: null,
+      iconSize: new L.Point(24, 24),
+      iconAnchor: new L.Point(12, 12),
+      popupAnchor: new L.Point(0, -12),
+      /*
+      iconAnchor: (Point)
+      popupAnchor: (Point)
+      */
+      className: 'leaflet-div-icon'
+    },
+   
+    createIcon: function () {
+      var div = document.createElement('div');
+      //var img = this._createImg(this.options['iconUrl']);
+      var numdiv = document.createElement('div');
+      numdiv.setAttribute ( "class", "number" );
+      numdiv.innerHTML = this.options['number'] || '';
+      //div.appendChild( img );
+      div.appendChild( numdiv );
+      this._setIconStyles(div, 'icon');
+      return div;
+    },
+   
+    //you could change this to add a shadow like in the normal marker if you really wanted
+    createShadow: function () {
+      return null;
+    }
+  });
+
+  L.TargetIcon = L.Icon.extend(
+  {
+    options: {
+      iconUrl: '/citysens/icons/mira.png',
+      number: '',
+      shadowUrl: null,
+      iconSize: new L.Point(38, 37),
+      iconAnchor: new L.Point(29, 29),
+      popupAnchor: new L.Point(0, -29),
+      /*
+      iconAnchor: (Point)
+      popupAnchor: (Point)
+      */
+      className: 'leaflet-target-icon'
+    },
+   
+    createIcon: function () {
+      var div = document.createElement('div');
+      var img = this._createImg(this.options['iconUrl']);
+      /*var numdiv = document.createElement('div');
+      numdiv.setAttribute ( "class", "number" );
+      numdiv.innerHTML = this.options['number'] || '';*/
+      div.appendChild( img );
+      //div.appendChild( numdiv );
+      this._setIconStyles(div, 'icon');
+      return div;
+    },
+   
+    //you could change this to add a shadow like in the normal marker if you really wanted
+    createShadow: function () {
+      return null;
+    }
+  });
+
+
+    $.getJSON("getMapData.php", 
+    {
+      dataType: 'json',
+      idLugar: idLugar,
+    })
+    .done(function (response) 
+    {
+      padding=0.1;
+      paddingX=padding*(response.xmax-response.xmin);
+      paddingY=padding*(response.ymax-response.ymin);
+
+      xmin=response.xmin;
+      ymin=response.ymin;
+      xmax=response.xmax;
+      ymax=response.ymax;
+
+
+      var southWest = L.latLng(ymin, xmin),
+      northEast = L.latLng(ymax, xmax),
+      bounds = L.latLngBounds(southWest, northEast);
+      map.fitBounds(bounds);
+
+      //Cargamos las cosas relativas a la ciudad: Filtrado eventos, breadcrumbs, etc...
+      //España > Madrid > <?=$datosLugar["nombre"];?>
+      $(".map-breadcrumbs").html("España > Madrid > "+response.nombre);
+      $(".agenda-primera-linea").html("Mostrando EVENTOS en <strong>"+response.nombre+"</strong>");
+
+      //Aquí cargaríamos los distritos
+      addPolygonToMap("Distrito I","shp/geoJSON/9/00501.geojson","Distrito I",'#ffaaaa',true);
+      addPolygonToMap("Distrito II","shp/geoJSON/9/00502.geojson","Distrito II",'#ffaaaa',true);
+      addPolygonToMap("Distrito III","shp/geoJSON/9/00503.geojson","Distrito III",'#ffaaaa',true);
+      addPolygonToMap("Distrito IV","shp/geoJSON/9/00504.geojson","Distrito IV",'#ffaaaa',true);
+      addPolygonToMap("Distrito V","shp/geoJSON/9/00505.geojson","Distrito V",'#ffaaaa',true);
+
+
+      
+      new L.Marker([40.5010597,-3.4020144], 
+      {
+        icon: new L.NumberedDivIcon({number: 27})
+      }).addTo(map);
+      new L.Marker([40.5140597,-3.3520144], 
+      {
+        icon: new L.NumberedDivIcon({number: 15})
+      }).addTo(map);
+      new L.Marker([40.4850597,-3.3720144], 
+      {
+        icon: new L.NumberedDivIcon({number: 42})
+      }).addTo(map);
+      new L.Marker([40.4710597,-3.3870144], 
+      {
+        icon: new L.NumberedDivIcon({number: 13})
+      }).addTo(map);
+      new L.Marker([40.4860597,-3.3360144], 
+      {
+        icon: new L.NumberedDivIcon({number: 5})
+      }).addTo(map);
+      
+
+      //Aquí cargamos los eventos
+      $.getJSON("getEventosCoordenadas.php", 
+      {
+          dataType: 'json',
+          xmin:xmin,
+          ymin:ymin,
+          xmax:xmax,
+          ymax:ymax,
+      })
+      .done(function(data) 
+      {
+        //console.log(data);
+        window.markers = [];
+        $.each(data, function(i,datos)
+        {
+          //var marker=L.marker([datos.y,datos.x],{opacity:0.0}).addTo(map);
+          var marker=new L.Marker([datos.y,datos.x], 
+          {
+            icon: new L.TargetIcon()
+          }).setOpacity(0).setZIndexOffset(-1000).addTo(map);
+          markers[datos.idEvento]=marker;
+          //.bindPopup("<b>"+datos.titulo+"</b><br />"+datos.texto);//.openPopup();
+        });
+      });
+
+      //http://localhost:8888/citysens/getEventosCoordenadas.php?xmin=-3.64643&ymin=40.37454&xmax=-3.10192&ymax=40.60744
+
+      
+      //L.marker([40.470,-3.350]).addTo(map)
+      //    .bindPopup("<b>Esto es un evento</b><br />Soy un evento");//.openPopup();
+      
+
+      //Aquí cargamos los colindantes
+      $.getJSON("getLugaresColindantes.php", 
+      {
+          dataType: 'json',
+          tipo:'8',
+          xmin:xmin,
+          ymin:ymin,
+          xmax:xmax,
+          ymax:ymax,
+          lugarOriginal:idLugar,
+      })
+      .done(function(data) 
+      {
+        $.each(data, function(i,datos)
+        {
+          addPolygonToMap(datos[0],"shp/geoJSON/8/"+datos[0]+".geojson",datos[1],'#aaaaff',true);
+          
+          /*
+          var marker = new L.Marker([datos[3],datos[2]], 
+          {
+            icon: new L.NumberedDivIcon({number: datos[0]})
+          }).addTo(map);
+          */
+
+        });
+      });
+    });
+
   
 }
 
@@ -548,7 +767,6 @@ function irACoordenadas(coordinates,zoom)
 
 cargarDatos("eventos");
 
-cargarMapa([40.49166,-3.364136], 11);
 //irACoordenadas([30.48166,-3.364136], 13);
 
 

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" 
+	xmlns:gx="http://www.google.com/kml/ext/2.2"
+	xmlns:atom="http://www.w3.org/2005/Atom" >
+<Document>
+	<atom:author><atom:name>Agenda del Henares</atom:name></atom:author>
+    <atom:link href="http://agendadelhenares.org/evento/1832" />
+	<Placemark>
+		<name>Inauguración de la Exposición “5 años de Rincón Lento”</name>
+		<description><![CDATA[
+			<p>jueves 22 de mayo de 2014 - 18h -- Guadalajara</p>
+			<p>Biblioteca de Guadalajara<br />
+Plaza Dávalos<br />
+19001 Guadalajara, España</p>
+			<p><a href="http://agendadelhenares.org/evento/1832">más información sobre este evento				</a>
+			</p>
+			]]></description>
+		<open>1</open>
+		<visibility>1</visibility>
+		<gx:balloonVisibility>1</gx:balloonVisibility>
+		<Point>
+			<coordinates>-3.1683145,40.6340629,0</coordinates>
+		</Point>
+		 
+			<TimeStamp><when>2014-05-22T18:00:00+02:00</when></TimeStamp>
+			</Placemark>
+</Document>
+</kml>

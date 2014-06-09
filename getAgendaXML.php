@@ -113,8 +113,8 @@ if($_GET["clase"]=="organizaciones")
 
 		$puntos-=rand(50,150);
 
-		$datos["titulo"]=$asociacion["ASOCIACION"];
-		$datos["texto"]=$asociacion["DOMICILIO"];
+		$datos["tituloOrg"]=$asociacion["ASOCIACION"];
+		$datos["textoOrg"]=$asociacion["DOMICILIO"];
 		$datos["lugarOrg"]="Distr. ".$asociacion["DISTRITO"];
 		$datos["puntos"]=$puntos;
 		

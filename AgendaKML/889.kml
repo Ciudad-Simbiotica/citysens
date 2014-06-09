@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" 
+	xmlns:gx="http://www.google.com/kml/ext/2.2"
+	xmlns:atom="http://www.w3.org/2005/Atom" >
+<Document>
+	<atom:author><atom:name>Agenda del Henares</atom:name></atom:author>
+    <atom:link href="http://agendadelhenares.org/evento/889" />
+	<Placemark>
+		<name>Lactancia Reunión Grupo Lactard</name>
+		<description><![CDATA[
+			<p>viernes  6 de junio de 2014 - 16h30 -- Torres, CM</p>
+			<p>Centro de Salud-Sala de Usos Múltiples<br />
+Plza. Juego de la Pelota, s/n(Detrás   de la Iglesia)</p>
+			<p><a href="http://agendadelhenares.org/evento/889">más información sobre este evento				</a>
+			</p>
+			]]></description>
+		<open>1</open>
+		<visibility>1</visibility>
+		<gx:balloonVisibility>1</gx:balloonVisibility>
+		<Point>
+			<coordinates>-3.3636991,40.4065745,0</coordinates>
+		</Point>
+		 
+			<TimeStamp><when>2014-06-06T16:30:00+02:00</when></TimeStamp>
+			</Placemark>
+</Document>
+</kml>
