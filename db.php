@@ -69,6 +69,21 @@ function getDatosLugar($idLugar)
     return $fila;
 }
 
+function getChildAreas($lugarOriginal,$nivel)
+{
+    $link=connect();
+    $sql="SELECT * FROM lugares_shp WHERE 
+            nivel='$nivel' AND
+            idPadre='$lugarOriginal'";
+            
+    mysql_query('SET CHARACTER SET utf8',$link);
+    $result=mysql_query($sql,$link);
+    $returnData=array();
+    while($fila=mysql_fetch_assoc($result))
+        array_push($returnData,array($fila["id"],$fila["nombre"],$fila["xcentroid"],$fila["ycentroid"],str_pad($fila["geocodigo"],5,0,STR_PAD_LEFT)));
+    return $returnData;
+}
+
 function getColindantes($lugarOriginal,$type,$xmin,$xmax,$ymin,$ymax)
 {
     $link=connect();
@@ -84,7 +99,7 @@ function getColindantes($lugarOriginal,$type,$xmin,$xmax,$ymin,$ymax)
     $returnData=array();
     while($fila=mysql_fetch_assoc($result))
         if($fila["id"]!=$lugarOriginal)
-            array_push($returnData,array($fila["id"],$fila["nombre"],($fila["xmax"]-$fila["xmin"])/2+$fila["xmin"],($fila["ymax"]-$fila["ymin"])/2+$fila["ymin"]));
+            array_push($returnData,array($fila["id"],$fila["nombre"],$fila["xcentroid"],$fila["ycentroid"],$fila["geocodigo"]));
     return $returnData;
 }
 

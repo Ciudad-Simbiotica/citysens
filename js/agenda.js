@@ -667,40 +667,32 @@ function cargarMapa(idLugar)
       $(".agenda-primera-linea").html("Mostrando EVENTOS en <strong>"+response.nombre+"</strong>");
 
       //Aquí cargaríamos los distritos
+      /*
       addPolygonToMap("Distrito I","shp/geoJSON/9/00501.geojson","Distrito I",'#ffaaaa',true);
       addPolygonToMap("Distrito II","shp/geoJSON/9/00502.geojson","Distrito II",'#ffaaaa',true);
       addPolygonToMap("Distrito III","shp/geoJSON/9/00503.geojson","Distrito III",'#ffaaaa',true);
       addPolygonToMap("Distrito IV","shp/geoJSON/9/00504.geojson","Distrito IV",'#ffaaaa',true);
       addPolygonToMap("Distrito V","shp/geoJSON/9/00505.geojson","Distrito V",'#ffaaaa',true);
+      */
 
+      $.getJSON("getChildAreas.php", 
+      {
+          dataType: 'json',
+          nivel:'9',
+          lugarOriginal:idLugar,
+      })
+      .done(function(data) 
+      {
+        $.each(data, function(i,datos)
+        {
+          addPolygonToMap(datos[0],"shp/geoJSON/9/"+datos[4]+".geojson",datos[1],'#ffaaaa',true);
+          new L.Marker([datos[3],datos[2]], 
+          {
+            icon: new L.NumberedDivIcon({number: 27})
+          }).addTo(map);
 
-      
-      new L.Marker([40.5010597,-3.4020144], 
-      {
-        icon: new L.NumberedDivIcon({number: 27})
-      }).addTo(map);
-      new L.Marker([40.5140597,-3.3520144], 
-      {
-        icon: new L.NumberedDivIcon({number: 15})
-      }).addTo(map);
-      new L.Marker([40.4850597,-3.3720144], 
-      {
-        icon: new L.NumberedDivIcon({number: 42})
-      }).addTo(map);
-      new L.Marker([40.4710597,-3.3870144], 
-      {
-        icon: new L.NumberedDivIcon({number: 13})
-      }).addTo(map);
-      new L.Marker([40.4860597,-3.3360144], 
-      {
-        icon: new L.NumberedDivIcon({number: 5})
-      }).addTo(map);
-
-      new L.Marker([40.4361134,-3.4848622], 
-      {
-        icon: new L.NumberedDivIcon({number: 99})
-      }).addTo(map);
-
+        });
+      });
       
 
       //Aquí cargamos los eventos

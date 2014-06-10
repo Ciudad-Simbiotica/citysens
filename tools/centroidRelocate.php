@@ -125,16 +125,17 @@
 	  */
 	  //addPolygonToMap("http://localhost:8888/citysens/shp/200001442.json",'Torrejón','#aaffff');
 	  //addPolygonToMap("http://localhost:8888/citysens/shp/AlcalaShp.geojson",'Alcalá','#aaffff');
-	  addPolygonToMap("http://localhost:8888/citysens/shp/geoJSON/8/4284.geojson",'Alcalá','#aaffff');
+	  //addPolygonToMap("http://localhost:8888/citysens/shp/geoJSON/8/4284.geojson",'Alcalá','#aaffff');
 
       //Aquí cargaríamos los distritos
+      /*
       addPolygonToMap("shp/geoJSON/9/00501.geojson","Distrito I",'#aaaaff',true);
       addPolygonToMap("shp/geoJSON/9/00502.geojson","Distrito II",'#aaaaff',true);
       addPolygonToMap("shp/geoJSON/9/00503.geojson","Distrito III",'#aaaaff',true);
       addPolygonToMap("shp/geoJSON/9/00504.geojson","Distrito IV",'#aaaaff',true);
       addPolygonToMap("shp/geoJSON/9/00505.geojson","Distrito V",'#aaaaff',true);
-
-	  /*
+		*/
+	  
 	  <?
 
 	  	//http://localhost:8888/citysens/mapChecker.php?type=8&xmin=-3.64643&ymin=40.37454&xmax=-3.10192&ymax=40.60744
@@ -143,25 +144,49 @@
 		$link=connect();
 
 		$sql="SELECT * FROM lugares_shp WHERE 
-				nivel='{$_GET["type"]}'";
-				// AND	provincia='28'";
+				nivel='{$_GET["type"]}'
+				 AND	provincia='28'";
+				/*AND
 				
-				
-				// NOT(   xmin 			> {$_GET["xmax"]} 
-			 // 		OR {$_GET["xmin"]} 	> xmax
-			 // 		OR ymax     		< {$_GET["ymin"]} 
-			 // 		OR {$_GET["ymax"]} 	< ymin)
-				// ";
+				 NOT(   xmin 			> {$_GET["xmax"]} 
+			  		OR {$_GET["xmin"]} 	> xmax
+			  		OR ymax     		< {$_GET["ymin"]} 
+			  		OR {$_GET["ymax"]} 	< ymin)
+				 ";*/
 				
 		$result=mysql_query($sql,$link);
 		while($fila=mysql_fetch_assoc($result))
 		{
 			$idFichero=str_pad($fila["geocodigo"],5,0,STR_PAD_LEFT);
-			echo "addPolygonToMap('shp/geoJSON/9/$idFichero.geojson','{$fila["desbdt"]}','#aaaaff');".PHP_EOL;
+			echo "addPolygonToMap('shp/geoJSON/{$_GET["type"]}/{$fila["id"]}.geojson','{$fila["desbdt"]}','#aaaaff');".PHP_EOL;
+			echo "L.marker([{$fila["ycentroid"]}, {$fila["xcentroid"]}],{draggable:true,title:'{$fila["id"]}'}).addTo(map)
+			.on('dragend',function(e){
+
+				var y=this.getLatLng().lat;
+				var x=this.getLatLng().lng;
+				var title=this.options.title;
+
+				$.getJSON(\"updateLatLongCentroide.php\", 
+			    {
+		          dataType: 'json',
+		          xcentroid:x,
+		          ycentroid:y,
+		          id:title
+		      	})
+		      	.done(function(data) 
+		      	{
+		        	console.log(data);
+		      	});
+
+
+			});".PHP_EOL;
 		}
+
+		//echo "addPolygonToMap('AlcalaTorrejon.geojson','{$fila["desbdt"]}','#aaaaff');".PHP_EOL;
+
 	  
 	  ?>
-	  */
+	  
 	}
 
 	function irACoordenadas(coordinates,zoom)
