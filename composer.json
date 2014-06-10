@@ -1,5 +1,6 @@
 {
     "require": {
-        "php-google-maps/php-google-maps": "dev-master"
+        "php-google-maps/php-google-maps": "dev-master",
+        "phayes/geophp": "dev-master"
     }
 }

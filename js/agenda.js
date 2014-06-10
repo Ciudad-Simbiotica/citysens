@@ -695,6 +695,12 @@ function cargarMapa(idLugar)
       {
         icon: new L.NumberedDivIcon({number: 5})
       }).addTo(map);
+
+      new L.Marker([40.4361134,-3.4848622], 
+      {
+        icon: new L.NumberedDivIcon({number: 99})
+      }).addTo(map);
+
       
 
       //Aquí cargamos los eventos
@@ -716,7 +722,7 @@ function cargarMapa(idLugar)
           var marker=new L.Marker([datos.y,datos.x], 
           {
             icon: new L.TargetIcon()
-          }).setOpacity(0).setZIndexOffset(-1000).addTo(map);
+          }).setOpacity(0).setZIndexOffset(1000).addTo(map);
           markers[datos.idEvento]=marker;
           //.bindPopup("<b>"+datos.titulo+"</b><br />"+datos.texto);//.openPopup();
         });

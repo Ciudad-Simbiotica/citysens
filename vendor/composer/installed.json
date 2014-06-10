@@ -47,5 +47,40 @@
             "map",
             "maps"
         ]
+    },
+    {
+        "name": "phayes/geophp",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/phayes/geoPHP.git",
+            "reference": "478a1a0a572c862ed0533862cdb0dc4d1aa0738b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/phayes/geoPHP/zipball/478a1a0a572c862ed0533862cdb0dc4d1aa0738b",
+            "reference": "478a1a0a572c862ed0533862cdb0dc4d1aa0738b",
+            "shasum": ""
+        },
+        "time": "2014-04-01 17:48:28",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "geoPHP.inc"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2 or New-BSD"
+        ],
+        "authors": [
+            {
+                "name": "Patrick Hayes"
+            }
+        ],
+        "description": "GeoPHP is a open-source native PHP library for doing geometry operations. It is written entirely in PHP and can therefore run on shared hosts. It can read and write a wide variety of formats: WKT (including EWKT), WKB (including EWKB), GeoJSON, KML, GPX, GeoRSS). It works with all Simple-Feature geometries (Point, LineString, Polygon, GeometryCollection etc.) and can be used to get centroids, bounding-boxes, area, and a wide variety of other useful information.",
+        "homepage": "https://github.com/phayes/geoPHP"
     }
 ]

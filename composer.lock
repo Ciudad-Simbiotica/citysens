@@ -4,8 +4,41 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3b2765704970e12b34e722cc88caac93",
+    "hash": "3b386ecb13d5cffcce77cdb816c6c2f7",
     "packages": [
+        {
+            "name": "phayes/geophp",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phayes/geoPHP.git",
+                "reference": "478a1a0a572c862ed0533862cdb0dc4d1aa0738b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phayes/geoPHP/zipball/478a1a0a572c862ed0533862cdb0dc4d1aa0738b",
+                "reference": "478a1a0a572c862ed0533862cdb0dc4d1aa0738b",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "geoPHP.inc"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2 or New-BSD"
+            ],
+            "authors": [
+                {
+                    "name": "Patrick Hayes"
+                }
+            ],
+            "description": "GeoPHP is a open-source native PHP library for doing geometry operations. It is written entirely in PHP and can therefore run on shared hosts. It can read and write a wide variety of formats: WKT (including EWKT), WKB (including EWKB), GeoJSON, KML, GPX, GeoRSS). It works with all Simple-Feature geometries (Point, LineString, Polygon, GeometryCollection etc.) and can be used to get centroids, bounding-boxes, area, and a wide variety of other useful information.",
+            "homepage": "https://github.com/phayes/geoPHP",
+            "time": "2014-04-01 17:48:28"
+        },
         {
             "name": "php-google-maps/php-google-maps",
             "version": "dev-master",
@@ -62,7 +95,8 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "php-google-maps/php-google-maps": 20
+        "php-google-maps/php-google-maps": 20,
+        "phayes/geophp": 20
     },
     "platform": [
 
