@@ -72,15 +72,20 @@ function getDatosLugar($idLugar)
 function getChildAreas($lugarOriginal,$nivel)
 {
     $link=connect();
-    $sql="SELECT * FROM lugares_shp WHERE 
-            nivel='$nivel' AND
-            idPadre='$lugarOriginal'";
-            
+    $sql="SELECT lugares_shp.*,count(eventos.idDistritoPadre) as cantidad
+            FROM lugares_shp LEFT OUTER JOIN eventos 
+            ON lugares_shp.id=eventos.idDistritoPadre 
+            WHERE nivel='$nivel'
+            AND idPadre='$lugarOriginal'
+            GROUP BY lugares_shp.id";
+
+
+
     mysql_query('SET CHARACTER SET utf8',$link);
     $result=mysql_query($sql,$link);
     $returnData=array();
     while($fila=mysql_fetch_assoc($result))
-        array_push($returnData,array($fila["id"],$fila["nombre"],$fila["xcentroid"],$fila["ycentroid"],str_pad($fila["geocodigo"],5,0,STR_PAD_LEFT)));
+        array_push($returnData,array($fila["id"],$fila["nombre"],$fila["xcentroid"],$fila["ycentroid"],str_pad($fila["geocodigo"],5,0,STR_PAD_LEFT),$fila["cantidad"]));
     return $returnData;
 }
 
@@ -89,6 +94,7 @@ function getColindantes($lugarOriginal,$type,$xmin,$xmax,$ymin,$ymax)
     $link=connect();
     $sql="SELECT * FROM lugares_shp WHERE 
             nivel='$type' AND
+            provincia=28 AND
             NOT(xmin > $xmax 
             OR $xmin >  xmax
             OR  ymax < $ymin 

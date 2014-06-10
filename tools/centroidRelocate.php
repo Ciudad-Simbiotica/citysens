@@ -3,17 +3,17 @@
 <head>
  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
  <title>CitYsens</title>
- <link href="css/style.css" rel="stylesheet" type="text/css" />
+ <link href="../css/style.css" rel="stylesheet" type="text/css" />
  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
- <link rel="stylesheet" type="text/css" href="js/tagsinput/jquery.tagsinput.css" />
+ <link rel="stylesheet" type="text/css" href="../js/tagsinput/jquery.tagsinput.css" />
  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
- <script src="js/jquery.custom-animations.js"></script>
- <script type="text/javascript" src="js/tagsInput/jquery.tagsinput.js"></script>
+ <script src="../js/jquery.custom-animations.js"></script>
+ <script type="text/javascript" src="../js/tagsInput/jquery.tagsinput.js"></script>
  <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
  <script src="http://maps.google.com/maps/api/js?v=3&sensor=false"></script>
- <script src="js/leaflet-plugins-master/layer/tile/Google.js"></script>
+ <script src="../js/leaflet-plugins-master/layer/tile/Google.js"></script>
 
 </head>
 
@@ -139,13 +139,13 @@
 	  <?
 
 	  	//http://localhost:8888/citysens/mapChecker.php?type=8&xmin=-3.64643&ymin=40.37454&xmax=-3.10192&ymax=40.60744
-	  	include_once "db.php";
+	  	include_once "../db.php";
 	  	error_reporting(0);
 		$link=connect();
 
 		$sql="SELECT * FROM lugares_shp WHERE 
-				nivel='{$_GET["type"]}'
-				 AND	provincia='28'";
+				nivel='{$_GET["type"]}'";
+				 //AND	provincia='28'";
 				/*AND
 				
 				 NOT(   xmin 			> {$_GET["xmax"]} 
@@ -158,7 +158,7 @@
 		while($fila=mysql_fetch_assoc($result))
 		{
 			$idFichero=str_pad($fila["geocodigo"],5,0,STR_PAD_LEFT);
-			echo "addPolygonToMap('shp/geoJSON/{$_GET["type"]}/{$fila["id"]}.geojson','{$fila["desbdt"]}','#aaaaff');".PHP_EOL;
+			echo "addPolygonToMap('../shp/geoJSON/{$_GET["type"]}/$idFichero.geojson','{$fila["desbdt"]}','#aaaaff');".PHP_EOL;
 			echo "L.marker([{$fila["ycentroid"]}, {$fila["xcentroid"]}],{draggable:true,title:'{$fila["id"]}'}).addTo(map)
 			.on('dragend',function(e){
 

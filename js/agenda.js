@@ -688,7 +688,7 @@ function cargarMapa(idLugar)
           addPolygonToMap(datos[0],"shp/geoJSON/9/"+datos[4]+".geojson",datos[1],'#ffaaaa',true);
           new L.Marker([datos[3],datos[2]], 
           {
-            icon: new L.NumberedDivIcon({number: 27})
+            icon: new L.NumberedDivIcon({number: datos[5]})
           }).addTo(map);
 
         });
