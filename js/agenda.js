@@ -493,6 +493,29 @@ $(".cabecera-pestania-noticias").click(function()
 
 });
 
+$(".cabecera-ordenar").click(function()
+{
+
+  $("#cabecera-ordenar").toggleClass("cabecera-pestania-seleccionada",150);
+
+
+  if($("#cabecera-ordenar").hasClass("cabecera-pestania-seleccionada"))
+    $(".cabecera-ordenar-flecha").html("&#x25BC");
+  else
+    $(".cabecera-ordenar-flecha").html("&#x25B2");
+  
+  $(".subcabecera-pestania-ordenar").slideToggle("fast");
+});
+
+$(".subcabecera-pestania-ordenar-row").click(function()
+{
+
+  $("#cabecera-ordenar").removeClass("cabecera-pestania-seleccionada",150);
+  $(".cabecera-ordenar-flecha").html("&#x25BC"); 
+  $(".subcabecera-pestania-ordenar").slideUp("fast");
+  cargarDatos("eventos"); //Coger parámetro de orden del texto de la fila
+});
+
 $(".nuevoEvento").click(function()
 {
   newEvent();

@@ -49,7 +49,7 @@ html,body
 	text-shadow: 1px 1px 6px #000000;
 }
 
-.cabecera-pestania-izq:hover,.cabecera-pestania-ctr:hover,.cabecera-pestania-dch:hover,.cabecera-pestania-noticias:hover
+.cabecera-pestania-izq:hover,.cabecera-pestania-ctr:hover,.cabecera-pestania-dch:hover,.cabecera-pestania-noticias:hover,.cabecera-ordenar:hover
 {
 	border-bottom:thick solid #FFC830;
 	cursor: pointer; cursor: hand;	
@@ -121,13 +121,6 @@ html,body
 	background-repeat: no-repeat;
     background-position: 50% 5px;
 }
-
-.cabecera-pestania-seleccionada
-{
-	background-color: #FFE890; 
-	border-bottom:thick solid #FFC830;	
-}
-
 
 
 
@@ -285,10 +278,56 @@ html,body
 	width: 60px;
 
 }
+.cabecera-ordenar
+{
+	border-bottom:thick solid #6A94D4;
+	box-shadow: 0 2px 3px 0 #aaa;
+	top:0px;
+	right:40px;
+	width: 95px;
+	height: 53px;
+	position: absolute;
+	color:white;
+	text-shadow: 1px 1px 6px #000000;	
+	text-align: center;
+	cursor: pointer; cursor: hand;	
+}
+
+.cabecera-ordenar-texto
+{
+	top:10px;
+	width: 60px;
+	position: absolute;
+	color:white;
+	text-shadow: 1px 1px 6px #000000;	
+	text-align: center;
+	left:5px;
+}
+
+.cabecera-ordenar-flecha
+{
+	top:20px;
+	right:8px;
+	position: absolute;
+	color:white;
+	text-shadow: 1px 1px 6px #000000;	
+	font-size: 14px;
+	text-align: center;
+}
+
+.cabecera-pestania-seleccionada
+{
+	background-color: #FFE890; 
+	border-bottom:thick solid #FFC830;	
+}
+
+
+
+
 .cabecera-derecha
 {
 	top:30px;
-	right:20px;
+	right:-100px;
 	position: absolute;
 	color:white;
 	text-shadow: 1px 1px 6px #000000;	
@@ -475,6 +514,43 @@ html,body
 	box-shadow:0 2px 3px #aaa;
 	padding: 5px;
 }
+.subcabecera-pestania-ordenar
+{
+	top: 58px;
+	width:95px;
+	right: 40px;
+	position: absolute;
+	color:black;
+	text-align: center;
+	text-shadow: none;
+	display: none;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+	box-shadow:0 2px 3px #aaa;
+}
+
+.subcabecera-pestania-ordenar-row:nth-child(odd):hover
+{
+	background: #e0e000;
+	cursor:hand;cursor:pointer;
+}
+
+.subcabecera-pestania-ordenar-row:nth-child(even):hover
+{
+	background: #e000e0;
+	cursor:hand;cursor:pointer;
+}
+
+
+.subcabecera-pestania-ordenar-row
+{
+	height: 25px;
+	line-height: 25px;
+	cursor:hand;cursor:pointer;
+}
+
+.subcabecera-pestania-ordenar-row:nth-child(odd) {background: #e0e0e0;}
+.subcabecera-pestania-ordenar-row:nth-child(even) {background: #f0a0a0;}
 
 
 .switch-filas

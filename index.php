@@ -62,6 +62,15 @@ include "preload.php";
 	 	</div>
 	 	<div class='cabecera-lupa'>
 	 	</div>
+	 	<div id='cabecera-ordenar' class='cabecera-ordenar'>
+	 	 <div class='cabecera-ordenar-texto'>Ordenar por</div><div class='cabecera-ordenar-flecha'>&#x25BC</div>
+	 	</div>
+ 		<div class='subcabecera-pestania-ordenar'>
+ 			<div class='subcabecera-pestania-ordenar-row'>Fecha</div>
+ 			<div class='subcabecera-pestania-ordenar-row'>Temática</div>
+ 			<div class='subcabecera-pestania-ordenar-row'>Lugar</div>
+ 			<div class='subcabecera-pestania-ordenar-row'>Popularidad</div>
+ 		</div>
 	 	<div class='cabecera-derecha'>Mi CitYsens</div>
 	</div>
  </div>
@@ -117,7 +126,7 @@ include "preload.php";
 	 
 	 <div class='grupo-filas'>
 		 <div class='grupo-fila-eventos' id='grupo-fila-template-eventos'>
-			<div class='grupo-elemento-tipo' id='grupo-fila-template-tipo'>
+			<div class='grupo-elemento-tipo'>
 		 		<img class="imagen-tipo"  src='icons/Event-Unique.64.png' width="20px">
 			</div>
 		 	<div class='grupo-elemento-hora'>
@@ -141,7 +150,7 @@ include "preload.php";
 		 </div>
 
 		<div class='grupo-fila-procesos' id='grupo-fila-template-procesos'>
-			<div class='grupo-elemento-tipo' id='grupo-fila-template-tipo'>
+			<div class='grupo-elemento-tipo'>
 		 		<img class="imagen-tipo" src='icons/Event-Unique.64.png' width="20px">
 			</div>
 		 	<div class='grupo-elemento-hora'>
@@ -169,7 +178,7 @@ include "preload.php";
 		 		9999
 			</div>
 		 	<div class='grupo-elemento-copa'></div>
-			<div class='grupo-elemento-tipo' id='grupo-fila-template-tipo'>
+			<div class='grupo-elemento-tipo'>
 		 		<img class="imagen-tipo"  src='icons/UniqueEvent.64.png' width="20px">
 			</div>
 		 	<div class='grupo-elemento-logo'>
