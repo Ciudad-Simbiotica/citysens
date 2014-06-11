@@ -197,11 +197,43 @@ function switchFilas(clase,tipo)
 
 function clickSuggestion(tipo,texto1) //Añadir id, texto buscado
 {
+
+
   $("#cabecera-suggest").empty();
   console.log("Clic Sugerencia: "+tipo+"/"+texto1);
-  if(!$('#input-busqueda').tagExist(texto1))
-    $("#input-busqueda").addTag(texto1,{icon:tipo});
 
+  var clone=$("#tagFiltroTemplate").clone();
+  clone.hide();
+  clone.attr("id",texto1);
+
+  clone.find('.tagFiltro-texto').html(texto1);
+
+  clone.find('.tagFiltro-x').click(function()
+  {
+    arrayTags = jQuery.grep(arrayTags, function(value) 
+    {
+      return value != texto1;
+    });
+    cargarDatos("eventos");
+    $(this).fadeOut("fast",function(){
+      $(this).parent().remove();
+    });
+  });
+
+  //clone.find('.grupo-cabecera-cntr').html(center);
+  //clone.find('.grupo-cabecera-dch').html(right);
+  
+  clone.appendTo(".agenda-filtros");
+  clone.fadeIn("fast");
+
+  arrayTags.push(texto1);
+  $("#input-busqueda").val('');
+  cargarDatos("eventos");
+
+
+  /*if(!$('#input-busqueda').tagExist(texto1))
+    $("#input-busqueda").addTag(texto1,{icon:tipo});
+  */
   //window.location = "agenda.html?tipo="+tipo+"&texto1="+texto1;
   //alert("Has hecho click en una sugerencia de tipo "+tipo+" con el siguiente texto: "+texto1);
 }
@@ -273,14 +305,14 @@ function suggestBusqueda(texto)
 
     //ToDo: Que esto vaya ello solo sin necesidad de recolocarlo
     //Recolocamos la cabecera, el cuerpo y los botones según los filtros que haya
-    $("#cabecera-suggest").css('margin-top', $("#input-busqueda_tagsinput").position().top+$('#input-busqueda_tagsinput').outerHeight(true)+4);
-    $(".cuerpo").css('margin-top', 20+$('#input-busqueda_tagsinput').outerHeight(true));
-    $(".map").css('top', 20+$('#input-busqueda_tagsinput').outerHeight(true));
-    $(".informacion").css('top', 295+$('#input-busqueda_tagsinput').outerHeight(true));
-    $(".botonesSuperiores").css('top', 20+$('#input-busqueda_tagsinput').outerHeight(true));
+    //$("#cabecera-suggest").css('margin-top', $("#input-busqueda_tagsinput").position().top+$('#input-busqueda_tagsinput').outerHeight(true)+4);
+    //$(".cuerpo").css('margin-top', 20+$('#input-busqueda_tagsinput').outerHeight(true));
+    //$(".map").css('top', 20+$('#input-busqueda_tagsinput').outerHeight(true));
+    //$(".informacion").css('top', 295+$('#input-busqueda_tagsinput').outerHeight(true));
+    //$(".botonesSuperiores").css('top', 20+$('#input-busqueda_tagsinput').outerHeight(true));
     
-    $(".scroll-curtain-gradient").css('top', 22+$('.botonesSuperiores').position().top);
-    $(".scroll-curtain").css('height', $(".scroll-curtain-gradient").position().top-43);
+    //$(".scroll-curtain-gradient").css('top', 22+$('.botonesSuperiores').position().top);
+    //$(".scroll-curtain").css('height', $(".scroll-curtain-gradient").position().top-43);
     
 
     window.selectedSuggestion=0;
@@ -393,6 +425,7 @@ $(".cabecera-pestania-izq").click(function()
   $("#cabecera-pestania-izq").addClass("cabecera-pestania-seleccionada",150);
   $("#cabecera-pestania-ctr").removeClass("cabecera-pestania-seleccionada",150);
   $("#cabecera-pestania-dch").removeClass("cabecera-pestania-seleccionada",150);
+  $("#cabecera-pestania-noticias").removeClass("cabecera-pestania-seleccionada",150);
   $("#switch-puntuales").removeClass("switch-filas-off");
   $("#switch-recurrentes").removeClass("switch-filas-off");
   $(".subcabecera-pestania-dch").slideUp("fast",function() 
@@ -411,6 +444,7 @@ $(".cabecera-pestania-ctr").click(function()
   $("#cabecera-pestania-ctr").addClass("cabecera-pestania-seleccionada",150);
   $("#cabecera-pestania-dch").removeClass("cabecera-pestania-seleccionada",150);
   $("#cabecera-pestania-izq").removeClass("cabecera-pestania-seleccionada",150);
+  $("#cabecera-pestania-noticias").removeClass("cabecera-pestania-seleccionada",150);
 
   $(".subcabecera-pestania-izq").slideUp("fast");
   $(".subcabecera-pestania-dch").slideUp("fast");
@@ -427,6 +461,7 @@ $(".cabecera-pestania-dch").click(function()
   $("#cabecera-pestania-dch").addClass("cabecera-pestania-seleccionada",150);
   $("#cabecera-pestania-ctr").removeClass("cabecera-pestania-seleccionada",150);
   $("#cabecera-pestania-izq").removeClass("cabecera-pestania-seleccionada",150);
+  $("#cabecera-pestania-noticias").removeClass("cabecera-pestania-seleccionada",150);
   $("#switch-instituciones").removeClass("switch-filas-off");
   $("#switch-organizaciones").removeClass("switch-filas-off");
   $("#switch-colectivos").removeClass("switch-filas-off");
@@ -438,6 +473,23 @@ $(".cabecera-pestania-dch").click(function()
   });
 
   cargarDatos("organizaciones");
+
+});
+
+
+$(".cabecera-pestania-noticias").click(function()
+{
+  console.log("Mostrando Noticias");
+
+  $("#cabecera-pestania-noticias").addClass("cabecera-pestania-seleccionada",150);
+  $("#cabecera-pestania-izq").removeClass("cabecera-pestania-seleccionada",150);
+  $("#cabecera-pestania-ctr").removeClass("cabecera-pestania-seleccionada",150);
+  $("#cabecera-pestania-dch").removeClass("cabecera-pestania-seleccionada",150);
+  $("#switch-puntuales").removeClass("switch-filas-off");
+  $("#switch-recurrentes").removeClass("switch-filas-off");
+  $(".subcabecera-pestania-dch").slideUp("fast");
+  $(".subcabecera-pestania-izq").slideUp("fast");
+  cargarDatos("eventos");
 
 });
 
@@ -458,7 +510,7 @@ $(".correo").click(function()
 function cargarDatos(clase)
 {
 
-  var query=$("#input-busqueda").val();
+  var query=arrayTags+"";
 
 /*
   if($("#input-busqueda").val()=="")
@@ -497,23 +549,39 @@ function cargarDatos(clase)
 }
 
 
-$('#input-busqueda').tagsInput({
-        'height':'16px',
-        'width':'485px',
-        'defaultText':'',
-        onChange: function(elem, elem_tags)
-        {
-          //console.log($(this).val());
-          /*
-          var languages = ['php','ruby','javascript'];
-          $('.tag', elem_tags).each(function()
-          {
-            if($(this).text().search(new RegExp('\\b(' + languages.join('|') + ')\\b')) >= 0)
-              $(this).css('background-color', 'yellow');
-          });
-          */
-        }
-      });
+
+$('#input-busqueda').bind('keyup',function(event)
+{
+  switch (event.which) 
+  {
+    case 13:  //Intro
+      if(window.selectedSuggestion==0)
+        window.selectedSuggestion=1;
+      var fila="#cabecera-suggest-fila-"+(window.selectedSuggestion-1);
+      var icono=$(fila).find(".cabecera-suggest-icono").css('background-image');
+      icono=icono.substring(4,icono.length-1);
+      var texto=$(fila).find(".cabecera-suggest-texto1").text();
+        clickSuggestion(icono,texto);
+        return;
+        break;
+    case 27:  //Escape
+        $("#cabecera-suggest").empty();
+        $(this).val("");
+        break;
+    case 38:  //Up
+        prevSuggestion();
+        //return;
+        break;
+    case 40:  //Down
+        nextSuggestion();
+        //return;
+        break;
+    default:
+        suggestBusqueda($(this).val());
+  }
+});
+
+
 
 function addPolygonToMap(idLugar,url,texto,color)
 {
@@ -664,7 +732,7 @@ function cargarMapa(idLugar)
       //Cargamos las cosas relativas a la ciudad: Filtrado eventos, breadcrumbs, etc...
       //España > Madrid > <?=$datosLugar["nombre"];?>
       $(".map-breadcrumbs").html("España > Madrid > "+response.nombre);
-      $(".agenda-primera-linea").html("Mostrando EVENTOS en <strong>"+response.nombre+"</strong>");
+      $(".agenda-primera-linea").html("Mostrando EVENTOS en <strong>"+response.nombre+"</strong>, en las proximas semanas, que satisfacen los filtros de búsqueda:");
 
       //Aquí cargaríamos los distritos
       /*
@@ -763,6 +831,7 @@ function irACoordenadas(coordinates,zoom)
   window.map.panTo(coordinates);
 }
 
+var arrayTags = new Array();
 cargarDatos("eventos");
 
 //irACoordenadas([30.48166,-3.364136], 13);

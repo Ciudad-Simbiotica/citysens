@@ -32,15 +32,16 @@ html,body
 .cabecera-logo
 {
 	margin-top:12px;
+	left:-80px;
 	position: absolute;
 }
 .cabecera-pestanias
 {
 	background-color: #6666ff;
 	color: white;
-	width: 240px;
+	width: 320px;
 	height: 51px;
-	left:60px;
+	left:-20px;
 	position: absolute;
 	text-align: center;
 	line-height: 78px;
@@ -48,7 +49,7 @@ html,body
 	text-shadow: 1px 1px 6px #000000;
 }
 
-.cabecera-pestania-izq:hover,.cabecera-pestania-ctr:hover,.cabecera-pestania-dch:hover
+.cabecera-pestania-izq:hover,.cabecera-pestania-ctr:hover,.cabecera-pestania-dch:hover,.cabecera-pestania-noticias:hover
 {
 	border-bottom:thick solid #FFC830;
 	cursor: pointer; cursor: hand;	
@@ -56,37 +57,69 @@ html,body
 
 .cabecera-pestania-izq
 {
-	width: 33%;
+	width: 25%;
 	height:53px;
 	position: absolute;
 	border-bottom:thick solid #6A94D4;
 	box-shadow: 0 2px 3px 0 #aaa;
 	overflow: hidden;
 	z-index: 10;
+
+	background-image: url("/citysens/icons/UniqueEvent.64.png");	
+	background-size: 40%;
+	background-repeat: no-repeat;
+    background-position: 50% 5px;
+
+
 }
 .cabecera-pestania-ctr
 {
-	width: 33%;
+	width: 25%;
 	height:53px;
-	margin-left: 66%;
+	margin-left: 50%;
 	position: absolute;
 	border-bottom:thick solid #6A94D4;
 	box-shadow: 0 2px 3px 0 #aaa;
 	z-index: 10;
-	/*background-color: #FFAA73;
-	border-bottom:thick solid #FF8B40;*/
+
+	background-image: url("/citysens/icons/pezGrandeChico.png");	
+	background-size: 80%;
+	background-repeat: no-repeat;
+    background-position: 50% 5px;
+
 }
 .cabecera-pestania-dch
 {
-	width: 33%;
+	width: 25%;
 	height:53px;
-	margin-left: 33%;
+	margin-left: 25%;
 	position: absolute;;
 	border-bottom:thick solid #6A94D4;
 	z-index: 10;
 	box-shadow: 0 2px 3px 0 #aaa;
-	/*background-color: #8070D8;
-	border-bottom:thick solid #604BD8;*/
+
+	background-image: url("/citysens/icons/CitYsens.Monigote.png");	
+	background-size: 40%;
+	background-repeat: no-repeat;
+    background-position: 55% 5px;
+
+
+}
+
+.cabecera-pestania-noticias
+{
+	width: 25%;
+	height:53px;
+	margin-left: 75%;
+	position: absolute;;
+	border-bottom:thick solid #6A94D4;
+	z-index: 10;
+	box-shadow: 0 2px 3px 0 #aaa;
+
+	background-image: url("/citysens/icons/noticias.png");	
+	background-size: 50%;
+	background-repeat: no-repeat;
+    background-position: 50% 5px;
 }
 
 .cabecera-pestania-seleccionada
@@ -110,8 +143,8 @@ html,body
 	width: 491px;
 	background-color: #FFFFFF;
 	position: absolute;
-	margin-left: 308px;
-	margin-top: 51px;
+	margin-left: 305px;
+	margin-top: 46px;
 	box-shadow:0 2px 3px 0px #aaa, 2px 0px 3px 0px #aaa, -2px 0px 3px 0px #aaa ;
 }
 
@@ -227,20 +260,30 @@ html,body
 
 .cabecera-lupa
 {
-	left: 807px;
-	top: 4px;
+	left: 795px;
+	top: 14px;
 
 	background-image: url("/citysens/icons/lupa.png");	
-	background-size: 80%;
+	background-size: 40%;
 	background-repeat: no-repeat;
     background-position: center;
-    width: 43px;
-    height: 43px;
+    width: 60px;
+    height: 30px;
 	
+
+
 	background-color: #6A94D4;
-	border-radius: 3px;
 	position: absolute;
 	cursor:hand;cursor:pointer;
+	border: 1px solid transparent;
+	border-bottom-right-radius: 3px;
+	border-top-right-radius: 3px;
+	height: 30px;
+	margin: 0;
+	outline: none;
+	padding: 0 0;
+	width: 60px;
+
 }
 .cabecera-derecha
 {
@@ -255,7 +298,8 @@ html,body
 {
 	font-size: 20px;
     width:485px;
-    height:24px;
+    height:26px;
+    margin-top:10px;
 }
 
 
@@ -416,6 +460,21 @@ html,body
 	padding: 5px;
 }
 
+.subcabecera-pestania-noticias
+{
+	top: 58px;
+	height:32px;
+	text-align: left;
+	position: absolute;
+	background-color: #FFE890;
+	color:black;
+	text-shadow: none;
+	display: none;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+	box-shadow:0 2px 3px #aaa;
+	padding: 5px;
+}
 
 
 .switch-filas
@@ -552,8 +611,58 @@ html,body
 	height: auto;
 	overflow: hidden;
 	font-style: italic;
-	text-align: center;
+	text-align: left;
 }
+
+.agenda-filtros
+{
+	margin-bottom: 10px;
+	height: auto;
+	overflow: hidden;
+}
+
+.tagFiltro
+{
+	border: 1px solid #a5d24a; 
+	-moz-border-radius:2px; 
+	-webkit-border-radius:2px; 
+	display: block; 
+	float: left; 
+	padding: 5px; 
+	text-decoration:none; 
+	background: #cde69c; 
+	color: #638421; 
+	margin-right: 5px; 
+	margin-bottom:5px;
+	font-family: helvetica;  
+	font-size:16px;
+}
+.tagFiltro-imagen
+{
+	float:left;
+	width:18px;
+	height:18px;
+	opacity:0.5;
+	background-size: contain;
+	background-repeat: no-repeat;
+    background-position: center;
+	background-image: url("/citysens/icons/Event-Unique.64.png");	
+	margin-right: 4px;
+}
+.tagFiltro-texto
+{
+	float:left;
+	margin-top: 1px;
+	margin-right: 4px;
+}
+.tagFiltro-x
+{
+	font-weight: bold; color: #82ad2b; text-decoration:none; font-size: 18px; 
+	float:left;
+	margin-top: -2px;
+	cursor:hand;cursor:pointer;
+}
+
 
 .grupo,
 .grupo-template,

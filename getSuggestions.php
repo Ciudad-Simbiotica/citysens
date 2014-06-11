@@ -33,6 +33,8 @@ $sugestion["texto1"]="Sanidad";
 $sugestion["texto2"]="";
 array_push($sugestions,$sugestion);
 */
+
+/*
 $sugestion["tipo"]="lugar";
 $sugestion["texto1"]="El Ensanche";
 $sugestion["texto2"]="Alcalá de Henares";
@@ -42,6 +44,20 @@ $sugestion["tipo"]="lugar";
 $sugestion["texto1"]="San Fernando";
 $sugestion["texto2"]="";
 array_push($sugestions,$sugestion);
+*/
+
+
+$lugares=getLugares($_GET["query"],-1,8,3);
+foreach($lugares as $lugar)
+{
+	//print_r($lugar);
+	$sugestion["tipo"]="lugar";
+	$sugestion["texto1"]=htmlentities(ucwords(strtolower(substr(preg_replace('/[^(\x20-\x7F)]*/','', $lugar[1]),0,50))));
+	$sugestion["texto2"]="";//htmlentities("Distrito ".$lugar["nombre"]);
+	array_push($sugestions,$sugestion);
+}
+
+
 
 $asociaciones=getAsociaciones($_GET["query"],3);
 foreach($asociaciones as $asociacion)

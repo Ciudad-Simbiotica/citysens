@@ -89,6 +89,25 @@ function getChildAreas($lugarOriginal,$nivel)
     return $returnData;
 }
 
+function getLugares($cadena,$lugarOriginal,$type,$cantidad=3)
+{
+    $link=connect();
+    $sql="SELECT * FROM lugares_shp WHERE 
+            nivel='$type' AND
+            provincia=28 AND
+            nombre LIKE '%$cadena%' AND
+            id<>'$lugarOriginal'
+            LIMIT 0,$cantidad";
+            
+    mysql_query('SET CHARACTER SET utf8',$link);
+    $result=mysql_query($sql,$link);
+    $returnData=array();
+    while($fila=mysql_fetch_assoc($result))
+        array_push($returnData,array($fila["id"],$fila["nombre"],$fila["xcentroid"],$fila["ycentroid"],$fila["geocodigo"]));
+    return $returnData;
+
+}
+
 function getColindantes($lugarOriginal,$type,$xmin,$xmax,$ymin,$ymax)
 {
     $link=connect();

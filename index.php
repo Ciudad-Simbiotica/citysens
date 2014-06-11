@@ -10,14 +10,12 @@ include "preload.php";
  <link href="css/style.css" rel="stylesheet" type="text/css" />
  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
- <link rel="stylesheet" type="text/css" href="js/tagsinput/jquery.tagsinput.css" />
  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
  <link rel="stylesheet" href="css/leafletCustom.css" />
 
 
  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
  <script src="js/jquery.custom-animations.js"></script>
- <script type="text/javascript" src="js/tagsInput/jquery.tagsinput.js"></script>
  <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
  <script src="http://maps.google.com/maps/api/js?v=3&sensor=false"></script>
  <script src="js/leaflet-plugins-master/layer/tile/Google.js"></script>
@@ -51,10 +49,11 @@ include "preload.php";
 		 			<img src='icons/CitYsens.people.png' width="32px">	 		
 				</div>
 	 		</div>
-	 		<div id='cabecera-pestania-ctr'  class='cabecera-pestania-ctr'>Procesos</div>
+	 		<div id='cabecera-pestania-ctr'  class='cabecera-pestania-ctr'>Iniciativas</div>
 	 		<div class='subcabecera-pestania-ctr'>
 	 			<img class='switch-filas' id='switch-puntuales' src='icons/icon_iniciativa.png' width="32px">
 	 		</div>
+	 		<div id='cabecera-pestania-noticias'  class='cabecera-pestania-noticias'>Noticias</div>
 	 	</div> 
 	 	<div class='cabecera-busqueda'>
 	 		<INPUT TYPE=TEXT class='input-busqueda' id='input-busqueda' placeholder="Filtrar eventos..."></INPUT> 
@@ -89,6 +88,18 @@ include "preload.php";
 
   <div class='agenda-primera-linea'>
   	&nbsp;
+  </div>
+  <div class='agenda-filtros'>
+  	<div class='tagFiltro' id='tagFiltroTemplate' style="display:none">
+  	 <div class='tagFiltro-imagen'>
+     </div>
+  	 <div class='tagFiltro-texto'>
+  	 	Filtro Ejemplo
+     </div>
+  	 <div class='tagFiltro-x'>
+  	  x
+     </div>
+  	</div>
   </div>
 
   <div class='grupo-template' id='grupo-template'>
