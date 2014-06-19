@@ -1,4 +1,5 @@
 <?php
+/*
 error_reporting(E_ERROR);
 if($_POST["regionIDs"]!="")
 {
@@ -18,7 +19,7 @@ if($_POST["regionIDs"]!="")
 		mysql_query($sql,$link);
 	}
 }
-
+*/
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -57,7 +58,30 @@ if($_POST["regionIDs"]!="")
 	var colorSeleccionado='#ff0000';
 	if(idPadre>0)
 	{
-		color='#00ff00';
+		switch(idPadre)
+		{
+			case '777000001':
+				color='#ff0000';
+				break;
+			case '777000002':
+				color='#00ff00';
+				break;
+			case '777000003':
+				color='#0000ff';
+				break;
+			case '777000004':
+				color='#ffff00';
+				break;
+			case '777000005':
+				color='#ff00ff';
+				break;
+			case '777000006':
+				color='#00ffff';
+				break;
+			case '777000007':
+				color='#44ff00';
+				break;
+		}
 		colorSeleccionado='#ff9900';
 	}
 	$.ajax({
@@ -122,6 +146,9 @@ if($_POST["regionIDs"]!="")
 	  L.Google('roadmap');
 	  map.addLayer(ggl);
 
+      //addPolygonToMap("Madrid","../shp/geoJSON/6/Madrid.geojson","Madrid",'#aaaaff',"-1");
+
+	  
 	  $.getJSON("getLevels.php", 
       {
           dataType: 'json',
@@ -135,7 +162,8 @@ if($_POST["regionIDs"]!="")
           addPolygonToMap(datos[0],"../shp/geoJSON/8/"+datos[0]+".geojson",datos[1],'#aaaaff',datos[5]);
         });
       });
-	  
+	 
+
 	}
 
 	function irACoordenadas(coordinates,zoom)

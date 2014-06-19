@@ -11,6 +11,7 @@ function connect()
         echo "Unable to select citysens: " . mysql_error();
         exit;
     }
+    mysql_query('SET CHARACTER SET utf8',$conn);
     return $conn;
 }
 
@@ -113,7 +114,7 @@ function getColindantes($lugarOriginal,$type,$xmin,$xmax,$ymin,$ymax)
     $link=connect();
     $sql="SELECT * FROM lugares_shp WHERE 
             nivel='$type' AND
-            provincia=28 AND
+            provincia=28' AND
             NOT(xmin > $xmax 
             OR $xmin >  xmax
             OR  ymax < $ymin 
