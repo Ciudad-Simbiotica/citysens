@@ -142,5 +142,21 @@ function getEventosCoordenadas($xmin,$xmax,$ymin,$ymax)
     return $returnData;
 }
 
+function getLevels($provincia,$type)
+{
+    $link=connect();
+    $sql="SELECT * FROM lugares_shp WHERE 
+            nivel='$type' AND
+            provincia='$provincia'";
+            
+    mysql_query('SET CHARACTER SET utf8',$link);
+    $result=mysql_query($sql,$link);
+    $returnData=array();
+    while($fila=mysql_fetch_assoc($result))
+        if($fila["id"]!=$lugarOriginal)
+            array_push($returnData,array($fila["id"],$fila["nombre"],$fila["xcentroid"],$fila["ycentroid"],$fila["geocodigo"],$fila["idPadre"]));
+    return $returnData;
+}
+
 
 ?>
