@@ -8,6 +8,10 @@ include "preload.php";
  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
  <title>CitYsens</title>
  <link href="css/style.css" rel="stylesheet" type="text/css" />
+ <link href="css/cabecera.css" rel="stylesheet" type="text/css" />
+ <link href="css/grupos.css" rel="stylesheet" type="text/css" />
+
+
  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
@@ -204,6 +208,8 @@ include "preload.php";
   </div>
  
 </div>
+  <script src="js/mapa.js"></script>
+  <script src="js/sugerencias.js"></script>
   <script src="js/agenda.js"></script>
 
 

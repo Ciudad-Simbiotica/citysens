@@ -11,7 +11,7 @@ function connect()
         echo "Unable to select citysens: " . mysql_error();
         exit;
     }
-    mysql_query('SET CHARACTER SET utf8',$conn);
+    //mysql_query('SET CHARACTER SET utf8',$conn);
     return $conn;
 }
 
@@ -22,6 +22,7 @@ function getAsociaciones($cadena,$cantidad=10)
             FROM  asociaciones 
             WHERE asociacion LIKE '%$cadena%'
             LIMIT 0,$cantidad";
+    mysql_query('SET CHARACTER SET utf8',$conn);
     $result=mysql_query($sql,$link);
     $returnData=array();
     while($fila=mysql_fetch_assoc($result))
