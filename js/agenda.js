@@ -79,15 +79,15 @@ function createLine(grupo,datos,animated)
         //Cambiamos las imágenes según el tipo
         //ToDo: Sustituir el IMG por DIV y cambiar el background por CSS
         if(contenido=="convocatoria")
-          clone.find(".imagen-tipo").attr("src", "icons/Event-Unique.64.png")
+          clone.find(".imagen-tipo").attr("src", "icons/Event-Unique.64.png");
         else if(contenido=="recurrente")
-          clone.find(".imagen-tipo").attr("src", "icons/Event-Recurring.64.png")
+          clone.find(".imagen-tipo").attr("src", "icons/Event-Recurring.64.png");
         else if(contenido=="institucion")
-          clone.find(".imagen-tipo").attr("src", "icons/icon_CitYsens.institucion.png")
+          clone.find(".imagen-tipo").attr("src", "icons/icon_CitYsens.institucion.png");
         else if(contenido=="organizacion")
-          clone.find(".imagen-tipo").attr("src", "icons/icon_CitYsens.organizacion.png")
+          clone.find(".imagen-tipo").attr("src", "icons/icon_CitYsens.organizacion.png");
         else if(contenido=="colectivo")
-          clone.find(".imagen-tipo").attr("src", "icons/CitYsens.People.png")
+          clone.find(".imagen-tipo").attr("src", "icons/CitYsens.People.png");
       }
       /*
       else if(clase=="participante")
