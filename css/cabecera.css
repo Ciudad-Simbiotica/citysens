@@ -231,9 +231,19 @@
 	background-image: url("/citysens/icons/sanidad.png");	
 }
 
+.cabecera-suggest-icono-tematica
+{
+	background-image: url("/citysens/icons/etiqueta30x30.png");	
+}
+
 .cabecera-suggest-icono-organizacion
 {
 	background-image: url("/citysens/icons/icon_CitYsens.organizacion.png");	
+}
+
+.cabecera-suggest-icono-colectivo
+{
+	background-image: url("/citysens/icons/CitYsens.people.png");	
 }
 
 .cabecera-suggest-icono-institucion
@@ -241,10 +251,6 @@
 	background-image: url("/citysens/icons/icon_CitYsens.institucion.png");	
 }
 
-.cabecera-suggest-iconxo-colectivo
-{
-	background-image: url("/citysens/icons/CitYsens.people.png");	
-}
 
 .cabecera-suggest-icono-IrA
 {

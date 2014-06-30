@@ -207,8 +207,19 @@ function cargarContenido(id)
 function cargarDatos(clase)
 {
 
-  var query=arrayTags+"";
+  var query=JSON.stringify(arrayTags);
+  console.log(arrayTags);
+  console.log(query);
 
+  /*
+  $.each(arrayTags, function(i, object) 
+  {
+    $.each(object, function(property, value) 
+    {
+        console.log(property + "=" + value);
+    });
+  });
+  */
   $(".grupo").attr('id',"");  //Para que no se inserten en esta les quitamos el ID
   $(".grupo").fadeOut("1000",function()
   {
@@ -226,6 +237,14 @@ function cargarDatos(clase)
     .done(function(data) 
     {
       //Esperamos a que se hayan borrado los grupos (por si acaba antes) antes de clonar
+      if(jQuery.isEmptyObject(data.grupos))
+      {
+        $(".agenda-primera-linea").html("Ningun evento satisface los filtros de búsqueda:");      
+      }
+      else
+      {
+        $(".agenda-primera-linea").html("Mostrando EVENTOS en las proximas semanas, que satisfacen los filtros de búsqueda:");
+      }
       $.each(data.grupos, function(grupo,filas)
       {
         createGroup(grupo,filas.cabeceraIzq,filas.cabeceraCntr,filas.cabeceraDch,filas.totalFilas);
@@ -413,10 +432,13 @@ $('#input-busqueda').bind('keyup',function(event)
       if(window.selectedSuggestion==0)
         window.selectedSuggestion=1;
       var fila="#cabecera-suggest-fila-"+(window.selectedSuggestion-1);
+      $(fila).trigger("click");
+      /*
       var icono=$(fila).find(".cabecera-suggest-icono").css('background-image');
       icono=icono.substring(4,icono.length-1);
       var texto=$(fila).find(".cabecera-suggest-texto1").text();
-        clickSuggestion(icono,texto);
+      clickSuggestion(icono,texto,'busqueda',0);
+      */
         return;
         break;
     case 27:  //Escape

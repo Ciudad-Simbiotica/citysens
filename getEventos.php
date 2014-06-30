@@ -1,7 +1,8 @@
 <?php
 error_reporting(E_ERROR);
 include_once "db.php";
-$eventos=getEventos($_GET["query"],50);
+$query=json_decode($_GET["query"],true);
+$eventos=getEventos($query,50);
 foreach($eventos as $evento)
 {
 	/*

@@ -149,7 +149,7 @@ function cargarMapa(idLugar)
       //Cargamos las cosas relativas a la ciudad: Filtrado eventos, breadcrumbs, etc...
       //España > Madrid > <?=$datosLugar["nombre"];?>
       $(".map-breadcrumbs").html("España > Madrid > "+response.nombre);
-      $(".agenda-primera-linea").html("Mostrando EVENTOS en <strong>"+response.nombre+"</strong>, en las proximas semanas, que satisfacen los filtros de búsqueda:");
+      $(".agenda-primera-linea").html("Mostrando EVENTOS en las proximas semanas, que satisfacen los filtros de búsqueda:");
 
       //Aquí cargaríamos los distritos
       /*

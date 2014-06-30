@@ -1,22 +1,25 @@
 
-function clickSuggestion(tipo,texto1) //Añadir id, texto buscado
+function clickSuggestion(imagen,texto1,tipo,id) //Añadir id, texto buscado
 {
 
 
   $("#cabecera-suggest").empty();
-  console.log("Clic Sugerencia: "+tipo+"/"+texto1);
+  console.log("Clic Sugerencia: "+imagen+"/"+texto1);
 
   var clone=$("#tagFiltroTemplate").clone();
   clone.hide();
   clone.attr("id",texto1);
 
   clone.find('.tagFiltro-texto').html(texto1);
+  clone.find('.tagFiltro-imagen').css('background-image', "url("+imagen+")");
 
   clone.find('.tagFiltro-x').click(function()
   {
+    //Borrado
     arrayTags = jQuery.grep(arrayTags, function(value) 
     {
-      return value != texto1;
+      var coincide=((value.texto==texto1)&(value.tipo==tipo)&(value.id==id));
+      return !coincide;
     });
     cargarDatos("eventos");
     $(this).fadeOut("fast",function(){
@@ -30,7 +33,22 @@ function clickSuggestion(tipo,texto1) //Añadir id, texto buscado
   clone.appendTo(".agenda-filtros");
   clone.fadeIn("fast");
 
-  arrayTags.push(texto1);
+  /*
+  var sugerencia=new Array();
+  sugerencia["texto"]=texto1;
+  sugerencia["tipo"]=tipo;
+  sugerencia["id"]=id;
+  */
+
+  var sugerencia = 
+  {
+    "texto": texto1, 
+    "tipo": tipo,
+    "id": id
+  };
+
+
+  arrayTags.push(sugerencia);
   $("#input-busqueda").val('');
   cargarDatos("eventos");
 
@@ -132,7 +150,7 @@ function suggestBusqueda(texto)
     $("#cabecera-suggest").find(".cabecera-suggest-fila:last").attr("id","cabecera-suggest-fila-0");
       $("#cabecera-suggest").find(".cabecera-suggest-fila:last").click(function()
       {
-          clickSuggestion("/citysens/icons/lupa.png",texto); //Añadir value.id, texto buscado
+          clickSuggestion("/citysens/icons/lupa.png",texto,'busqueda',0);
       });
     var i=1;
     $.each(data.suggestions, function(key, value)
@@ -140,7 +158,7 @@ function suggestBusqueda(texto)
       //Creamos la sugerencia
       $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1'>"+value.texto1.replace(texto,"<strong>"+texto+"</strong>")+"</div><div class='cabecera-suggest-texto2'>"+value.texto2+"</div></div>");
       $("#cabecera-suggest").find(".cabecera-suggest-icono:last").addClass("cabecera-suggest-icono-"+value.tipo);
-    $("#cabecera-suggest").find(".cabecera-suggest-fila:last").attr("id","cabecera-suggest-fila-"+i);
+      $("#cabecera-suggest").find(".cabecera-suggest-fila:last").attr("id","cabecera-suggest-fila-"+i);
       if(value.texto2=="")
       {
         $("#cabecera-suggest").find(".cabecera-suggest-texto1:last").addClass("cabecera-suggest-texto1-sinTexto2");
@@ -149,8 +167,8 @@ function suggestBusqueda(texto)
       $("#cabecera-suggest").find(".cabecera-suggest-fila:last").click(function()
       {
           var icono="";
-          if(value.tipo=="sanidad")
-            icono="/citysens/icons/sanidad.png";
+          if(value.tipo=="tematica")
+            icono="/citysens/icons/etiqueta30x30.png";
           else if(value.tipo=="organizacion")
             icono="/citysens/icons/icon_CitYsens.organizacion.png";
           else if(value.tipo=="institucion")
@@ -165,7 +183,7 @@ function suggestBusqueda(texto)
             icono="/citysens/icons/lupa.png";
 
 
-          clickSuggestion(icono,value.texto1); //Añadir value.id, texto buscado
+          clickSuggestion(icono,value.texto1,value.tipo,value.id);
       });
       i++;
     
@@ -182,7 +200,7 @@ function suggestBusqueda(texto)
       $("#cabecera-suggest").find(".cabecera-suggest-fila:last").attr("id","cabecera-suggest-fila-"+i);
       $("#cabecera-suggest").find(".cabecera-suggest-fila:last").click(function()
       {
-        clickSuggestion("/citysens/icons/gps.png",texto); //Añadir value.id, texto buscado
+        clickSuggestion("/citysens/icons/gps.png",texto,"IrA",0); //Añadir value.id, texto buscado
       });
     } 
     
