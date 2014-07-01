@@ -164,7 +164,7 @@ function leaveFila(id)
 
 function switchFilas(clase,tipo)
 {
-  console.log("Switch "+clase);
+  console.log("Switch "+clase+" "+tipo);
   $("#switch-"+clase).toggleClass("switch-filas-off");
   if($("#switch-"+clase).hasClass("switch-filas-off"))
   {
@@ -178,6 +178,27 @@ function switchFilas(clase,tipo)
   }  
 }
 
+function comprobarPlegadoFilas()
+{
+    if($("#switch-puntuales").hasClass("switch-filas-off"))
+      plegarFilas("puntuales","convocatoria",0);
+    if($("#switch-recurrentes").hasClass("switch-filas-off"))
+      plegarFilas("recurrentes","recurrente",0);
+
+    if($("#switch-instituciones").hasClass("switch-filas-off"))
+      plegarFilas("instituciones","institucion",0);
+    if($("#switch-organizaciones").hasClass("switch-filas-off"))
+      plegarFilas("organizaciones","organizacion",0);
+    if($("#switch-colectivos").hasClass("switch-filas-off"))
+      plegarFilas("colectivos","colectivo",0);
+
+}
+
+function plegarFilas(clase,tipo,tiempo)
+{
+  $(".grupo-fila-"+tipo).slideUp(tiempo, function() {});
+  $(".grupo-pie-"+tipo).slideDown(tiempo, function() {});
+}
 
 /* 
 ---------------------------------------------------------------------------------------------
@@ -251,10 +272,10 @@ function cargarDatos(clase)
         $.each(filas.filas,function(i,item)
         {
           createLine(grupo,item,0);
-
         });
       });
     $(".grupo").fadeIn(1000);
+    comprobarPlegadoFilas();
     });  
 }
 
