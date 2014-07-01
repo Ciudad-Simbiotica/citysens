@@ -80,15 +80,17 @@ function getEventos($query,$cantidad=50)
                     $busqueda.=" OR ";
                 $busqueda.="titulo LIKE '%$texto%'";
                 break;
-            case "tematica";
+            case "tematica":
                 if($tematica!="")
                     $tematica.=" OR ";
                 $tematica.="idTematica='$id'";
                 break;
-            case "lugar";
+            case "lugar":
                 array_push($lugares,$id);
                 break;
-            case "organizacion";
+            case "organizacion":
+            case "institucion":
+            case "colectivo":
                 if($organizacion!="")
                     $organizacion.=" OR ";
                 $organizacion.="idAsociacion='$id'";
