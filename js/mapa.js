@@ -36,10 +36,11 @@ function cargarMapa(idLugar)
   
   //Creamos el mapa
   var map = L.map('map',{zoomControl: false,attributionControl: false});
-  map.on('click', function() 
+  /*map.on('click', function() 
   {
     alert('Has hecho click en el mapa');
   });
+*/
   
   map.dragging.disable();
   map.touchZoom.disable();
@@ -193,7 +194,19 @@ function cargarMapa(idLugar)
           new L.Marker([datos[3],datos[2]], 
           {
             icon: new L.NumberedDivIcon({number: datos[5]})
-          }).addTo(map);
+          }).addTo(map).on('click',function()
+          {
+            //history.pushState(null, null, "http://localhost:8888/citysens/?idLugar="+idLugar);
+            window.location="http://localhost:8888/citysens/?idLugar="+datos[0];
+            //alert('Esto cargaría la página de '+texto);
+          }).on('mouseover', function(e) 
+          {
+            $(".map-footer").html("Ir a "+datos[1]);
+          }).on('mouseout', function(e) 
+          {
+            $(".map-footer").html("&nbsp;");
+          });
+          
 
         });
       });
