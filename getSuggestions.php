@@ -52,7 +52,7 @@ array_push($sugestions,$sugestion);
 */
 
 
-$lugares=getLugares($_GET["query"],-1,8,3);
+$lugares=getLugaresSuggestions($_GET["query"],$_GET["idLugar"]);
 foreach($lugares as $lugar)
 {
 	//print_r($lugar);

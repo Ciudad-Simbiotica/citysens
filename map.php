@@ -1,6 +1,6 @@
  <div class='map'>
  	<div class='map-breadcrumbs'>
-	 	&nbsp;
+ 		&nbsp;
  	</div>
  	<div class='map-map'>
 	 <div id="map"></div>

@@ -148,8 +148,24 @@ function cargarMapa(idLugar)
 
       //Cargamos las cosas relativas a la ciudad: Filtrado eventos, breadcrumbs, etc...
       //España > Madrid > <?=$datosLugar["nombre"];?>
-      $(".map-breadcrumbs").html("España > Madrid > "+response.nombre);
-      $(".agenda-primera-linea").html("Mostrando EVENTOS en las proximas semanas, que satisfacen los filtros de búsqueda:");
+
+      var breadcrumbs="";
+      var first=true;
+      $.each(response.breadcrumbs, function(i,lugar)
+      {
+        if(!first)
+          breadcrumbs+=" > ";
+        breadcrumbs+='<A HREF=\'?idLugar='+lugar[0]+'\'>'+lugar[1]+'</A>';
+        first=false;
+      });
+      
+      $(".map-breadcrumbs").html(breadcrumbs);
+      window.ciudad=response.nombre;
+      
+
+
+
+      $(".agenda-primera-linea").html("Mostrando EVENTOS en <strong>"+response.nombre+"</strong> las proximas semanas, que satisfacen los siguientes filtros de búsqueda:");
 
       //Aquí cargaríamos los distritos
       /*
@@ -160,17 +176,20 @@ function cargarMapa(idLugar)
       addPolygonToMap("Distrito V","shp/geoJSON/9/00505.geojson","Distrito V",'#ffaaaa',true);
       */
 
+      var nivelHijos=parseInt(response.nivel,10)+1;
+
+
       $.getJSON("getChildAreas.php", 
       {
           dataType: 'json',
-          nivel:'9',
+          nivel:nivelHijos,
           lugarOriginal:idLugar,
       })
       .done(function(data) 
       {
         $.each(data, function(i,datos)
         {
-          addPolygonToMap(datos[0],"shp/geoJSON/9/"+datos[4]+".geojson",datos[1],'#ffaaaa',true);
+          addPolygonToMap(datos[0],"shp/geoJSON/"+nivelHijos+"/"+datos[0]+".geojson",datos[1],'#ffaaaa',true);
           new L.Marker([datos[3],datos[2]], 
           {
             icon: new L.NumberedDivIcon({number: datos[5]})
@@ -216,7 +235,7 @@ function cargarMapa(idLugar)
       $.getJSON("getLugaresColindantes.php", 
       {
           dataType: 'json',
-          tipo:'8',
+          tipo:response.nivel,
           xmin:xmin,
           ymin:ymin,
           xmax:xmax,
@@ -227,7 +246,7 @@ function cargarMapa(idLugar)
       {
         $.each(data, function(i,datos)
         {
-          addPolygonToMap(datos[0],"shp/geoJSON/8/"+datos[0]+".geojson",datos[1],'#aaaaff',true);
+          addPolygonToMap(datos[0],"shp/geoJSON/"+response.nivel+"/"+datos[0]+".geojson",datos[1],'#aaaaff',true);
           
           /*
           var marker = new L.Marker([datos[3],datos[2]], 

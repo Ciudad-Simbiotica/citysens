@@ -130,7 +130,7 @@ function getEventos($query,$cantidad=50)
 function getAllChildren($lugares)
 {
     $link=connect();
-    for($nivel=7;$nivel<=9;$nivel++)
+    for($nivel=6;$nivel<=10;$nivel++)
     {
         $ids=implode(",",$lugares);
         $sql="SELECT id FROM lugares_shp WHERE nivel='$nivel' AND idPadre IN ($ids)";
@@ -140,6 +140,33 @@ function getAllChildren($lugares)
     }
     return(array_unique($lugares));
 
+}
+
+function getAllAncestors($idLugar)
+{
+    $lugar=getDatosLugar($idLugar);
+    $lugares[$lugar["nivel"]]=$lugar;
+    $idPadre=$lugar["idPadre"];
+    while($idPadre!=0)
+    {
+        $lugar=getDatosLugar($idPadre);
+        $lugares[$lugar["nivel"]]=$lugar;
+        $idPadre=$lugar["idPadre"];
+    }
+    
+    /*
+    //Simulando Comunidad de Madrid
+    $lugares[4]["nombre"]="Comunidad de Madrid";
+    $lugares[4]["nombreCorto"]="CM";
+    $lugares[4]["id"]="444000028";
+    */
+
+    //Simulando España
+    $lugares[2]["nombre"]="España";
+    $lugares[2]["nombreCorto"]="ES";
+    $lugares[2]["id"]="222000034";
+
+    return $lugares;
 }
 
 function getDatosLugar($idLugar)
@@ -174,16 +201,38 @@ function getChildAreas($lugarOriginal,$nivel)
     return $returnData;
 }
 
-function getLugares($cadena,$lugarOriginal,$type,$cantidad=3)
+function getLugares($cadena,$lugarOriginal,$type,$cantidad=3,$inSet=array())
 {
     $link=connect();
     $sql="SELECT * FROM lugares_shp WHERE 
             nivel='$type' AND
             provincia=28 AND
             nombre LIKE '%$cadena%' AND
-            id<>'$lugarOriginal'
-            LIMIT 0,$cantidad";
+            id<>'$lugarOriginal'";
+    if(count($inSet)>0)
+        $sql.="";
+    $sql.="LIMIT 0,$cantidad";
             
+    mysql_query('SET CHARACTER SET utf8',$link);
+    $result=mysql_query($sql,$link);
+    $returnData=array();
+    while($fila=mysql_fetch_assoc($result))
+        array_push($returnData,array($fila["id"],$fila["nombre"],$fila["xcentroid"],$fila["ycentroid"],$fila["geocodigo"]));
+    return $returnData;
+
+}
+
+function getLugaresSuggestions($cadena,$lugarOriginal,$cantidad=5)
+{
+    //echo $lugarOriginal;
+    $inSet=getAllChildren(array($lugarOriginal));
+    $link=connect();
+    unset($inSet[0]);   //Quitamos el original
+    $sql="SELECT * FROM lugares_shp WHERE 
+            nombre LIKE '%$cadena%' AND
+            id IN (".implode(",",$inSet).") 
+            LIMIT 0,$cantidad";
+    //echo $sql;        
     mysql_query('SET CHARACTER SET utf8',$link);
     $result=mysql_query($sql,$link);
     $returnData=array();
@@ -198,7 +247,7 @@ function getColindantes($lugarOriginal,$type,$xmin,$xmax,$ymin,$ymax)
     $link=connect();
     $sql="SELECT * FROM lugares_shp WHERE 
             nivel='$type' AND
-            provincia=28' AND
+            provincia='28' AND
             NOT(xmin > $xmax 
             OR $xmin >  xmax
             OR  ymax < $ymin 

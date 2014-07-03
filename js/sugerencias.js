@@ -1,3 +1,9 @@
+//Para sacar los parámetros de GET
+$.urlParam = function(name){
+    var results = new RegExp('[\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.href);
+    return results[1] || 0;
+}
+
 
 function clickSuggestion(imagen,texto1,tipo,id) //Añadir id, texto buscado
 {
@@ -118,6 +124,7 @@ function suggestBusqueda(texto)
   $.getJSON(getAgenda, 
   {
     query: texto,
+    idLugar: $.urlParam('idLugar'),
     date: "any",
     format: "json"
   })

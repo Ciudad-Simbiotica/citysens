@@ -69,6 +69,7 @@ foreach($grupo["totalFilas"] as $key=>$value)
 	}
 }
 $returnData["tipo"]="eventos";
+
 $returnJSON=json_encode($returnData);
 echo $returnJSON;
 

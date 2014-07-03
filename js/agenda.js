@@ -1,3 +1,9 @@
+//Para sacar los parámetros de GET
+$.urlParam = function(name){
+    var results = new RegExp('[\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.href);
+    return results[1] || 0;
+}
+
 /* 
 ---------------------------------------------------------------------------------------------
 ------------------------------------Creado de grupos/filas-----------------------------------
@@ -227,20 +233,34 @@ function cargarContenido(id)
 
 function cargarDatos(clase)
 {
+  //[{"texto":"Alcal&aacute; De Henares","tipo":"lugar","id":"4284"}] 
+  var hayUnLugar=false;
+  var arrayTagsQuery=arrayTags.slice();
 
-  var query=JSON.stringify(arrayTags);
-  console.log(arrayTags);
-  console.log(query);
-
-  /*
-  $.each(arrayTags, function(i, object) 
+  $.each(arrayTagsQuery, function(i, object) 
   {
-    $.each(object, function(property, value) 
+    if(object.tipo=="lugar")
     {
-        console.log(property + "=" + value);
-    });
+      hayUnLugar=true;
+    }
   });
-  */
+
+  if(!hayUnLugar)
+  {
+    var sugerencia = 
+    {
+      "texto": "", 
+      "tipo": "lugar",
+      "id": $.urlParam('idLugar')
+    };
+    arrayTagsQuery.push(sugerencia);
+  }
+  
+
+  var query=JSON.stringify(arrayTagsQuery);
+  //console.log(arrayTagsQuery);
+  //console.log(query);
+
   $(".grupo").attr('id',"");  //Para que no se inserten en esta les quitamos el ID
   $(".grupo").fadeOut("1000",function()
   {
@@ -264,7 +284,7 @@ function cargarDatos(clase)
       }
       else
       {
-        $(".agenda-primera-linea").html("Mostrando EVENTOS en las proximas semanas, que satisfacen los filtros de búsqueda:");
+        $(".agenda-primera-linea").html("Mostrando EVENTOS en <strong>"+window.ciudad+"</strong> en las proximas semanas, que satisfacen los siguientes filtros de búsqueda:");
       }
       $.each(data.grupos, function(grupo,filas)
       {
