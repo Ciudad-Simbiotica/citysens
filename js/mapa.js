@@ -13,7 +13,7 @@ $.ajax({
       geojsonLayer.on('click',function()
       {
         //history.pushState(null, null, "http://localhost:8888/citysens/?idLugar="+idLugar);
-        window.location="http://localhost:8888/citysens/?idLugar="+idLugar;
+        window.location="/citysens/?idLugar="+idLugar;
         //alert('Esto cargaría la página de '+texto);
       });
       
@@ -197,7 +197,7 @@ function cargarMapa(idLugar)
           }).addTo(map).on('click',function()
           {
             //history.pushState(null, null, "http://localhost:8888/citysens/?idLugar="+idLugar);
-            window.location="http://localhost:8888/citysens/?idLugar="+datos[0];
+            window.location="/citysens/?idLugar="+datos[0];
             //alert('Esto cargaría la página de '+texto);
           }).on('mouseover', function(e) 
           {
