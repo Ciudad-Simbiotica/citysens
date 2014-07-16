@@ -1,0 +1,80 @@
+<a class="boxclose" id="boxclose" onclick="javascript:hideOverlay();"></a>
+
+<input type=TEXT name=titulo placeholder="Titulo" id="newEvent-titulo">
+<div id="newEvent-leftDiv">
+	<input type=TEXT id="newEvent-tematica" name=tematica placeholder="Temáticas">
+
+	<div id="newEvent-toolbar" style="display: none;">
+	  <div data-wysihtml5-command="bold" class='newEvent-command newEvent-command-bold'></div>
+	  <div data-wysihtml5-command="italic" class='newEvent-command newEvent-command-italic'></div>
+	  <div data-wysihtml5-command="underline" class='newEvent-command newEvent-command-underline'></div>
+	  
+	  <!-- Some wysihtml5 commands require extra parameters -->
+	  <!--
+	  <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="red">red</a>
+	  <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="green">green</a>
+	  <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="blue">blue</a>
+	  -->
+	  
+
+	  <div data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h1" class='newEvent-command newEvent-command-t1'></div>
+	  <div data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2" class='newEvent-command newEvent-command-t2'></div>
+
+  	  <div data-wysihtml5-command="insertOrderedList" class='newEvent-command newEvent-command-insertOrderedList'></div>
+	  <div data-wysihtml5-command="insertUnorderedList" class='newEvent-command newEvent-command-insertUnorderedList'></div>
+
+	  <!-- Some wysihtml5 commands like 'createLink' require extra paramaters specified by the user (eg. href) -->
+	  <div data-wysihtml5-command="createLink" class='newEvent-command newEvent-command-link'></div>
+	  <div data-wysihtml5-dialog="createLink" style="display: none;">
+	    <label>
+	      Enlace:
+	      <input data-wysihtml5-dialog-field="href" value="http://" class="text">
+	    </label>
+	    <a data-wysihtml5-dialog-action="save">OK</a> <a data-wysihtml5-dialog-action="cancel">Cancelar</a>
+	  </div>
+
+
+
+	  <div data-wysihtml5-command="insertImage" class='newEvent-command newEvent-command-image'></div>
+	  <div data-wysihtml5-dialog="insertImage" style="display: none;">
+	    <label>
+	      Image:
+	      <input data-wysihtml5-dialog-field="src" value="http://">
+	    </label>
+	    <a data-wysihtml5-dialog-action="save">OK</a>
+	    <a data-wysihtml5-dialog-action="cancel">Cancel</a>
+	  </div>
+
+
+  	  <!--<div data-wysihtml5-command="justifyLeft" class='newEvent-command newEvent-command-leftAlign'></div>
+	  <div data-wysihtml5-command="justifyCenter" class='newEvent-command newEvent-command-centerAlign'></div>
+  	  <div data-wysihtml5-command="justifyRight" class='newEvent-command newEvent-command-rightAlign'></div>
+		-->
+
+
+
+	</div>
+
+	<textarea id="newEvent-descripcion" name=descripcion placeholder="Descripción del evento"></textarea>
+	<input type=TEXT id="newEvent-webEvento" name=webEvento placeholder="Sitio web del evento" >
+	<input type=TEXT id="newEvent-email" name=email placeholder="Correo de contacto" >
+</div>
+<div id="newEvent-rightDiv">
+	<input type=TEXT id="newEvent-datepicker" name=datepicker placeholder="Fecha" >
+	<input type=TEXT id="newEvent-horaInicio" name=horaInicio placeholder="Hora Inicio" >
+	<input type=TEXT id="newEvent-horaFinal" name=horaFinal placeholder="Hora Fin (Opcional)" >
+	<input type=TEXT id="newEvent-ciudad" name=ciudad placeholder="Ciudad" >
+	<div class='newEvent-lugarDiv' id='newEvent-lugarDiv'>
+		<div class='newEvent-lugarDiv-texto1'>PlaceHolder 1</div>
+		<div class='newEvent-lugarDiv-texto2'>PlaceHolder 1</div>
+	</div>	
+	<input type=TEXT id="newEvent-lugar" name=nombreLugar placeholder="Lugar" >
+	<div class='newEvent-lugarSuggest' id='newEvent-lugarSuggest'></div>	
+	<div id="newEvent-map"></div>
+	<div id="newEvent-actions">
+		<span id="newEvent-cancel" onclick="javascript:hideOverlay();">Cancelar</span>
+		<span id="newEvent-propose">Proponer</span>
+	</div>
+</div>
+
+<script src="js/newEvent.js"></script>

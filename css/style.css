@@ -7,6 +7,36 @@ html,body
 	background-color: #EEEEEE;
 }
 
+.darkOverlay 
+{
+    background: #ccc;
+    background: rgba(0, 0, 0, .5);
+    display: none;
+    height: 100%;
+    width:100%;
+    left: 0;
+    position: fixed;
+    text-align: center;
+    top: 0;
+    bottom: 0; /* or top: 0, or any needed value */
+    z-index: 1000;
+}
+
+#overlay
+{
+	background-color: #FFF;
+  	position: fixed;
+  	top: 50%;
+  	left: 50%;
+
+	width:800px;
+	height:440px;
+  	margin-left: -400px;
+  	margin-top: -220px;
+  	padding: 10px;
+  	border-radius: 3px;
+}
+
 
 /* Gradiente para cuando se hace scroll de la agenda*/
 .scroll-curtain
@@ -81,6 +111,7 @@ html,body
 {
 	width: 320px;
 	height: 240px;
+	/*overflow: hidden;*/	
 }
 
 .map-footer
@@ -207,9 +238,30 @@ html,body
 
 .agenda-filtros
 {
-	margin-bottom: 10px;
 	height: auto;
 	overflow: hidden;
+	width: 640px;
+}
+
+.agenda-filtros-top,.agenda-filtros-bottom
+{
+	display: inline-table;
+	width: 640px;
+	height: auto;
+	overflow: hidden;
+	vertical-align: top;
+	margin-bottom: 5px;
+}
+
+
+.agenda-filtros-busqueda,.agenda-filtros-tematica,.agenda-filtros-lugar,.agenda-filtros-entidad
+{
+	float:left;
+	/*display: inline-block;*/
+	width: 50%;
+	height: auto;
+	overflow: hidden;
+	vertical-align: top;
 }
 
 .tagFiltro
@@ -228,6 +280,35 @@ html,body
 	font-family: helvetica;  
 	font-size:16px;
 }
+
+.tagFiltro-busqueda
+{
+	background: #cde69c; 
+	color: #638421; 
+	border: 1px solid #a5d24a; 
+}
+
+.tagFiltro-tematica
+{
+	background: #C6DAF7; 
+	color: #4878BD; 
+	border: 1px solid #6A95D4; 
+}
+
+.tagFiltro-lugar
+{
+	background: #FFCECE; 
+	color: #CF6D6D; 
+	border: 1px solid #F6A7A7; 
+}
+
+.tagFiltro-entidad
+{
+	background: #DDB3CA; 
+	color: #A65784; 
+	border: 1px solid #C686AA; 
+}
+
 .tagFiltro-imagen
 {
 	float:left;
@@ -248,7 +329,7 @@ html,body
 }
 .tagFiltro-x
 {
-	font-weight: bold; color: #82ad2b; text-decoration:none; font-size: 18px; 
+	font-weight: bold; text-decoration:none; font-size: 18px; 
 	float:left;
 	margin-top: -2px;
 	cursor:hand;cursor:pointer;

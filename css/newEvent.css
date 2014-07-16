@@ -1,0 +1,364 @@
+a.boxclose{
+    float:right;
+    margin-top:-24px;
+    margin-right:-24px;
+    cursor:pointer;
+    color: #fff;
+    border: 1px solid #AEAEAE;
+    border-radius: 32px;
+    background: #605F61;
+    font-size: 31px;
+    font-weight: bold;
+    display: inline-block;
+    line-height: 0px;
+    padding: 11px 4px 13px 4px;  
+}
+
+.boxclose:before {
+    content: "×";
+}
+
+#newEvent-titulo
+{
+	font-size: 20px;
+    width:796px;
+    height:26px;
+    margin-bottom: 10px;
+}
+#newEvent-leftDiv
+{
+	float: left;
+    width: 470px;
+    height: 380px;
+    margin-right: 10px;
+    text-align: left;
+}
+#newEvent-rightDiv
+{
+   margin-left: 480px;
+   height: 380px;
+}
+
+#newEvent-tematica
+{
+	position: absolute;
+	left:10px;
+	top:50px;
+    height:26px;
+    width: 110px;
+	font-size: 20px;
+}
+
+#newEvent-toolbar
+{
+	position: absolute;
+	left:10px;
+	top:82px;
+	width:464px;
+	height:313px;
+
+}
+
+
+.newEvent-command
+{
+	float:left;
+	margin-right: 2px;
+	width: 24px;
+	height: 24px;
+	background-size: 75%;
+	opacity: 0.5;
+	background-repeat: no-repeat;
+    background-position: center;
+	border-bottom: 3px solid #6A94D4;
+	cursor:pointer;cursor:hand;
+}
+
+.newEvent-command:hover
+{
+	opacity: 1;
+	border-bottom: 3px solid #FFC830;
+}
+
+.wysihtml5-command-active 
+{
+	opacity:1.0;
+}
+
+.newEvent-command-bold
+{
+	background-image: url("/citysens/icons/editor-bold.png");		
+}
+
+.newEvent-command-italic
+{
+	background-image: url("/citysens/icons/editor-italic.png");		
+}
+
+.newEvent-command-underline
+{
+	background-image: url("/citysens/icons/editor-underline.png");		
+}
+
+.newEvent-command-link
+{
+	background-image: url("/citysens/icons/editor-link.png");	
+	opacity: 1.0;	
+}
+
+.newEvent-command-image
+{
+	background-image: url("/citysens/icons/editor-image.png");	
+	opacity: 1.0;	
+}
+
+.newEvent-command-insertOrderedList
+{
+	background-image: url("/citysens/icons/editor-numberedList.png");	
+}
+
+.newEvent-command-insertUnorderedList
+{
+	background-image: url("/citysens/icons/editor-dottedList.png");	
+}
+
+.newEvent-command-leftAlign
+{
+	background-image: url("/citysens/icons/editor-leftAlign.png");	
+}
+
+.newEvent-command-centerAlign
+{
+	background-image: url("/citysens/icons/editor-centerAlign.png");	
+}
+
+.newEvent-command-rightAlign
+{
+	background-image: url("/citysens/icons/editor-rightAlign.png");	
+}
+
+.newEvent-command-t1
+{
+	background-image: url("/citysens/icons/editor-t1.png");	
+}
+
+.newEvent-command-t2
+{
+	background-image: url("/citysens/icons/editor-t2.png");	
+}
+
+
+
+
+#newEvent-descripcion
+{
+	position: absolute;
+	left:10px;
+	top:111px;
+	width:464px;
+	height:293px;
+
+}
+
+#newEvent-webEvento
+{
+	position: absolute;
+	left:10px;
+	top:419px;
+	width:225px;
+    height:26px;
+}
+
+#newEvent-email
+{
+	position: absolute;
+	right:340px;
+	top:419px;
+	width:225px;
+    height:26px;
+}
+
+#newEvent-datepicker
+{
+	position: absolute;
+	left:490px;
+	top:50px;
+	width:195px;
+    height:36px;
+	font-size: 20px;
+}
+
+#newEvent-horaInicio
+{
+	position: absolute;
+	right:10px;
+	top:48px;
+	width:105px;
+}
+
+#newEvent-horaFinal
+{
+	position: absolute;
+	right:10px;
+	top:71px;
+	width:105px;
+}
+
+#newEvent-ciudad
+{
+	position: absolute;
+	left:490px;
+	top:97px;
+	width:314px;
+	height:29px;
+	font-size: 18px;
+
+}
+
+#newEvent-lugar
+{
+	position: absolute;
+	left:490px;
+	top:137px;
+	width:314px;
+	height:29px;
+	font-size: 18px;
+}
+
+#newEvent-lugarDiv
+{
+	position: absolute;
+	left:490px;
+	top:137px;
+	width:314px;	
+	text-align: left;
+ 	font-family: Arial, Helvetica, sans-serif;
+ 	border:thin solid #AAA;
+ 	cursor: hand;cursor:pointer;
+ 	padding: 2px;
+
+}
+
+.newEvent-lugarDiv-texto1
+{
+	position:relative;
+	left:0px;
+	font-weight: bold;
+    font-size: 13px;	
+}
+
+.newEvent-lugarDiv-texto2
+{
+	position:relative;
+	left:0px;
+    font-size: 12px;	
+}
+
+#newEvent-lugarSuggest
+{
+	width: 400px;
+	background-color: #FFFFFF;
+	position: absolute;
+	margin-left: -81px;
+	margin-top: 118px;
+	z-index: 10;
+	box-shadow:0 2px 3px 0px #aaa, 2px 0px 3px 0px #aaa, -2px 0px 3px 0px #aaa ;
+}
+
+.newEvent-lugarSuggest-fila
+{
+	width:100%;
+	height:40px;
+    vertical-align: left;
+    text-align: left;
+ 	font-family: Arial, Helvetica, sans-serif;
+	cursor: pointer; cursor: hand;		
+}
+
+.newEvent-lugarSuggest-crear
+{
+	height:25px;
+	border-top:thin solid #CCC;
+	background-color: #b5caea;
+	text-align: center;
+
+}
+
+.newEvent-lugarSuggest-fila:hover
+{
+	background-color: #ffffe2;	
+	cursor: pointer; cursor: hand;		
+}
+
+.newEvent-lugarSuggest-texto1,.newEvent-lugarSuggest-texto1-sinTexto2
+{
+	position:relative;
+	left:4px;
+	top:5px;
+	font-weight: bold;
+    font-size: 13px;
+}
+
+.newEvent-lugarSuggest-texto2
+{
+	position:relative;
+	left:4px;
+	top:4px;
+    font-size: 12px;
+}
+
+.newEvent-lugarSuggest-fila-selected
+{
+		background-color: #ffffe2;
+}
+
+#newEvent-map
+{
+	position: absolute;
+	left:490px;
+	top:177px;
+	width:320px;
+	height:233px;
+	background-color:#0000FF;	
+}
+
+#newEvent-actions
+{
+	position: absolute;
+	left:490px;
+	top:425px;	
+}
+
+#newEvent-cancel,#newEvent-propose
+{
+	position: absolute;
+	font-family: Arial, Helvetica, sans-serif;
+
+	text-align: center;
+	vertical-align: middle;
+	cursor: pointer; cursor: hand;	
+	bottom:-20px;
+}
+
+#newEvent-cancel:hover,#newEvent-propose:hover
+{
+	border-bottom:thick solid #FFC830;
+	color:black;
+	cursor: pointer; cursor: hand;	
+}
+
+#newEvent-cancel
+{
+	left:158px;
+	padding: 0px 5px 2px 5px;
+	border-bottom:thick solid #FF5555;
+}
+
+#newEvent-propose
+{
+	left:242px;
+	padding: 0px 5px 2px 5px;
+	z-index: 100;
+	border-bottom:thick solid #55DD55;
+}
+

@@ -45,6 +45,83 @@ function getAsociacionesZonaConEventos($cadena,$cantidad=10)
     return $returnData;
 }
 
+function getAsociacionesQuery($query,$cantidad=10)
+{
+    $link=connect();
+    $busqueda="";
+    $tematicas=array();
+    $lugar="";
+    $lugares=array();
+    foreach($query as $tag)
+    {
+        $tipo=$tag["tipo"];
+        $texto=$tag["texto"];
+        $id=$tag["id"];
+        switch($tipo)
+        {
+            case "busqueda":
+                if($busqueda!="")
+                    $busqueda.=" OR ";
+                $busqueda.="asociacion LIKE '%$texto%'";
+                break;
+            case "tematica":
+                if($tematica!="")
+                    $tematica.=" OR ";
+                $tematica.="idTematica='$id'";
+                break;
+            case "lugar":
+                array_push($lugares,$id);
+                break;
+        }
+    }
+
+
+    $lugares=getAllChildren($lugares);
+    foreach($lugares as $idLugar)
+    {
+        if($lugar!="")
+            $lugar.=" OR ";
+        $lugar.="idDistritoPadre='$idLugar'";
+    }
+
+
+    $sql="SELECT * FROM asociaciones JOIN asociaciones_tematicas ON asociaciones.idAsociacion=asociaciones_tematicas.idAsociacion WHERE ";
+    if($busqueda!="")
+        $sql.="($busqueda) AND ";
+    if($tematica!="")
+        $sql.="($tematica) AND ";
+    if($lugar!="")
+        $sql.="($lugar) AND ";
+    $sql.="1 GROUP BY asociaciones.idAsociacion ORDER BY points DESC LIMIT 0,$cantidad";
+
+    echo $sql;
+
+    $result=mysql_query($sql,$link);
+    $returnData=array();
+    while($fila=mysql_fetch_assoc($result))
+        array_push($returnData,$fila);
+    return $returnData;
+
+
+    return;
+
+
+    //id/clase=organizaciones/tipo/tituloOrg/textoOrg/lugarOrg/puntos
+
+    $link=connect();
+    $sql="SELECT * 
+            FROM asociaciones JOIN eventos 
+            ON asociaciones.idAsociacion=eventos.idAsociacion
+            WHERE asociacion LIKE '%$cadena%'
+            GROUP BY asociaciones.idAsociacion
+            LIMIT 0,$cantidad";
+    $result=mysql_query($sql,$link);
+    $returnData=array();
+    while($fila=mysql_fetch_assoc($result))
+        array_push($returnData,$fila);
+    return $returnData;
+}
+
 function getTematicas($cadena,$cantidad=10)
 {
     $link=connect();
@@ -242,12 +319,32 @@ function getLugaresSuggestions($cadena,$lugarOriginal,$cantidad=5)
 
 }
 
+function getDireccionesSuggestions($cadena,$lugarOriginal,$cantidad=5)
+{
+    //echo $lugarOriginal;
+    $inSet=getAllChildren(array($lugarOriginal));
+    $link=connect();
+    //unset($inSet[0]);   //Quitamos el original
+    $sql="SELECT * FROM direcciones WHERE 
+            (nombre LIKE '%$cadena%' OR direccion LIKE '%$cadena%') AND
+            idPadre IN (".implode(",",$inSet).") 
+            LIMIT 0,$cantidad";
+    //echo $sql;        
+    mysql_query('SET CHARACTER SET utf8',$link);
+    $result=mysql_query($sql,$link);
+    $returnData=array();
+    while($fila=mysql_fetch_assoc($result))
+        array_push($returnData,array($fila["idDireccion"],$fila["nombre"],$fila["direccion"],$fila["lat"],$fila["long"],$fila["zoom"]));
+    return $returnData;
+
+}
+
+
 function getColindantes($lugarOriginal,$type,$xmin,$xmax,$ymin,$ymax)
 {
     $link=connect();
     $sql="SELECT * FROM lugares_shp WHERE 
             nivel='$type' AND
-            provincia='28' AND
             NOT(xmin > $xmax 
             OR $xmin >  xmax
             OR  ymax < $ymin 

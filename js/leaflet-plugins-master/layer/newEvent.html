@@ -1,0 +1,715 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0049)http://localhost:8888/citysens/?idLugar=888004284 -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">.gm-style .gm-style-cc span,.gm-style .gm-style-cc a,.gm-style .gm-style-mtc div{font-size:10px}</style><link type="text/css" rel="stylesheet" href="./newEvent_files/css"><style type="text/css">@media print {  .gm-style .gmnoprint, .gmnoprint {    display:none  }}@media screen {  .gm-style .gmnoscreen, .gmnoscreen {    display:none  }}</style><style type="text/css">.gm-style{font-family:Roboto,Arial,sans-serif;font-size:11px;font-weight:400;text-decoration:none}</style>
+ 
+ <title>CitYsens</title>
+ <link href="./newEvent_files/style.css" rel="stylesheet" type="text/css">
+ <link href="./newEvent_files/cabecera.css" rel="stylesheet" type="text/css">
+ <link href="./newEvent_files/grupos.css" rel="stylesheet" type="text/css">
+
+
+ <script src="./newEvent_files/jquery.min.js"></script>
+ <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css">
+ <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css">
+ <link rel="stylesheet" href="http://localhost:8888/citysens/css/leafletCustom.css">
+
+
+ <script src="./newEvent_files/jquery-ui.min.js"></script>
+ <script src="./newEvent_files/jquery.custom-animations.js"></script>
+ <script src="./newEvent_files/leaflet.js"></script>
+ <script src="./newEvent_files/js"></script><script src="./newEvent_files/main.js" type="text/javascript"></script>
+ <script src="./newEvent_files/Leaflet.ContinuousZoom.js"></script>
+<script src="./newEvent_files/Google.js"></script>
+
+
+<style type="text/css"></style><script type="text/javascript" charset="UTF-8" src="./newEvent_files/{common,map}.js"></script><script type="text/javascript" charset="UTF-8" src="./newEvent_files/{util,onion}.js"></script><script type="text/javascript" charset="UTF-8" src="./newEvent_files/{controls,stats}.js"></script><script type="text/javascript" charset="UTF-8" src="./newEvent_files/ViewportInfoService.GetViewportInfo"></script><script type="text/javascript" charset="UTF-8" src="./newEvent_files/ft"></script><script type="text/javascript" charset="UTF-8" src="./newEvent_files/ViewportInfoService(1).GetViewportInfo"></script><script type="text/javascript" charset="UTF-8" src="./newEvent_files/AuthenticationService.Authenticate"></script><script type="text/javascript" charset="UTF-8" src="./newEvent_files/ft(1)"></script><script type="text/javascript" charset="UTF-8" src="./newEvent_files/QuotaService.RecordEvent"></script></head>
+
+<body>  
+ <div class="darkOverlay" style="display: block;">
+ 	<div id="overlay"></div>
+ </div>
+ <div class="cabecera">
+ 	<div class="cabecera-cuerpo">
+	 	<div class="cabecera-logo"><img src="./newEvent_files/citysens.logoPrincipal.png" width="49px" height="40px"></div>
+	 	<div class="cabecera-pestanias">
+	 		<div id="cabecera-pestania-izq" class="cabecera-pestania-izq cabecera-pestania-seleccionada">Eventos</div>
+	 		<div class="subcabecera-pestania-izq">
+	 			<div class="switch-filas switch-filas-convocatoria" id="switch-puntuales">
+	 				<img src="./newEvent_files/Event-Unique.64.png" width="32px">
+	 			</div>
+	 			<div class="switch-filas switch-filas-recurrente" id="switch-recurrentes">
+		 			<img src="./newEvent_files/Event-Recurring.64.png" width="32px">
+		 		</div>
+	 		</div>
+	 		<div id="cabecera-pestania-dch" class="cabecera-pestania-dch">Entidades</div>
+	 		<div class="subcabecera-pestania-dch">
+	 			<div class="switch-filas switch-filas-instituciones" id="switch-instituciones">
+	 				<img src="./newEvent_files/icon_CitYsens.institucion.png" width="32px">	
+	 			</div>
+				<div class="switch-filas switch-filas-organizaciones" id="switch-organizaciones">
+		 			<img src="./newEvent_files/icon_CitYsens.organizacion.png" width="32px">	 		
+		 		</div>
+		 		<div class="switch-filas switch-filas-colectivos" id="switch-colectivos">
+		 			<img src="./newEvent_files/CitYsens.people.png" width="32px">	 		
+				</div>
+	 		</div>
+	 		<div id="cabecera-pestania-ctr" class="cabecera-pestania-ctr">Iniciativas</div>
+	 		<div class="subcabecera-pestania-ctr">
+	 			<img class="switch-filas" id="switch-puntuales" src="./newEvent_files/icon_iniciativa.png" width="32px">
+	 		</div>
+	 		<div id="cabecera-pestania-noticias" class="cabecera-pestania-noticias">Noticias</div>
+	 	</div> 
+	 	<div class="cabecera-busqueda">
+	 		<input type="TEXT" class="input-busqueda" id="input-busqueda" placeholder="Filtrar eventos..."> 
+	 	</div>
+	 	<div class="cabecera-suggest" id="cabecera-suggest">
+	 	</div>
+	 	<div class="cabecera-lupa">
+	 	</div>
+	 	<div id="cabecera-ordenar" class="cabecera-ordenar">
+	 	 <div class="cabecera-ordenar-texto">Ordenar por</div><div class="cabecera-ordenar-flecha">▼</div>
+	 	</div>
+ 		<div class="subcabecera-pestania-ordenar">
+ 			<div class="subcabecera-pestania-ordenar-row">Fecha</div>
+ 			<div class="subcabecera-pestania-ordenar-row">Temática</div>
+ 			<div class="subcabecera-pestania-ordenar-row">Lugar</div>
+ 			<div class="subcabecera-pestania-ordenar-row">Popularidad</div>
+ 		</div>
+	 	<div class="cabecera-derecha">Mi CitYsens</div>
+	</div>
+ </div>
+ 
+ <div class="cuerpo">
+ 	
+ 	<div class="botonesSuperiores">
+	 	
+	 	<div class="nuevoEvento">
+	 		Propón un evento
+	 	</div>
+
+	 	<div class="correo">
+	 		Recibir por correo
+	 	</div>
+	 	
+	</div>
+
+<div class="scroll-curtain"></div>
+<div class="scroll-curtain-gradient"></div>
+
+ 
+ <div class="agenda">
+
+  <div class="agenda-primera-linea">Mostrando EVENTOS en <strong>Alcalá de Henares</strong> las proximas semanas, que satisfacen los siguientes filtros de búsqueda:</div>
+  <div class="agenda-filtros">
+  	<div class="tagFiltro" id="tagFiltroTemplate" style="display:none">
+  	 <div class="tagFiltro-imagen">
+     </div>
+  	 <div class="tagFiltro-texto">
+  	 	Filtro Ejemplo
+     </div>
+  	 <div class="tagFiltro-x">
+  	  x
+     </div>
+  	</div>
+  </div>
+
+  <div class="grupo-template" id="grupo-template">
+	 <div class="grupo-cabecera">
+	  <div class="grupo-cabecera-izq">
+	    Izq
+	  </div>
+	  <div class="grupo-cabecera-cntr">
+	   Centro
+	  </div>
+	  <div class="grupo-cabecera-dch">
+	   Dch
+	  </div>
+	 </div>
+	 
+	 <div class="grupo-filas">
+		 <div class="grupo-fila-eventos" id="grupo-fila-template-eventos">
+			<div class="grupo-elemento-tipo">
+		 		<img class="imagen-tipo" src="./newEvent_files/Event-Unique.64.png" width="20px">
+			</div>
+		 	<div class="grupo-elemento-hora">
+		 		11:00
+			</div>
+		 	<div class="grupo-elemento-handup">
+		 		<img src="./newEvent_files/flecha_arriba.png">
+			</div>
+		 	<div class="grupo-elemento-temp">
+		 		<img class="imagen-temp" src="./newEvent_files/termometro_3.png" height="32px">
+			</div>
+		 	<div class="grupo-elemento-titulo">
+		 		Convocatoria
+			</div>
+		 	<div class="grupo-elemento-lugar">
+		 		Lugar
+			</div>
+		 	<div class="grupo-elemento-texto">
+		 		Descripción
+			</div>
+		 </div>
+
+		<div class="grupo-fila-procesos" id="grupo-fila-template-procesos">
+			<div class="grupo-elemento-tipo">
+		 		<img class="imagen-tipo" src="./newEvent_files/Event-Unique.64.png" width="20px">
+			</div>
+		 	<div class="grupo-elemento-hora">
+		 		11:00
+			</div>
+		 	<div class="grupo-elemento-handup">
+		 		<img src="./newEvent_files/flecha_arriba.png">
+			</div>
+		 	<div class="grupo-elemento-temp">
+		 		<img class="imagen-temp" src="./newEvent_files/termometro_1.png" height="32px">
+			</div>
+		 	<div class="grupo-elemento-titulo">
+		 		Convocatoria
+			</div>
+		 	<div class="grupo-elemento-lugar">
+		 		Lugar
+			</div>
+		 	<div class="grupo-elemento-texto">
+		 		Descripción
+			</div>
+		 </div>
+
+		<div class="grupo-fila-organizaciones" id="grupo-fila-template-organizaciones">
+		 	<div class="grupo-elemento-puntos">
+		 		9999
+			</div>
+		 	<div class="grupo-elemento-copa"></div>
+			<div class="grupo-elemento-tipo">
+		 		<img class="imagen-tipo" src="./newEvent_files/UniqueEvent.64.png" width="20px">
+			</div>
+		 	<div class="grupo-elemento-logo">
+		 		<img src="./newEvent_files/icon_logo1.png" height="40px">
+			</div>
+		 	<div class="grupo-elemento-tituloOrg">
+		 		Convocatoria
+			</div>
+		 	<div class="grupo-elemento-lugarOrg">
+		 		Lugar
+			</div>
+		 	<div class="grupo-elemento-textoOrg">
+		 		Descripción
+			</div>
+		 </div>
+
+	 </div>
+	 
+	 <div class="grupo-pie">
+	  Texto en el pie
+	 </div>
+	 
+  </div>
+ 
+<div class="grupo" id="2014-05-13" style="">
+	 <div class="grupo-cabecera">
+	  <div class="grupo-cabecera-izq">Hoy, Martes 13 de Mayo</div>
+	  <div class="grupo-cabecera-cntr"></div>
+	  <div class="grupo-cabecera-dch"></div>
+	 </div>
+	 
+	 <div class="grupo-filas"><div class="grupo-fila-eventos grupo-fila-recurrente" id="971" style="">
+			<div class="grupo-elemento-tipo">
+		 		<img class="imagen-tipo" src="./newEvent_files/Event-Recurring.64.png" width="20px">
+			</div>
+		 	<div class="grupo-elemento-hora">19:00</div>
+		 	<div class="grupo-elemento-handup">
+		 		<img src="./newEvent_files/flecha_arriba.png">
+			</div>
+		 	<div class="grupo-elemento-temp">
+		 		<img class="imagen-temp" src="./newEvent_files/termometro_2.png" height="32px">
+			</div>
+		 	<div class="grupo-elemento-titulo">Reunión PAH - Corredor del Henares</div>
+		 	<div class="grupo-elemento-lugar">Alcalá de Henares</div>
+		 	<div class="grupo-elemento-texto">Reunión PAH - Corredor del Henares</div>
+		 </div></div>
+	 
+	 <div class="grupo-pie"><div class="grupo-pie-recurrente" style="display: none;"><div class="grupo-pie-recurrente-imagen"></div><div class="grupo-pie-recurrente-texto">+1 recurrente</div></div></div>
+	 
+  </div><div class="grupo" id="2014-05-15" style="">
+	 <div class="grupo-cabecera">
+	  <div class="grupo-cabecera-izq">Jueves 15 de Mayo</div>
+	  <div class="grupo-cabecera-cntr"></div>
+	  <div class="grupo-cabecera-dch"></div>
+	 </div>
+	 
+	 <div class="grupo-filas"><div class="grupo-fila-eventos grupo-fila-recurrente" id="1805" style="">
+			<div class="grupo-elemento-tipo">
+		 		<img class="imagen-tipo" src="./newEvent_files/Event-Recurring.64.png" width="20px">
+			</div>
+		 	<div class="grupo-elemento-hora">19:30</div>
+		 	<div class="grupo-elemento-handup">
+		 		<img src="./newEvent_files/flecha_arriba.png">
+			</div>
+		 	<div class="grupo-elemento-temp">
+		 		<img class="imagen-temp" src="./newEvent_files/termometro_4.png" height="32px">
+			</div>
+		 	<div class="grupo-elemento-titulo">Proyección de la película "SALMOS DESDE LA COCINA"</div>
+		 	<div class="grupo-elemento-lugar">Alcalá de Henares</div>
+		 	<div class="grupo-elemento-texto">Proyección de la película "SALMOS DESDE LA COCINA"</div>
+		 </div></div>
+	 
+	 <div class="grupo-pie"><div class="grupo-pie-recurrente" style="display: none;"><div class="grupo-pie-recurrente-imagen"></div><div class="grupo-pie-recurrente-texto">+1 recurrente</div></div></div>
+	 
+  </div><div class="grupo" id="2014-05-16" style="">
+	 <div class="grupo-cabecera">
+	  <div class="grupo-cabecera-izq">Viernes 16 de Mayo</div>
+	  <div class="grupo-cabecera-cntr"></div>
+	  <div class="grupo-cabecera-dch"></div>
+	 </div>
+	 
+	 <div class="grupo-filas"><div class="grupo-fila-eventos grupo-fila-recurrente" id="1807" style="">
+			<div class="grupo-elemento-tipo">
+		 		<img class="imagen-tipo" src="./newEvent_files/Event-Recurring.64.png" width="20px">
+			</div>
+		 	<div class="grupo-elemento-hora">20:30</div>
+		 	<div class="grupo-elemento-handup">
+		 		<img src="./newEvent_files/flecha_arriba.png">
+			</div>
+		 	<div class="grupo-elemento-temp">
+		 		<img class="imagen-temp" src="./newEvent_files/termometro_3.png" height="32px">
+			</div>
+		 	<div class="grupo-elemento-titulo">¡Vuelve "LA FARMACIA DE ANTON CHEJOV"!</div>
+		 	<div class="grupo-elemento-lugar">Alcalá de Henares</div>
+		 	<div class="grupo-elemento-texto">¡Vuelve "LA FARMACIA DE ANTON CHEJOV"!</div>
+		 </div></div>
+	 
+	 <div class="grupo-pie"><div class="grupo-pie-recurrente" style="display: none;"><div class="grupo-pie-recurrente-imagen"></div><div class="grupo-pie-recurrente-texto">+1 recurrente</div></div></div>
+	 
+  </div><div class="grupo" id="2014-05-17" style="">
+	 <div class="grupo-cabecera">
+	  <div class="grupo-cabecera-izq">Sábado 17 de Mayo</div>
+	  <div class="grupo-cabecera-cntr"></div>
+	  <div class="grupo-cabecera-dch"></div>
+	 </div>
+	 
+	 <div class="grupo-filas"><div class="grupo-fila-eventos grupo-fila-convocatoria" id="1839" style="">
+			<div class="grupo-elemento-tipo">
+		 		<img class="imagen-tipo" src="./newEvent_files/Event-Unique.64.png" width="20px">
+			</div>
+		 	<div class="grupo-elemento-hora">18:00</div>
+		 	<div class="grupo-elemento-handup">
+		 		<img src="./newEvent_files/flecha_arriba.png">
+			</div>
+		 	<div class="grupo-elemento-temp">
+		 		<img class="imagen-temp" src="./newEvent_files/termometro_2.png" height="32px">
+			</div>
+		 	<div class="grupo-elemento-titulo">CIne Forum Precarias a la deriva</div>
+		 	<div class="grupo-elemento-lugar">Alcalá de Henares</div>
+		 	<div class="grupo-elemento-texto">CIne Forum Precarias a la deriva</div>
+		 </div></div>
+	 
+	 <div class="grupo-pie"><div class="grupo-pie-convocatoria" style="display: none;"><div class="grupo-pie-convocatoria-imagen"></div><div class="grupo-pie-convocatoria-texto">+1 convocatoria</div></div></div>
+	 
+  </div><div class="grupo" id="2014-05-18" style="">
+	 <div class="grupo-cabecera">
+	  <div class="grupo-cabecera-izq">Domingo 18 de Mayo</div>
+	  <div class="grupo-cabecera-cntr"></div>
+	  <div class="grupo-cabecera-dch"></div>
+	 </div>
+	 
+	 <div class="grupo-filas"><div class="grupo-fila-eventos grupo-fila-recurrente" id="1823" style="">
+			<div class="grupo-elemento-tipo">
+		 		<img class="imagen-tipo" src="./newEvent_files/Event-Recurring.64.png" width="20px">
+			</div>
+		 	<div class="grupo-elemento-hora">13:00</div>
+		 	<div class="grupo-elemento-handup">
+		 		<img src="./newEvent_files/flecha_arriba.png">
+			</div>
+		 	<div class="grupo-elemento-temp">
+		 		<img class="imagen-temp" src="./newEvent_files/termometro_3.png" height="32px">
+			</div>
+		 	<div class="grupo-elemento-titulo">Mercadillo artesano DIY Y trueque</div>
+		 	<div class="grupo-elemento-lugar">Alcalá de Henares</div>
+		 	<div class="grupo-elemento-texto">Mercadillo artesano DIY Y trueque</div>
+		 </div><div class="grupo-fila-eventos grupo-fila-convocatoria" id="1840" style="">
+			<div class="grupo-elemento-tipo">
+		 		<img class="imagen-tipo" src="./newEvent_files/Event-Unique.64.png" width="20px">
+			</div>
+		 	<div class="grupo-elemento-hora">13:00</div>
+		 	<div class="grupo-elemento-handup">
+		 		<img src="./newEvent_files/flecha_arriba.png">
+			</div>
+		 	<div class="grupo-elemento-temp">
+		 		<img class="imagen-temp" src="./newEvent_files/termometro_3.png" height="32px">
+			</div>
+		 	<div class="grupo-elemento-titulo">Vermú Rock PODEMOS</div>
+		 	<div class="grupo-elemento-lugar">Alcalá de Henares</div>
+		 	<div class="grupo-elemento-texto">Vermú Rock PODEMOS</div>
+		 </div><div class="grupo-fila-eventos grupo-fila-recurrente" id="1119" style="">
+			<div class="grupo-elemento-tipo">
+		 		<img class="imagen-tipo" src="./newEvent_files/Event-Recurring.64.png" width="20px">
+			</div>
+		 	<div class="grupo-elemento-hora">18:00</div>
+		 	<div class="grupo-elemento-handup">
+		 		<img src="./newEvent_files/flecha_arriba.png">
+			</div>
+		 	<div class="grupo-elemento-temp">
+		 		<img class="imagen-temp" src="./newEvent_files/termometro_1.png" height="32px">
+			</div>
+		 	<div class="grupo-elemento-titulo">Taller Social de la Bici</div>
+		 	<div class="grupo-elemento-lugar">Alcalá de Henares</div>
+		 	<div class="grupo-elemento-texto">Taller Social de la Bici</div>
+		 </div></div>
+	 
+	 <div class="grupo-pie"><div class="grupo-pie-convocatoria" style="display: none;"><div class="grupo-pie-convocatoria-imagen"></div><div class="grupo-pie-convocatoria-texto">+1 convocatoria</div></div><div class="grupo-pie-recurrente" style="display: none;"><div class="grupo-pie-recurrente-imagen"></div><div class="grupo-pie-recurrente-texto">+2 recurrentes</div></div></div>
+	 
+  </div><div class="grupo" id="2014-05-19" style="">
+	 <div class="grupo-cabecera">
+	  <div class="grupo-cabecera-izq">Lunes 19 de Mayo</div>
+	  <div class="grupo-cabecera-cntr"></div>
+	  <div class="grupo-cabecera-dch"></div>
+	 </div>
+	 
+	 <div class="grupo-filas"><div class="grupo-fila-eventos grupo-fila-recurrente" id="1555" style="">
+			<div class="grupo-elemento-tipo">
+		 		<img class="imagen-tipo" src="./newEvent_files/Event-Recurring.64.png" width="20px">
+			</div>
+		 	<div class="grupo-elemento-hora">10:30</div>
+		 	<div class="grupo-elemento-handup">
+		 		<img src="./newEvent_files/flecha_arriba.png">
+			</div>
+		 	<div class="grupo-elemento-temp">
+		 		<img class="imagen-temp" src="./newEvent_files/termometro_5.png" height="32px">
+			</div>
+		 	<div class="grupo-elemento-titulo">Lactancia reunión del grupo Lactard</div>
+		 	<div class="grupo-elemento-lugar">Alcalá de Henares</div>
+		 	<div class="grupo-elemento-texto">Lactancia reunión del grupo Lactard</div>
+		 </div><div class="grupo-fila-eventos grupo-fila-convocatoria" id="1820" style="">
+			<div class="grupo-elemento-tipo">
+		 		<img class="imagen-tipo" src="./newEvent_files/Event-Unique.64.png" width="20px">
+			</div>
+		 	<div class="grupo-elemento-hora">18:00</div>
+		 	<div class="grupo-elemento-handup">
+		 		<img src="./newEvent_files/flecha_arriba.png">
+			</div>
+		 	<div class="grupo-elemento-temp">
+		 		<img class="imagen-temp" src="./newEvent_files/termometro_4.png" height="32px">
+			</div>
+		 	<div class="grupo-elemento-titulo">Construcción de un nuevo espacio educativo alternativo en Alcalá (E. Infantil)</div>
+		 	<div class="grupo-elemento-lugar">Alcalá de Henares</div>
+		 	<div class="grupo-elemento-texto">Construcción de un nuevo espacio educativo alternativo en Alcalá (E. Infantil)</div>
+		 </div><div class="grupo-fila-eventos grupo-fila-recurrente" id="1090" style="">
+			<div class="grupo-elemento-tipo">
+		 		<img class="imagen-tipo" src="./newEvent_files/Event-Recurring.64.png" width="20px">
+			</div>
+		 	<div class="grupo-elemento-hora">18:00</div>
+		 	<div class="grupo-elemento-handup">
+		 		<img src="./newEvent_files/flecha_arriba.png">
+			</div>
+		 	<div class="grupo-elemento-temp">
+		 		<img class="imagen-temp" src="./newEvent_files/termometro_3.png" height="32px">
+			</div>
+		 	<div class="grupo-elemento-titulo">Taller Social de la Bici</div>
+		 	<div class="grupo-elemento-lugar">Alcalá de Henares</div>
+		 	<div class="grupo-elemento-texto">Taller Social de la Bici</div>
+		 </div><div class="grupo-fila-eventos grupo-fila-convocatoria" id="1201" style="">
+			<div class="grupo-elemento-tipo">
+		 		<img class="imagen-tipo" src="./newEvent_files/Event-Unique.64.png" width="20px">
+			</div>
+		 	<div class="grupo-elemento-hora">19:00</div>
+		 	<div class="grupo-elemento-handup">
+		 		<img src="./newEvent_files/flecha_arriba.png">
+			</div>
+		 	<div class="grupo-elemento-temp">
+		 		<img class="imagen-temp" src="./newEvent_files/termometro_4.png" height="32px">
+			</div>
+		 	<div class="grupo-elemento-titulo">Asamblea abierta Red de Solidaridad Popular</div>
+		 	<div class="grupo-elemento-lugar">Alcalá de Henares</div>
+		 	<div class="grupo-elemento-texto">Asamblea abierta Red de Solidaridad Popular</div>
+		 </div></div>
+	 
+	 <div class="grupo-pie"><div class="grupo-pie-convocatoria" style="display: none;"><div class="grupo-pie-convocatoria-imagen"></div><div class="grupo-pie-convocatoria-texto">+2 convocatorias</div></div><div class="grupo-pie-recurrente" style="display: none;"><div class="grupo-pie-recurrente-imagen"></div><div class="grupo-pie-recurrente-texto">+2 recurrentes</div></div></div>
+	 
+  </div><div class="grupo" id="2014-05-20" style="">
+	 <div class="grupo-cabecera">
+	  <div class="grupo-cabecera-izq">Martes 20 de Mayo</div>
+	  <div class="grupo-cabecera-cntr"></div>
+	  <div class="grupo-cabecera-dch"></div>
+	 </div>
+	 
+	 <div class="grupo-filas"><div class="grupo-fila-eventos grupo-fila-convocatoria" id="1227" style="">
+			<div class="grupo-elemento-tipo">
+		 		<img class="imagen-tipo" src="./newEvent_files/Event-Unique.64.png" width="20px">
+			</div>
+		 	<div class="grupo-elemento-hora">17:00</div>
+		 	<div class="grupo-elemento-handup">
+		 		<img src="./newEvent_files/flecha_arriba.png">
+			</div>
+		 	<div class="grupo-elemento-temp">
+		 		<img class="imagen-temp" src="./newEvent_files/termometro_3.png" height="32px">
+			</div>
+		 	<div class="grupo-elemento-titulo">Pleno municipal Ayuntamiento de Alcalá</div>
+		 	<div class="grupo-elemento-lugar">Alcalá de Henares</div>
+		 	<div class="grupo-elemento-texto">Pleno municipal Ayuntamiento de Alcalá</div>
+		 </div><div class="grupo-fila-eventos grupo-fila-convocatoria" id="972" style="">
+			<div class="grupo-elemento-tipo">
+		 		<img class="imagen-tipo" src="./newEvent_files/Event-Unique.64.png" width="20px">
+			</div>
+		 	<div class="grupo-elemento-hora">19:00</div>
+		 	<div class="grupo-elemento-handup">
+		 		<img src="./newEvent_files/flecha_arriba.png">
+			</div>
+		 	<div class="grupo-elemento-temp">
+		 		<img class="imagen-temp" src="./newEvent_files/termometro_4.png" height="32px">
+			</div>
+		 	<div class="grupo-elemento-titulo">Reunión PAH - Corredor del Henares</div>
+		 	<div class="grupo-elemento-lugar">Alcalá de Henares</div>
+		 	<div class="grupo-elemento-texto">Reunión PAH - Corredor del Henares</div>
+		 </div></div>
+	 
+	 <div class="grupo-pie"><div class="grupo-pie-convocatoria" style="display: none;"><div class="grupo-pie-convocatoria-imagen"></div><div class="grupo-pie-convocatoria-texto">+2 convocatorias</div></div></div>
+	 
+  </div><div class="grupo" id="2014-05-22" style="">
+	 <div class="grupo-cabecera">
+	  <div class="grupo-cabecera-izq">Jueves 22 de Mayo</div>
+	  <div class="grupo-cabecera-cntr"></div>
+	  <div class="grupo-cabecera-dch"></div>
+	 </div>
+	 
+	 <div class="grupo-filas"><div class="grupo-fila-eventos grupo-fila-recurrente" id="1691" style="">
+			<div class="grupo-elemento-tipo">
+		 		<img class="imagen-tipo" src="./newEvent_files/Event-Recurring.64.png" width="20px">
+			</div>
+		 	<div class="grupo-elemento-hora">20:30</div>
+		 	<div class="grupo-elemento-handup">
+		 		<img src="./newEvent_files/flecha_arriba.png">
+			</div>
+		 	<div class="grupo-elemento-temp">
+		 		<img class="imagen-temp" src="./newEvent_files/termometro_3.png" height="32px">
+			</div>
+		 	<div class="grupo-elemento-titulo">Presentación libro El movimiento obrero en Alcalá de Henares, 1868-1939</div>
+		 	<div class="grupo-elemento-lugar">Alcalá de Henares</div>
+		 	<div class="grupo-elemento-texto">Presentación libro El movimiento obrero en Alcalá de Henares, 1868-1939</div>
+		 </div></div>
+	 
+	 <div class="grupo-pie"><div class="grupo-pie-recurrente" style="display: none;"><div class="grupo-pie-recurrente-imagen"></div><div class="grupo-pie-recurrente-texto">+1 recurrente</div></div></div>
+	 
+  </div><div class="grupo" id="2014-05-23" style="">
+	 <div class="grupo-cabecera">
+	  <div class="grupo-cabecera-izq">Viernes 23 de Mayo</div>
+	  <div class="grupo-cabecera-cntr"></div>
+	  <div class="grupo-cabecera-dch"></div>
+	 </div>
+	 
+	 <div class="grupo-filas"><div class="grupo-fila-eventos grupo-fila-convocatoria" id="1703" style="">
+			<div class="grupo-elemento-tipo">
+		 		<img class="imagen-tipo" src="./newEvent_files/Event-Unique.64.png" width="20px">
+			</div>
+		 	<div class="grupo-elemento-hora">19:30</div>
+		 	<div class="grupo-elemento-handup">
+		 		<img src="./newEvent_files/flecha_arriba.png">
+			</div>
+		 	<div class="grupo-elemento-temp">
+		 		<img class="imagen-temp" src="./newEvent_files/termometro_3.png" height="32px">
+			</div>
+		 	<div class="grupo-elemento-titulo">Agua de Mayo - Un nuevo espacio en Alcalá</div>
+		 	<div class="grupo-elemento-lugar">Alcalá de Henares</div>
+		 	<div class="grupo-elemento-texto">Agua de Mayo - Un nuevo espacio en Alcalá</div>
+		 </div></div>
+	 
+	 <div class="grupo-pie"><div class="grupo-pie-convocatoria" style="display: none;"><div class="grupo-pie-convocatoria-imagen"></div><div class="grupo-pie-convocatoria-texto">+1 convocatoria</div></div></div>
+	 
+  </div><div class="grupo" id="2014-05-24" style="">
+	 <div class="grupo-cabecera">
+	  <div class="grupo-cabecera-izq">Sábado 24 de Mayo</div>
+	  <div class="grupo-cabecera-cntr"></div>
+	  <div class="grupo-cabecera-dch"></div>
+	 </div>
+	 
+	 <div class="grupo-filas"><div class="grupo-fila-eventos grupo-fila-recurrente" id="1478" style="">
+			<div class="grupo-elemento-tipo">
+		 		<img class="imagen-tipo" src="./newEvent_files/Event-Recurring.64.png" width="20px">
+			</div>
+		 	<div class="grupo-elemento-hora">11:30</div>
+		 	<div class="grupo-elemento-handup">
+		 		<img src="./newEvent_files/flecha_arriba.png">
+			</div>
+		 	<div class="grupo-elemento-temp">
+		 		<img class="imagen-temp" src="./newEvent_files/termometro_4.png" height="32px">
+			</div>
+		 	<div class="grupo-elemento-titulo">I Encuentro de Alternativas Fácticas de Vivienda del Henares</div>
+		 	<div class="grupo-elemento-lugar">Alcalá de Henares</div>
+		 	<div class="grupo-elemento-texto">I Encuentro de Alternativas Fácticas de Vivienda del Henares</div>
+		 </div></div>
+	 
+	 <div class="grupo-pie"><div class="grupo-pie-recurrente" style="display: none;"><div class="grupo-pie-recurrente-imagen"></div><div class="grupo-pie-recurrente-texto">+1 recurrente</div></div></div>
+	 
+  </div><div class="grupo" id="2014-05-25" style="">
+	 <div class="grupo-cabecera">
+	  <div class="grupo-cabecera-izq">Domingo 25 de Mayo</div>
+	  <div class="grupo-cabecera-cntr"></div>
+	  <div class="grupo-cabecera-dch"></div>
+	 </div>
+	 
+	 <div class="grupo-filas"><div class="grupo-fila-eventos grupo-fila-convocatoria" id="1120" style="">
+			<div class="grupo-elemento-tipo">
+		 		<img class="imagen-tipo" src="./newEvent_files/Event-Unique.64.png" width="20px">
+			</div>
+		 	<div class="grupo-elemento-hora">18:00</div>
+		 	<div class="grupo-elemento-handup">
+		 		<img src="./newEvent_files/flecha_arriba.png">
+			</div>
+		 	<div class="grupo-elemento-temp">
+		 		<img class="imagen-temp" src="./newEvent_files/termometro_2.png" height="32px">
+			</div>
+		 	<div class="grupo-elemento-titulo">Taller Social de la Bici</div>
+		 	<div class="grupo-elemento-lugar">Alcalá de Henares</div>
+		 	<div class="grupo-elemento-texto">Taller Social de la Bici</div>
+		 </div></div>
+	 
+	 <div class="grupo-pie"><div class="grupo-pie-convocatoria" style="display: none;"><div class="grupo-pie-convocatoria-imagen"></div><div class="grupo-pie-convocatoria-texto">+1 convocatoria</div></div></div>
+	 
+  </div><div class="grupo" id="2014-05-26" style="">
+	 <div class="grupo-cabecera">
+	  <div class="grupo-cabecera-izq">Lunes 26 de Mayo</div>
+	  <div class="grupo-cabecera-cntr"></div>
+	  <div class="grupo-cabecera-dch"></div>
+	 </div>
+	 
+	 <div class="grupo-filas"><div class="grupo-fila-eventos grupo-fila-recurrente" id="1556" style="">
+			<div class="grupo-elemento-tipo">
+		 		<img class="imagen-tipo" src="./newEvent_files/Event-Recurring.64.png" width="20px">
+			</div>
+		 	<div class="grupo-elemento-hora">10:30</div>
+		 	<div class="grupo-elemento-handup">
+		 		<img src="./newEvent_files/flecha_arriba.png">
+			</div>
+		 	<div class="grupo-elemento-temp">
+		 		<img class="imagen-temp" src="./newEvent_files/termometro_3.png" height="32px">
+			</div>
+		 	<div class="grupo-elemento-titulo">Lactancia reunión del grupo Lactard</div>
+		 	<div class="grupo-elemento-lugar">Alcalá de Henares</div>
+		 	<div class="grupo-elemento-texto">Lactancia reunión del grupo Lactard</div>
+		 </div><div class="grupo-fila-eventos grupo-fila-recurrente" id="1821" style="">
+			<div class="grupo-elemento-tipo">
+		 		<img class="imagen-tipo" src="./newEvent_files/Event-Recurring.64.png" width="20px">
+			</div>
+		 	<div class="grupo-elemento-hora">18:00</div>
+		 	<div class="grupo-elemento-handup">
+		 		<img src="./newEvent_files/flecha_arriba.png">
+			</div>
+		 	<div class="grupo-elemento-temp">
+		 		<img class="imagen-temp" src="./newEvent_files/termometro_3.png" height="32px">
+			</div>
+		 	<div class="grupo-elemento-titulo">Construcción de un nuevo espacio educativo alternativo en Alcalá (E. Primaria)</div>
+		 	<div class="grupo-elemento-lugar">Alcalá de Henares</div>
+		 	<div class="grupo-elemento-texto">Construcción de un nuevo espacio educativo alternativo en Alcalá (E. Primaria)</div>
+		 </div><div class="grupo-fila-eventos grupo-fila-recurrente" id="1091" style="">
+			<div class="grupo-elemento-tipo">
+		 		<img class="imagen-tipo" src="./newEvent_files/Event-Recurring.64.png" width="20px">
+			</div>
+		 	<div class="grupo-elemento-hora">18:00</div>
+		 	<div class="grupo-elemento-handup">
+		 		<img src="./newEvent_files/flecha_arriba.png">
+			</div>
+		 	<div class="grupo-elemento-temp">
+		 		<img class="imagen-temp" src="./newEvent_files/termometro_5.png" height="32px">
+			</div>
+		 	<div class="grupo-elemento-titulo">Taller Social de la Bici</div>
+		 	<div class="grupo-elemento-lugar">Alcalá de Henares</div>
+		 	<div class="grupo-elemento-texto">Taller Social de la Bici</div>
+		 </div><div class="grupo-fila-eventos grupo-fila-convocatoria" id="1202" style="">
+			<div class="grupo-elemento-tipo">
+		 		<img class="imagen-tipo" src="./newEvent_files/Event-Unique.64.png" width="20px">
+			</div>
+		 	<div class="grupo-elemento-hora">19:00</div>
+		 	<div class="grupo-elemento-handup">
+		 		<img src="./newEvent_files/flecha_arriba.png">
+			</div>
+		 	<div class="grupo-elemento-temp">
+		 		<img class="imagen-temp" src="./newEvent_files/termometro_1.png" height="32px">
+			</div>
+		 	<div class="grupo-elemento-titulo">Asamblea abierta Red de Solidaridad Popular</div>
+		 	<div class="grupo-elemento-lugar">Alcalá de Henares</div>
+		 	<div class="grupo-elemento-texto">Asamblea abierta Red de Solidaridad Popular</div>
+		 </div></div>
+	 
+	 <div class="grupo-pie"><div class="grupo-pie-convocatoria" style="display: none;"><div class="grupo-pie-convocatoria-imagen"></div><div class="grupo-pie-convocatoria-texto">+1 convocatoria</div></div><div class="grupo-pie-recurrente" style="display: none;"><div class="grupo-pie-recurrente-imagen"></div><div class="grupo-pie-recurrente-texto">+3 recurrentes</div></div></div>
+	 
+  </div><div class="grupo" id="2014-05-27" style="">
+	 <div class="grupo-cabecera">
+	  <div class="grupo-cabecera-izq">Martes 27 de Mayo</div>
+	  <div class="grupo-cabecera-cntr"></div>
+	  <div class="grupo-cabecera-dch"></div>
+	 </div>
+	 
+	 <div class="grupo-filas"><div class="grupo-fila-eventos grupo-fila-recurrente" id="973" style="">
+			<div class="grupo-elemento-tipo">
+		 		<img class="imagen-tipo" src="./newEvent_files/Event-Recurring.64.png" width="20px">
+			</div>
+		 	<div class="grupo-elemento-hora">19:00</div>
+		 	<div class="grupo-elemento-handup">
+		 		<img src="./newEvent_files/flecha_arriba.png">
+			</div>
+		 	<div class="grupo-elemento-temp">
+		 		<img class="imagen-temp" src="./newEvent_files/termometro_4.png" height="32px">
+			</div>
+		 	<div class="grupo-elemento-titulo">Reunión PAH - Corredor del Henares</div>
+		 	<div class="grupo-elemento-lugar">Alcalá de Henares</div>
+		 	<div class="grupo-elemento-texto">Reunión PAH - Corredor del Henares</div>
+		 </div></div>
+	 
+	 <div class="grupo-pie"><div class="grupo-pie-recurrente" style="display: none;"><div class="grupo-pie-recurrente-imagen"></div><div class="grupo-pie-recurrente-texto">+1 recurrente</div></div></div>
+	 
+  </div><div class="grupo" id="2014-05-28" style="">
+	 <div class="grupo-cabecera">
+	  <div class="grupo-cabecera-izq">Miércoles 28 de Mayo</div>
+	  <div class="grupo-cabecera-cntr"></div>
+	  <div class="grupo-cabecera-dch"></div>
+	 </div>
+	 
+	 <div class="grupo-filas"><div class="grupo-fila-eventos grupo-fila-recurrente" id="1052" style="">
+			<div class="grupo-elemento-tipo">
+		 		<img class="imagen-tipo" src="./newEvent_files/Event-Recurring.64.png" width="20px">
+			</div>
+		 	<div class="grupo-elemento-hora">20:00</div>
+		 	<div class="grupo-elemento-handup">
+		 		<img src="./newEvent_files/flecha_arriba.png">
+			</div>
+		 	<div class="grupo-elemento-temp">
+		 		<img class="imagen-temp" src="./newEvent_files/termometro_1.png" height="32px">
+			</div>
+		 	<div class="grupo-elemento-titulo">Bici Crítica Alcalá ¡Usa la bici todos los días, celébralo una vez al mes!</div>
+		 	<div class="grupo-elemento-lugar">Alcalá de Henares</div>
+		 	<div class="grupo-elemento-texto">Bici Crítica Alcalá ¡Usa la bici todos los días, celébralo una vez al mes!</div>
+		 </div></div>
+	 
+	 <div class="grupo-pie"><div class="grupo-pie-recurrente" style="display: none;"><div class="grupo-pie-recurrente-imagen"></div><div class="grupo-pie-recurrente-texto">+1 recurrente</div></div></div>
+	 
+  </div></div>
+  <script src="./newEvent_files/mapa.js"></script>
+  <script src="./newEvent_files/sugerencias.js"></script>
+  <script src="./newEvent_files/agenda.js"></script>
+
+
+ <div class="map">
+ 	<div class="map-breadcrumbs"><a href="http://localhost:8888/citysens/?idLugar=222000034">ES</a> &gt; <a href="http://localhost:8888/citysens/?idLugar=444000028">CM</a> &gt; <a href="http://localhost:8888/citysens/?idLugar=666000028">Madrid</a> &gt; <a href="http://localhost:8888/citysens/?idLugar=777000002">Corr...</a> &gt; <a href="./newEvent_files/newEvent.html">Alcalá de Henares</a></div>
+ 	<div class="map-map">
+	 <div id="map" class="leaflet-container leaflet-fade-anim" tabindex="0" style="position: relative;"><div class="leaflet-google-layer leaflet-top leaflet-left" id="_GMapContainer_16" style="z-index: auto; width: 320px; height: 240px; overflow: hidden; -webkit-transform: translateZ(0px); background-color: rgb(221, 221, 221);"><div class="gm-style" style="position: absolute; left: 0px; top: 0px; overflow: hidden; width: 100%; height: 100%; z-index: 0;"><div style="position: absolute; left: 0px; top: 0px; overflow: hidden; width: 100%; height: 100%; z-index: 0;"><div style="position: absolute; left: 0px; top: 0px; z-index: 1; width: 100%; -webkit-transform-origin: 0px 0px; -webkit-transform: matrix(1, 0, 0, 1, -123, 49);"><div style="-webkit-transform: translateZ(0px); position: absolute; left: 0px; top: 0px; width: 100%; z-index: 200;"><div style="-webkit-transform: translateZ(0px); position: absolute; left: 0px; top: 0px; z-index: 101; width: 100%;"></div></div><div style="-webkit-transform: translateZ(0px); position: absolute; left: 0px; top: 0px; width: 100%; z-index: 201;"><div style="-webkit-transform: translateZ(0px); position: absolute; left: 0px; top: 0px; z-index: 102; width: 100%;"></div><div style="-webkit-transform: translateZ(0px); position: absolute; left: 0px; top: 0px; z-index: 103; width: 100%;"></div></div><div style="-webkit-transform: translateZ(0px); position: absolute; left: 0px; top: 0px; width: 100%; z-index: 202;"><div style="-webkit-transform: translateZ(0px); position: absolute; left: 0px; top: 0px; z-index: 104; width: 100%;"></div><div style="-webkit-transform: translateZ(0px); position: absolute; left: 0px; top: 0px; z-index: 105; width: 100%;"></div><div style="-webkit-transform: translateZ(0px); position: absolute; left: 0px; top: 0px; z-index: 106; width: 100%;"></div></div><div style="-webkit-transform: translateZ(0px); position: absolute; left: 0px; top: 0px; z-index: 100; width: 100%;"><div style="position: absolute; left: 0px; top: 0px; z-index: 0;"><div style="position: absolute; left: 0px; top: 0px; z-index: 1;"><div style="width: 256px; height: 256px; -webkit-transform: translateZ(0px); position: absolute; left: 64px; top: -92px;"></div><div style="width: 256px; height: 256px; -webkit-transform: translateZ(0px); position: absolute; left: 64px; top: 164px;"></div><div style="width: 256px; height: 256px; -webkit-transform: translateZ(0px); position: absolute; left: -192px; top: -92px;"></div><div style="width: 256px; height: 256px; -webkit-transform: translateZ(0px); position: absolute; left: -192px; top: 164px;"></div><div style="width: 256px; height: 256px; -webkit-transform: translateZ(0px); position: absolute; left: 320px; top: -92px;"></div><div style="width: 256px; height: 256px; -webkit-transform: translateZ(0px); position: absolute; left: 320px; top: 164px;"></div><div style="width: 256px; height: 256px; -webkit-transform: translateZ(0px); position: absolute; left: 64px; top: -348px;"></div><div style="width: 256px; height: 256px; -webkit-transform: translateZ(0px); position: absolute; left: -192px; top: -348px;"></div><div style="width: 256px; height: 256px; -webkit-transform: translateZ(0px); position: absolute; left: 320px; top: -348px;"></div></div></div></div><div style="position: absolute; z-index: 0; left: 0px; top: 0px;"><div style="overflow: hidden; width: 320px; height: 240px;"><img src="./newEvent_files/StaticMapService.GetMapImage" style="width: 320px; height: 240px;"></div></div><div style="position: absolute; left: 0px; top: 0px; z-index: 0;"><div style="position: absolute; left: 0px; top: 0px; z-index: 1;"><div style="width: 256px; height: 256px; -webkit-transform: translateZ(0px); position: absolute; left: 64px; top: -92px; opacity: 1; transition: opacity 200ms ease-out; -webkit-transition: opacity 200ms ease-out;"><img src="./newEvent_files/vt" draggable="false" style="width: 256px; height: 256px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px; -webkit-transform: translateZ(0px);"></div><div style="width: 256px; height: 256px; -webkit-transform: translateZ(0px); position: absolute; left: 64px; top: 164px; opacity: 1; transition: opacity 200ms ease-out; -webkit-transition: opacity 200ms ease-out;"><img src="./newEvent_files/vt(1)" draggable="false" style="width: 256px; height: 256px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px; -webkit-transform: translateZ(0px);"></div><div style="width: 256px; height: 256px; -webkit-transform: translateZ(0px); position: absolute; left: -192px; top: -92px; opacity: 1; transition: opacity 200ms ease-out; -webkit-transition: opacity 200ms ease-out;"><img src="./newEvent_files/vt(2)" draggable="false" style="width: 256px; height: 256px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px; -webkit-transform: translateZ(0px);"></div><div style="width: 256px; height: 256px; -webkit-transform: translateZ(0px); position: absolute; left: -192px; top: 164px; opacity: 1; transition: opacity 200ms ease-out; -webkit-transition: opacity 200ms ease-out;"><img src="./newEvent_files/vt(3)" draggable="false" style="width: 256px; height: 256px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px; -webkit-transform: translateZ(0px);"></div><div style="width: 256px; height: 256px; -webkit-transform: translateZ(0px); position: absolute; left: 320px; top: -92px; opacity: 1; transition: opacity 200ms ease-out; -webkit-transition: opacity 200ms ease-out;"><img src="./newEvent_files/vt(4)" draggable="false" style="width: 256px; height: 256px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px; -webkit-transform: translateZ(0px);"></div><div style="width: 256px; height: 256px; -webkit-transform: translateZ(0px); position: absolute; left: 320px; top: 164px; opacity: 1; transition: opacity 200ms ease-out; -webkit-transition: opacity 200ms ease-out;"><img src="./newEvent_files/vt(5)" draggable="false" style="width: 256px; height: 256px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px; -webkit-transform: translateZ(0px);"></div><div style="width: 256px; height: 256px; -webkit-transform: translateZ(0px); position: absolute; left: 320px; top: -348px; opacity: 1; transition: opacity 200ms ease-out; -webkit-transition: opacity 200ms ease-out;"><img src="./newEvent_files/vt(6)" draggable="false" style="width: 256px; height: 256px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px; -webkit-transform: translateZ(0px);"></div><div style="width: 256px; height: 256px; -webkit-transform: translateZ(0px); position: absolute; left: 64px; top: -348px; opacity: 1; transition: opacity 200ms ease-out; -webkit-transition: opacity 200ms ease-out;"><img src="./newEvent_files/vt(7)" draggable="false" style="width: 256px; height: 256px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px; -webkit-transform: translateZ(0px);"></div><div style="width: 256px; height: 256px; -webkit-transform: translateZ(0px); position: absolute; left: -192px; top: -348px; opacity: 1; transition: opacity 200ms ease-out; -webkit-transition: opacity 200ms ease-out;"><img src="./newEvent_files/vt(8)" draggable="false" style="width: 256px; height: 256px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px; -webkit-transform: translateZ(0px);"></div></div></div></div></div><div style="margin-left: 5px; margin-right: 5px; z-index: 1000000; position: absolute; left: 0px; bottom: 0px;"><a target="_blank" href="http://maps.google.com/maps?ll=40.495526,-3.36525&z=11&t=m&hl=es-ES&gl=US&mapclient=apiv3" title="Haz clic aquí para visualizar esta zona en Google Maps" style="position: static; overflow: visible; float: none; display: inline;"><div style="width: 62px; height: 26px; cursor: pointer;"><img src="./newEvent_files/google_white2.png" draggable="false" style="position: absolute; left: 0px; top: 0px; width: 62px; height: 26px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;"></div></a></div><div class="gmnoprint" style="z-index: 1000001; position: absolute; right: 226px; bottom: 0px; width: 78px;"><div draggable="false" class="gm-style-cc" style="-webkit-user-select: none;"><div style="opacity: 0.7; width: 100%; height: 100%; position: absolute;"><div style="width: 1px;"></div><div style="width: auto; height: 100%; margin-left: 1px; background-color: rgb(245, 245, 245);"></div></div><div style="position: relative; padding-right: 6px; padding-left: 6px; font-family: Roboto, Arial, sans-serif; font-size: 10px; color: rgb(68, 68, 68); white-space: nowrap; direction: ltr; text-align: right;"><a style="color: rgb(68, 68, 68); text-decoration: none; cursor: pointer;">Datos de mapa</a><span style="display: none;">Datos de mapa ©2014 Google, basado en BCN IGN España</span></div></div></div><div style="padding: 15px 21px; border: 1px solid rgb(171, 171, 171); font-family: Roboto, Arial, sans-serif; color: rgb(34, 34, 34); -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 16px; box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 16px; z-index: 10000002; display: none; width: 256px; height: 148px; position: absolute; left: 10px; top: 30px; background-color: white;"><div style="padding: 0px 0px 10px; font-size: 16px;">Datos de mapa</div><div style="font-size: 13px;">Datos de mapa ©2014 Google, basado en BCN IGN España</div><div style="width: 13px; height: 13px; overflow: hidden; position: absolute; opacity: 0.7; right: 12px; top: 12px; z-index: 10000; cursor: pointer;"><img src="./newEvent_files/mapcnt3.png" draggable="false" style="position: absolute; left: -2px; top: -336px; width: 59px; height: 492px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;"></div></div><div class="gmnoscreen" style="position: absolute; right: 0px; bottom: 0px;"><div style="font-family: Roboto, Arial, sans-serif; font-size: 11px; color: rgb(68, 68, 68); direction: ltr; text-align: right; background-color: rgb(245, 245, 245);">Datos de mapa ©2014 Google, basado en BCN IGN España</div></div><div class="gmnoprint gm-style-cc" draggable="false" style="z-index: 1000001; position: absolute; -webkit-user-select: none; right: 139px; bottom: 0px;"><div style="opacity: 0.7; width: 100%; height: 100%; position: absolute;"><div style="width: 1px;"></div><div style="width: auto; height: 100%; margin-left: 1px; background-color: rgb(245, 245, 245);"></div></div><div style="position: relative; padding-right: 6px; padding-left: 6px; font-family: Roboto, Arial, sans-serif; font-size: 10px; color: rgb(68, 68, 68); white-space: nowrap; direction: ltr; text-align: right;"><a href="http://www.google.com/intl/es-ES_US/help/terms_maps.html" target="_blank" style="text-decoration: none; cursor: pointer; color: rgb(68, 68, 68);">Términos de uso</a></div></div><div draggable="false" class="gm-style-cc" style="-webkit-user-select: none; position: absolute; right: 0px; bottom: 0px;"><div style="opacity: 0.7; width: 100%; height: 100%; position: absolute;"><div style="width: 1px;"></div><div style="width: auto; height: 100%; margin-left: 1px; background-color: rgb(245, 245, 245);"></div></div><div style="position: relative; padding-right: 6px; padding-left: 6px; font-family: Roboto, Arial, sans-serif; font-size: 10px; color: rgb(68, 68, 68); white-space: nowrap; direction: ltr; text-align: right;"><a target="_new" title="Informar a Google acerca de errores en las imágenes o en el mapa de carreteras" href="http://maps.google.com/maps?ll=40.495526,-3.36525&z=11&t=m&hl=es-ES&gl=US&mapclient=apiv3&skstate=action:mps_dialog$apiref:1&output=classic" style="font-family: Roboto, Arial, sans-serif; font-size: 10px; color: rgb(68, 68, 68); text-decoration: none; position: relative;">Informar de un error de Maps</a></div></div></div></div><div class="leaflet-map-pane" style="-webkit-transform: translate3d(-123px, 49px, 0px);"><div class="leaflet-tile-pane"></div><div class="leaflet-objects-pane"><div class="leaflet-shadow-pane"></div><div class="leaflet-overlay-pane"><svg class="leaflet-zoom-animated" width="500" height="375" viewBox="33 -117 500 375" style="-webkit-transform: translate3d(33px, -117px, 0px);"><g><path stroke-linejoin="round" stroke-linecap="round" fill-rule="evenodd" stroke="#0033ff" stroke-opacity="0.5" stroke-width="1" fill="#ffaaaa" fill-opacity="0.2" class="leaflet-clickable" d="M293 103L289 108L281 112L281 108L272 103L271 96L274 93L271 88L288 80L295 93L299 97L294 103z"></path></g><g><path stroke-linejoin="round" stroke-linecap="round" fill-rule="evenodd" stroke="#0033ff" stroke-opacity="0.5" stroke-width="1" fill="#ffaaaa" fill-opacity="0.2" class="leaflet-clickable" d="M273 104L279 106L281 108L281 112L288 108L287 114L289 120L295 122L289 130L284 131L286 133L291 134L295 138L301 149L303 150L304 147L306 147L308 152L306 150L303 157L298 157L298 159L296 159L293 162L291 158L280 152L281 149L277 147L271 151L264 149L262 153L257 152L255 155L252 152L253 153L252 148L248 145L249 140L245 140L240 144L231 146L229 145L228 150L227 149L220 152L212 146L204 149L198 147L194 152L182 150L180 155L170 162L168 162L164 166L163 165L183 139L187 136L183 126L186 125L186 123L203 118L270 88L274 93L271 96L273 104z"></path></g><g><path stroke-linejoin="round" stroke-linecap="round" fill-rule="evenodd" stroke="#0033ff" stroke-opacity="0.5" stroke-width="1" fill="#ffaaaa" fill-opacity="0.2" class="leaflet-clickable" d="M197 -25L204 -22L209 -24L210 -20L208 -19L210 -17L205 -9L208 -7L215 -6L216 5L222 4L225 6L223 8L224 13L234 11L242 17L253 11L258 9L259 10L264 47L265 75L270 73L272 73L272 75L274 73L273 72L276 70L281 72L282 73L280 75L280 79L281 78L283 83L190 123L190 117L195 116L190 100L189 88L187 88L188 78L191 78L189 66L191 29L188 28L191 5L179 5L176 -6L176 -21L182 -24z"></path></g><g><path stroke-linejoin="round" stroke-linecap="round" fill-rule="evenodd" stroke="#0033ff" stroke-opacity="0.5" stroke-width="1" fill="#ffaaaa" fill-opacity="0.2" class="leaflet-clickable" d="M371 5L319 61L307 54L307 56L298 68L290 70L292 78L285 82L283 82L281 78L280 79L280 75L282 73L277 70L274 71L272 75L272 73L270 73L265 76L264 48L259 10L265 7L266 10L269 8L281 8L284 10L286 18L288 18L299 12L302 12L305 2L311 2L320 4L334 12L344 22L349 18L354 17L359 11L367 7L371 0L374 2z"></path></g><g><path stroke-linejoin="round" stroke-linecap="round" fill-rule="evenodd" stroke="#0033ff" stroke-opacity="0.5" stroke-width="1" fill="#ffaaaa" fill-opacity="0.2" class="leaflet-clickable" d="M378 2L378 4L382 8L389 6L393 2L398 10L396 14L398 15L398 20L401 24L401 28L398 31L387 30L376 41L374 41L369 36L366 41L367 46L365 49L369 51L369 53L364 59L361 60L366 61L371 68L377 70L383 80L386 82L392 80L397 82L397 85L395 88L382 94L376 101L364 95L360 101L357 102L348 112L346 119L342 123L344 125L340 125L336 129L337 132L329 141L329 145L317 145L316 150L314 150L314 152L312 153L310 151L308 152L305 147L304 150L301 149L294 137L291 134L286 133L284 131L289 130L295 122L289 120L287 110L299 97L295 93L295 91L288 81L292 79L290 70L299 68L307 54L319 61L371 5L375 1L378 1z"></path></g><g><path stroke-linejoin="round" stroke-linecap="round" fill-rule="evenodd" stroke="#0033ff" stroke-opacity="0.5" stroke-width="1" fill="#aaaaff" fill-opacity="0.2" class="leaflet-clickable" d="M393 2L382 -9L394 -24L400 -29L399 -30L403 -35L398 -41L400 -44L395 -50L403 -59L397 -62L401 -70L397 -76L400 -81L404 -83L407 -88L417 -98L430 -91L431 -93L448 -85L450 -89L450 -85L454 -86L457 -84L456 -83L458 -80L456 -78L459 -77L460 -79L462 -79L462 -77L467 -74L469 -75L471 -73L471 -67L475 -62L473 -56L475 -55L474 -51L469 -44L467 -42L463 -43L463 -38L467 -34L471 -24L473 -24L473 -20L477 -16L476 -11L479 -2L478 2L476 -1L472 0L471 -2L464 -6L458 -12L454 -20L451 -22L447 -17L442 -18L438 -14L430 -12L423 -8L417 -8L414 -2L408 -2L404 -5L403 -3L401 -5L394 2z"></path></g><g><path stroke-linejoin="round" stroke-linecap="round" fill-rule="evenodd" stroke="#0033ff" stroke-opacity="0.5" stroke-width="1" fill="#aaaaff" fill-opacity="0.2" class="leaflet-clickable" d="M0 0"></path></g><g><path stroke-linejoin="round" stroke-linecap="round" fill-rule="evenodd" stroke="#0033ff" stroke-opacity="0.5" stroke-width="1" fill="#aaaaff" fill-opacity="0.2" class="leaflet-clickable" d="M533 31L524 31L521 28L522 25L517 24L513 19L498 7L503 2L506 6L517 2L521 -4L521 -10L518 -9L518 -12L525 -24L532 -28L533 -33z"></path></g><g><path stroke-linejoin="round" stroke-linecap="round" fill-rule="evenodd" stroke="#0033ff" stroke-opacity="0.5" stroke-width="1" fill="#aaaaff" fill-opacity="0.2" class="leaflet-clickable" d="M0 0"></path></g><g><path stroke-linejoin="round" stroke-linecap="round" fill-rule="evenodd" stroke="#0033ff" stroke-opacity="0.5" stroke-width="1" fill="#aaaaff" fill-opacity="0.2" class="leaflet-clickable" d="M69 -12L75 -13L83 -21L84 -38L89 -42L97 -42L103 -44L105 -52L108 -53L110 -56L114 -57L111 -44L114 -45L114 -30L118 -24L122 -24L123 -17L128 -15L127 -13L131 -13L129 -1L133 0L132 3L135 3L137 7L141 8L141 11L143 11L142 17L140 18L143 21L140 24L142 24L143 29L143 33L140 34L140 36L143 37L143 42L151 44L151 42L155 39L161 41L176 37L179 45L181 45L155 57L149 64L134 75L118 72L116 73L114 68L108 62L101 42L97 39L93 29L84 20L85 19L83 17L82 12L75 5L69 -12z"></path></g><g><path stroke-linejoin="round" stroke-linecap="round" fill-rule="evenodd" stroke="#0033ff" stroke-opacity="0.5" stroke-width="1" fill="#aaaaff" fill-opacity="0.2" class="leaflet-clickable" d="M347 116L348 111L364 96L370 97L376 101L382 94L395 88L398 84L393 80L386 82L381 77L380 73L389 74L395 72L403 74L406 80L417 89L429 90L431 92L438 93L437 97L439 97L440 99L446 122L452 138L451 141L459 155L465 156L473 160L474 167L469 170L465 169L452 174L441 175L436 181L426 179L426 176L424 174L425 170L421 167L417 160L403 154L396 155L387 145L366 129L352 121L349 117z"></path></g><g><path stroke-linejoin="round" stroke-linecap="round" fill-rule="evenodd" stroke="#0033ff" stroke-opacity="0.5" stroke-width="1" fill="#aaaaff" fill-opacity="0.2" class="leaflet-clickable" d="M209 -25L211 -31L220 -32L225 -42L230 -44L233 -49L225 -54L228 -55L230 -65L237 -78L239 -80L240 -77L245 -75L249 -80L250 -83L248 -89L250 -91L253 -91L259 -100L256 -104L258 -108L253 -113L255 -117L324.6 -117L324 -114L319 -114L319 -109L315 -104L317 -101L308 -94L313 -91L315 -92L318 -89L310 -82L312 -80L311 -77L306 -79L300 -71L302 -70L300 -68L295 -70L293 -65L286 -58L286 -56L290 -53L287 -50L294 -38L291 -37L295 -32L302 -14L305 -1L302 12L299 12L291 17L286 18L285 13L281 8L269 8L266 10L265 7L253 11L242 17L234 11L225 13L223 11L225 6L222 4L216 5L215 -7L206 -7L205 -9L210 -17L208 -19L210 -20z"></path></g><g><path stroke-linejoin="round" stroke-linecap="round" fill-rule="evenodd" stroke="#0033ff" stroke-opacity="0.5" stroke-width="1" fill="#aaaaff" fill-opacity="0.2" class="leaflet-clickable" d="M114 -57L124 -72L125 -75L123 -77L126 -82L126 -92L128 -92L128 -94L131 -97L129 -101L134 -108L135.5 -117L173.8 -117L177 -115L181 -107L183 -108L185 -104L189 -101L195 -100L200 -95L210 -91L212 -88L230 -87L231 -85L236 -85L239 -80L230 -66L228 -55L225 -54L233 -49L230 -45L225 -42L220 -32L211 -31L209 -25L204 -22L197 -25L196 -20L184 -21L181 -17L182 -13L180 -12L180 -10L176 -10L179 5L191 4L188 15L188 27L191 28L190 42L185 43L183 45L179 45L176 37L161 41L155 39L151 42L151 44L142 41L143 38L139 34L143 32L143 28L140 23L142 23L143 21L140 18L143 14L143 11L141 11L141 8L137 7L135 3L132 3L133 0L129 -1L132 -13L127 -12L128 -15L123 -17L122 -24L118 -24L114 -30L114 -45L111 -44L114 -55z"></path></g><g><path stroke-linejoin="round" stroke-linecap="round" fill-rule="evenodd" stroke="#0033ff" stroke-opacity="0.5" stroke-width="1" fill="#aaaaff" fill-opacity="0.2" class="leaflet-clickable" d="M305 2L302 -14L299 -18L295 -32L291 -37L294 -38L287 -50L290 -53L286 -56L286 -58L293 -65L295 -70L300 -68L302 -70L300 -71L306 -79L310 -77L312 -80L310 -82L318 -89L315 -92L313 -91L308 -94L317 -101L315 -104L319 -109L319 -114L324 -114L324.6 -117L339 -117L366 -89L371 -87L374 -88L381 -80L384 -82L389 -77L397 -76L401 -70L397 -62L403 -59L395 -50L400 -44L398 -41L403 -35L400 -32L400 -29L394 -24L382 -9L393 2L387 7L383 8L378 3L377 0L374 2L372 -1L369 1L367 6L358 12L354 17L349 18L344 22L334 12L327 9L324 6L314 2L305 2z"></path></g><g><path stroke-linejoin="round" stroke-linecap="round" fill-rule="evenodd" stroke="#0033ff" stroke-opacity="0.5" stroke-width="1" fill="#aaaaff" fill-opacity="0.2" class="leaflet-clickable" d="M41 215L37 214L38 212L33 209L33 197L38 197L40 196L39 192L48 190L41 171L41 163L36 153L40 149L48 149L47 145L44 142L44 134L50 125L50 121L42 117L45 115L68 122L72 122L91 114L93 118L90 120L99 139L102 149L104 167L101 174L107 188L113 195L115 193L125 190L125 187L133 185L135 188L135 184L137 182L143 183L142 182L146 179L157 174L164 165L181 154L183 150L189 150L193 152L195 155L199 153L205 157L205 164L204 166L202 165L199 173L207 183L212 183L214 185L211 194L213 199L217 203L213 206L203 208L193 206L189 204L180 193L177 192L179 201L186 217L186 224L182 229L174 230L171 218L156 212L155 215L132 219L127 223L123 222L109 229L102 228L98 231L94 231L91 236L86 235L81 240L78 241L72 241L70 239L70 233L63 236L58 235L55 228L42 216z"></path></g><g><path stroke-linejoin="round" stroke-linecap="round" fill-rule="evenodd" stroke="#0033ff" stroke-opacity="0.5" stroke-width="1" fill="#aaaaff" fill-opacity="0.2" class="leaflet-clickable" d="M380 73L377 69L370 66L366 61L365 58L369 53L369 51L365 50L367 47L366 40L369 37L371 37L374 41L376 41L387 30L400 30L402 22L400 16L401 14L395 14L396 11L400 8L393 2L401 -5L403 -3L404 -5L408 -2L414 -2L414 -4L418 -8L422 -8L432 -13L436 -13L442 -18L447 -17L451 -22L454 -20L458 -12L464 -6L471 -2L472 0L476 -1L478 1L480 0L477 -6L477 -14L484 -7L483 -4L490 13L514 25L514 27L516 27L524 35L525 56L522 65L510 58L487 53L482 59L474 62L474 64L464 71L463 77L459 77L452 83L451 86L440 91L439 93L431 92L429 90L417 89L406 80L403 74L395 72L389 74L385 73z"></path></g><g><path stroke-linejoin="round" stroke-linecap="round" fill-rule="evenodd" stroke="#0033ff" stroke-opacity="0.5" stroke-width="1" fill="#aaaaff" fill-opacity="0.2" class="leaflet-clickable" d="M87 116L91 114L105 99L120 86L116 73L118 72L134 75L149 64L155 57L179 47L185 43L190 42L190 78L188 79L187 82L187 88L189 88L190 101L195 115L190 117L190 122L183 126L187 136L179 144L174 152L168 158L162 169L160 169L160 171L156 175L144 180L142 182L143 183L136 182L135 187L125 187L125 190L115 193L113 195L107 188L101 174L104 167L102 149L99 139L90 120L93 118L91 114z"></path></g><g><path stroke-linejoin="round" stroke-linecap="round" fill-rule="evenodd" stroke="#0033ff" stroke-opacity="0.5" stroke-width="1" fill="#aaaaff" fill-opacity="0.2" class="leaflet-clickable" d="M193 152L198 146L204 149L212 146L224 157L248 165L290 195L303 206L320 214L332 209L331 212L334 215L337 222L337 231L340 240L345 245L353 246L360 253L352.6666666666667 258L245.77777777777777 258L232 239L222 213L215 204L217 203L213 199L211 194L214 185L212 183L207 183L199 173L202 165L205 165L205 157L203 154L195 154L193 152z"></path></g><g><path stroke-linejoin="round" stroke-linecap="round" fill-rule="evenodd" stroke="#0033ff" stroke-opacity="0.5" stroke-width="1" fill="#aaaaff" fill-opacity="0.2" class="leaflet-clickable" d="M220 152L220 150L221 151L227 149L229 145L232 146L234 144L240 144L247 139L250 140L248 144L252 148L251 149L254 153L251 152L255 156L257 152L262 153L264 148L267 149L267 151L271 151L277 147L279 149L279 147L280 152L281 151L285 155L286 154L289 157L290 156L290 158L292 158L293 161L301 155L303 157L306 150L312 154L314 150L316 150L316 146L323 146L323 144L330 145L328 143L337 132L336 127L338 127L341 124L344 125L342 123L347 116L353 122L360 125L382 141L396 155L403 154L417 160L420 163L421 167L425 170L424 174L426 176L424 181L419 184L417 192L414 196L413 207L406 215L404 214L399 219L395 219L390 216L390 211L387 208L381 206L350 211L338 209L335 204L331 210L320 214L303 206L249 165L224 157L220 152z"></path></g></svg></div><div class="leaflet-marker-pane"><div class="leaflet-marker-icon leaflet-div-icon leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -12px; margin-top: -12px; width: 24px; height: 24px; -webkit-transform: translate3d(284px, 96px, 0px); z-index: 96;"><div class="number">15</div></div><div class="leaflet-marker-icon leaflet-div-icon leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -12px; margin-top: -12px; width: 24px; height: 24px; -webkit-transform: translate3d(243px, 129px, 0px); z-index: 129;"><div class="number">2</div></div><div class="leaflet-marker-icon leaflet-div-icon leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -12px; margin-top: -12px; width: 24px; height: 24px; -webkit-transform: translate3d(222px, 52px, 0px); z-index: 52;"><div class="number">2</div></div><div class="leaflet-marker-icon leaflet-div-icon leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -12px; margin-top: -12px; width: 24px; height: 24px; -webkit-transform: translate3d(300px, 36px, 0px); z-index: 36;"><div class="number">2</div></div><div class="leaflet-marker-icon leaflet-div-icon leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -12px; margin-top: -12px; width: 24px; height: 24px; -webkit-transform: translate3d(339px, 80px, 0px); z-index: 80;"><div class="number">2</div></div><div class="leaflet-marker-icon leaflet-target-icon leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -29px; margin-top: -29px; width: 38px; height: 37px; opacity: 0; -webkit-transform: translate3d(296px, 97px, 0px); z-index: 1097;"><img src="./newEvent_files/mira.png"></div><div class="leaflet-marker-icon leaflet-target-icon leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -29px; margin-top: -29px; width: 38px; height: 37px; opacity: 0; -webkit-transform: translate3d(296px, 97px, 0px); z-index: 1097;"><img src="./newEvent_files/mira.png"></div><div class="leaflet-marker-icon leaflet-target-icon leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -29px; margin-top: -29px; width: 38px; height: 37px; opacity: 0; -webkit-transform: translate3d(296px, 97px, 0px); z-index: 1097;"><img src="./newEvent_files/mira.png"></div><div class="leaflet-marker-icon leaflet-target-icon leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -29px; margin-top: -29px; width: 38px; height: 37px; opacity: 0; -webkit-transform: translate3d(277px, 99px, 0px); z-index: 1099;"><img src="./newEvent_files/mira.png"></div><div class="leaflet-marker-icon leaflet-target-icon leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -29px; margin-top: -29px; width: 38px; height: 37px; opacity: 0; -webkit-transform: translate3d(280px, 102px, 0px); z-index: 1102;"><img src="./newEvent_files/mira.png"></div><div class="leaflet-marker-icon leaflet-target-icon leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -29px; margin-top: -29px; width: 38px; height: 37px; opacity: 0; -webkit-transform: translate3d(280px, 102px, 0px); z-index: 1102;"><img src="./newEvent_files/mira.png"></div><div class="leaflet-marker-icon leaflet-target-icon leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -29px; margin-top: -29px; width: 38px; height: 37px; opacity: 0; -webkit-transform: translate3d(280px, 101px, 0px); z-index: 1101;"><img src="./newEvent_files/mira.png"></div><div class="leaflet-marker-icon leaflet-target-icon leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -29px; margin-top: -29px; width: 38px; height: 37px; opacity: 0; -webkit-transform: translate3d(280px, 101px, 0px); z-index: 1101;"><img src="./newEvent_files/mira.png"></div><div class="leaflet-marker-icon leaflet-target-icon leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -29px; margin-top: -29px; width: 38px; height: 37px; opacity: 0; -webkit-transform: translate3d(272px, 114px, 0px); z-index: 1114;"><img src="./newEvent_files/mira.png"></div><div class="leaflet-marker-icon leaflet-target-icon leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -29px; margin-top: -29px; width: 38px; height: 37px; opacity: 0; -webkit-transform: translate3d(272px, 114px, 0px); z-index: 1114;"><img src="./newEvent_files/mira.png"></div><div class="leaflet-marker-icon leaflet-target-icon leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -29px; margin-top: -29px; width: 38px; height: 37px; opacity: 0; -webkit-transform: translate3d(285px, 97px, 0px); z-index: 1097;"><img src="./newEvent_files/mira.png"></div><div class="leaflet-marker-icon leaflet-target-icon leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -29px; margin-top: -29px; width: 38px; height: 37px; opacity: 0; -webkit-transform: translate3d(301px, 96px, 0px); z-index: 1096;"><img src="./newEvent_files/mira.png"></div><div class="leaflet-marker-icon leaflet-target-icon leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -29px; margin-top: -29px; width: 38px; height: 37px; opacity: 0; -webkit-transform: translate3d(271px, 56px, 0px); z-index: 1056;"><img src="./newEvent_files/mira.png"></div><div class="leaflet-marker-icon leaflet-target-icon leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -29px; margin-top: -29px; width: 38px; height: 37px; opacity: 0; -webkit-transform: translate3d(271px, 56px, 0px); z-index: 1056;"><img src="./newEvent_files/mira.png"></div><div class="leaflet-marker-icon leaflet-target-icon leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -29px; margin-top: -29px; width: 38px; height: 37px; opacity: 0; -webkit-transform: translate3d(283px, 96px, 0px); z-index: 1096;"><img src="./newEvent_files/mira.png"></div><div class="leaflet-marker-icon leaflet-target-icon leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -29px; margin-top: -29px; width: 38px; height: 37px; opacity: 0; -webkit-transform: translate3d(301px, 96px, 0px); z-index: 1096;"><img src="./newEvent_files/mira.png"></div><div class="leaflet-marker-icon leaflet-target-icon leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -29px; margin-top: -29px; width: 38px; height: 37px; opacity: 0; -webkit-transform: translate3d(287px, 84px, 0px); z-index: 1084;"><img src="./newEvent_files/mira.png"></div><div class="leaflet-marker-icon leaflet-target-icon leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -29px; margin-top: -29px; width: 38px; height: 37px; opacity: 0; -webkit-transform: translate3d(287px, 84px, 0px); z-index: 1084;"><img src="./newEvent_files/mira.png"></div><div class="leaflet-marker-icon leaflet-target-icon leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -29px; margin-top: -29px; width: 38px; height: 37px; opacity: 0; -webkit-transform: translate3d(278px, 83px, 0px); z-index: 1083;"><img src="./newEvent_files/mira.png"></div><div class="leaflet-marker-icon leaflet-target-icon leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -29px; margin-top: -29px; width: 38px; height: 37px; opacity: 0; -webkit-transform: translate3d(278px, 83px, 0px); z-index: 1083;"><img src="./newEvent_files/mira.png"></div><div class="leaflet-marker-icon leaflet-target-icon leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -29px; margin-top: -29px; width: 38px; height: 37px; opacity: 0; -webkit-transform: translate3d(280px, 102px, 0px); z-index: 1102;"><img src="./newEvent_files/mira.png"></div><div class="leaflet-marker-icon leaflet-target-icon leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -29px; margin-top: -29px; width: 38px; height: 37px; opacity: 0; -webkit-transform: translate3d(279px, 95px, 0px); z-index: 1095;"><img src="./newEvent_files/mira.png"></div><div class="leaflet-marker-icon leaflet-target-icon leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -29px; margin-top: -29px; width: 38px; height: 37px; opacity: 0; -webkit-transform: translate3d(284px, 110px, 0px); z-index: 1110;"><img src="./newEvent_files/mira.png"></div></div><div class="leaflet-popup-pane"></div></div></div><div class="leaflet-control-container"><div class="leaflet-top leaflet-left"></div><div class="leaflet-top leaflet-right"></div><div class="leaflet-bottom leaflet-left"></div><div class="leaflet-bottom leaflet-right" style="margin-bottom: 20px;"></div></div></div>
+		<script language="javascript">
+			cargarMapa(888004284);
+		</script>
+	</div>
+ 	<div class="map-footer">
+	 	&nbsp;
+ 	</div>
+ </div>
+
+
+  <div class="informacion">
+  	<div class="informacion-cabecera">
+	 	Ventana de información
+	 </div>
+ </div>
+
+ 
+ </div>
+
+
+ 
+</body></html>

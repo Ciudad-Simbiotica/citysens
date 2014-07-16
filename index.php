@@ -10,24 +10,31 @@ include "preload.php";
  <link href="css/style.css" rel="stylesheet" type="text/css" />
  <link href="css/cabecera.css" rel="stylesheet" type="text/css" />
  <link href="css/grupos.css" rel="stylesheet" type="text/css" />
-
-
- <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+ <link href="css/newEvent.css" rel="stylesheet" type="text/css" />
  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
  <link rel="stylesheet" href="css/leafletCustom.css" />
 
 
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+ <script src="js/datepicker-es.js"></script>
  <script src="js/jquery.custom-animations.js"></script>
  <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
  <script src="http://maps.google.com/maps/api/js?v=3&sensor=false"></script>
+ <script src="js/leaflet-plugins-master/layer/Leaflet.ContinuousZoom.js"></script>
  <script src="js/leaflet-plugins-master/layer/tile/Google.js"></script>
+ <script src="js/wysihtml5/parser_rules/advanced.js"></script>
+ <script src="js/wysihtml5/dist/wysihtml5-0.3.0.min.js"></script>
+
+
 
 </head>
 
 <body>  
- 
+ <div class='darkOverlay'>
+ 	<div id='overlay'></div>
+ </div>
  <div class='cabecera'>
  	<div class='cabecera-cuerpo'>
 	 	<div class='cabecera-logo'><IMG SRC='icons/citysens.logoPrincipal.png' width='49px' height='40px'></div>
@@ -53,11 +60,13 @@ include "preload.php";
 		 			<img src='icons/CitYsens.people.png' width="32px">	 		
 				</div>
 	 		</div>
+	 		<!--
 	 		<div id='cabecera-pestania-ctr'  class='cabecera-pestania-ctr'>Iniciativas</div>
 	 		<div class='subcabecera-pestania-ctr'>
 	 			<img class='switch-filas' id='switch-puntuales' src='icons/icon_iniciativa.png' width="32px">
 	 		</div>
 	 		<div id='cabecera-pestania-noticias'  class='cabecera-pestania-noticias'>Noticias</div>
+	 		-->
 	 	</div> 
 	 	<div class='cabecera-busqueda'>
 	 		<INPUT TYPE=TEXT class='input-busqueda' id='input-busqueda' placeholder="Filtrar eventos..."></INPUT> 
@@ -103,17 +112,30 @@ include "preload.php";
   	&nbsp;
   </div>
   <div class='agenda-filtros'>
-  	<div class='tagFiltro' id='tagFiltroTemplate' style="display:none">
-  	 <div class='tagFiltro-imagen'>
-     </div>
-  	 <div class='tagFiltro-texto'>
-  	 	Filtro Ejemplo
-     </div>
-  	 <div class='tagFiltro-x'>
-  	  x
-     </div>
-  	</div>
+  	<div class='agenda-filtros-top'>
+	  <div class='agenda-filtros-busqueda'>
+	  	<div class='tagFiltro' id='tagFiltroTemplate' style="display:none">
+	  	 <div class='tagFiltro-imagen'>
+	     </div>
+	  	 <div class='tagFiltro-texto'>
+	  	 	Filtro Ejemplo
+	     </div>
+	  	 <div class='tagFiltro-x'>
+	  	  x
+	     </div>
+	  	</div>
+	  </div>
+	  <div class='agenda-filtros-tematica'>
+	  </div>
+	</div>
+	<div class='agenda-filtros-bottom'>
+	  <div class='agenda-filtros-lugar'>
+	  </div>
+	  <div class='agenda-filtros-entidad'>
+	  </div>
+	</div>
   </div>
+
 
   <div class='grupo-template' id='grupo-template'>
 	 <div class='grupo-cabecera'>

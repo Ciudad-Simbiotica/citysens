@@ -35,7 +35,11 @@ function cargarMapa(idLugar)
 {
   
   //Creamos el mapa
-  var map = L.map('map',{zoomControl: false,attributionControl: false});
+  var map = L.map('map',{
+            zoomControl: false,
+            attributionControl: false,
+        });//.setView([40.47,-3.45], 11);
+
   /*map.on('click', function() 
   {
     alert('Has hecho click en el mapa');
@@ -53,8 +57,10 @@ function cargarMapa(idLugar)
   var ggl = new L.Google();
   L.Google('roadmap');
   map.addLayer(ggl);
+  
 
-
+  //L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
+      
 
   L.NumberedDivIcon = L.Icon.extend(
   {
@@ -141,12 +147,15 @@ function cargarMapa(idLugar)
       xmax=response.xmax;
       ymax=response.ymax;
 
+      console.log(xmin+"-"+xmax+"-"+ymin+"-"+ymax);
+      console.log(paddingX+"-"+paddingY);
+
 
       var southWest = L.latLng(ymin, xmin),
       northEast = L.latLng(ymax, xmax),
       bounds = L.latLngBounds(southWest, northEast);
       map.fitBounds(bounds);
-
+      //map.setZoom(11.5);
       //Cargamos las cosas relativas a la ciudad: Filtrado eventos, breadcrumbs, etc...
       //España > Madrid > <?=$datosLugar["nombre"];?>
 
@@ -191,27 +200,28 @@ function cargarMapa(idLugar)
         $.each(data, function(i,datos)
         {
           addPolygonToMap(datos[0],"shp/geoJSON/"+nivelHijos+"/"+datos[0]+".geojson",datos[1],'#ffaaaa',true);
-          new L.Marker([datos[3],datos[2]], 
+          if(response.nivel>7)
           {
-            icon: new L.NumberedDivIcon({number: datos[5]})
-          }).addTo(map).on('click',function()
-          {
-            //history.pushState(null, null, "http://localhost:8888/citysens/?idLugar="+idLugar);
-            window.location="/citysens/?idLugar="+datos[0];
-            //alert('Esto cargaría la página de '+texto);
-          }).on('mouseover', function(e) 
-          {
-            $(".map-footer").html("Ir a "+datos[1]);
-          }).on('mouseout', function(e) 
-          {
-            $(".map-footer").html("&nbsp;");
-          });
-          
+            new L.Marker([datos[3],datos[2]], 
+            {
+              icon: new L.NumberedDivIcon({number: datos[5]})
+            }).addTo(map).on('click',function()
+            {
+              //history.pushState(null, null, "http://localhost:8888/citysens/?idLugar="+idLugar);
+              window.location="/citysens/?idLugar="+datos[0];
+              //alert('Esto cargaría la página de '+texto);
+            }).on('mouseover', function(e) 
+            {
+              $(".map-footer").html("Ir a "+datos[1]);
+            }).on('mouseout', function(e) 
+            {
+              $(".map-footer").html("&nbsp;");
+            });
+          }
 
         });
       });
       
-
       //Aquí cargamos los eventos
       $.getJSON("getEventosCoordenadas.php", 
       {
@@ -232,6 +242,20 @@ function cargarMapa(idLugar)
           {
             icon: new L.TargetIcon()
           }).setOpacity(0).setZIndexOffset(1000).addTo(map);
+          marker.on('click',function()
+          {
+            //history.pushState(null, null, "http://localhost:8888/citysens/?idLugar="+idLugar);
+            window.location="/citysens/?idLugar="+datos.idDistritoPadre;
+            //alert('Esto cargaría la página de '+texto);
+          }).on('mouseover', function(e) 
+          {
+            $(".map-footer").html("Ir a "+datos.idDistritoPadre);
+          }).on('mouseout', function(e) 
+          {
+            $(".map-footer").html("&nbsp;");
+          });
+
+
           markers[datos.idEvento]=marker;
           //.bindPopup("<b>"+datos.titulo+"</b><br />"+datos.texto);//.openPopup();
         });

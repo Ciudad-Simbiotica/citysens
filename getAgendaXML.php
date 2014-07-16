@@ -17,7 +17,13 @@ if($_GET["clase"]=="eventos")
 	include "getEventos.php";
 	return;
 }
-
+/*
+else if($_GET["clase"]=="organizaciones")
+{
+	include "getEntidades.php";
+	return;
+}
+*/
 
 if($_GET["regenerar"]=="")
 {

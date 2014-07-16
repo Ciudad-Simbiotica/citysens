@@ -230,9 +230,18 @@ function cargarContenido(id)
 
 }
 
+function removeAllTags()
+{
+  $(".tagFiltro-busqueda").remove();
+  $(".tagFiltro-tematica").remove();
+  $(".tagFiltro-lugar").remove();
+  $(".tagFiltro-entidad").remove();
+  arrayTags=[];
+}
 
 function cargarDatos(clase)
 {
+  window.clase=clase;
   //[{"texto":"Alcal&aacute; De Henares","tipo":"lugar","id":"4284"}] 
   var hayUnLugar=false;
   var arrayTagsQuery=arrayTags.slice();
@@ -278,14 +287,50 @@ function cargarDatos(clase)
     .done(function(data) 
     {
       //Esperamos a que se hayan borrado los grupos (por si acaba antes) antes de clonar
-      if(jQuery.isEmptyObject(data.grupos))
+
+
+      switch(clase)
       {
-        $(".agenda-primera-linea").html("Ningun evento satisface los filtros de búsqueda:");      
+        case "eventos":
+          if(jQuery.isEmptyObject(data.grupos))
+          {
+            $(".agenda-primera-linea").html("Ningun evento satisface los filtros de búsqueda:");      
+          }
+          else
+          {
+            $(".agenda-primera-linea").html("Mostrando EVENTOS en <strong>"+window.ciudad+"</strong> en las proximas semanas, que satisfacen los siguientes filtros de búsqueda:");
+          }
+          $("#cabecera-suggest").empty();
+          $(".input-busqueda").val('');
+          $(".input-busqueda").attr('placeholder', 'Filtrar eventos...');
+          break;
+        case "organizaciones":
+          if(jQuery.isEmptyObject(data.grupos))
+          {
+            $(".agenda-primera-linea").html("Ninguna entidad satisface los filtros de búsqueda:");      
+          }
+          else
+          {
+            $(".agenda-primera-linea").html("Mostrando ENTIDADES en <strong>"+window.ciudad+"</strong> que satisfacen los siguientes filtros de búsqueda:");
+          }        
+          $("#cabecera-suggest").empty();
+          $(".input-busqueda").val('');
+          $(".input-busqueda").attr('placeholder', 'Filtrar entidades...');
+          break;
+        case "procesos":
+          if(jQuery.isEmptyObject(data.grupos))
+          {
+            $(".agenda-primera-linea").html("Ninguna iniciativa satisface los filtros de búsqueda:");      
+          }
+          else
+          {
+            $(".agenda-primera-linea").html("Mostrando INICIATIVAS en <strong>"+window.ciudad+"</strong> en las proximas semanas, que satisfacen los siguientes filtros de búsqueda:");
+          }
+          break;      
+        case "noticias":
+          break;
       }
-      else
-      {
-        $(".agenda-primera-linea").html("Mostrando EVENTOS en <strong>"+window.ciudad+"</strong> en las proximas semanas, que satisfacen los siguientes filtros de búsqueda:");
-      }
+
       $.each(data.grupos, function(grupo,filas)
       {
         createGroup(grupo,filas.cabeceraIzq,filas.cabeceraCntr,filas.cabeceraDch,filas.totalFilas);
@@ -301,6 +346,26 @@ function cargarDatos(clase)
 
 /* 
 ---------------------------------------------------------------------------------------------
+---------------------------------------Overlay Loading---------------------------------------
+---------------------------------------------------------------------------------------------
+*/
+
+function loadOverlay(url)
+{
+  $(".darkOverlay").fadeIn("fast");
+  $("#overlay").load(url);
+}
+
+function hideOverlay(url)
+{
+  $(".darkOverlay").fadeOut("fast",function()
+  {
+    $("#overlay").html('');
+  });
+}
+
+/* 
+---------------------------------------------------------------------------------------------
 -----------------------------------Nuevo evento, subscribir----------------------------------
 ---------------------------------------------------------------------------------------------
 */
@@ -308,7 +373,7 @@ function cargarDatos(clase)
 
 function newEvent()
 {
-  alert("Creando nuevo evento");
+  loadOverlay("newEvent.html");
 }
 
 function subscribe()
@@ -363,6 +428,7 @@ $("#switch-colectivos").click(function()
 $(".cabecera-pestania-izq").click(function()
 {
   console.log("Mostrando Eventos");
+  removeAllTags();
 
   $("#cabecera-pestania-izq").addClass("cabecera-pestania-seleccionada",150);
   $("#cabecera-pestania-ctr").removeClass("cabecera-pestania-seleccionada",150);
@@ -382,7 +448,8 @@ $(".cabecera-pestania-izq").click(function()
 
 $(".cabecera-pestania-ctr").click(function()
 {
-  console.log("Mostrando Organizaciones");
+  console.log("Mostrando Iniciativas");
+  removeAllTags();
   $("#cabecera-pestania-ctr").addClass("cabecera-pestania-seleccionada",150);
   $("#cabecera-pestania-dch").removeClass("cabecera-pestania-seleccionada",150);
   $("#cabecera-pestania-izq").removeClass("cabecera-pestania-seleccionada",150);
@@ -397,7 +464,8 @@ $(".cabecera-pestania-ctr").click(function()
 
 $(".cabecera-pestania-dch").click(function()
 {
-  console.log("Mostrando Organizaciones");
+  console.log("Mostrando Entidades");
+  removeAllTags();
   $("#cabecera-pestania-dch").addClass("cabecera-pestania-seleccionada",150);
   $("#cabecera-pestania-ctr").removeClass("cabecera-pestania-seleccionada",150);
   $("#cabecera-pestania-izq").removeClass("cabecera-pestania-seleccionada",150);
@@ -420,6 +488,7 @@ $(".cabecera-pestania-dch").click(function()
 $(".cabecera-pestania-noticias").click(function()
 {
   console.log("Mostrando Noticias");
+  removeAllTags();
 
   $("#cabecera-pestania-noticias").addClass("cabecera-pestania-seleccionada",150);
   $("#cabecera-pestania-izq").removeClass("cabecera-pestania-seleccionada",150);
@@ -485,6 +554,7 @@ $('#input-busqueda').bind('keyup',function(event)
     case 27:  //Escape
         $("#cabecera-suggest").empty();
         $(this).val("");
+        window.selectedSuggestion=0;
         break;
     case 38:  //Up
         prevSuggestion();
@@ -499,6 +569,13 @@ $('#input-busqueda').bind('keyup',function(event)
   }
 });
 
+$('.cabecera-lupa').click(function() 
+{
+  if(window.selectedSuggestion==0)
+        window.selectedSuggestion=1;
+  var fila="#cabecera-suggest-fila-"+(window.selectedSuggestion-1);
+  $(fila).trigger("click");  
+});
 
 /* 
 ---------------------------------------------------------------------------------------------

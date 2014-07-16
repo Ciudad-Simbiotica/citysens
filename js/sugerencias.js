@@ -7,10 +7,8 @@ $.urlParam = function(name){
 
 function clickSuggestion(imagen,texto1,tipo,id) //Añadir id, texto buscado
 {
-
-
   $("#cabecera-suggest").empty();
-  console.log("Clic Sugerencia: "+imagen+"/"+texto1);
+  console.log("Clic Sugerencia: "+imagen+"/"+texto1+"/"+tipo);
 
   var clone=$("#tagFiltroTemplate").clone();
   clone.hide();
@@ -18,6 +16,8 @@ function clickSuggestion(imagen,texto1,tipo,id) //Añadir id, texto buscado
 
   clone.find('.tagFiltro-texto').html(texto1);
   clone.find('.tagFiltro-imagen').css('background-image', "url("+imagen+")");
+
+  console.log(window.clase);
 
   clone.find('.tagFiltro-x').click(function()
   {
@@ -27,7 +27,8 @@ function clickSuggestion(imagen,texto1,tipo,id) //Añadir id, texto buscado
       var coincide=((value.texto==texto1)&(value.tipo==tipo)&(value.id==id));
       return !coincide;
     });
-    cargarDatos("eventos");
+    cargarDatos(window.clase);
+
     $(this).fadeOut("fast",function(){
       $(this).parent().remove();
     });
@@ -36,8 +37,15 @@ function clickSuggestion(imagen,texto1,tipo,id) //Añadir id, texto buscado
   //clone.find('.grupo-cabecera-cntr').html(center);
   //clone.find('.grupo-cabecera-dch').html(right);
   
-  clone.appendTo(".agenda-filtros");
+  tipoFiltro=tipo;
+  if((tipoFiltro=='institucion')|(tipoFiltro=='colectivo')|(tipoFiltro=='organizacion'))
+    tipoFiltro='entidad';
+
+  clone.addClass("tagFiltro-"+tipoFiltro);
+
+  clone.appendTo(".agenda-filtros-"+tipoFiltro);
   clone.fadeIn("fast");
+
 
   /*
   var sugerencia=new Array();
@@ -56,7 +64,7 @@ function clickSuggestion(imagen,texto1,tipo,id) //Añadir id, texto buscado
 
   arrayTags.push(sugerencia);
   $("#input-busqueda").val('');
-  cargarDatos("eventos");
+  cargarDatos(window.clase);
 
 
   /*if(!$('#input-busqueda').tagExist(texto1))
@@ -147,8 +155,10 @@ function suggestBusqueda(texto)
     window.selectedSuggestion=0;
 
     //Añadimos el tooltip
-    $("#cabecera-suggest").append("<div class='cabecera-suggest-tooltip'>Buscar eventos que tengan que ver con...</div>");
-
+    if(window.clase=='eventos')
+      $("#cabecera-suggest").append("<div class='cabecera-suggest-tooltip'>Buscar eventos que tengan que ver con...</div>");
+    else
+      $("#cabecera-suggest").append("<div class='cabecera-suggest-tooltip'>Buscar entidades que tengan que ver con...</div>");
 
     //Que esto lo clone de una fila por defecto      
     //Añadimos la búsqueda tal cual

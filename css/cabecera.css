@@ -32,16 +32,16 @@
 .cabecera-logo
 {
 	margin-top:12px;
-	left:-80px;
+	left:-00px;
 	position: absolute;
 }
 .cabecera-pestanias
 {
 	background-color: #6666ff;
 	color: white;
-	width: 320px;
+	width: 160px;
 	height: 51px;
-	left:-20px;
+	left:60px;
 	position: absolute;
 	text-align: center;
 	line-height: 78px;
@@ -57,7 +57,7 @@
 
 .cabecera-pestania-izq
 {
-	width: 25%;
+	width: 50%;
 	height:53px;
 	position: absolute;
 	border-bottom:thick solid #6A94D4;
@@ -74,7 +74,7 @@
 }
 .cabecera-pestania-ctr
 {
-	width: 25%;
+	width: 50%;
 	height:53px;
 	margin-left: 50%;
 	position: absolute;
@@ -90,9 +90,9 @@
 }
 .cabecera-pestania-dch
 {
-	width: 25%;
+	width: 50%;
 	height:53px;
-	margin-left: 25%;
+	margin-left: 50%;
 	position: absolute;;
 	border-bottom:thick solid #6A94D4;
 	z-index: 10;
@@ -108,7 +108,7 @@
 
 .cabecera-pestania-noticias
 {
-	width: 25%;
+	width: 50%;
 	height:53px;
 	margin-left: 75%;
 	position: absolute;;
@@ -126,7 +126,7 @@
 
 .cabecera-busqueda
 {
-	margin-left: 305px;
+	margin-left: 225px;
 	margin-top: 4px;
 	position: absolute;
 }
@@ -136,7 +136,7 @@
 	width: 491px;
 	background-color: #FFFFFF;
 	position: absolute;
-	margin-left: 305px;
+	margin-left: 225px;
 	margin-top: 46px;
 	box-shadow:0 2px 3px 0px #aaa, 2px 0px 3px 0px #aaa, -2px 0px 3px 0px #aaa ;
 }
@@ -259,7 +259,7 @@
 
 .cabecera-lupa
 {
-	left: 795px;
+	left: 715px;
 	top: 14px;
 
 	background-image: url("/citysens/icons/lupa.png");	
@@ -289,7 +289,7 @@
 	border-bottom:thick solid #6A94D4;
 	box-shadow: 0 2px 3px 0 #aaa;
 	top:0px;
-	right:40px;
+	right:120px;
 	width: 95px;
 	height: 53px;
 	position: absolute;
@@ -333,7 +333,7 @@
 .cabecera-derecha
 {
 	top:30px;
-	right:-100px;
+	right:-20px;
 	position: absolute;
 	color:white;
 	text-shadow: 1px 1px 6px #000000;	
@@ -409,7 +409,7 @@
 {
 	top: 58px;
 	width:95px;
-	right: 40px;
+	right: 120px;
 	position: absolute;
 	color:black;
 	text-align: center;
