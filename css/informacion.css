@@ -1,0 +1,154 @@
+.informacion
+{
+    position: fixed;
+    left:67.3%;
+    top: 362px;
+    width: 320px;
+    height: 320px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    z-index: 25;
+    display:none
+}
+
+.informacion-cabecera 
+{
+    height: 52px;
+    border-bottom:thin solid #CCCCCC;
+    width: 100%;
+}
+
+.informacion-cabecera-izq
+{
+    float:left;
+    width: 90px;
+    height: 52px;
+    border-right:thin solid #CCCCCC;
+    margin-right: 2px;
+}
+
+.informacion-cabecera-izq-calendario
+{
+    margin-left: 3px;
+    margin-top: 3px;
+    border:2px solid #000000;
+    width: 40px;
+    height: 42px;
+    line-height: 22px;
+    text-align: center;
+
+    font-weight: bold;
+    font-size: 16px;
+    float:left;
+}
+
+.informacion-cabecera-izq-calendario-top
+{
+    background-color: #6666ff;
+    color: #eeeeee;
+    height: 20px;    
+}
+
+.informacion-cabecera-izq-calendario-bottom
+{
+    
+}
+
+.informacion-cabecera-izq-horas
+{
+    margin-left: 0px;
+    margin-top: 5px;
+    height: 40px;
+    line-height: 22px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.informacion-cabecera-izq-horas-top
+{
+    margin-top: 0px;
+    height: 20px;    
+}
+
+.informacion-cabecera-izq-horas-bottom
+{
+    
+}
+
+
+
+.informacion-cabecera-dch
+{
+    top:10px;
+    width: 100%;
+    height: 50px;
+}
+
+
+.informacion-cabecera-dch-titulo
+{
+    height: 40px;
+    text-align: left;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 8px;
+}
+
+.informacion-cabecera-dch-titulo-top
+{
+    font-size: 14px; 
+    color: #6666ff;
+}
+
+.informacion-cabecera-dch-titulo-bottom
+{
+    margin-top: -2px;
+    text-align: right;
+    margin-right: -6px;
+    font-size: 12px;
+}
+
+
+.informacion-cuerpo
+{
+    padding: 3px;
+    height: 240px;
+    text-align: left;
+    overflow-y: auto;
+    border-bottom:thin solid #CCCCCC;
+}
+
+.informacion-cuerpo-tematicas,.informacion-cuerpo-etiquetas,
+{
+    line-height: 20px;
+    height:20px;
+}
+
+.informacion-cuerpo-etiquetas
+{
+    margin-bottom: 10px;
+}
+
+
+
+.informacion-cuerpo-tematicas-img
+{
+    width: 15px;
+}
+
+.informacion-cuerpo-contacto-elemento
+{
+    height: 13px;    
+    font-size: 14px; 
+    color: #6666ff;
+    font-weight: bold;    
+    padding-left: 18px;
+}
+
+.informacion-pie
+{
+    padding: 3px;
+    text-align: left;
+}
+

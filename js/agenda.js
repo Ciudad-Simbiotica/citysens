@@ -144,7 +144,7 @@ function clickFila(id)
   //alert("Click Fila: "+id);
   $("[class^=grupo-fila-]").removeClass("grupo-fila-selected");
   $("#"+id).addClass("grupo-fila-selected");
-  $(".informacion-cabecera").html("Cargando contenido: "+id);
+  //$(".informacion-cabecera").html("Cargando contenido: "+id);
   cargarContenido(id);
   $.each(markers, function( index, value ) 
   {
@@ -212,22 +212,61 @@ function plegarFilas(clase,tipo,tiempo)
 ---------------------------------------------------------------------------------------------
 */
 
+function paddingZeros(number)
+{
+  return ("0" + number).slice(-2);
+}
 
 function cargarContenido(id)
 {
-  $.ajax({
+  $(".informacion").slideUp("fast");
+  $.getJSON('getDatos.php', 
+  {
+   id: id, // appears as $_GET['id'] @ ur backend side
+  })
+  .done(function(data) 
+  {
+    console.log(data);
 
-     type: "GET",
-     url: 'getDatos.php',
-     data: "id=" + id, // appears as $_GET['id'] @ ur backend side
-     success: function(data) {
-           // data is ur summary
-          $(".informacion-cabecera").html(data);
-          $(".informacion").slideDown("fast");
-     }
+    var date = new Date(data.fecha);
+    var dateFin = new Date(data.fechaFin);
+    var monthNames = [ "ENE", "FEB", "MAR", "ABR", "MAY", "JUN",
+    "JUL", "AUG", "SEP", "OCT", "NOV", "DIC" ];
 
-   });
 
+    $(".informacion-cabecera-izq-calendario-top").html(monthNames[date.getMonth()]);
+    $(".informacion-cabecera-izq-calendario-bottom").html(date.getDate());
+    $(".informacion-cabecera-izq-horas-top").html(paddingZeros(date.getHours())+":"+paddingZeros(date.getMinutes()));
+    if(data.fechaFin!=null)
+      $(".informacion-cabecera-izq-horas-bottom").html(paddingZeros(dateFin.getHours())+":"+paddingZeros(dateFin.getMinutes()));
+    else
+      $(".informacion-cabecera-izq-horas-bottom").html('');
+
+
+    $(".informacion-cabecera-dch-titulo-top").html(data.titulo);
+    $(".informacion-cabecera-dch-titulo-bottom").html(data.lugar);
+
+
+    $(".informacion-cuerpo-tematicas-listado").html('');
+    $.each(data.tematicas, function(i, object) 
+    {
+      if($(".informacion-cuerpo-tematicas-listado").html()!="")
+        $(".informacion-cuerpo-tematicas-listado").append(', ');      
+      $(".informacion-cuerpo-tematicas-listado").append(object);      
+    });
+
+    $(".informacion-cuerpo-etiquetas-listado").html(data.etiquetas);
+
+    $(".informacion-cuerpo-contacto-url").attr("href", data.url);
+    $(".informacion-cuerpo-contacto-url").html(data.url);
+    $(".informacion-cuerpo-contacto-email").attr("href", "mailto:"+data.email);
+    $(".informacion-cuerpo-contacto-email").html(data.email);
+
+    $(".informacion-cuerpo-texto").html(data.texto);
+
+
+    $(".informacion").slideDown("fast");
+  });
 }
 
 function removeAllTags()

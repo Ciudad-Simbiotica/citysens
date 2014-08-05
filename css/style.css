@@ -124,26 +124,6 @@ html,body
 }
 
 
-.informacion
-{
-	position: fixed;
-	left:67.3%;
-	top: 362px;
-	width: 320px;
-	height: 350px;
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	z-index: 25;
-	display:none
-}
-
-
-.informacion-cabecera
-{
-	margin-top: 5px;
-	margin-left: 5px;
-}
-
 
 .map,.grupo,.grupo-template,.informacion
 {

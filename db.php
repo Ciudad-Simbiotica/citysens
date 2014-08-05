@@ -137,6 +137,33 @@ function getTematicas($cadena,$cantidad=10)
     return $returnData;
 }
 
+function getEvento($idEvento)
+{
+    $link=connect();
+    mysql_query('SET CHARACTER SET utf8',$link);
+    $sql="SELECT * FROM eventos WHERE idEvento='$idEvento'";
+    $result=mysql_query($sql,$link);
+    if($fila=mysql_fetch_assoc($result))
+    {
+        $evento=$fila;
+        //mysql_query('SET CHARACTER SET utf8',$link);
+        $sql="SELECT * FROM eventos_tematicas, tematicas 
+                WHERE eventos_tematicas.idEvento='$idEvento' AND
+                eventos_tematicas.idTematica=tematicas.idTematica";
+        $result=mysql_query($sql,$link);
+        while($fila=mysql_fetch_assoc($result))
+        {
+            $evento['tematicas'][$fila['idTematica']]=ucfirst(strtolower($fila['tematica']));
+        }
+        return $evento;
+    }
+    else
+    {
+        return false;
+    }
+
+}
+
 function getEventos($query,$cantidad=50)
 {
     $link=connect();

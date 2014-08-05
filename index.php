@@ -11,6 +11,7 @@ include "preload.php";
  <link href="css/cabecera.css" rel="stylesheet" type="text/css" />
  <link href="css/grupos.css" rel="stylesheet" type="text/css" />
  <link href="css/newEvent.css" rel="stylesheet" type="text/css" />
+ <link href="css/informacion.css" rel="stylesheet" type="text/css" />
  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
  <link rel="stylesheet" href="css/leafletCustom.css" />
@@ -27,7 +28,9 @@ include "preload.php";
  <script src="js/wysihtml5/parser_rules/advanced.js"></script>
  <script src="js/wysihtml5/dist/wysihtml5-0.3.0.min.js"></script>
 
-
+<script type="text/javascript">var switchTo5x=true;</script>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "c0f161c1-78ab-49ab-944a-e0aff8e7159b", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
 
 </head>
 
@@ -239,7 +242,60 @@ include "preload.php";
 
   <div class='informacion'>
   	<div class='informacion-cabecera'>
-	 	Ventana de información
+	 	<div class='informacion-cabecera-izq'>
+	 	 <div class='informacion-cabecera-izq-calendario'>
+ 	 	  <div class='informacion-cabecera-izq-calendario-top'>
+ 	 	   MAR
+	 	  </div>
+ 	 	  <div class='informacion-cabecera-izq-calendario-bottom'>
+ 	 	   20
+	 	  </div>
+	 	 </div>
+	 	 <div class='informacion-cabecera-izq-horas'>
+ 	 	  <div class='informacion-cabecera-izq-horas-top'>
+ 	 	   11:00
+	 	  </div>
+ 	 	  <div class='informacion-cabecera-izq-horas-bottom'>
+ 	 	   16:00
+	 	  </div>
+	 	 </div>
+	 	</div>
+	 	<div class='informacion-cabecera-dch'>
+	 	 <div class='informacion-cabecera-dch-titulo'>
+ 	 	  <div class='informacion-cabecera-dch-titulo-top'>
+ 	 	   Nombre evento no muy largo
+	 	  </div>
+ 	 	  <div class='informacion-cabecera-dch-titulo-bottom'>
+ 	 	   Dirección del evento - Alcalá
+	 	  </div>
+	 	 </div>
+	 	</div>
+	 </div>
+	 <div class='informacion-cuerpo'>
+	 	<div class='informacion-cuerpo-tematicas'>
+			<img src='/citysens/icons/etiqueta30x30.png' class="informacion-cuerpo-tematicas-img"> <B>Tematicas: </B> 
+	  		<span class='informacion-cuerpo-tematicas-listado'>Temática 1, Temática 2, Temática 3</span>
+	 	</div>
+	 	<div class='informacion-cuerpo-etiquetas'>
+	  		<img src='/citysens/icons/etiqueta30x30.png' class="informacion-cuerpo-tematicas-img"> <B>Etiquetas: </B> 
+	  		<span class='informacion-cuerpo-etiquetas-listado'>Etiqueta 1, Etiqueta 2, Etiqueta 3</span>
+	 	</div>
+	 	<div class='informacion-cuerpo-contacto'>
+	  		<span class='informacion-cuerpo-contacto-elemento'>Web:</span> <a target="_blank" href='http://www.templateurl.es' class='informacion-cuerpo-contacto-url'>http://www.templateurl.es</a><br>
+	  		<span class='informacion-cuerpo-contacto-elemento'>e-Mail:</span> <a target="_blank" href='mailto:correo@templateurl.es' class='informacion-cuerpo-contacto-email'>correo@templateurl.es</a>
+	 	</div>
+	 	<div class='informacion-cuerpo-texto'>
+	  		<h3>Aquí iría el texto</h3>
+			<p>Eso</p>
+	 	</div>
+	  
+	 </div>
+	 <div class='informacion-pie'>
+	  	<span class='st_email' displayText=''></span>
+		<span class='st_facebook' displayText=''></span>
+		<span class='st_linkedin' displayText=''></span>
+		<span class='st_googleplus' displayText=''></span>
+		<span class='st_twitter' displayText=''></span>
 	 </div>
  </div>
 
