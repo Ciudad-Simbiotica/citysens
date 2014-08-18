@@ -22,7 +22,7 @@ html,body
     z-index: 1000;
 }
 
-#overlay
+.overlay
 {
 	background-color: #FFF;
   	position: fixed;
@@ -35,6 +35,60 @@ html,body
   	margin-top: -220px;
   	padding: 10px;
   	border-radius: 3px;
+
+}
+
+
+
+.overlayPeque
+{
+	width:400px;
+	height:auto;
+  	margin-left: -200px;
+  	margin-top: -125px;
+  	padding: 10px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	
+}
+
+.overlayPeque2
+{
+	height:150px;
+  	margin-top: -175px;
+}
+
+
+.input-email-ciudad
+{
+	font-size: 20px;
+    width:340px;
+    height:26px;
+}
+
+.div-email-submit
+{
+	margin-left: 155px;
+	margin-top: -10px;
+	width: 90px;
+	height: 40px;
+	line-height: 40px;
+	border-radius: 3px;
+	background-color: lightgrey;
+	color:#fff;
+	font-size:20px;
+	cursor:default;
+}
+
+.div-email-submit-active
+{
+	background-color:#6666ff;
+	cursor:hand;cursor:pointer;
+}
+
+.div-email-submit-active:hover
+{
+	background-color: #6a94d4;
 }
 
 

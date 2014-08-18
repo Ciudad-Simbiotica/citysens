@@ -262,8 +262,22 @@ function cargarContenido(id)
     $(".informacion-cuerpo-contacto-email").attr("href", "mailto:"+data.email);
     $(".informacion-cuerpo-contacto-email").html(data.email);
 
+    $(".informacion-cuerpo-contacto-email").append(" ");
+
     $(".informacion-cuerpo-texto").html(data.texto);
 
+    $(".informacion-cabecera").click(function(){
+      window.location="/citysens/?idEvento="+data.idEvento;
+    });
+
+    mensaje="Texto de ejemplo";
+
+    $(".share-mail").attr("href", "mailto:?subject="+data.titulo+"&amp;body="+mensaje+""+data.url);
+    $(".share-facebook").attr("href", "https://www.facebook.com/sharer/sharer.php?u="+data.url+"&t="+data.titulo+"&s="+mensaje+"");
+    $(".share-twitter").attr("href", "https://twitter.com/share?url="+data.url+"&text="+data.titulo+"");
+    $(".share-googleplus").attr("href", "https://plus.google.com/share?url="+data.url+"");
+    $(".share-linkedin").attr("href", "http://www.linkedin.com/shareArticle?mini=true&url="+data.url+"&title="+data.titulo+"&summary="+mensaje+"&source=http://www.citysens.net");
+    $(".share-link").attr("href", "#");
 
     $(".informacion").slideDown("fast");
   });
@@ -389,8 +403,13 @@ function cargarDatos(clase)
 ---------------------------------------------------------------------------------------------
 */
 
-function loadOverlay(url)
+function loadOverlay(url,peque)
 {
+  if(peque)
+    $("#overlay").addClass("overlayPeque");
+  else
+    $("#overlay").removeClass("overlayPeque");
+
   $(".darkOverlay").fadeIn("fast");
   $("#overlay").load(url);
 }
@@ -399,6 +418,8 @@ function hideOverlay(url)
 {
   $(".darkOverlay").fadeOut("fast",function()
   {
+    $('#overlay').removeClass('overlayPeque');
+    $('#overlay').removeClass('overlayPeque2');
     $("#overlay").html('');
   });
 }

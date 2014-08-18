@@ -16,6 +16,8 @@
     height: 52px;
     border-bottom:thin solid #CCCCCC;
     width: 100%;
+    cursor:hand;cursor:pointer;
+
 }
 
 .informacion-cabecera-izq
@@ -119,22 +121,34 @@
     border-bottom:thin solid #CCCCCC;
 }
 
-.informacion-cuerpo-tematicas,.informacion-cuerpo-etiquetas,
+.informacion-cuerpo-tematicas-elemento,.informacion-cuerpo-etiquetas-elemento
 {
-    line-height: 20px;
-    height:20px;
+    clear:both;
+    float:left;
+    margin-right:5px;
 }
 
-.informacion-cuerpo-etiquetas
+
+.informacion-cuerpo-tematicas-listado,.informacion-cuerpo-etiquetas-listado
 {
-    margin-bottom: 10px;
+    margin-left: 87px;
+    padding-top: 5px;
 }
 
 
 
 .informacion-cuerpo-tematicas-img
 {
+    position: relative;
+    top: 3px;
     width: 15px;
+}
+
+
+.informacion-cuerpo-contacto
+{
+    padding-top:10px;
+    clear:both;    
 }
 
 .informacion-cuerpo-contacto-elemento
@@ -144,6 +158,11 @@
     color: #6666ff;
     font-weight: bold;    
     padding-left: 18px;
+}
+
+.informacion-cuerpo-texto
+{
+    margin-top: 10px;    
 }
 
 .informacion-pie

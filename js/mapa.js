@@ -1,4 +1,15 @@
+function loadOverlayNoDisponible(url,idCiudad,ciudad)
+{
+  $("#overlay").addClass("overlayPeque");
+  $(".darkOverlay").fadeIn("fast");
+  $("#overlay").load(url,function(){
+    $('#overlay').html($('#overlay').html().replace(/{CIUDAD}/g,ciudad));
+    $('#input-email-idLugar').val(idCiudad);
+    $('#input-email-nombreCiudad').val(ciudad);
+  });
 
+
+}
 
 function addPolygonToMap(idLugar,url,texto,color)
 {
@@ -8,13 +19,23 @@ $.ajax({
     dataType: 'json',
     success: function (response) 
     {
-      //console.log(response);
       geojsonLayer = L.geoJson(response,{fillColor: color, weight: 1}).addTo(map);
       geojsonLayer.on('click',function()
       {
-        //history.pushState(null, null, "http://localhost:8888/citysens/?idLugar="+idLugar);
-        window.location="/citysens/?idLugar="+idLugar;
-        //alert('Esto cargaría la página de '+texto);
+        if($.inArray(parseInt(idLugar),[888004284,999000005,999000006,999000007,999000008,999000009,
+                              888004444,999000232])>=0) //Alcalá, Villalbilla a lo burro
+        {
+          //history.pushState(null, null, "http://localhost:8888/citysens/?idLugar="+idLugar);
+          window.location="/citysens/?idLugar="+idLugar;
+        }
+        else
+        {
+          //No hay todavía para esta ciudad
+          loadOverlayNoDisponible("cityNotReadyYet.html",idLugar,texto);
+        }
+
+
+
       });
       
       geojsonLayer.on('mouseover', function(e) 
@@ -207,8 +228,18 @@ function cargarMapa(idLugar)
               icon: new L.NumberedDivIcon({number: datos[5]})
             }).addTo(map).on('click',function()
             {
-              //history.pushState(null, null, "http://localhost:8888/citysens/?idLugar="+idLugar);
-              window.location="/citysens/?idLugar="+datos[0];
+              console.log("paso por aquí");
+              if($.inArray(parseInt(datos[0]),[888004284,999000005,
+                                     999000006,999000007,999000008,999000009,888004444,999000232])>=0) //Alcalá, Villalbilla a lo burro
+              {
+                //history.pushState(null, null, "http://localhost:8888/citysens/?idLugar="+idLugar);
+                window.location="/citysens/?idLugar="+datos[0];
+              }
+              else
+              {
+                //No hay todavía para esta ciudad
+                loadOverlayNoDisponible("cityNotReadyYet.html",datos[0],datos[1]);
+              }
               //alert('Esto cargaría la página de '+texto);
             }).on('mouseover', function(e) 
             {
@@ -244,9 +275,19 @@ function cargarMapa(idLugar)
           }).setOpacity(0).setZIndexOffset(1000).addTo(map);
           marker.on('click',function()
           {
-            //history.pushState(null, null, "http://localhost:8888/citysens/?idLugar="+idLugar);
-            window.location="/citysens/?idLugar="+datos.idDistritoPadre;
-            //alert('Esto cargaría la página de '+texto);
+
+              if($.inArray(parseInt(datos[0]),[888004284,999000005,
+                                     999000006,999000007,999000008,999000009,888004444,999000232])>=0) //Alcalá, Villalbilla a lo burro
+              {
+                //history.pushState(null, null, "http://localhost:8888/citysens/?idLugar="+idLugar);
+                window.location="/citysens/?idLugar="+datos[0];
+              }
+              else
+              {
+                //No hay todavía para esta ciudad
+                loadOverlayNoDisponible("cityNotReadyYet.html",datos[0],datos[1]);
+              }
+
           }).on('mouseover', function(e) 
           {
             $(".map-footer").html("Ir a "+datos.idDistritoPadre);

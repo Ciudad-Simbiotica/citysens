@@ -122,6 +122,19 @@ function getAsociacionesQuery($query,$cantidad=10)
     return $returnData;
 }
 
+function insertEmailPreregister($email, $idCiudad)
+{
+    $link=connect();
+    $email=safe(filter_var($email,FILTER_SANITIZE_EMAIL));
+    $idCiudad=safe($idCiudad);
+    $sql="INSERT INTO preregister (email, idCiudad) VALUES ('$email','$idCiudad')";
+    mysql_query($sql,$link);
+}
+
+function safe($value){ 
+   return mysql_real_escape_string($value); 
+} 
+
 function getTematicas($cadena,$cantidad=10)
 {
     $link=connect();
