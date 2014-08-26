@@ -25,7 +25,7 @@ foreach($eventos as $evento)
 	$cantidadTematicas=rand(2,4);
 	while(count($tematicasEvento)<$cantidadTematicas)
 	{
-		array_push($tematicasEvento, $tematicas[rand(0,259)]);
+		array_push($tematicasEvento, $tematicas[rand(0,29)]);
 		$tematicasEvento=array_unique($tematicasEvento);
 	}
 

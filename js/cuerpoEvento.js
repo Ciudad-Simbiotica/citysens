@@ -10,9 +10,34 @@ $.getJSON('getDatos.php',
 })
 .done(function(data) 
 {
+    //console.log(data);
 	$(".detalle-cabecera").text(data.titulo);
 	$(".detalle-cuerpo-texto").html(data.texto);
 	$(".detalle-izq").fadeIn(1000);
+
+    $.each(data.tematicas,function(id,tematica)
+    {
+        var clone=$("#tagFiltroTemplate").clone();
+        clone.hide();
+        clone.find('.tagFiltro-texto').text(tematica);
+        clone.find('.tagFiltro-imagen').removeClass('tagFiltro-imagen').addClass('tagFiltro-tematica-imagen');
+        clone.appendTo(".detalle-tags");
+        clone.show();
+    });
+
+    $.each(data.etiquetas.split(','),function(id,etiqueta)
+    {
+        var clone=$("#tagFiltroTemplate").clone();
+        clone.hide();
+        clone.find('.tagFiltro-texto').text(etiqueta);
+        clone.find('.tagFiltro-imagen').removeClass('tagFiltro-imagen').addClass('tagFiltro-etiqueta-imagen');
+        clone.appendTo(".detalle-tags");
+        clone.show();
+    });
+
+
+
+
 });
 
 

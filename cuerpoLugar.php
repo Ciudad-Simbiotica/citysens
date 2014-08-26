@@ -183,7 +183,7 @@
 		  		<div class='informacion-cuerpo-tematicas-listado'>Temática 1, Temática 2, Temática 3</div>
 		 	</div>
 		 	<div class='informacion-cuerpo-etiquetas'>
-		  		<div class='informacion-cuerpo-etiquetas-elemento'><img src='/citysens/icons/etiqueta30x30.png' class="informacion-cuerpo-tematicas-img"> <B>Etiquetas: </B></div>
+		  		<div class='informacion-cuerpo-etiquetas-elemento'><img src='/citysens/icons/etiquetas30x30.png' class="informacion-cuerpo-tematicas-img"> <B>Etiquetas: </B></div>
 		  		<div class='informacion-cuerpo-etiquetas-listado'>Etiqueta 1, Etiqueta 2, Etiqueta 3</div>
 		 	</div>
 		 	<div class='informacion-cuerpo-contacto'>

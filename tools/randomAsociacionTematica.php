@@ -25,7 +25,7 @@ foreach($asociaciones as $asociacion)
 	$cantidadTematicas=rand(2,4);
 	while(count($tematicasAsociacion)<$cantidadTematicas)
 	{
-		array_push($tematicasAsociacion, $tematicas[rand(0,259)]);
+		array_push($tematicasAsociacion, $tematicas[rand(0,29)]);
 		$tematicasAsociacion=array_unique($tematicasAsociacion);
 	}
 

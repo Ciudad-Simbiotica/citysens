@@ -168,3 +168,31 @@
 {
 	padding: 5px;
 }
+
+.tagFiltro-tematica-imagen
+{
+	float:left;
+	width:18px;
+	height:18px;
+	opacity:0.5;
+	background-size: contain;
+	background-repeat: no-repeat;
+    background-position: center;
+	background-image: url("/citysens/icons/etiqueta30x30.png");	
+	margin-right: 4px;
+}
+
+.tagFiltro-etiqueta-imagen
+{
+	float:left;
+	width:18px;
+	height:18px;
+	opacity:0.5;
+	background-size: contain;
+	background-repeat: no-repeat;
+    background-position: center;
+	background-image: url("/citysens/icons/etiquetas30x30.png");	
+	margin-right: 4px;
+}
+
+
