@@ -351,6 +351,7 @@
 	position: absolute;
 	background-color: #FFE890;
 	color:black;
+	display: none;
 	text-shadow: none;
 	border-bottom-left-radius: 3px;
 	border-bottom-right-radius: 3px;

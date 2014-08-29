@@ -24,7 +24,42 @@
 	</div>
 	<div class='detalle-dch'>
 		<div class='detalle-mapa'>
-			mapa
+			<div class='detalle-mapa-cabecera'>
+				<SPAN class='detalle-mapa-cabecera-lugar'>&nbsp;</SPAN>
+				<SPAN class='detalle-mapa-cabecera-volver'>[VOLVER A LISTADO]</SPAN>				
+			</div>
+			<div class='detalle-mapa-mapa' id='detalle-mapa-mapa'>
+				&nbsp;
+			</div>
+			<div class='detalle-mapa-pie'>
+				<div class='detalle-mapa-pie-izquierda'>
+					<div class='detalle-mapa-pie-nombre'>
+						&nbsp;
+					</div>
+					<div class='detalle-mapa-pie-direccion'>
+						&nbsp;
+					</div>
+				</div>
+				<div class='detalle-mapa-pie-tipo'>
+					&nbsp;
+				</div>
+				<div class='detalle-mapa-pie-calendario'>
+		 	 	  <div class='detalle-mapa-pie-calendario-top'>
+		 	 	   &nbsp;
+			 	  </div>
+		 	 	  <div class='detalle-mapa-pie-calendario-bottom'>
+		 	 	   &nbsp;
+			 	  </div>
+				</div>
+				<div class='detalle-mapa-pie-hora-inicio'>
+					&nbsp;
+				</div>
+				<div class='detalle-mapa-pie-hora-final'>
+					&nbsp;
+				</div>
+			
+			</div>
+
 		</div>
 		<div class='detalle-difunde'>
 			difunde
@@ -44,4 +79,5 @@
 	</div>
 
 
+<script src="js/mapaEventoEntidad.js"></script>
 <script src="js/cuerpoEvento.js"></script>

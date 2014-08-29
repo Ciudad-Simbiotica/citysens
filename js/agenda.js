@@ -266,8 +266,9 @@ function cargarContenido(id)
 
     $(".informacion-cuerpo-texto").html(data.texto);
 
-    $(".informacion-cabecera").click(function(){
-      window.location="/citysens/?idEvento="+data.idEvento;
+    $(".informacion-cabecera").click(function()
+    {
+      window.location="/citysens/?idEvento="+data.idEvento+"&idOrigen="+window.idLugar;
     });
 
     mensaje="Texto de ejemplo";
@@ -645,8 +646,24 @@ $('.cabecera-lupa').click(function()
 
 
 var arrayTags = new Array();
-cargarDatos("eventos");
 
+
+try
+{
+  var categoria=$.urlParam('category'); //Lanza un error si no hay tipo
+  if(categoria==="ent")
+  {
+    $(".cabecera-pestania-dch").click();
+  }
+  else if(categoria==="eve")
+  {
+    $(".cabecera-pestania-izq").click();
+  }
+}
+catch(err)
+{
+    $(".cabecera-pestania-izq").click();  
+}
 
 
 

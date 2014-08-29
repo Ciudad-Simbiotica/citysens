@@ -1,3 +1,8 @@
+$.urlParam = function(name){
+    var results = new RegExp('[\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.href);
+    return results[1] || 0;
+}
+
 function loadOverlayNoDisponible(url,idCiudad,ciudad)
 {
   $("#overlay").addClass("overlayPeque");
@@ -192,11 +197,29 @@ function cargarMapa(idLugar)
       
       $(".map-breadcrumbs").html(breadcrumbs);
       window.ciudad=response.nombre;
+      window.idLugar=idLugar;
       
 
 
 
-      $(".agenda-primera-linea").html("Mostrando EVENTOS en <strong>"+response.nombre+"</strong> las proximas semanas, que satisfacen los siguientes filtros de búsqueda:");
+
+      try
+      {
+        var categoria=$.urlParam('category'); //Lanza un error si no hay tipo
+        if(categoria==="ent")
+        {
+          $(".agenda-primera-linea").html("Mostrando ENTIDADES en <strong>"+response.nombre+"</strong> las proximas semanas, que satisfacen los siguientes filtros de búsqueda:");
+        }
+        else if(categoria==="eve")
+        {
+          $(".agenda-primera-linea").html("Mostrando EVENTOS en <strong>"+response.nombre+"</strong> las proximas semanas, que satisfacen los siguientes filtros de búsqueda:");
+        }
+      }
+      catch(err)
+      {
+          $(".agenda-primera-linea").html("Mostrando EVENTOS en <strong>"+response.nombre+"</strong> las proximas semanas, que satisfacen los siguientes filtros de búsqueda:");
+      }
+
 
       //Aquí cargaríamos los distritos
       /*

@@ -39,7 +39,7 @@ include "preload.php";
  	<div class='cabecera-cuerpo'>
 	 	<div class='cabecera-logo'><IMG SRC='icons/citysens.logoPrincipal.png' width='49px' height='40px'></div>
 	 	<div class='cabecera-pestanias'>
-	 		<div id='cabecera-pestania-izq' class='cabecera-pestania-izq cabecera-pestania-seleccionada'>Eventos</div>
+	 		<div id='cabecera-pestania-izq' class='cabecera-pestania-izq'>Eventos</div>
 	 		<div class='subcabecera-pestania-izq'>
 	 			<div class='switch-filas switch-filas-convocatoria' id='switch-puntuales'>
 	 				<img src='icons/Event-Unique.64.png' width="32px">

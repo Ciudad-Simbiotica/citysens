@@ -159,7 +159,24 @@ function getEvento($idEvento)
     if($fila=mysql_fetch_assoc($result))
     {
         $evento=$fila;
-        //mysql_query('SET CHARACTER SET utf8',$link);
+        
+        $sql="SELECT * FROM direcciones WHERE idDireccion='{$fila['idDireccion']}'";
+        $result=mysql_query($sql,$link);
+        if($fila=mysql_fetch_assoc($result))
+        {
+            $evento['direccion']=$fila;
+        }
+        else
+        {
+            $evento['direccion']['direccion']="Sin dirección";
+            $evento['direccion']['idDireccion']="0";
+            $evento['direccion']['idPadre']="0";
+            $evento['direccion']['lat']=0;
+            $evento['direccion']['long']=0;
+            $evento['direccion']['nombre']="Sin nombre";
+            $evento['direccion']['zoom']="15";
+        }
+
         $sql="SELECT * FROM eventos_tematicas, tematicas 
                 WHERE eventos_tematicas.idEvento='$idEvento' AND
                 eventos_tematicas.idTematica=tematicas.idTematica";

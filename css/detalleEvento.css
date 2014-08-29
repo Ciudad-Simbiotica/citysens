@@ -1,32 +1,3 @@
-	/*
-	<div class='scroll-curtain'></div>
-	<div class='scroll-curtain-gradient'></div>
-
-	 
-	<div class='detalle-izq'>
-		<div class='detalle-cabecera'>
-			Cabecera
-		</div>
-		<div class='detalle-menu'>
-			menu
-		</div>
-		<div class='detalle-cuerpo'>
-			cuerpo
-		</div>
-	</div>
-	<div class='detalle-dch'>
-		<div class='detalle-mapa'>
-			mapa
-		</div>
-		<div class='detalle-difunde'>
-			difunde
-		</div>
-		<div class='detalle-tags'>
-			tags
-		</div>		
-	</div>
-	*/
-
 .detalle-izq,.detalle-mapa,.detalle-difunde,.detalle-tags
 {
   box-shadow:0 2px 3px #aaa;
@@ -112,7 +83,7 @@
 
 .detalle-cuerpo-blankSpace
 {
-	height: 500px;
+    height: calc(100% - 96px);
 }
 
 .detalle-mapa
@@ -195,4 +166,112 @@
 	margin-right: 4px;
 }
 
+.detalle-mapa
+{
+	padding: 0px;
+}
 
+.detalle-mapa-cabecera
+{
+	height: 20px;
+	line-height: 20px;
+	padding: 3px;
+    border-bottom:thin solid #CCCCCC;
+}
+
+.detalle-mapa-cabecera-lugar
+{
+	font-weight: bold;
+}
+
+.detalle-mapa-cabecera-volver
+{
+	font-weight: bold;
+	color:blue;
+	cursor:hand;cursor:pointer;
+	float:right;
+}
+
+.detalle-mapa-mapa
+{
+	height: 162px;
+    border-bottom:thin solid #CCCCCC;
+
+}
+
+.detalle-mapa-pie
+{
+	height: 42px;
+	padding: 3px;
+	display: none;
+}
+
+.detalle-mapa-pie-izquierda
+{
+	float:left;
+	width: 195px;
+}
+.detalle-mapa-pie-nombre
+{
+	font-weight: bold;
+}
+
+.detalle-mapa-pie-direccion
+{
+}
+
+.detalle-mapa-pie-tipo
+{
+	float:left;
+	width: 30px;
+	height: 40px;
+	background-size: contain;
+	background-repeat: no-repeat;
+    background-position: center;
+}
+
+.detalle-mapa-pie-tipo-convocatoria
+{
+	background-image: url("/citysens/icons/Event-Unique.64.png");		
+}
+
+.detalle-mapa-pie-tipo-recurrente
+{
+	background-image: url("/citysens/icons/Event-Recurring.64.png");		
+}
+
+.detalle-mapa-pie-calendario
+{
+    border:2px solid #000000;
+    width: 40px;
+    height: 40px;
+    line-height: 20px;
+    text-align: center;
+
+    font-weight: bold;
+    font-size: 16px;
+    float:left;
+}
+
+.detalle-mapa-pie-calendario-top
+{
+    background-color: #6666ff;
+    color: #eeeeee;
+    height: 20px;    
+}
+
+.detalle-mapa-pie-calendario-bottom
+{
+    
+}
+
+
+
+.detalle-mapa-pie-hora-inicio,.detalle-mapa-pie-hora-final
+{
+	font-weight: bold;
+	float:left;
+	padding-left: 4px;
+	font-size: 14px;
+	line-height: 21px;
+}
