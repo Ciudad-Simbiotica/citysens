@@ -284,7 +284,7 @@ html,body
 	height: auto;
 	overflow: hidden;
 	vertical-align: top;
-	margin-bottom: 5px;
+	margin-bottom: 0px;
 }
 
 
@@ -367,4 +367,28 @@ html,body
 	float:left;
 	margin-top: -2px;
 	cursor:hand;cursor:pointer;
+}
+
+.agenda-segunda-linea
+{
+	margin-bottom: 5px;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.div-avisos
+{
+	float:left;
+}
+
+#email-avisos
+{
+	width: 160px;
+}
+
+.div-ordenar
+{
+	font-size: 14px;
+	line-height: 10px;
+	text-align: right;
+	margin-right: 3px;
 }

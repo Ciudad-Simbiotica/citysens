@@ -75,15 +75,7 @@ include "preload.php";
 	 	</div>
 	 	<div class='cabecera-lupa'>
 	 	</div>
-	 	<div id='cabecera-ordenar' class='cabecera-ordenar'>
-	 	 <div class='cabecera-ordenar-texto'>Ordenar por</div><div class='cabecera-ordenar-flecha'>&#x25BC</div>
-	 	</div>
- 		<div class='subcabecera-pestania-ordenar'>
- 			<div class='subcabecera-pestania-ordenar-row'>Fecha</div>
- 			<div class='subcabecera-pestania-ordenar-row'>Temática</div>
- 			<div class='subcabecera-pestania-ordenar-row'>Lugar</div>
- 			<div class='subcabecera-pestania-ordenar-row'>Popularidad</div>
- 		</div>
+	 	<div class='cabecera-propon'>Propón un evento</div>
 	 	<div class='cabecera-derecha'>Mi CitYsens</div>
 	</div>
  </div>

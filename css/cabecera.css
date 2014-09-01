@@ -284,6 +284,25 @@
 	width: 60px;
 
 }
+
+.cabecera-propon
+{
+	border-bottom:thick solid #6A94D4;
+	box-shadow: 0 2px 3px 0 #aaa;
+	top:0px;
+	right:80px;
+	width: 125px;
+	height: 43px;
+	padding-top: 10px;
+	position: absolute;
+	color:white;
+	text-shadow: 1px 1px 6px #000000;	
+	text-align: center;
+	cursor: pointer; cursor: hand;	
+}
+
+
+
 .cabecera-ordenar
 {
 	border-bottom:thick solid #6A94D4;

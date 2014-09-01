@@ -208,16 +208,16 @@ function cargarMapa(idLugar)
         var categoria=$.urlParam('category'); //Lanza un error si no hay tipo
         if(categoria==="ent")
         {
-          $(".agenda-primera-linea").html("Mostrando ENTIDADES en <strong>"+response.nombre+"</strong> las proximas semanas, que satisfacen los siguientes filtros de búsqueda:");
+          $(".agenda-primera-linea").html("Mostrando ENTIDADES en <strong>"+response.nombre+"</strong> las proximas semanas:");
         }
         else if(categoria==="eve")
         {
-          $(".agenda-primera-linea").html("Mostrando EVENTOS en <strong>"+response.nombre+"</strong> las proximas semanas, que satisfacen los siguientes filtros de búsqueda:");
+          $(".agenda-primera-linea").html("Mostrando EVENTOS en <strong>"+response.nombre+"</strong> las proximas semanas:");
         }
       }
       catch(err)
       {
-          $(".agenda-primera-linea").html("Mostrando EVENTOS en <strong>"+response.nombre+"</strong> las proximas semanas, que satisfacen los siguientes filtros de búsqueda:");
+          $(".agenda-primera-linea").html("Mostrando EVENTOS en <strong>"+response.nombre+"</strong> las proximas semanas:");
       }
 
 

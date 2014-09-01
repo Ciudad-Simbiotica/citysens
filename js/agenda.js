@@ -271,14 +271,15 @@ function cargarContenido(id)
       window.location="/citysens/?idEvento="+data.idEvento+"&idOrigen="+window.idLugar;
     });
 
+    url="http://www.citysens.org/?idEvento="+data.idEvento+"%26idOrigen="+window.idLugar;
     mensaje="Texto de ejemplo";
 
-    $(".share-mail").attr("href", "mailto:?subject="+data.titulo+"&amp;body="+mensaje+""+data.url);
-    $(".share-facebook").attr("href", "https://www.facebook.com/sharer/sharer.php?u="+data.url+"&t="+data.titulo+"&s="+mensaje+"");
-    $(".share-twitter").attr("href", "https://twitter.com/share?url="+data.url+"&text="+data.titulo+"");
-    $(".share-googleplus").attr("href", "https://plus.google.com/share?url="+data.url+"");
-    $(".share-linkedin").attr("href", "http://www.linkedin.com/shareArticle?mini=true&url="+data.url+"&title="+data.titulo+"&summary="+mensaje+"&source=http://www.citysens.net");
-    $(".share-link").attr("href", "#");
+    $(".share-mail").attr("href", "mailto:?subject="+data.titulo+"&body="+mensaje+"%0D%0A%0D%0A"+url);
+    $(".share-facebook").attr("href", "https://www.facebook.com/sharer/sharer.php?u="+url+"&t="+data.titulo+"&s="+mensaje+"");
+    $(".share-twitter").attr("href", "https://twitter.com/share?url="+url+"&text="+data.titulo+" - ");
+    $(".share-googleplus").attr("href", "https://plus.google.com/share?url="+url);
+    $(".share-linkedin").attr("href", "http://www.linkedin.com/shareArticle?mini=true&url="+url+"&title="+data.titulo+"&summary="+mensaje+"&source=http://www.citysens.net");
+    //$(".share-link").attr("href", "#");
 
     $(".informacion").slideDown("fast");
   });
@@ -293,8 +294,13 @@ function removeAllTags()
   arrayTags=[];
 }
 
-function cargarDatos(clase)
+function cargarDatos(clase, orden)
 {
+
+  $(".informacion").slideUp("fast");
+  orden = typeof orden !== 'undefined' ? orden : 'fecha';
+
+  console.log(clase+" "+orden);
   window.clase=clase;
   //[{"texto":"Alcal&aacute; De Henares","tipo":"lugar","id":"4284"}] 
   var hayUnLugar=false;
@@ -341,8 +347,10 @@ function cargarDatos(clase)
     .done(function(data) 
     {
       //Esperamos a que se hayan borrado los grupos (por si acaba antes) antes de clonar
-
-
+      console.log(arrayTagsQuery);
+      conFiltros=":";
+      if(arrayTagsQuery.length>1)
+        conFiltros=" que satisfacen los siguientes filtros de búsqueda:";
       switch(clase)
       {
         case "eventos":
@@ -352,7 +360,7 @@ function cargarDatos(clase)
           }
           else
           {
-            $(".agenda-primera-linea").html("Mostrando EVENTOS en <strong>"+window.ciudad+"</strong> en las proximas semanas, que satisfacen los siguientes filtros de búsqueda:");
+            $(".agenda-primera-linea").html("Mostrando EVENTOS en <strong>"+window.ciudad+"</strong> en las proximas semanas"+conFiltros);
           }
           $("#cabecera-suggest").empty();
           $(".input-busqueda").val('');
@@ -365,7 +373,7 @@ function cargarDatos(clase)
           }
           else
           {
-            $(".agenda-primera-linea").html("Mostrando ENTIDADES en <strong>"+window.ciudad+"</strong> que satisfacen los siguientes filtros de búsqueda:");
+            $(".agenda-primera-linea").html("Mostrando ENTIDADES en <strong>"+window.ciudad+"</strong>"+conFiltros);
           }        
           $("#cabecera-suggest").empty();
           $(".input-busqueda").val('');
@@ -437,17 +445,32 @@ function newEvent()
   loadOverlay("newEvent.html");
 }
 
+function isValidEmailAddress(emailAddress) 
+{
+    var pattern = new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i);
+    return pattern.test(emailAddress);
+};
+
 function subscribe()
 {
-  alert("Subscribiéndose");
+  if(isValidEmailAddress($("#email-avisos").val()))
+  {
+    console.log($("#email-avisos").val());
+    //nombreCiudad=$('#input-email-nombreCiudad').val();
+    //$.post( "registerMailCityNotReady.php", { email: $(".input-email-ciudad").val(), idCiudad: $("#input-email-idLugar").val() } );
+  }
+  else
+  {
+    alert("Introduce un email correcto para suscribirte a los eventos");
+  }
 }
 
-$(".nuevoEvento").click(function()
+$(".cabecera-propon").click(function()
 {
   newEvent();
 });
 
-$(".correo").click(function()
+$("#boton-avisos").click(function()
 {
   subscribe();
 });
@@ -563,29 +586,10 @@ $(".cabecera-pestania-noticias").click(function()
 
 });
 
-$(".cabecera-ordenar").click(function()
+$('select').on('change', function() 
 {
-
-  $("#cabecera-ordenar").toggleClass("cabecera-pestania-seleccionada",150);
-
-
-  if($("#cabecera-ordenar").hasClass("cabecera-pestania-seleccionada"))
-    $(".cabecera-ordenar-flecha").html("&#x25BC");
-  else
-    $(".cabecera-ordenar-flecha").html("&#x25B2");
-  
-  $(".subcabecera-pestania-ordenar").slideToggle("fast");
+  cargarDatos('eventos', $(this).val());
 });
-
-$(".subcabecera-pestania-ordenar-row").click(function()
-{
-
-  $("#cabecera-ordenar").removeClass("cabecera-pestania-seleccionada",150);
-  $(".cabecera-ordenar-flecha").html("&#x25BC"); 
-  $(".subcabecera-pestania-ordenar").slideUp("fast");
-  cargarDatos("eventos"); //Coger parámetro de orden del texto de la fila
-});
-
 
 
 /* 

@@ -1,17 +1,4 @@
- 	
- 	<div class='botonesSuperiores'>
-	 	
-	 	<div class='nuevoEvento'>
-	 		Propón un evento
-	 	</div>
-
-	 	<div class='correo'>
-	 		Recibir por correo
-	 	</div>
-	 	
-	</div>
-
-	<div class='scroll-curtain'></div>
+ 	<div class='scroll-curtain'></div>
 	<div class='scroll-curtain-gradient'></div>
 
 	 
@@ -43,6 +30,21 @@
 		  <div class='agenda-filtros-entidad'>
 		  </div>
 		</div>
+	  </div>
+	  <div class='agenda-segunda-linea'>
+	   <div class='div-avisos'>
+	  	<input type=text id="email-avisos" placeholder="escribe tu mail">
+	  	<input type=button id="boton-avisos" value="Recibir avisos">
+	   </div>
+	   <div class='div-ordenar'>
+	  	Ordenar por: 
+	  	<select id="select_ordenar">
+	  	 <option value="fecha">Fecha</option>
+	  	 <option value="tematica">Temática</option>
+	  	 <option value="lugar">Lugar</option>
+	  	 <option value="popularidad">Popularidad</option>
+		</select>
+	   </div>
 	  </div>
 
 
@@ -218,9 +220,9 @@
 			   onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=350,width=480');return false;"
 			   target="_blank" title="Share on Google+"><img width="16px" src='/citysens/icons/linkedin.ico'></a>
 
-			<a class='share-link' href="#"
-			   onclick='$(function() {$( "<div>Your text here </div>" ).dialog();return false;'
-			   target="_blank" title="Share on Google+"><img width="16px" src='/citysens/icons/link.png'></a>
+			<!--<a class='share-link' href="#"
+			   onclick=''
+			   target="_blank" title="Share on Google+"><img width="16px" src='/citysens/icons/link.png'></a>-->
 
 		 </div>
 	 </div>
