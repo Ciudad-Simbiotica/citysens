@@ -86,6 +86,33 @@ $.getJSON('getDatos.php',
 
     $(".detalle-mapa-pie").show();
 
+    //Sharing code
+    //url="http://www.citysens.org/?idEvento="+data.idEvento+"%26idOrigen="+window.idLugar;
+    mensaje="¡¡¡Este evento te puede interesar!!!";
+    
+    var tbx = document.getElementById("toolbox");
+
+    tbx.innerHTML="";
+    tbx.innerHTML += '<a class="addthis_button_email"></a>';
+    tbx.innerHTML += '<a class="addthis_button_facebook" fb:share:layout="button_count"></a>';
+    tbx.innerHTML += '<a class="addthis_button_twitter"></a>';
+    tbx.innerHTML += '<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>';
+
+
+    var addthis_share = 
+    { 
+      url: url,
+      title: data.titulo,
+      description: mensaje,
+      templates: 
+      {
+        twitter: data.titulo+url,
+      }
+    }
+
+    addthis.toolbox("#toolbox",{},addthis_share);
+
+
 
 });
 

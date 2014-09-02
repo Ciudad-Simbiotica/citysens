@@ -62,7 +62,10 @@
 
 		</div>
 		<div class='detalle-difunde'>
-			difunde
+			<div class='detalle-difunde-titulo'>Difunde</div>
+			<div class='detalle-difunde-contenido'>
+				<div id="toolbox" class="addthis_default_style"></div>
+			</div>
 		</div>
 		<div class='detalle-tags'>
 			<div class='detalle-tags-titulo'>Temáticas / Etiquetas</div>

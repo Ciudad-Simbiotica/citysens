@@ -272,15 +272,38 @@ function cargarContenido(id)
     });
 
     url="http://www.citysens.org/?idEvento="+data.idEvento+"%26idOrigen="+window.idLugar;
-    mensaje="Texto de ejemplo";
+    mensaje="¡¡¡Este evento te puede interesar!!!";
+    
+    var tbx = document.getElementById("toolbox");
 
+    tbx.innerHTML="";
+    tbx.innerHTML += '<a class="addthis_button_email"></a>';
+    tbx.innerHTML += '<a class="addthis_button_facebook"></a>';
+    tbx.innerHTML += '<a class="addthis_button_twitter"></a>';
+    tbx.innerHTML += '<a class="addthis_button_google_plusone" g:plusone:annotation="none"></a>';
+
+
+    var addthis_share = 
+    { 
+      url: url,
+      title: data.titulo,
+      description: mensaje,
+      templates: 
+      {
+        twitter: data.titulo+url,
+      }
+    }
+
+    addthis.toolbox("#toolbox",{},addthis_share);
+
+    /*
     $(".share-mail").attr("href", "mailto:?subject="+data.titulo+"&body="+mensaje+"%0D%0A%0D%0A"+url);
     $(".share-facebook").attr("href", "https://www.facebook.com/sharer/sharer.php?u="+url+"&t="+data.titulo+"&s="+mensaje+"");
     $(".share-twitter").attr("href", "https://twitter.com/share?url="+url+"&text="+data.titulo+" - ");
     $(".share-googleplus").attr("href", "https://plus.google.com/share?url="+url);
     $(".share-linkedin").attr("href", "http://www.linkedin.com/shareArticle?mini=true&url="+url+"&title="+data.titulo+"&summary="+mensaje+"&source=http://www.citysens.net");
     //$(".share-link").attr("href", "#");
-
+    */
     $(".informacion").slideDown("fast");
   });
 }

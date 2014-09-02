@@ -199,7 +199,17 @@
 		  
 		 </div>
 		 <div class='informacion-pie'>
-			
+			<!-- Go to www.addthis.com/dashboard to customize your tools -->
+
+			<div id="toolbox" class="addthis_default_style"></div>
+
+			<!--
+			<div class="addthis_toolbox addthis_default_style">
+				<a id="atbutton"></a>
+			</div>
+			-->
+
+			<!--
 			<a class='share-mail' href="mailto:?subject=Asunto&amp;body=Cuerpo"
 			   onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=350,width=480');return false;"
 			   target="_blank" title="Share on Google+"><img width="16px" src='/citysens/icons/mail.png'></a>
@@ -219,7 +229,7 @@
 			<a class='share-linkedin' href="http://www.linkedin.com/shareArticle?mini=true&url=http://www.google.com&title=Titulo&summary=Texto&source=http://www.citysens.net"
 			   onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=350,width=480');return false;"
 			   target="_blank" title="Share on Google+"><img width="16px" src='/citysens/icons/linkedin.ico'></a>
-
+			-->
 			<!--<a class='share-link' href="#"
 			   onclick=''
 			   target="_blank" title="Share on Google+"><img width="16px" src='/citysens/icons/link.png'></a>-->

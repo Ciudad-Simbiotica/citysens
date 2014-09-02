@@ -29,6 +29,8 @@ include "preload.php";
  <script src="js/wysihtml5/parser_rules/advanced.js"></script>
  <script src="js/wysihtml5/dist/wysihtml5-0.3.0.min.js"></script>
 
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5405f16570d4251b"></script>
+
 </head>
 
 <body>  
