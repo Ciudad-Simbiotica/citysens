@@ -194,7 +194,7 @@ function getEvento($idEvento)
 
 }
 
-function getEventos($query,$cantidad=50)
+function getEventos($query,$cantidad=50,$orden="fecha")
 {
     $link=connect();
     $busqueda="";

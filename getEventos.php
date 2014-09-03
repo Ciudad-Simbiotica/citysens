@@ -2,21 +2,20 @@
 error_reporting(E_ERROR);
 include_once "db.php";
 $query=json_decode($_GET["query"],true);
-$eventos=getEventos($query,50);
+//exit();
+$eventos=getEventos($query,50,$_GET["orden"]);
+
+$tipoGrupos=$_GET["orden"];
+
 foreach($eventos as $evento)
 {
-	/*
-    [idEvento] => 1769
-    [fecha] => 2014-05-13 18:00:00
-    [clase] => eventos
-    [tipo] => convocatoria
-    [titulo] => Mesa redonda sobre las elecciones europeas y el delegacionismo
-    [texto] => Mesa redonda sobre las elecciones europeas y el delegacionismo
-    [lugar] => Guadalajara
-    [temperatura] => 3
-    */
 	$datos["id"]=$evento["idEvento"];
 	$datos["clase"]="eventos";
+
+	if($tipoGrupos=="fecha")
+		$nombreGrupo="";
+	else if($tipoGrupos=="lugar")
+		$nombreGrupo=utf8_encode($evento["lugar"]);
 
 	//echo $id."<BR>";
 
@@ -26,10 +25,10 @@ foreach($eventos as $evento)
 	$grupo=date("Y-m-d",strtotime($evento["fecha"]));
 
 	
-	if(!isset($returnData["grupos"][$grupo]["totalFilas"]))
+	if(!isset($returnData["grupos"][$nombreGrupo][$grupo]["totalFilas"]))
 	{
-		$returnData["grupos"][$grupo]["totalFilas"]["convocatoria"]=0;
-		$returnData["grupos"][$grupo]["totalFilas"]["recurrente"]=0;
+		$returnData["grupos"][$nombreGrupo][$grupo]["totalFilas"]["convocatoria"]=0;
+		$returnData["grupos"][$nombreGrupo][$grupo]["totalFilas"]["recurrente"]=0;
 	}
 	
 
@@ -49,26 +48,28 @@ foreach($eventos as $evento)
 	$cabeceraIzq.=ucfirst(strftime("%A %e",strtotime($evento["fecha"])));
 	$cabeceraIzq.=" de ".ucfirst(strftime("%B",strtotime($evento["fecha"])));
 
-	$returnData["grupos"][$grupo]["cabeceraIzq"]=$cabeceraIzq;
-	$returnData["grupos"][$grupo]["cabeceraCntr"]="";//ucfirst(strftime("%A %e",$event["start_time"]));
-	$returnData["grupos"][$grupo]["cabeceraDch"]="";//ucfirst(strftime("%B",$event["start_time"]));
-	$returnData["grupos"][$grupo]["totalFilas"][$datos["tipo"]]++;
+	$returnData["grupos"][$nombreGrupo][$grupo]["cabeceraIzq"]=$cabeceraIzq;
+	$returnData["grupos"][$nombreGrupo][$grupo]["cabeceraCntr"]="";//ucfirst(strftime("%A %e",$event["start_time"]));
+	$returnData["grupos"][$nombreGrupo][$grupo]["cabeceraDch"]="";//ucfirst(strftime("%B",$event["start_time"]));
+	$returnData["grupos"][$nombreGrupo][$grupo]["totalFilas"][$datos["tipo"]]++;
 
 	
-	if(!is_array($returnData["grupos"][$grupo]["filas"]))
-		$returnData["grupos"][$grupo]["filas"]=array();
-	array_push($returnData["grupos"][$grupo]["filas"],$datos);
+	if(!is_array($returnData["grupos"][$nombreGrupo][$grupo]["filas"]))
+		$returnData["grupos"][$nombreGrupo][$grupo]["filas"]=array();
+	array_push($returnData["grupos"][$nombreGrupo][$grupo]["filas"],$datos);
 }
 
-foreach($returnData["grupos"] as $id=>$grupo)
+foreach($returnData["grupos"] as $nombreGrupo=>$datosGrupo)
+foreach($datosGrupo as $id=>$grupo)
 foreach($grupo["totalFilas"] as $key=>$value)
 {
 	if($value==0)
 	{
-		unset($returnData["grupos"][$id]["totalFilas"][$key]);			
+		unset($returnData["grupos"][$nombreGrupo][$id]["totalFilas"][$key]);			
 	}
 }
 $returnData["tipo"]="eventos";
+$returnData["orden"]=$_GET["orden"];
 
 $returnJSON=json_encode($returnData);
 echo $returnJSON;

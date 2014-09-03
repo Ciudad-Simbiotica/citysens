@@ -271,7 +271,7 @@ function cargarContenido(id)
       window.location="/citysens/?idEvento="+data.idEvento+"&idOrigen="+window.idLugar;
     });
 
-    url="http://www.citysens.org/?idEvento="+data.idEvento+"%26idOrigen="+window.idLugar;
+    url="http://www.citysens.net/?idEvento="+data.idEvento+"%26idOrigen="+window.idLugar;
     mensaje="¡¡¡Este evento te puede interesar!!!";
     
     var tbx = document.getElementById("toolbox");
@@ -280,9 +280,11 @@ function cargarContenido(id)
     tbx.innerHTML += '<a class="addthis_button_email"></a>';
     tbx.innerHTML += '<a class="addthis_button_facebook"></a>';
     tbx.innerHTML += '<a class="addthis_button_twitter"></a>';
-    tbx.innerHTML += '<a class="addthis_button_google_plusone" g:plusone:annotation="none"></a>';
+    tbx.innerHTML += '<a class="addthis_button_google_plusone" g:plusone:annotation="none" g:plusone:size="medium"></a>';
 
-
+    var addthis_config = {
+          ui_language: "es" 
+    } 
     var addthis_share = 
     { 
       url: url,
@@ -290,11 +292,11 @@ function cargarContenido(id)
       description: mensaje,
       templates: 
       {
-        twitter: data.titulo+url,
+        twitter: data.titulo+" - "+url,
       }
     }
 
-    addthis.toolbox("#toolbox",{},addthis_share);
+    addthis.toolbox("#toolbox",addthis_config,addthis_share);
 
     /*
     $(".share-mail").attr("href", "mailto:?subject="+data.titulo+"&body="+mensaje+"%0D%0A%0D%0A"+url);
@@ -304,6 +306,19 @@ function cargarContenido(id)
     $(".share-linkedin").attr("href", "http://www.linkedin.com/shareArticle?mini=true&url="+url+"&title="+data.titulo+"&summary="+mensaje+"&source=http://www.citysens.net");
     //$(".share-link").attr("href", "#");
     */
+
+    if(data.tipo=='recurrente')
+    {
+      $(".informacion-cabecera-abajo").text('Texto repetición');
+      $(".informacion-cabecera").height(70);
+      $(".informacion-cabecera-abajo").show();
+    }
+    else
+    {
+      $(".informacion-cabecera").height(50);
+      $(".informacion-cabecera-abajo").hide();
+    }
+
     $(".informacion").slideDown("fast");
   });
 }
@@ -320,6 +335,7 @@ function removeAllTags()
 function cargarDatos(clase, orden)
 {
 
+  $(".agenda-segunda-linea").fadeOut("fast");
   $(".informacion").slideUp("fast");
   orden = typeof orden !== 'undefined' ? orden : 'fecha';
 
@@ -343,7 +359,7 @@ function cargarDatos(clase, orden)
     {
       "texto": "", 
       "tipo": "lugar",
-      "id": $.urlParam('idLugar')
+      "id": $.urlParam('idLugar'),
     };
     arrayTagsQuery.push(sugerencia);
   }
@@ -351,7 +367,7 @@ function cargarDatos(clase, orden)
 
   var query=JSON.stringify(arrayTagsQuery);
   //console.log(arrayTagsQuery);
-  //console.log(query);
+  console.log(query);
 
   $(".grupo").attr('id',"");  //Para que no se inserten en esta les quitamos el ID
   $(".grupo").fadeOut("1000",function()
@@ -365,15 +381,21 @@ function cargarDatos(clase, orden)
     clase: clase,
     date: "any",
     query: query,
-    format: "json"
+    format: "json",
+    orden: orden
   })
     .done(function(data) 
     {
       //Esperamos a que se hayan borrado los grupos (por si acaba antes) antes de clonar
-      console.log(arrayTagsQuery);
+      //console.log(arrayTagsQuery);
+
+      console.log(data);
+
+      /*
       conFiltros=":";
       if(arrayTagsQuery.length>1)
         conFiltros=" que satisfacen los siguientes filtros de búsqueda:";
+      
       switch(clase)
       {
         case "eventos":
@@ -415,16 +437,24 @@ function cargarDatos(clase, orden)
         case "noticias":
           break;
       }
+      */
 
-      $.each(data.grupos, function(grupo,filas)
+      console.log(data.grupos);
+
+      $.each(data.grupos, function(nombreGrupo,datosGrupo)
       {
-        createGroup(grupo,filas.cabeceraIzq,filas.cabeceraCntr,filas.cabeceraDch,filas.totalFilas);
-        $.each(filas.filas,function(i,item)
+        $.each(datosGrupo, function(grupo,filas)
         {
-          createLine(grupo,item,0);
+          createGroup(grupo,filas.cabeceraIzq,filas.cabeceraCntr,filas.cabeceraDch,filas.totalFilas);
+          $.each(filas.filas,function(i,item)
+          {
+            createLine(grupo,item,0);
+          });
         });
       });
+
     $(".grupo").fadeIn(1000);
+    $(".agenda-segunda-linea").fadeIn(1000);
     comprobarPlegadoFilas();
     });  
 }
@@ -484,7 +514,7 @@ function subscribe()
   }
   else
   {
-    alert("Introduce un email correcto para suscribirte a los eventos");
+    alert("Introduce un email correcto para recibir los avisos");
   }
 }
 

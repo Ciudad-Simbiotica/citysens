@@ -86,19 +86,23 @@ $.getJSON('getDatos.php',
 
     $(".detalle-mapa-pie").show();
 
+
     //Sharing code
-    //url="http://www.citysens.org/?idEvento="+data.idEvento+"%26idOrigen="+window.idLugar;
+    url="http://www.citysens.net/?idEvento="+data.idEvento+"%26idOrigen="+$.urlParam('idOrigen');
     mensaje="¡¡¡Este evento te puede interesar!!!";
     
     var tbx = document.getElementById("toolbox");
 
     tbx.innerHTML="";
     tbx.innerHTML += '<a class="addthis_button_email"></a>';
-    tbx.innerHTML += '<a class="addthis_button_facebook" fb:share:layout="button_count"></a>';
+    tbx.innerHTML += '<a class="addthis_button_facebook"></a>';
     tbx.innerHTML += '<a class="addthis_button_twitter"></a>';
-    tbx.innerHTML += '<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>';
+    tbx.innerHTML += '<a class="addthis_button_google_plusone" g:plusone:annotation="none" g:plusone:size="medium"></a>';
+    tbx.innerHTML += '<a class="addthis_counter addthis_bubble_style"></a>';
 
-
+    var addthis_config = {
+          ui_language: "es" 
+    } 
     var addthis_share = 
     { 
       url: url,
@@ -106,14 +110,28 @@ $.getJSON('getDatos.php',
       description: mensaje,
       templates: 
       {
-        twitter: data.titulo+url,
-      }
+        twitter: data.titulo+" - "+url,
+      },
+      url_transforms : 
+      {
+        clean: true
+      },
+      /*
+      email_template: "citysens_evento",
+      email_vars: 
+      { 
+        asunto: mensaje,
+        fecha: data.fecha,
+        lugar: data.lugar 
+      }   
+      */ 
     }
 
-    addthis.toolbox("#toolbox",{},addthis_share);
+    addthis.toolbox("#toolbox",addthis_config,addthis_share);
 
-
-
+    $(".difunde-termometro").css("background-image", "url(/citysens/icons/termometro_"+data.temperatura+".png)");  
+    $(".difunde-termometro").show();
+    document.title = data.titulo;
 });
 
 

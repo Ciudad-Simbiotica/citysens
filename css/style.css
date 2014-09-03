@@ -373,6 +373,7 @@ html,body
 {
 	margin-bottom: 5px;
 	font-family: Arial, Helvetica, sans-serif;
+	display:none;
 }
 
 .div-avisos
@@ -391,4 +392,20 @@ html,body
 	line-height: 10px;
 	text-align: right;
 	margin-right: 3px;
+}
+
+.follow_eye_listado
+{
+	float:right;
+	margin-right:3px;
+	padding-top: 0px;
+	padding-left: 22px;
+	font-weight: bold;
+	color: #6666ff;
+	font-size: 16px;
+	height: 20px;
+	line-height: 21px;
+	cursor:hand;cursor:pointer;
+	background-image: url("/citysens/icons/follow_eye20x20.png");		
+	background-repeat: no-repeat;
 }

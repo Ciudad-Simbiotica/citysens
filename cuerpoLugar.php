@@ -178,6 +178,7 @@
 		 	  </div>
 		 	 </div>
 		 	</div>
+		 	<div class='informacion-cabecera-abajo'>Se repite cada semana</div>
 		 </div>
 		 <div class='informacion-cuerpo'>
 		 	<div class='informacion-cuerpo-tematicas'>
@@ -201,7 +202,8 @@
 		 <div class='informacion-pie'>
 			<!-- Go to www.addthis.com/dashboard to customize your tools -->
 
-			<div id="toolbox" class="addthis_default_style"></div>
+			<div id="toolbox" class="addthis_default_style addthis_20x20_style"></div>
+			<div class="follow_eye_listado">Seguir</div>
 
 			<!--
 			<div class="addthis_toolbox addthis_default_style">

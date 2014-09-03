@@ -64,7 +64,9 @@
 		<div class='detalle-difunde'>
 			<div class='detalle-difunde-titulo'>Difunde</div>
 			<div class='detalle-difunde-contenido'>
-				<div id="toolbox" class="addthis_default_style"></div>
+				<div id="toolbox" class="addthis_default_style addthis_20x20_style"></div>
+				<div class="follow_eye">Seguir</div>
+				<div id="difunde-termometro" class="difunde-termometro"></div>
 			</div>
 		</div>
 		<div class='detalle-tags'>
