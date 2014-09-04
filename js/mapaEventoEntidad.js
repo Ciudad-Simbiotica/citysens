@@ -26,5 +26,16 @@ function cargarMapa(lat,lon)
   var ggl = new L.Google();
   L.Google('roadmap');
   map.addLayer(ggl);
+
+  map.on('click', function()
+  {
+    url="https://www.google.es/maps/place/"+lat+","+lon;
+    window.open(url,'_blank');
+    console.log('Click Mapa: '+url);
+  });
+
+  var style = $('.leaflet-container').attr('style');
+  $('.leaflet-container').attr('style', style + '; cursor:hand; cursor:pointer');
+
   
 }

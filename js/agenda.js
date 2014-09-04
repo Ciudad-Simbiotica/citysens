@@ -9,13 +9,30 @@ $.urlParam = function(name){
 ------------------------------------Creado de grupos/filas-----------------------------------
 ---------------------------------------------------------------------------------------------
 */
-function createGroup(grupo,left,center,right,totalFilas)
+
+function createSuperGroup(nombreSuperGrupo)
+{
+  var clone=$("#supergrupo-template").clone();
+  clone.hide();
+  clone.removeClass("supergrupo-template");
+  clone.addClass("supergrupo");
+  clone.attr('id',"sg_"+nombreSuperGrupo.replace(/\W/g,""));
+  clone.find('.supergrupo-cuerpo').empty();
+  clone.find('.supergrupo-cabecera').html(nombreSuperGrupo);
+  
+  clone.appendTo(".agenda");
+
+  clone.show();
+}
+
+
+function createGroup(grupo,left,center,right,totalFilas,nombreSuperGrupo)
 {
 	var clone=$("#grupo-template").clone();
   clone.hide();
   clone.removeClass("grupo-template");
   clone.addClass("grupo");
-	clone.attr('id',grupo.replace(" ",""));
+	clone.attr('id',nombreSuperGrupo.replace(/\W/g,"")+"-"+grupo.replace(/\W/g,""));
 	clone.find('.grupo-filas').empty();
 
 	clone.find('.grupo-cabecera-izq').html(left);
@@ -42,18 +59,18 @@ function createGroup(grupo,left,center,right,totalFilas)
       clone.find(".grupo-pie-"+tipo).hide();
       clone.find(".grupo-pie-"+tipo).click(function()
       {
-        $("#"+grupo.replace(" ","")).find(".grupo-fila-"+tipo).slideDown("fast");
+        $("#"+grupo.replace(/\W/g,"")).find(".grupo-fila-"+tipo).slideDown("fast");
         $(this).slideUp("fast");
       });
     });
   }
   
-	clone.appendTo(".agenda");
+  $("#sg_"+nombreSuperGrupo.replace(/\W/g,"")).find(".supergrupo-cuerpo").append(clone);
 
-	//clone.show();
+  clone.show();
 }
 
-function createLine(grupo,datos,animated)
+function createLine(grupo,datos,animated,nombreSuperGrupo)
 {
 	var clone=$("#grupo-fila-template-"+datos.clase).clone();
 	clone.hide();
@@ -119,7 +136,7 @@ function createLine(grupo,datos,animated)
   clone.addClass("grupo-fila-"+datos.tipo);
 
 
-	clone.appendTo("#"+grupo.replace(" ","")+">.grupo-filas");
+	clone.appendTo("#"+nombreSuperGrupo.replace(/\W/g,"")+"-"+grupo.replace(/\W/g,"")+">.grupo-filas");
 
 	if(animated>0)
 		clone.slideDown("fast", function() {});
@@ -309,7 +326,25 @@ function cargarContenido(id)
 
     if(data.tipo=='recurrente')
     {
-      $(".informacion-cabecera-abajo").text('Texto repetición');
+      switch(parseInt(data.repeatsAfter))
+      {
+        case 1:
+          textoRepeticion='Se repite cada día';
+          break;
+        case 7:
+          textoRepeticion='Se repite cada semana';
+          break;
+        case 14:
+          textoRepeticion='Se repite cada dos semanas';
+          break;
+        case 21:
+          textoRepeticion='Se repite cada tres semanas';
+          break;
+        default:
+          textoRepeticion='Se repite cada '+data.repeatsAfter+' días';
+          break;         
+      }
+      $(".informacion-cabecera-abajo").text(textoRepeticion);
       $(".informacion-cabecera").height(70);
       $(".informacion-cabecera-abajo").show();
     }
@@ -369,8 +404,8 @@ function cargarDatos(clase, orden)
   //console.log(arrayTagsQuery);
   console.log(query);
 
-  $(".grupo").attr('id',"");  //Para que no se inserten en esta les quitamos el ID
-  $(".grupo").fadeOut("1000",function()
+  $(".supergrupo").attr('id',"");  //Para que no se inserten en esta les quitamos el ID
+  $(".supergrupo").fadeOut("1000",function()
   {
     $(this).remove();
   });  
@@ -441,19 +476,20 @@ function cargarDatos(clase, orden)
 
       console.log(data.grupos);
 
-      $.each(data.grupos, function(nombreGrupo,datosGrupo)
+      $.each(data.grupos, function(nombreSuperGrupo,datosSuperGrupo)
       {
-        $.each(datosGrupo, function(grupo,filas)
+        createSuperGroup(nombreSuperGrupo);
+        $.each(datosSuperGrupo, function(grupo,filas)
         {
-          createGroup(grupo,filas.cabeceraIzq,filas.cabeceraCntr,filas.cabeceraDch,filas.totalFilas);
+          createGroup(grupo,filas.cabeceraIzq,filas.cabeceraCntr,filas.cabeceraDch,filas.totalFilas,nombreSuperGrupo);
           $.each(filas.filas,function(i,item)
           {
-            createLine(grupo,item,0);
+            createLine(grupo,item,0,nombreSuperGrupo);
           });
         });
       });
 
-    $(".grupo").fadeIn(1000);
+    $(".supergrupo").fadeIn(1000);
     $(".agenda-segunda-linea").fadeIn(1000);
     comprobarPlegadoFilas();
     });  

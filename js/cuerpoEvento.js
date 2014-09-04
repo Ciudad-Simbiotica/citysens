@@ -129,9 +129,38 @@ $.getJSON('getDatos.php',
 
     addthis.toolbox("#toolbox",addthis_config,addthis_share);
 
-    $(".difunde-termometro").css("background-image", "url(/citysens/icons/termometro_"+data.temperatura+".png)");  
-    $(".difunde-termometro").show();
+    $(".detalle-termometro").css("background-image", "url(/citysens/icons/termometro_"+data.temperatura+".png)");  
+    $(".detalle-termometro").show();
     document.title = data.titulo;
+
+    if(data.tipo=='recurrente')
+    {
+      switch(parseInt(data.repeatsAfter))
+      {
+        case 1:
+          textoRepeticion='Se repite cada día';
+          break;
+        case 7:
+          textoRepeticion='Se repite cada semana';
+          break;
+        case 14:
+          textoRepeticion='Se repite cada dos semanas';
+          break;
+        case 21:
+          textoRepeticion='Se repite cada tres semanas';
+          break;
+        default:
+          textoRepeticion='Se repite cada '+data.repeatsAfter+' días';
+          break;         
+      }
+      $(".detalle-mapa-cabecera-abajo").text(textoRepeticion);
+      $(".detalle-mapa-cabecera-abajo").show();
+    }
+    else
+    {
+      $(".detalle-mapa-cabecera-abajo").hide();
+    }
+
 });
 
 

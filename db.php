@@ -242,7 +242,11 @@ function getEventos($query,$cantidad=50,$orden="fecha")
     }
 
 
-    $sql="SELECT * FROM  eventos WHERE ";
+    $sql="SELECT eventos.*,
+    (SELECT GROUP_CONCAT(tematicas.tematica)
+             FROM eventos_tematicas eventos_tematicas, tematicas
+            WHERE eventos_tematicas.idTematica=tematicas.idTematica AND eventos_tematicas.idEvento = eventos.idEvento) AS tematicas
+       FROM eventos WHERE ";
     if($busqueda!="")
         $sql.="($busqueda) AND ";
     if($tematica!="")
@@ -253,6 +257,8 @@ function getEventos($query,$cantidad=50,$orden="fecha")
          $sql.="($organizacion) AND ";
     $sql.="1 ORDER BY fecha ASC LIMIT 0,$cantidad";
 
+    //echo $sql;
+    //exit();
 
     $result=mysql_query($sql,$link);
     $returnData=array();

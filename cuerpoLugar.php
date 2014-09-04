@@ -47,97 +47,101 @@
 	   </div>
 	  </div>
 
-
-	  <div class='grupo-template' id='grupo-template'>
-		 <div class='grupo-cabecera'>
-		  <div class='grupo-cabecera-izq'>
-		    Izq
-		  </div>
-		  <div class='grupo-cabecera-cntr'>
-		   Centro
-		  </div>
-		  <div class='grupo-cabecera-dch'>
-		   Dch
-		  </div>
-		 </div>
-		 
-		 <div class='grupo-filas'>
-			 <div class='grupo-fila-eventos' id='grupo-fila-template-eventos'>
-				<div class='grupo-elemento-tipo'>
-			 		<img class="imagen-tipo"  src='icons/Event-Unique.64.png' width="20px">
-				</div>
-			 	<div class='grupo-elemento-hora'>
-			 		11:00
-				</div>
-			 	<div class='grupo-elemento-handup'>
-			 		<IMG SRC='icons/flecha_arriba.png'>
-				</div>
-			 	<div class='grupo-elemento-temp'>
-			 		<IMG class='imagen-temp' SRC='icons/termometro_3.png' height='32px'>
-				</div>
-			 	<div class='grupo-elemento-titulo'>
-			 		Convocatoria
-				</div>
-			 	<div class='grupo-elemento-lugar'>
-			 		Lugar
-				</div>
-			 	<div class='grupo-elemento-texto'>
-			 		Descripción
-				</div>
+	  <div class='supergrupo-template' id='supergrupo-template'>
+ 	   <div class='supergrupo-cabecera'>CABECERA</div>
+	   <div class='supergrupo-cuerpo'>
+		  <div class='grupo-template' id='grupo-template'>
+			 <div class='grupo-cabecera'>
+			  <div class='grupo-cabecera-izq'>
+			    Izq
+			  </div>
+			  <div class='grupo-cabecera-cntr'>
+			   Centro
+			  </div>
+			  <div class='grupo-cabecera-dch'>
+			   Dch
+			  </div>
 			 </div>
+			 
+			 <div class='grupo-filas'>
+				 <div class='grupo-fila-eventos' id='grupo-fila-template-eventos'>
+					<div class='grupo-elemento-tipo'>
+				 		<img class="imagen-tipo"  src='icons/Event-Unique.64.png' width="20px">
+					</div>
+				 	<div class='grupo-elemento-hora'>
+				 		11:00
+					</div>
+				 	<div class='grupo-elemento-handup'>
+				 		<IMG SRC='icons/flecha_arriba.png'>
+					</div>
+				 	<div class='grupo-elemento-temp'>
+				 		<IMG class='imagen-temp' SRC='icons/termometro_3.png' height='32px'>
+					</div>
+				 	<div class='grupo-elemento-titulo'>
+				 		Convocatoria
+					</div>
+				 	<div class='grupo-elemento-lugar'>
+				 		Lugar
+					</div>
+				 	<div class='grupo-elemento-texto'>
+				 		Descripción
+					</div>
+				 </div>
 
-			<div class='grupo-fila-procesos' id='grupo-fila-template-procesos'>
-				<div class='grupo-elemento-tipo'>
-			 		<img class="imagen-tipo" src='icons/Event-Unique.64.png' width="20px">
-				</div>
-			 	<div class='grupo-elemento-hora'>
-			 		11:00
-				</div>
-			 	<div class='grupo-elemento-handup'>
-			 		<IMG SRC='icons/flecha_arriba.png'>
-				</div>
-			 	<div class='grupo-elemento-temp'>
-			 		<IMG class='imagen-temp' SRC='icons/termometro_1.png' height='32px'>
-				</div>
-			 	<div class='grupo-elemento-titulo'>
-			 		Convocatoria
-				</div>
-			 	<div class='grupo-elemento-lugar'>
-			 		Lugar
-				</div>
-			 	<div class='grupo-elemento-texto'>
-			 		Descripción
-				</div>
+				<div class='grupo-fila-procesos' id='grupo-fila-template-procesos'>
+					<div class='grupo-elemento-tipo'>
+				 		<img class="imagen-tipo" src='icons/Event-Unique.64.png' width="20px">
+					</div>
+				 	<div class='grupo-elemento-hora'>
+				 		11:00
+					</div>
+				 	<div class='grupo-elemento-handup'>
+				 		<IMG SRC='icons/flecha_arriba.png'>
+					</div>
+				 	<div class='grupo-elemento-temp'>
+				 		<IMG class='imagen-temp' SRC='icons/termometro_1.png' height='32px'>
+					</div>
+				 	<div class='grupo-elemento-titulo'>
+				 		Convocatoria
+					</div>
+				 	<div class='grupo-elemento-lugar'>
+				 		Lugar
+					</div>
+				 	<div class='grupo-elemento-texto'>
+				 		Descripción
+					</div>
+				 </div>
+
+				<div class='grupo-fila-organizaciones' id='grupo-fila-template-organizaciones'>
+				 	<div class='grupo-elemento-puntos'>
+				 		9999
+					</div>
+				 	<div class='grupo-elemento-copa'></div>
+					<div class='grupo-elemento-tipo'>
+				 		<img class="imagen-tipo"  src='icons/UniqueEvent.64.png' width="20px">
+					</div>
+				 	<div class='grupo-elemento-logo'>
+				 		<IMG SRC='icons/icon_logo1.png' height='40px'>
+					</div>
+				 	<div class='grupo-elemento-tituloOrg'>
+				 		Convocatoria
+					</div>
+				 	<div class='grupo-elemento-lugarOrg'>
+				 		Lugar
+					</div>
+				 	<div class='grupo-elemento-textoOrg'>
+				 		Descripción
+					</div>
+				 </div>
+
 			 </div>
-
-			<div class='grupo-fila-organizaciones' id='grupo-fila-template-organizaciones'>
-			 	<div class='grupo-elemento-puntos'>
-			 		9999
-				</div>
-			 	<div class='grupo-elemento-copa'></div>
-				<div class='grupo-elemento-tipo'>
-			 		<img class="imagen-tipo"  src='icons/UniqueEvent.64.png' width="20px">
-				</div>
-			 	<div class='grupo-elemento-logo'>
-			 		<IMG SRC='icons/icon_logo1.png' height='40px'>
-				</div>
-			 	<div class='grupo-elemento-tituloOrg'>
-			 		Convocatoria
-				</div>
-			 	<div class='grupo-elemento-lugarOrg'>
-			 		Lugar
-				</div>
-			 	<div class='grupo-elemento-textoOrg'>
-			 		Descripción
-				</div>
+			 
+			 <div class='grupo-pie'>
+			  Texto en el pie
 			 </div>
-
-		 </div>
-		 
-		 <div class='grupo-pie'>
-		  Texto en el pie
-		 </div>
-		 
+			 
+		  </div>
+	   </div>
 	  </div>
 	 
 	</div>

@@ -1,7 +1,23 @@
+.supergrupo-template
+{
+	display:none;	
+}
+
+.supergrupo
+{
+}
+
+.supergrupo-cabecera
+{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:18px;	
+	font-weight: bold;
+	text-align: center;
+	font-style: italic;
+}
 
 .grupo-template
 {
-	display:none;
 }
 .grupo,
 .grupo-template,

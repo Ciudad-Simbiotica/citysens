@@ -14,6 +14,21 @@
 	display: none;
 }
 
+.detalle-termometro
+{
+	position: relative;
+	width: 32px;
+	height: 32px;
+	left:50px;
+	top:18px;
+	background-image: url("/citysens/icons/termometro_1.png");	
+	background-size: contain;
+	background-repeat: no-repeat;
+    background-position: center;
+    display: none;
+    float:left;
+}
+
 .detalle-cabecera
 {
 	width: 100%;
@@ -86,24 +101,13 @@
     height: calc(100% - 96px);
 }
 
-.detalle-mapa
-{
-	position: fixed;
-	left:67.3%;
-	width:320px;
-	height: 240px;
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	z-index: 25;
-	padding: 5px;
-	-moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; 
-}
+
 
 .detalle-difunde
 {
 	position: fixed;
 	left:67.3%;
-	margin-top: 255px;
+	margin-top: 275px;
 	width:320px;
 	height: 62px;
 	font-family: Arial, Helvetica, sans-serif;
@@ -133,27 +137,11 @@
 	float:left;
 }
 
-.difunde-termometro
-{
-	position:absolute;
-	width: 32px;
-	height: 32px;
-	right:0px;
-	bottom:7px;
-	background-image: url("/citysens/icons/termometro_1.png");	
-	background-size: contain;
-	background-repeat: no-repeat;
-    background-position: center;
-    display:none;
-}
-
-
-
 .detalle-tags
 {
 	position: fixed;
 	left:67.3%;
-	margin-top: 332px;
+	margin-top: 352px;
 	width:320px;
 	height: 120px;
 	font-family: Arial, Helvetica, sans-serif;
@@ -204,7 +192,14 @@
 
 .detalle-mapa
 {
-	padding: 0px;
+	position: fixed;
+	left:67.3%;
+	width:320px;
+	height: 260px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	z-index: 25;
+	-moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; 
 }
 
 .detalle-mapa-cabecera
@@ -240,6 +235,7 @@
 	height: 42px;
 	padding: 3px;
 	display: none;
+    border-bottom:thin solid #CCCCCC;
 }
 
 .detalle-mapa-pie-izquierda
@@ -301,6 +297,16 @@
     
 }
 
+.detalle-mapa-cabecera-abajo
+{
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    font-style: italic;
+    font-weight: bold;
+    display: none;
+}
+
 
 
 .detalle-mapa-pie-hora-inicio,.detalle-mapa-pie-hora-final
@@ -319,8 +325,7 @@
 
 .follow_eye
 {
-	float:left;
-	margin-left:10px;
+	float:right;
 	padding-top: 0px;
 	padding-left: 22px;
 	font-weight: bold;
