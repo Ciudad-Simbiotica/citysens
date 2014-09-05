@@ -27,7 +27,8 @@ function clickSuggestion(imagen,texto1,tipo,id) //Añadir id, texto buscado
       var coincide=((value.texto==texto1)&(value.tipo==tipo)&(value.id==id));
       return !coincide;
     });
-    cargarDatos(window.clase);
+
+    cargarDatos(window.clase,$("#select_ordenar").val());
 
     $(this).fadeOut("fast",function(){
       $(this).parent().remove();
@@ -64,7 +65,7 @@ function clickSuggestion(imagen,texto1,tipo,id) //Añadir id, texto buscado
 
   arrayTags.push(sugerencia);
   $("#input-busqueda").val('');
-  cargarDatos(window.clase);
+  cargarDatos(window.clase,$("#select_ordenar").val());
 
 
   /*if(!$('#input-busqueda').tagExist(texto1))

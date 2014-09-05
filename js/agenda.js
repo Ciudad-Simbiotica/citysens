@@ -616,6 +616,8 @@ $(".cabecera-pestania-izq").click(function()
     $(".subcabecera-pestania-izq").slideDown("fast");
   });
 
+  $("#select_ordenar").val('fecha');
+
   cargarDatos("eventos");
 
 });
@@ -631,6 +633,7 @@ $(".cabecera-pestania-ctr").click(function()
 
   $(".subcabecera-pestania-izq").slideUp("fast");
   $(".subcabecera-pestania-dch").slideUp("fast");
+  $("#select_ordenar").val('fecha');
 
   cargarDatos("procesos");
 
@@ -653,6 +656,7 @@ $(".cabecera-pestania-dch").click(function()
     // Animation complete.
     $(".subcabecera-pestania-dch").slideDown("fast");
   });
+  $("#select_ordenar").val('fecha');
 
   cargarDatos("organizaciones");
 
@@ -676,7 +680,7 @@ $(".cabecera-pestania-noticias").click(function()
 
 });
 
-$('select').on('change', function() 
+$('#select_ordenar').on('change', function() 
 {
   cargarDatos('eventos', $(this).val());
 });

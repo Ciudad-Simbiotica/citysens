@@ -217,7 +217,7 @@ function getEventos($query,$cantidad=50,$orden="fecha")
             case "tematica":
                 if($tematica!="")
                     $tematica.=" OR ";
-                $tematica.="idTematica='$id'";
+                $tematica.="eventos_tematicas.idTematica='$id'";
                 break;
             case "lugar":
                 array_push($lugares,$id);
@@ -244,9 +244,10 @@ function getEventos($query,$cantidad=50,$orden="fecha")
 
     $sql="SELECT eventos.*,
     (SELECT GROUP_CONCAT(tematicas.tematica)
-             FROM eventos_tematicas eventos_tematicas, tematicas
-            WHERE eventos_tematicas.idTematica=tematicas.idTematica AND eventos_tematicas.idEvento = eventos.idEvento) AS tematicas
-       FROM eventos WHERE ";
+             FROM eventos_tematicas, tematicas
+             WHERE eventos_tematicas.idTematica=tematicas.idTematica 
+             AND eventos_tematicas.idEvento = eventos.idEvento) AS tematicas
+       FROM eventos, eventos_tematicas WHERE ";
     if($busqueda!="")
         $sql.="($busqueda) AND ";
     if($tematica!="")
@@ -255,7 +256,7 @@ function getEventos($query,$cantidad=50,$orden="fecha")
         $sql.="($lugar) AND ";
     if($organizacion!="")
          $sql.="($organizacion) AND ";
-    $sql.="1 ORDER BY fecha ASC LIMIT 0,$cantidad";
+    $sql.="eventos.idEvento=eventos_tematicas.idEvento GROUP BY eventos.idEvento ORDER BY fecha ASC LIMIT 0,$cantidad";
 
     //echo $sql;
     //exit();
