@@ -263,7 +263,10 @@ function getEventos($query,$cantidad=50,$orden="fecha")
     $result=mysql_query($sql,$link);
     $returnData=array();
     while($fila=mysql_fetch_assoc($result))
+    {
+        unset($fila["texto"]);
     	array_push($returnData,$fila);
+    }
     return $returnData;
 }
 

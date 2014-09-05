@@ -22,7 +22,7 @@ function createSuperGroup(nombreSuperGrupo)
   
   clone.appendTo(".agenda");
 
-  clone.show();
+  //clone.show();
 }
 
 
@@ -59,7 +59,7 @@ function createGroup(grupo,left,center,right,totalFilas,nombreSuperGrupo)
       clone.find(".grupo-pie-"+tipo).hide();
       clone.find(".grupo-pie-"+tipo).click(function()
       {
-        $("#"+grupo.replace(/\W/g,"")).find(".grupo-fila-"+tipo).slideDown("fast");
+        $("#"+nombreSuperGrupo.replace(/\W/g,"")+"-"+grupo.replace(/\W/g,"")).find(".grupo-fila-"+tipo).slideDown("fast");
         $(this).slideUp("fast");
       });
     });
@@ -134,7 +134,6 @@ function createLine(grupo,datos,animated,nombreSuperGrupo)
 
   clone.removeClass("grupo-fila-template");
   clone.addClass("grupo-fila-"+datos.tipo);
-
 
 	clone.appendTo("#"+nombreSuperGrupo.replace(/\W/g,"")+"-"+grupo.replace(/\W/g,"")+">.grupo-filas");
 
@@ -404,11 +403,13 @@ function cargarDatos(clase, orden)
   //console.log(arrayTagsQuery);
   console.log(query);
 
-  $(".supergrupo").attr('id',"");  //Para que no se inserten en esta les quitamos el ID
-  $(".supergrupo").fadeOut("1000",function()
+
+  $(".supergrupo").attr('id',"").remove();  //Para que no se inserten en esta les quitamos el ID
+  $(".agenda-segunda-linea").hide();
+  /*$(".supergrupo").fadeOut("1000",function()
   {
     $(this).remove();
-  });  
+  });  */
 
   var getAgenda = "getAgendaXML.php?";
   $.getJSON(getAgenda, 
@@ -489,8 +490,8 @@ function cargarDatos(clase, orden)
         });
       });
 
-    $(".supergrupo").fadeIn(1000);
-    $(".agenda-segunda-linea").fadeIn(1000);
+    $(".supergrupo").fadeIn(500);
+    $(".agenda-segunda-linea").fadeIn(500);
     comprobarPlegadoFilas();
     });  
 }

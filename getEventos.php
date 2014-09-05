@@ -8,11 +8,11 @@ $tipoGrupos=$_GET["orden"];
 
 if($tipoGrupos=="popularidad")
 {
-	$returnData["grupos"]["Eventos con popularidad 5"]=array();
-	$returnData["grupos"]["Eventos con popularidad 4"]=array();
-	$returnData["grupos"]["Eventos con popularidad 3"]=array();
-	$returnData["grupos"]["Eventos con popularidad 2"]=array();
-	$returnData["grupos"]["Eventos con popularidad 1"]=array();
+	$returnData["grupos"]["Los más populares"]=array();
+	$returnData["grupos"]["Muy populares"]=array();
+	$returnData["grupos"]["Bastante populares"]=array();
+	$returnData["grupos"]["Populares"]=array();
+	$returnData["grupos"]["Poco populares"]=array();
 }
 foreach($eventos as $evento)
 {
@@ -53,7 +53,26 @@ foreach($eventos as $evento)
 	}
 	else if($tipoGrupos=="popularidad")
 	{
-		array_push($nombreGrupos,"Eventos con popularidad ".$evento["temperatura"]);		
+		$popularidad="";
+		switch ($evento["temperatura"]) 
+		{
+			case 5:
+				$popularidad="Los más populares";
+				break;
+			case 4:
+				$popularidad="Muy populares";
+				break;
+			case 3:
+				$popularidad="Bastante populares";
+				break;
+			case 2:
+				$popularidad="Populares";
+				break;
+			case 1:
+				$popularidad="Poco populares";
+				break;
+		}
+		array_push($nombreGrupos,$popularidad);		
 	}
 
 
@@ -82,6 +101,20 @@ foreach($eventos as $evento)
 
 if($tipoGrupos=="tematica")
 	ksort($returnData["grupos"]);	//Ordenamos por la clave
+else if($tipoGrupos=="popularidad")
+{
+	//Si no tienen ningún evento lo quitamos de los grupos
+	if(count($returnData["grupos"]["Los más populares"])==0)
+		unset($returnData["grupos"]["Los más populares"]);
+	if(count($returnData["grupos"]["Muy populares"])==0)
+		unset($returnData["grupos"]["Muy populares"]);
+	if(count($returnData["grupos"]["Bastante populares"])==0)
+		unset($returnData["grupos"]["Bastante populares"]);
+	if(count($returnData["grupos"]["Populares"])==0)
+		unset($returnData["grupos"]["Populares"]);
+	if(count($returnData["grupos"]["Poco populares"])==0)	
+		unset($returnData["grupos"]["Poco populares"]);
+}
 
 foreach($returnData["grupos"] as $nombreGrupo=>$datosGrupo)
 foreach($datosGrupo as $id=>$grupo)
