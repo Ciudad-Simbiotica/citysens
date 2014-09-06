@@ -427,7 +427,7 @@ function cargarDatos(clase, orden)
 
       console.log(data);
 
-      /*
+      
       conFiltros=":";
       if(arrayTagsQuery.length>1)
         conFiltros=" que satisfacen los siguientes filtros de búsqueda:";
@@ -473,7 +473,7 @@ function cargarDatos(clase, orden)
         case "noticias":
           break;
       }
-      */
+      
 
       console.log(data.grupos);
 
@@ -616,9 +616,32 @@ $(".cabecera-pestania-izq").click(function()
     $(".subcabecera-pestania-izq").slideDown("fast");
   });
 
-  $("#select_ordenar").val('fecha');
 
-  cargarDatos("eventos");
+  var newOptions = 
+  { 
+    "Fecha": "fecha",
+    "Temática": "tematica",
+    "Lugar": "lugar",
+    "Popularidad": "popularidad"
+  };
+
+  var el = $("#select_ordenar");
+  el.empty(); // remove old options
+  $.each(newOptions, function(key, value) 
+  {
+    el.append($("<option></option>")
+       .attr("value", value).text(key));
+  });
+
+  $("#select_ordenar").val('fecha');
+  $('#select_ordenar').prop('onchange',null).attr('onchange','').unbind('change');
+  
+  $('#select_ordenar').on('change', function() 
+  {
+    cargarDatos('eventos', $(this).val());
+  });
+
+  cargarDatos("eventos",'fecha');
 
 });
 
@@ -633,7 +656,6 @@ $(".cabecera-pestania-ctr").click(function()
 
   $(".subcabecera-pestania-izq").slideUp("fast");
   $(".subcabecera-pestania-dch").slideUp("fast");
-  $("#select_ordenar").val('fecha');
 
   cargarDatos("procesos");
 
@@ -656,9 +678,33 @@ $(".cabecera-pestania-dch").click(function()
     // Animation complete.
     $(".subcabecera-pestania-dch").slideDown("fast");
   });
-  $("#select_ordenar").val('fecha');
 
-  cargarDatos("organizaciones");
+
+  var newOptions = 
+  { 
+    "Puntuación": "puntuacion",
+    "Temática": "tematica",
+    "Lugar": "lugar"
+  };
+
+  var el = $("#select_ordenar");
+  el.empty(); // remove old options
+  $.each(newOptions, function(key, value) 
+  {
+    el.append($("<option></option>")
+       .attr("value", value).text(key));
+  });
+
+  $("#select_ordenar").val('puntuacion');
+  $('#select_ordenar').prop('onchange',null).attr('onchange','').unbind('change');
+  $('#select_ordenar').on('change', function() 
+  {
+    cargarDatos('organizaciones', $(this).val());
+  });
+
+  cargarDatos("organizaciones",'puntuacion');
+
+
 
 });
 
@@ -680,10 +726,7 @@ $(".cabecera-pestania-noticias").click(function()
 
 });
 
-$('#select_ordenar').on('change', function() 
-{
-  cargarDatos('eventos', $(this).val());
-});
+
 
 
 /* 

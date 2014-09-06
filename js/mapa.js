@@ -243,6 +243,7 @@ function cargarMapa(idLugar)
       {
         $.each(data, function(i,datos)
         {
+          console.log(datos);
           addPolygonToMap(datos[0],"shp/geoJSON/"+nivelHijos+"/"+datos[0]+".geojson",datos[1],'#ffaaaa',true);
           if(response.nivel>7)
           {

@@ -85,7 +85,7 @@ function getAsociacionesQuery($query,$cantidad=10)
     }
 
 
-    $sql="SELECT * FROM asociaciones JOIN asociaciones_tematicas ON asociaciones.idAsociacion=asociaciones_tematicas.idAsociacion WHERE ";
+    $sql="SELECT * FROM asociaciones JOIN asociaciones_tematicas ON asociaciones.idAsociacion=asociaciones_tematicas.idAsociacion JOIN tematicas ON asociaciones_tematicas.idTematica=tematicas.idTematica WHERE ";
     if($busqueda!="")
         $sql.="($busqueda) AND ";
     if($tematica!="")
@@ -94,7 +94,8 @@ function getAsociacionesQuery($query,$cantidad=10)
         $sql.="($lugar) AND ";
     $sql.="1 GROUP BY asociaciones.idAsociacion ORDER BY points DESC LIMIT 0,$cantidad";
 
-    echo $sql;
+    // echo $sql;
+    // exit();
 
     $result=mysql_query($sql,$link);
     $returnData=array();

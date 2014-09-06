@@ -130,7 +130,7 @@ $.getJSON('getDatos.php',
     addthis.toolbox("#toolbox",addthis_config,addthis_share);
 
     $(".detalle-termometro").css("background-image", "url(/citysens/icons/termometro_"+data.temperatura+".png)");  
-    $(".detalle-termometro").show();
+    //$(".detalle-termometro").show();  //Por ahora queda oculto
     document.title = data.titulo;
 
     if(data.tipo=='recurrente')

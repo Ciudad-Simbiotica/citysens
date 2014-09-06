@@ -17,14 +17,17 @@ if($_GET["clase"]=="eventos")
 	include "getEventos.php";
 	return;
 }
-/*
+
+
 else if($_GET["clase"]=="organizaciones")
 {
 	include "getEntidades.php";
 	return;
 }
-*/
 
+exit();
+
+//A partir de aquí código viejo
 if($_GET["regenerar"]=="")
 {
 	$return_data=file_get_contents("returnCache_{$_GET["clase"]}.txt");
@@ -134,7 +137,7 @@ if($_GET["clase"]=="organizaciones")
 	}
 
 	$returnData["tipo"]="organizaciones";
-	$returnData["grupos"]=$grupos;
+	$returnData["grupos"][""]=$grupos;
 	$returnJSON=json_encode($returnData);
 	echo $returnJSON;
 	file_put_contents("returnCache_organizaciones.txt", $returnJSON);
