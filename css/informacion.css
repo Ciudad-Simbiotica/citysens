@@ -79,6 +79,46 @@
     
 }
 
+.informacion-cabecera-izq-entidad
+{
+}
+
+.informacion-cabecera-izq-entidad-izq
+{
+    float:left;
+    width: 50px;
+    height: 50px;
+    background-image: url("/citysens/icons/CitYsens.people.png");    
+    background-size: 85%;
+    background-repeat: no-repeat;
+    background-position: 90% 50%;
+    
+}
+
+.informacion-cabecera-izq-entidad-dch
+{
+    float:left;
+    width: 40px;
+}
+
+.informacion-cabecera-izq-entidad-top
+{
+    height: 25px;
+    background-image: url("/citysens/icons/icon_CitYsens.Libros.png");    
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: 90% 70%;
+}
+
+.informacion-cabecera-izq-entidad-bottom
+{
+    height: 25px;
+    background-image: url("/citysens/icons/icon_CitYsens.house.png");    
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: 90% 30%;
+}
+
 
 
 .informacion-cabecera-dch
@@ -131,6 +171,12 @@
     text-align: left;
     overflow-y: auto;
     border-bottom:thin solid #CCCCCC;
+}
+
+.informacion-cuerpo-descBreve
+{
+    font-style: italic;
+    font-weight: bold;
 }
 
 .informacion-cuerpo-tematicas-elemento,.informacion-cuerpo-etiquetas-elemento

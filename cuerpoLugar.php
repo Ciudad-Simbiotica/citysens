@@ -155,7 +155,7 @@
 	  <div class='informacion'>
 	  	<div class='informacion-cabecera' title='Haz click para ver el evento completo'>
 		 	<div class='informacion-cabecera-izq'>
-		 	 <div class='informacion-cabecera-izq-calendario'>
+		 	 <div class='informacion-cabecera-izq-calendario informacion-cuerpo-contacto-elemento-evento'>
 	 	 	  <div class='informacion-cabecera-izq-calendario-top'>
 	 	 	   MAR
 		 	  </div>
@@ -163,7 +163,7 @@
 	 	 	   20
 		 	  </div>
 		 	 </div>
-		 	 <div class='informacion-cabecera-izq-horas'>
+		 	 <div class='informacion-cabecera-izq-horas informacion-cuerpo-contacto-elemento-evento'>
 	 	 	  <div class='informacion-cabecera-izq-horas-top'>
 	 	 	   11:00
 		 	  </div>
@@ -171,6 +171,19 @@
 	 	 	   16:00
 		 	  </div>
 		 	 </div>
+		 	 <div class='informacion-cabecera-izq-entidad informacion-cuerpo-contacto-elemento-entidad'>
+		 	  <div class='informacion-cabecera-izq-entidad-izq'>
+		 	   
+		 	  </div>
+		 	  <div class='informacion-cabecera-izq-entidad-dch'>
+	 	 	   <div class='informacion-cabecera-izq-entidad-top'>
+	 	 	    
+		 	   </div>
+	 	 	   <div class='informacion-cabecera-izq-entidad-bottom'>
+	 	 	    
+		 	   </div>
+		 	  </div>
+		 	 </div>		 	
 		 	</div>
 		 	<div class='informacion-cabecera-dch'>
 		 	 <div class='informacion-cabecera-dch-titulo'>
@@ -182,9 +195,12 @@
 		 	  </div>
 		 	 </div>
 		 	</div>
-		 	<div class='informacion-cabecera-abajo'>Se repite cada semana</div>
+		 	<div class='informacion-cabecera-abajo informacion-cuerpo-contacto-elemento-evento'>Se repite cada semana</div>
 		 </div>
 		 <div class='informacion-cuerpo'>
+		 	<div class='informacion-cuerpo-descBreve informacion-cuerpo-contacto-elemento-entidad'>
+		 	 Descripción breve de la entidad, que se corresponde con la que se muestra en la celda de la entidad en la lista, aunque ampliado.
+		 	</div>
 		 	<div class='informacion-cuerpo-tematicas'>
 				<div class='informacion-cuerpo-tematicas-elemento'><img src='/citysens/icons/etiqueta30x30.png' class="informacion-cuerpo-tematicas-img"> <B>Tematicas: </B></div> 
 		  		<div class='informacion-cuerpo-tematicas-listado'>Temática 1, Temática 2, Temática 3</div>
@@ -194,8 +210,14 @@
 		  		<div class='informacion-cuerpo-etiquetas-listado'>Etiqueta 1, Etiqueta 2, Etiqueta 3</div>
 		 	</div>
 		 	<div class='informacion-cuerpo-contacto'>
+		 	 <div>
 		  		<span class='informacion-cuerpo-contacto-elemento'>Web:</span> <a target="_blank" href='http://www.templateurl.es' class='informacion-cuerpo-contacto-url'>http://www.templateurl.es</a><br>
-		  		<span class='informacion-cuerpo-contacto-elemento'>e-Mail:</span> <a target="_blank" href='mailto:correo@templateurl.es' class='informacion-cuerpo-contacto-email'>correo@templateurl.es</a>
+		  		<span class='informacion-cuerpo-contacto-elemento'>e-Mail:</span> <a target="_blank" href='mailto:correo@templateurl.es' class='informacion-cuerpo-contacto-email'>correo@templateurl.es</a><br>
+		  	 </div>
+		  	 <div class='informacion-cuerpo-contacto-elemento-entidad'>
+		  		<span class='informacion-cuerpo-contacto-elemento'>Twitter:</span> <a target="_blank" href='https://twitter.com/templatetwitter' class='informacion-cuerpo-contacto-twitter'>@templatetwitter</a><br>
+		  		<span class='informacion-cuerpo-contacto-elemento'>Facebook:</span> <a target="_blank" href='https://www.facebook.com/template-facebook' class='informacion-cuerpo-contacto-facebook'>template-facebook</a>
+		 	 </div>
 		 	</div>
 		 	<div class='informacion-cuerpo-texto'>
 		  		<h3>Aquí iría el texto</h3>

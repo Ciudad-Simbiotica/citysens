@@ -59,6 +59,19 @@ if($tipoGrupos=="puntuacion")
 		}
 
 	}
+	if((($i%10)!=0))	//No hemos añadido las últimas
+	{
+			$grupos[$grupoActual]["cabeceraIzq"]="";
+			$grupos[$grupoActual]["cabeceraCntr"]=$grupoActual;
+			$grupos[$grupoActual]["cabeceraDch"]="";
+			$grupos[$grupoActual]["filas"]=$filas;
+			foreach($grupos[$grupoActual]["totalFilas"] as $key=>$value)
+			{
+				//Quitamos los que valgan cero
+				if($value==0)
+					unset($grupos[$grupoActual]["totalFilas"][$key]);
+			}
+	}
 }
 else
 {

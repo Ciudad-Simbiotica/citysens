@@ -15,6 +15,54 @@ function connect()
     return $conn;
 }
 
+function getAsociacion($idAsociacion)
+{
+    $link=connect();
+    mysql_query('SET CHARACTER SET utf8',$link);
+    $sql="SELECT * FROM asociaciones WHERE idAsociacion='$idAsociacion'";
+    $result=mysql_query($sql,$link);
+    if($fila=mysql_fetch_assoc($result))
+    {
+        $asociacion=$fila;
+        
+        /*
+        $sql="SELECT * FROM direcciones WHERE idDireccion='{$fila['idDireccion']}'";
+        $result=mysql_query($sql,$link);
+        if($fila=mysql_fetch_assoc($result))
+        {
+            $evento['direccion']=$fila;
+        }
+        else
+        {
+            $evento['direccion']['direccion']="Sin dirección";
+            $evento['direccion']['idDireccion']="0";
+            $evento['direccion']['idPadre']="0";
+            $evento['direccion']['lat']=0;
+            $evento['direccion']['long']=0;
+            $evento['direccion']['nombre']="Sin nombre";
+            $evento['direccion']['zoom']="15";
+        }
+        */
+
+        $asociacion['direccion']="Distrito ".($asociacion["idDistritoPadre"]-999000004);
+        $sql="SELECT * FROM asociaciones_tematicas, tematicas 
+                WHERE asociaciones_tematicas.idasociacion='$idAsociacion' AND
+                asociaciones_tematicas.idTematica=tematicas.idTematica";
+        $result=mysql_query($sql,$link);
+        while($fila=mysql_fetch_assoc($result))
+        {
+            $asociacion['tematicas'][$fila['idTematica']]=ucfirst(strtolower($fila['tematica']));
+        }
+
+        return $asociacion;
+    }
+    else
+    {
+        return false;
+    }
+
+}
+
 function getAsociaciones($cadena,$cantidad=10)
 {
     $link=connect();
@@ -67,7 +115,7 @@ function getAsociacionesQuery($query,$cantidad=10)
             case "tematica":
                 if($tematica!="")
                     $tematica.=" OR ";
-                $tematica.="idTematica='$id'";
+                $tematica.="asociaciones_tematicas.idTematica='$id'";
                 break;
             case "lugar":
                 array_push($lugares,$id);
@@ -94,8 +142,8 @@ function getAsociacionesQuery($query,$cantidad=10)
         $sql.="($lugar) AND ";
     $sql.="1 GROUP BY asociaciones.idAsociacion ORDER BY points DESC LIMIT 0,$cantidad";
 
-    // echo $sql;
-    // exit();
+     // echo $sql;
+     // exit();
 
     $result=mysql_query($sql,$link);
     $returnData=array();

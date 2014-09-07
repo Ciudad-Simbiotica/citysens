@@ -161,7 +161,12 @@ function clickFila(id)
   $("[class^=grupo-fila-]").removeClass("grupo-fila-selected");
   $("#"+id).addClass("grupo-fila-selected");
   //$(".informacion-cabecera").html("Cargando contenido: "+id);
-  cargarContenido(id);
+
+  if($(".cabecera-pestania-izq").hasClass("cabecera-pestania-seleccionada"))
+    cargarContenido(id);
+  else if($(".cabecera-pestania-dch").hasClass("cabecera-pestania-seleccionada"))
+    cargarContenidoEntidad(id);
+
   $.each(markers, function( index, value ) 
   {
     if(markers[index]!=null)
@@ -352,6 +357,107 @@ function cargarContenido(id)
       $(".informacion-cabecera").height(50);
       $(".informacion-cabecera-abajo").hide();
     }
+
+    //Ocultamos lo que corresponde a entidades y mostramos los de eventos
+    $(".informacion-cuerpo-contacto-elemento-evento").show();
+    $(".informacion-cuerpo-contacto-elemento-entidad").hide();
+
+
+    $(".informacion").slideDown("fast");
+  });
+}
+
+function cargarContenidoEntidad(id)
+{
+  $(".informacion").slideUp("fast");
+  $.getJSON('getDatosEntidad.php', 
+  {
+   id: id, // appears as $_GET['id'] @ ur backend side
+  })
+  .done(function(data) 
+  {
+    console.log(data);
+
+    $(".informacion-cabecera-dch-titulo-top").html(data.asociacion);
+    $(".informacion-cabecera-dch-titulo-bottom").html(data.direccion);
+
+
+    $(".informacion-cuerpo-tematicas-listado").html('');
+    $.each(data.tematicas, function(i, object) 
+    {
+      if($(".informacion-cuerpo-tematicas-listado").html()!="")
+        $(".informacion-cuerpo-tematicas-listado").append(', ');      
+      $(".informacion-cuerpo-tematicas-listado").append(object);      
+    });
+
+    $(".informacion-cuerpo-etiquetas-listado").html(data.etiquetas);
+  
+    $(".informacion-cuerpo-contacto-url")
+      .attr("href", data.url)
+      .html(data.url);
+    $(".informacion-cuerpo-contacto-email")
+      .attr("href", "mailto:"+data.email)
+      .html(data.email);
+
+    $(".informacion-cuerpo-contacto-twitter")
+      .attr("href", "mailto:"+data.twitter)
+      .html(data.twitter);
+
+    $(".informacion-cuerpo-contacto-facebook")
+      .attr("href", "mailto:"+data.facebook)
+      .html(data.facebook);
+
+    $(".informacion-cuerpo-contacto-facebook").append(" ");
+
+
+    $(".informacion-cuerpo-descBreve").html(data.descBreve);
+    $(".informacion-cuerpo-texto").html(data.texto);
+
+    if(data.tipoAsociacion=="institucion")
+      $(".informacion-cabecera-izq-entidad-izq").css('background-image', "url(icons/icon_CitYsens.institucion.png)");
+    else if(data.tipoAsociacion=="organizacion")
+      $(".informacion-cabecera-izq-entidad-izq").css('background-image', "url(icons/icon_CitYsens.organizacion.png)");
+    else if(data.tipoAsociacion=="colectivo")
+      $(".informacion-cabecera-izq-entidad-izq").css('background-image', "url(icons/CitYsens.People.png)");
+
+
+    $(".informacion-cabecera").click(function()
+    {
+      window.location="/citysens/?idAsociacion="+data.idAsociacion+"&idOrigen="+window.idLugar;
+    });
+
+    url="http://www.citysens.net/?idAsociacion="+data.idAsociacion+"%26idOrigen="+window.idLugar;
+    mensaje="¡¡¡Esta asociación te puede interesar!!!";
+    
+    var tbx = document.getElementById("toolbox");
+
+    tbx.innerHTML="";
+    tbx.innerHTML += '<a class="addthis_button_email"></a>';
+    tbx.innerHTML += '<a class="addthis_button_facebook"></a>';
+    tbx.innerHTML += '<a class="addthis_button_twitter"></a>';
+    tbx.innerHTML += '<a class="addthis_button_google_plusone" g:plusone:annotation="none" g:plusone:size="medium"></a>';
+
+    var addthis_config = {
+          ui_language: "es" 
+    } 
+    var addthis_share = 
+    { 
+      url: url,
+      title: data.asociacion,
+      description: mensaje,
+      templates: 
+      {
+        twitter: data.titulo+" - "+url,
+      }
+    }
+
+    addthis.toolbox("#toolbox",addthis_config,addthis_share);
+    
+
+    //Ocultamos lo que corresponde a entidades y mostramos los de eventos
+    $(".informacion-cuerpo-contacto-elemento-evento").hide();
+    $(".informacion-cuerpo-contacto-elemento-entidad").show();
+    $(".informacion-cabecera").height(50);
 
     $(".informacion").slideDown("fast");
   });

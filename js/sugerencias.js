@@ -174,7 +174,7 @@ function suggestBusqueda(texto)
     $.each(data.suggestions, function(key, value)
     {
       //Creamos la sugerencia
-      $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1'>"+value.texto1.replace(texto,"<strong>"+texto+"</strong>")+"</div><div class='cabecera-suggest-texto2'>"+value.texto2+"</div></div>");
+      $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1'>"+value.texto1.replace(texto, '<b>'+texto+'</b>')+"</div><div class='cabecera-suggest-texto2'>"+value.texto2+"</div></div>");
       $("#cabecera-suggest").find(".cabecera-suggest-icono:last").addClass("cabecera-suggest-icono-"+value.tipo);
       $("#cabecera-suggest").find(".cabecera-suggest-fila:last").attr("id","cabecera-suggest-fila-"+i);
       if(value.texto2=="")
