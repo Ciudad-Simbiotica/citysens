@@ -73,6 +73,12 @@
 	-moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; 
 }
 
+.detalle-cuerpo-texto span
+{
+    background-color:yellow;    
+}
+
+
 .detalle-cuerpo-contacto
 {
     padding-top:10px;

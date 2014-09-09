@@ -2,7 +2,7 @@ $.urlParam = function(name){
     var results = new RegExp('[\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.href);
     return results[1] || 0;
 }
-function cargarMapa(lat,lon)
+function cargarMapa(lat,lon,descripcion)
 {
   
   //Creamos el mapa
@@ -29,7 +29,8 @@ function cargarMapa(lat,lon)
 
   map.on('click', function()
   {
-    url="https://www.google.es/maps/place/"+lat+","+lon;
+
+    url="https://maps.google.com/maps?q="+lat+","+lon+"+("+descripcion+")&output=classic";
     window.open(url,'_blank');
     console.log('Click Mapa: '+url);
   });

@@ -478,8 +478,8 @@ function getColindantes($lugarOriginal,$type,$xmin,$xmax,$ymin,$ymax)
 function getEventosCoordenadas($xmin,$xmax,$ymin,$ymax)
 {
     $link=connect();
-    $sql="SELECT * FROM eventos WHERE 
-            x>$xmin AND x<$xmax AND y>$ymin AND y<$ymax";
+    $sql="SELECT * FROM eventos,lugares_shp WHERE 
+            x>$xmin AND x<$xmax AND y>$ymin AND y<$ymax AND eventos.idDistritoPadre=lugares_shp.id";
             
     mysql_query('SET CHARACTER SET utf8',$link);
     $result=mysql_query($sql,$link);

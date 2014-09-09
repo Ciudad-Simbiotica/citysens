@@ -71,7 +71,7 @@ include "preload.php";
 	 		-->
 	 	</div> 
 	 	<div class='cabecera-busqueda'>
-	 		<INPUT TYPE=TEXT class='input-busqueda' id='input-busqueda' placeholder="Filtrar eventos..."></INPUT> 
+	 		<INPUT TYPE=TEXT class='input-busqueda' id='input-busqueda'></INPUT> 
 	 	</div>
 	 	<div class='cabecera-suggest' id='cabecera-suggest'>
 	 	</div>

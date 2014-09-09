@@ -277,7 +277,7 @@ function cargarMapa(idLugar)
         });
       });
       
-      //Aquí cargamos los eventos
+      //Aquí cargamos los eventos: ¿Cogerlos del listado que se está mostrando?
       $.getJSON("getEventosCoordenadas.php", 
       {
           dataType: 'json',
@@ -295,8 +295,10 @@ function cargarMapa(idLugar)
           //var marker=L.marker([datos.y,datos.x],{opacity:0.0}).addTo(map);
           var marker=new L.Marker([datos.y,datos.x], 
           {
-            icon: new L.TargetIcon()
+            icon: new L.TargetIcon(),
           }).setOpacity(0).setZIndexOffset(1000).addTo(map);
+          marker.dragging.disable();
+          
           marker.on('click',function()
           {
 
@@ -314,11 +316,12 @@ function cargarMapa(idLugar)
 
           }).on('mouseover', function(e) 
           {
-            $(".map-footer").html("Ir a "+datos.idDistritoPadre);
+            $(".map-footer").html("Ir a "+datos.nombre);
           }).on('mouseout', function(e) 
           {
             $(".map-footer").html("&nbsp;");
           });
+
 
 
           markers[datos.idEvento]=marker;

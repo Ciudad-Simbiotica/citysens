@@ -99,6 +99,7 @@
 {
     float:left;
     width: 40px;
+    display: none;
 }
 
 .informacion-cabecera-izq-entidad-top

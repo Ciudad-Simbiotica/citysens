@@ -12,7 +12,7 @@ if($tipoGrupos=="popularidad")
 	$returnData["grupos"]["Muy populares"]=array();
 	$returnData["grupos"]["Bastante populares"]=array();
 	$returnData["grupos"]["Populares"]=array();
-	$returnData["grupos"]["Poco populares"]=array();
+	$returnData["grupos"]["Otros"]=array();
 }
 foreach($eventos as $evento)
 {
@@ -69,7 +69,7 @@ foreach($eventos as $evento)
 				$popularidad="Populares";
 				break;
 			case 1:
-				$popularidad="Poco populares";
+				$popularidad="Otros";
 				break;
 		}
 		array_push($nombreGrupos,$popularidad);		
@@ -112,8 +112,8 @@ else if($tipoGrupos=="popularidad")
 		unset($returnData["grupos"]["Bastante populares"]);
 	if(count($returnData["grupos"]["Populares"])==0)
 		unset($returnData["grupos"]["Populares"]);
-	if(count($returnData["grupos"]["Poco populares"])==0)	
-		unset($returnData["grupos"]["Poco populares"]);
+	if(count($returnData["grupos"]["Otros"])==0)	
+		unset($returnData["grupos"]["Otros"]);
 }
 
 foreach($returnData["grupos"] as $nombreGrupo=>$datosGrupo)

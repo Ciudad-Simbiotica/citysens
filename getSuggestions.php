@@ -64,18 +64,19 @@ foreach($lugares as $lugar)
 }
 
 
-
-$asociaciones=getAsociacionesZonaConEventos($_GET["query"],3,true);
-foreach($asociaciones as $asociacion)
+if($_GET["entidades"]=="")	//Sólo las mostramos si NO estamos buscando entidades
 {
-	//print_r($asociacion);
-	$sugestion["tipo"]=$asociacion["tipoAsociacion"];
-	$sugestion["texto1"]=htmlentities(ucwords(strtolower(substr($asociacion["asociacion"],0,50))));
-	$sugestion["texto2"]=htmlentities("Distrito ".$asociacion["distrito"]);
-	$sugestion["id"]=$asociacion["idAsociacion"];
-	array_push($sugestions,$sugestion);
+	$asociaciones=getAsociacionesZonaConEventos($_GET["query"],3,true);
+	foreach($asociaciones as $asociacion)
+	{
+		//print_r($asociacion);
+		$sugestion["tipo"]=$asociacion["tipoAsociacion"];
+		$sugestion["texto1"]=htmlentities(ucwords(strtolower(substr($asociacion["asociacion"],0,50))));
+		$sugestion["texto2"]=htmlentities("Distrito ".$asociacion["distrito"]);
+		$sugestion["id"]=$asociacion["idAsociacion"];
+		array_push($sugestions,$sugestion);
+	}
 }
-
 /*
 $sugestion["tipo"]="organizacion";
 $sugestion["texto1"]="Club de Atletismo San Fernando";

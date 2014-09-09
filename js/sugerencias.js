@@ -128,6 +128,12 @@ function suggestBusqueda(texto)
     return;    
   }
 
+  if($(".cabecera-pestania-izq").hasClass("cabecera-pestania-seleccionada"))
+    entidades="";
+  else
+    entidades="true";
+
+
   //Que cargue las sugerencias usando AJAX
   var getAgenda = "getSuggestions.php?";
   $.getJSON(getAgenda, 
@@ -135,7 +141,8 @@ function suggestBusqueda(texto)
     query: texto,
     idLugar: $.urlParam('idLugar'),
     date: "any",
-    format: "json"
+    format: "json",
+    entidades: entidades
   })
   .done(function(data) 
   {

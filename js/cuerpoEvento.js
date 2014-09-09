@@ -60,7 +60,17 @@ $.getJSON('getDatos.php',
 
     contactoScrollPosition=Math.round($("#informacion-cuerpo-contacto").offset().top-177);
 
-    cargarMapa(data.direccion.lat,data.direccion.long);
+    var date = new Date(data.fecha);
+    var dateFin = new Date(data.fechaFin);
+    var monthNames = [ "ENE", "FEB", "MAR", "ABR", "MAY", "JUN",
+    "JUL", "AGO", "SEP", "OCT", "NOV", "DIC" ];
+
+    var monthNames2 = [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ];
+
+    fechaLegible=date.getDate()+" de "+monthNames2[date.getMonth()]+" a las "+paddingZeros(date.getHours())+":"+paddingZeros(date.getMinutes());
+
+    cargarMapa(data.direccion.lat,data.direccion.long,data.titulo+" → El "+fechaLegible+" @ "+data.direccion.nombre+" - "+data.direccion.direccion);
     $(".detalle-mapa-cabecera-lugar").text("Evento en "+data.lugar);
     $(".detalle-mapa-pie-nombre").text(data.direccion.nombre);
     $(".detalle-mapa-pie-direccion").text(data.direccion.direccion);
@@ -68,10 +78,6 @@ $.getJSON('getDatos.php',
         window.location="/citysens/?idLugar="+$.urlParam('idOrigen');
     });
 
-    var date = new Date(data.fecha);
-    var dateFin = new Date(data.fechaFin);
-    var monthNames = [ "ENE", "FEB", "MAR", "ABR", "MAY", "JUN",
-    "JUL", "AUG", "SEP", "OCT", "NOV", "DIC" ];
 
 
     $(".detalle-mapa-pie-calendario-top").html(monthNames[date.getMonth()]);
@@ -189,5 +195,40 @@ $(".cabecera-pestania-izq").click(function()
 $(".cabecera-pestania-dch").click(function()
 {
     window.location="/citysens/?idLugar="+$.urlParam('idOrigen')+'&category=ent';
+});
+
+$('#input-busqueda').attr('placeholder','Buscar en el evento...');
+
+
+$('#input-busqueda').keyup(function(event)
+{
+  if((event.which==13)||($('#input-busqueda').val()==""))
+  {
+   if($('#input-busqueda').val()!=window.lastSearch)
+   {
+     window.lastSearch=$('#input-busqueda').val();
+     var page = $('#detalle-cuerpo-texto');
+     var pageHtml = page.html().replace(/<span>/igm,"").replace(/<\/span>/igm,"");
+     if($('#input-busqueda').val()!="")
+     {
+       var searchedText = $('#input-busqueda').val();
+       var theRegEx = new RegExp("("+searchedText+")", "igm");    
+       var newHtml = pageHtml.replace(theRegEx ,"<span>$1</span>");
+     }
+     else
+       var newHtml = pageHtml;
+     page.html(newHtml);
+
+     if($('#input-busqueda').val()!="")
+     {
+       var firstOcurrencePosition=Math.round($("#detalle-cuerpo-texto").find("span")[0].offsetTop-90);
+       $('#detalle-cuerpo').scrollTo(firstOcurrencePosition, 1000, 'easeInOutQuint');
+     }
+     else
+       $('#detalle-cuerpo').scrollTo(0, 1000, 'easeInOutQuint');
+
+     
+   }
+  }
 });
 

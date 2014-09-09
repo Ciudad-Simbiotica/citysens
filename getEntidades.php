@@ -86,7 +86,7 @@ else
 		$datos["id"]=$asociacion["idAsociacion"];
 		$datos["clase"]="organizaciones";
 		$datos["tipo"]=utf8_encode($asociacion["tipoAsociacion"]);	
-		$grupos[$grupoActual]["totalFilas"][$datos["tipo"]]++;
+		$grupos[$grupoActual][""]["totalFilas"][$datos["tipo"]]++;
 
 
 		$datos["tituloOrg"]=utf8_encode($asociacion["asociacion"]);
@@ -95,14 +95,14 @@ else
 		$datos["puntos"]=$asociacion["points"];
 		$datos["tematica"]=utf8_encode($asociacion["tematica"]);
 
-		if(!is_array($grupos[$grupoActual]["filas"]))
+		if(!is_array($grupos[$grupoActual][""]["filas"]))
 		{
-			$grupos[$grupoActual]["cabeceraIzq"]="";
-			$grupos[$grupoActual]["cabeceraCntr"]=$grupoActual;
-			$grupos[$grupoActual]["cabeceraDch"]="";
-			$grupos[$grupoActual]["filas"]=array();
+			$grupos[$grupoActual][""]["cabeceraIzq"]="";
+			$grupos[$grupoActual][""]["cabeceraCntr"]="";
+			$grupos[$grupoActual][""]["cabeceraDch"]="";
+			$grupos[$grupoActual][""]["filas"]=array();
 		}
-		array_push($grupos[$grupoActual]["filas"],$datos);
+		array_push($grupos[$grupoActual][""]["filas"],$datos);
 		
 	}	
 	
@@ -112,7 +112,10 @@ if($tipoGrupos=="lugar")
 
 $returnData["tipo"]="organizaciones";
 $returnData["orden"]=$tipoGrupos;
-$returnData["grupos"][""]=$grupos;
+if($tipoGrupos=="puntuacion")
+	$returnData["grupos"][""]=$grupos;
+else
+	$returnData["grupos"]=$grupos;
 $returnJSON=json_encode($returnData);
 echo $returnJSON;
 
