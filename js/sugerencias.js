@@ -216,7 +216,7 @@ function suggestBusqueda(texto)
       //$("#cabecera-suggest").find(".cabecera-suggest-fila").slideDown("fast");
     });
 
-    if(texto=="san")//IrAMadrid
+    if(texto=="Villalbilla")//IrAMadrid
     {
       //Creamos la fila de ir a Madrid
       $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1 cabecera-suggest-texto1-sinTexto2'>Ir a "+texto.replace(texto,"<strong>"+texto+"</strong>")+"</div></div>");
@@ -225,7 +225,8 @@ function suggestBusqueda(texto)
       $("#cabecera-suggest").find(".cabecera-suggest-fila:last").attr("id","cabecera-suggest-fila-"+i);
       $("#cabecera-suggest").find(".cabecera-suggest-fila:last").click(function()
       {
-        clickSuggestion("/citysens/icons/gps.png",texto,"IrA",0); //Añadir value.id, texto buscado
+        window.location = "/citysens/?idLugar=888004444";
+        //clickSuggestion("/citysens/icons/gps.png",texto,"IrA",0); //Añadir value.id, texto buscado
       });
     } 
     

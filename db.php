@@ -77,15 +77,23 @@ function getAsociaciones($cadena,$cantidad=10)
     return $returnData;
 }
 
-function getAsociacionesZonaConEventos($cadena,$cantidad=10)
+function getAsociacionesZonaConEventos($cadena,$cantidad=10,$idDistritoPadre=0)
 {
     $link=connect();
     $sql="SELECT * 
             FROM asociaciones JOIN eventos 
             ON asociaciones.idAsociacion=eventos.idAsociacion
-            WHERE asociacion LIKE '%$cadena%'
-            GROUP BY asociaciones.idAsociacion
+            WHERE asociacion LIKE '%$cadena%'";
+
+    if($idDistritoPadre!=0)
+    {
+        $hijos=getAllChildren(array($idDistritoPadre));
+        $sql.=" AND eventos.idDistritoPadre IN ('".join($hijos,"','")."')";
+    }
+
+    $sql.=" GROUP BY asociaciones.idAsociacion
             LIMIT 0,$cantidad";
+
     $result=mysql_query($sql,$link);
     $returnData=array();
     while($fila=mysql_fetch_assoc($result))
@@ -415,7 +423,7 @@ function getLugares($cadena,$lugarOriginal,$type,$cantidad=3,$inSet=array())
 
 }
 
-function getLugaresSuggestions($cadena,$lugarOriginal,$cantidad=5)
+function getLugaresSuggestions($cadena,$lugarOriginal,$cantidad=4)
 {
     //echo $lugarOriginal;
     $inSet=getAllChildren(array($lugarOriginal));

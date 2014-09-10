@@ -15,7 +15,7 @@ $sugestion["id"]=0;
 array_push($sugestions,$sugestion);
 */
 
-$tematicas=getTematicas($_GET["query"],3);
+$tematicas=getTematicas($_GET["query"],4);
 foreach($tematicas as $tematica)
 {
 	//print_r($asociacion);
@@ -66,7 +66,7 @@ foreach($lugares as $lugar)
 
 if($_GET["entidades"]=="")	//Sólo las mostramos si NO estamos buscando entidades
 {
-	$asociaciones=getAsociacionesZonaConEventos($_GET["query"],3,true);
+	$asociaciones=getAsociacionesZonaConEventos($_GET["query"],4,$_GET["idLugar"]);
 	foreach($asociaciones as $asociacion)
 	{
 		//print_r($asociacion);

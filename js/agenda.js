@@ -328,6 +328,11 @@ function cargarContenido(id)
     //$(".share-link").attr("href", "#");
     */
 
+    //Ocultamos lo que corresponde a entidades y mostramos los de eventos
+    $(".informacion-cuerpo-contacto-elemento-evento").show();
+    $(".informacion-cuerpo-contacto-elemento-entidad").hide();
+
+
     if(data.tipo=='recurrente')
     {
       switch(parseInt(data.repeatsAfter))
@@ -357,11 +362,6 @@ function cargarContenido(id)
       $(".informacion-cabecera").height(50);
       $(".informacion-cabecera-abajo").hide();
     }
-
-    //Ocultamos lo que corresponde a entidades y mostramos los de eventos
-    $(".informacion-cuerpo-contacto-elemento-evento").show();
-    $(".informacion-cuerpo-contacto-elemento-entidad").hide();
-
 
     $(".informacion").slideDown("fast");
   });
@@ -883,6 +883,33 @@ $('.cabecera-lupa').click(function()
         window.selectedSuggestion=1;
   var fila="#cabecera-suggest-fila-"+(window.selectedSuggestion-1);
   $(fila).trigger("click");  
+});
+
+$("body").mouseup(function (e)
+{
+  
+  var container = new Array();
+  container.push($('#input-busqueda'));
+  container.push($('#cabecera-suggest'));
+  container.push($('.cabecera-lupa'));
+
+  var ocultar=true;
+
+  $.each(container, function(key, value) 
+  {
+    if (!$(value).is(e.target) // if the target of the click isn't the container...
+        && $(value).has(e.target).length === 0) // ... nor a descendant of the container
+    {
+    }
+    else
+    {
+      ocultar=false;
+    }
+  });
+
+  if(ocultar)
+    suggestBusqueda('');
+  
 });
 
 /* 
