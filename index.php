@@ -11,7 +11,6 @@ include "preload.php";
  <link href="css/cabecera.css" rel="stylesheet" type="text/css" />
  <link href="css/grupos.css" rel="stylesheet" type="text/css" />
  <link href="css/newEvent.css" rel="stylesheet" type="text/css" />
- <link href="css/detalleEvento.css" rel="stylesheet" type="text/css" />
  <link href="css/informacion.css" rel="stylesheet" type="text/css" />
  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
@@ -86,8 +85,10 @@ include "preload.php";
 	<?php
 		if($_GET["idLugar"]!="")
 			include "cuerpoLugar.php";
-		elseif($_GET["idEvento"]!="")
+		else if($_GET["idEvento"]!="")
 			include "cuerpoEvento.php";
+		else if($_GET["idAsociacion"]!="")
+			include "cuerpoEntidad.php";
 	?>
  </div>
 

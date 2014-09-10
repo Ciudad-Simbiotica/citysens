@@ -1,7 +1,11 @@
 	<div class='detalle-izq' style='display:none'>
-		<div id="detalle-termometro" class="detalle-termometro"></div>
+		<div id="detalle-tipo" class="detalle-tipo"></div>
 		<div class='detalle-cabecera'>
 			Cabecera
+		</div>
+		<div id="detalle-puntos" class="detalle-puntos">
+			<div class="detalle-puntos-copa"></div>
+			<div class="detalle-puntos-puntos">9999</div>
 		</div>
 		<div class='detalle-menu'>
 			<SPAN ID='descripcion'>Descripción</SPAN><BR>
@@ -40,27 +44,8 @@
 					<div class='detalle-mapa-pie-direccion'>
 						&nbsp;
 					</div>
-				</div>
-				<div class='detalle-mapa-pie-tipo'>
-					&nbsp;
-				</div>
-				<div class='detalle-mapa-pie-calendario'>
-		 	 	  <div class='detalle-mapa-pie-calendario-top'>
-		 	 	   &nbsp;
-			 	  </div>
-		 	 	  <div class='detalle-mapa-pie-calendario-bottom'>
-		 	 	   &nbsp;
-			 	  </div>
-				</div>
-				<div class='detalle-mapa-pie-hora-inicio'>
-					&nbsp;
-				</div>
-				<div class='detalle-mapa-pie-hora-final'>
-					&nbsp;
-				</div>
-			
+				</div>			
 			</div>
-		 	<div class='detalle-mapa-cabecera-abajo'>Se repite cada semana</div>
 
 		</div>
 		<div class='detalle-difunde'>
@@ -86,4 +71,4 @@
 
 
 <script src="js/mapaEventoEntidad.js"></script>
-<script src="js/cuerpoEvento.js"></script>
+<script src="js/cuerpoEntidad.js"></script>

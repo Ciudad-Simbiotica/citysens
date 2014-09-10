@@ -25,26 +25,26 @@ function getAsociacion($idAsociacion)
     {
         $asociacion=$fila;
         
-        /*
+        
         $sql="SELECT * FROM direcciones WHERE idDireccion='{$fila['idDireccion']}'";
         $result=mysql_query($sql,$link);
         if($fila=mysql_fetch_assoc($result))
         {
-            $evento['direccion']=$fila;
+            $asociacion['direccion']=$fila;
         }
         else
         {
-            $evento['direccion']['direccion']="Sin dirección";
-            $evento['direccion']['idDireccion']="0";
-            $evento['direccion']['idPadre']="0";
-            $evento['direccion']['lat']=0;
-            $evento['direccion']['long']=0;
-            $evento['direccion']['nombre']="Sin nombre";
-            $evento['direccion']['zoom']="15";
+            $asociacion['direccion']['direccion']="Sin dirección";
+            $asociacion['direccion']['idDireccion']="0";
+            $asociacion['direccion']['idPadre']="0";
+            $asociacion['direccion']['lat']=0;
+            $asociacion['direccion']['long']=0;
+            $asociacion['direccion']['nombre']="Sin nombre";
+            $asociacion['direccion']['zoom']="15";
         }
-        */
+        
 
-        $asociacion['direccion']="Distrito ".($asociacion["idDistritoPadre"]-999000004);
+        //$asociacion['direccion']="Distrito ".($asociacion["idDistritoPadre"]-999000004);
         $sql="SELECT * FROM asociaciones_tematicas, tematicas 
                 WHERE asociaciones_tematicas.idasociacion='$idAsociacion' AND
                 asociaciones_tematicas.idTematica=tematicas.idTematica";

@@ -27,15 +27,29 @@ $.fn.scrollTo = function( target, options, callback ){
   });
 }
 
-$.getJSON('getDatos.php', 
+$.getJSON('getDatosEntidad.php', 
 {
-      id: $.urlParam('idEvento'),
+      id: $.urlParam('idAsociacion'),
 })
 .done(function(data) 
 {
-    console.log(data);
-	$(".detalle-cabecera").text(data.titulo);
+  console.log(data);
+  
+	$(".detalle-cabecera").text(data.asociacion);
 	$(".detalle-cuerpo-texto").html(data.texto);
+
+  if(data.tipoAsociacion=="institucion")
+    $(".detalle-tipo").css("background-image", "url(icons/icon_CitYsens.institucion.png)");
+  else if(data.tipoAsociacion=="organizacion")
+    $(".detalle-tipo").css("background-image", "url(icons/icon_CitYsens.organizacion.png)");
+  else if(data.tipoAsociacion=="colectivo")
+    $(".detalle-tipo").css("background-image", "url(icons/CitYsens.People.png)");
+
+  $(".detalle-puntos-puntos").text(data.points);
+
+  $(".detalle-tipo").show();  //Por ahora queda oculto
+
+
 	$(".detalle-izq").fadeIn(1000);
 
     $.each(data.tematicas,function(id,tematica)
@@ -62,26 +76,17 @@ $.getJSON('getDatos.php',
     });
 
     contactoScrollPosition=Math.round($("#informacion-cuerpo-contacto").offset().top-177);
-
-    var date = new Date(data.fecha);
-    var dateFin = new Date(data.fechaFin);
-    var monthNames = [ "ENE", "FEB", "MAR", "ABR", "MAY", "JUN",
-    "JUL", "AGO", "SEP", "OCT", "NOV", "DIC" ];
-
-    var monthNames2 = [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ];
-
-    fechaLegible=date.getDate()+" de "+monthNames2[date.getMonth()]+" a las "+paddingZeros(date.getHours())+":"+paddingZeros(date.getMinutes());
-
-    cargarMapa(data.direccion.lat,data.direccion.long,data.titulo+" → El "+fechaLegible+" @ "+data.direccion.nombre+" - "+data.direccion.direccion);
-    $(".detalle-mapa-cabecera-lugar").text("Evento en "+data.lugar);
+    
+    cargarMapa(data.direccion.lat,data.direccion.long,data.asociacion+" @ "+data.direccion.nombre);
+    $(".detalle-mapa-cabecera-lugar").text("Entidad en "+data.direccion.nombre);
+    
     $(".detalle-mapa-pie-nombre").text(data.direccion.nombre);
     $(".detalle-mapa-pie-direccion").text(data.direccion.direccion);
     $(".detalle-mapa-cabecera-volver").click(function(){
         window.location="/citysens/?idLugar="+$.urlParam('idOrigen');
     });
-
-
+    
+    /*
 
     $(".detalle-mapa-pie-calendario-top").html(monthNames[date.getMonth()]);
     $(".detalle-mapa-pie-calendario-bottom").html(date.getDate());
@@ -92,13 +97,13 @@ $.getJSON('getDatos.php',
       $(".detalle-mapa-pie-hora-final").html('');
 
     $(".detalle-mapa-pie-tipo").addClass('detalle-mapa-pie-tipo-'+data.tipo);
-
+    */
     $(".detalle-mapa-pie").show();
 
 
     //Sharing code
-    url="http://www.citysens.net/?idEvento="+data.idEvento+"%26idOrigen="+$.urlParam('idOrigen');
-    mensaje="¡¡¡Este evento te puede interesar!!!";
+    url="http://www.citysens.net/?idAsociacion="+data.idAsociacion+"%26idOrigen="+$.urlParam('idOrigen');
+    mensaje="¡¡¡Esta entidad te puede interesar!!!";
     
     var tbx = document.getElementById("toolbox");
 
@@ -115,65 +120,32 @@ $.getJSON('getDatos.php',
     var addthis_share = 
     { 
       url: url,
-      title: data.titulo,
+      title: data.asociacion,
       description: mensaje,
       templates: 
       {
-        twitter: data.titulo+" - "+url,
+        twitter: data.asociacion+" - "+url,
       },
       url_transforms : 
       {
         clean: true
       },
-      /*
-      email_template: "citysens_evento",
-      email_vars: 
-      { 
-        asunto: mensaje,
-        fecha: data.fecha,
-        lugar: data.lugar 
-      }   
-      */ 
+      
+      // email_template: "citysens_evento",
+      // email_vars: 
+      // { 
+      //   asunto: mensaje,
+      //   fecha: data.fecha,
+      //   lugar: data.lugar 
+      // }   
+      
     }
 
     addthis.toolbox("#toolbox",addthis_config,addthis_share);
-
-    $(".detalle-termometro").css("background-image", "url(/citysens/icons/termometro_"+data.temperatura+".png)");  
-    //$(".detalle-termometro").show();  //Por ahora queda oculto
-    document.title = data.titulo;
-
-    if(data.tipo=='recurrente')
-    {
-      switch(parseInt(data.repeatsAfter))
-      {
-        case 1:
-          textoRepeticion='Se repite cada día';
-          break;
-        case 7:
-          textoRepeticion='Se repite cada semana';
-          break;
-        case 14:
-          textoRepeticion='Se repite cada dos semanas';
-          break;
-        case 21:
-          textoRepeticion='Se repite cada tres semanas';
-          break;
-        default:
-          textoRepeticion='Se repite cada '+data.repeatsAfter+' días';
-          break;         
-      }
-      $(".detalle-mapa-cabecera-abajo").text(textoRepeticion);
-      $(".detalle-mapa-cabecera-abajo").show();
-    }
-    else
-    {
-      $(".detalle-mapa-cabecera-abajo").hide();
-    }
-
+    document.title = data.asociacion;
 });
 
-$("head").append($("<link rel='stylesheet' type='text/css' href='css/detalleEvento.css'>")); 
-
+$("head").append($("<link rel='stylesheet' type='text/css' href='css/cuerpoEntidad.css'>")); 
 
 $("#cabecera-pestania-izq").removeClass("cabecera-pestania-seleccionada",250);
 $("#cabecera-pestania-dch").removeClass("cabecera-pestania-seleccionada",250);
@@ -202,7 +174,7 @@ $(".cabecera-pestania-dch").click(function()
     window.location="/citysens/?idLugar="+$.urlParam('idOrigen')+'&category=ent';
 });
 
-$('#input-busqueda').attr('placeholder','Buscar en el evento...');
+$('#input-busqueda').attr('placeholder','Buscar en la entidad...');
 
 
 $('#input-busqueda').keyup(function(event)

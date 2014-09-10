@@ -14,14 +14,13 @@
 	display: none;
 }
 
-.detalle-termometro
+.detalle-tipo
 {
 	position: relative;
-	width: 32px;
-	height: 32px;
-	left:50px;
-	top:18px;
-	background-image: url("/citysens/icons/termometro_1.png");	
+	width: 48px;
+	height: 48px;
+	left:5px;
+	top:5px;
 	background-size: contain;
 	background-repeat: no-repeat;
     background-position: center;
@@ -39,6 +38,33 @@
 	color: white;
 	font-size: 30px;
     border-radius:3px 3px 0px 0px;
+}
+
+.detalle-puntos 
+{
+	position:absolute;
+	top:5px;
+	right:5px;
+
+
+}
+
+.detalle-puntos-copa 
+{
+	background-image: url("/citysens/icons/copaBig.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 16px;
+	height: 16px;
+	top: 3px;
+	left: 5px;
+	float:left;
+}
+.detalle-puntos-puntos 
+{
+	padding-left: 5px;
+	float:left;
 }
 
 .detalle-menu
@@ -113,7 +139,7 @@
 {
 	position: fixed;
 	left:67.3%;
-	margin-top: 275px;
+	margin-top: 255px;
 	width:320px;
 	height: 62px;
 	font-family: Arial, Helvetica, sans-serif;
@@ -147,7 +173,7 @@
 {
 	position: fixed;
 	left:67.3%;
-	margin-top: 352px;
+	margin-top: 332px;
 	width:320px;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
@@ -200,7 +226,7 @@
 	position: fixed;
 	left:67.3%;
 	width:320px;
-	height: 260px;
+	height: 240px;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
 	z-index: 25;
@@ -240,7 +266,6 @@
 	height: 42px;
 	padding: 3px;
 	display: none;
-    border-bottom:thin solid #CCCCCC;
 }
 
 .detalle-mapa-pie-izquierda
