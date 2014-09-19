@@ -1,18 +1,19 @@
 <a class="boxclose" id="boxclose" onclick="javascript:hideOverlay();"></a>
 <FORM METHOD=POST ID="login_form">
 <img src='/citysens/icons/citysens.logoPrincipal.png' width="40px"><FONT SIZE=20>CitYsens</FONT><BR>
-Entra en CitYsens y... ¡cuenta!<BR>
+Regístrate en CitYsens y... ¡cuenta!<BR>
 <BR>
-<INPUT TYPE=hidden id='post_form' name='post_form' value='login_form'>
+<INPUT TYPE=hidden id='post_form' name='post_form' value='register_form'>
+<INPUT TYPE=email PLACEHOLDER='Tu nombre' class='input-email-ciudad' title="Tu correo electrónico" id="input-nombre" name="input-nombre">
+<BR>
+<BR>
 <INPUT TYPE=email PLACEHOLDER='Tu correo electrónico' class='input-email-ciudad' title="Tu correo electrónico" id="input-email" name="input-email">
 <INPUT TYPE=password PLACEHOLDER='Tu contraseña' class='input-email-ciudad' title="Tu contraseña" id="input-password" name="input-password">
 <BR><BR>
-¿Olvidaste tu contraseña? <span class='password-reset'>Restablécela</span><BR>
-<BR>
 
-<DIV class='div-login-submit'>Inicia Sesión</DIV>
+<DIV class='div-login-submit'>Regístrate</DIV>
 <BR>
-¿No tienes cuenta aún? <BR>
-<span class='register'>Regístrate</span>
+¿Ya tienes cuenta en CitYsens? <BR>
+<span class='login'>Inicia Sesion</span>
 </FORM>
-<script src="js/login.js"></script>
+<script src="js/register.js"></script>

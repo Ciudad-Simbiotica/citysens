@@ -21,6 +21,10 @@ function connect()
 //USERS
 function createUser($user,$email,$pass)
 {
+    $user=safe($user);
+    $email=safe(filter_var($email,FILTER_SANITIZE_EMAIL));
+    $pass=safe($pass);
+
     $link=connect();
     mysql_query('SET CHARACTER SET utf8',$link);
     $sql="SELECT * FROM users WHERE email='$email' OR user='$user'";
@@ -40,13 +44,38 @@ function createUser($user,$email,$pass)
     $createdUser["email"]=$email;
     $createdUser["verified"]=0;
     $createdUser["verificationToken"]=$verificationToken;
+
+
     return $createdUser;
+}
+
+function verifyUser($email,$token)
+{
+    $email=safe(filter_var($email,FILTER_SANITIZE_EMAIL));
+    $token=safe($token);
+
+    $link=connect();
+    mysql_query('SET CHARACTER SET utf8',$link);
+    $sql="SELECT * FROM users WHERE email='$email' AND verificationToken='$token'";
+    $result=mysql_query($sql,$link);
+    //echo $sql;
+    
+    if($fila=mysql_fetch_assoc($result))
+    {
+        $sql="UPDATE users SET verified=1, verificationToken='' WHERE idUser='{$fila["idUser"]}'";
+        //echo $sql;
+        mysql_query($sql,$link);
+        return true;
+    }
+    else
+        return false;
+
 }
 
 function getUser($email,$pass)
 {
     //Sanitize inputs
-    $email=safe($email);
+    $email=safe(filter_var($email,FILTER_SANITIZE_EMAIL));
     $pass=safe($pass);
 
     $link=connect();
@@ -70,6 +99,87 @@ function getUser($email,$pass)
         return false;
     }
     
+}
+
+function resetUser($email)
+{
+    $email=safe($email);
+
+    $link=connect();
+    mysql_query('SET CHARACTER SET utf8',$link);
+    $sql="SELECT * FROM users WHERE email='$email'";
+    $result=mysql_query($sql,$link);
+    if($fila=mysql_fetch_assoc($result))
+    {
+        $verificationToken=base64_encode(mcrypt_create_iv(PBKDF2_SALT_BYTE_SIZE, MCRYPT_DEV_URANDOM));
+        $sql="UPDATE users SET verificationToken='$verificationToken' WHERE idUser='{$fila["idUser"]}'";
+        mysql_query($sql,$link);
+        return $verificationToken;
+    }
+    return false;
+}
+
+function changeUserPassword($email,$token,$nuevoPassword)
+{
+    $email=safe($email);
+    $token=safe($token);
+    $nuevoPassword=safe($nuevoPassword);
+
+    $link=connect();
+    mysql_query('SET CHARACTER SET utf8',$link);
+    $sql="SELECT * FROM users WHERE email='$email' AND verificationToken='$token'";
+    $result=mysql_query($sql,$link);
+    if($fila=mysql_fetch_assoc($result))
+    {
+        $hash=create_hash($nuevoPassword);
+        $sql="UPDATE users SET hash='$hash', verificationToken='', verified='1' WHERE idUser='{$fila["idUser"]}'";
+        mysql_query($sql,$link);
+        return true;
+    }
+    return false;
+}
+
+
+//Seguimiento listados
+
+function follow($idUser,$query,$clase)
+{
+    $idUser=safe($idUser);
+    $query=safe($query);
+    $clase=safe($clase);
+
+    $link=connect();
+    mysql_query('SET CHARACTER SET utf8',$link);
+    $sql="INSERT INTO avisosListados (idUser, query,clase) VALUES ('$idUser','$query','$clase')";
+    mysql_query($sql,$link);
+}
+
+function unfollow($idUser,$query,$clase)
+{
+    $idUser=safe($idUser);
+    $query=safe($query);
+    $clase=safe($clase);
+
+    $link=connect();
+    mysql_query('SET CHARACTER SET utf8',$link);
+    $sql="DELETE FROM avisosListados WHERE idUser='$idUser' AND query='$query' AND clase='$clase'";
+    mysql_query($sql,$link);    
+}
+
+function isFollowing($idUser,$query,$clase)
+{
+    $idUser=safe($idUser);
+    $query=safe($query);
+    $clase=safe($clase);
+
+    $link=connect();
+    mysql_query('SET CHARACTER SET utf8',$link);
+    $sql="SELECT idAvisoListado FROM avisosListados WHERE idUser='$idUser' AND query='$query' AND clase='$clase'";
+    $result=mysql_query($sql,$link);
+    if($fila=mysql_fetch_assoc($result))
+        return true;
+    else
+        return false;
 }
 
 //Asociaciones

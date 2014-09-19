@@ -596,6 +596,17 @@ function cargarDatos(clase, orden)
         });
       });
 
+      if(data.isFollowing)
+      {
+        $("#boton-avisos").val("Dejar de recibir avisos");
+        window.isFollowing=true;
+      }
+      else
+      {
+        $("#boton-avisos").val("Recibir avisos");        
+        window.isFollowing=false;
+      }
+
     $(".supergrupo").fadeIn(500);
     $(".agenda-segunda-linea").fadeIn(500);
     comprobarPlegadoFilas();
@@ -649,6 +660,54 @@ function isValidEmailAddress(emailAddress)
 
 function subscribe()
 {
+  if(isLogged())
+  {
+    var hayUnLugar=false;
+    var arrayTagsQuery=arrayTags.slice();
+
+    $.each(arrayTagsQuery, function(i, object) 
+    {
+      if(object.tipo=="lugar")
+      {
+        hayUnLugar=true;
+      }
+    });
+
+    if(!hayUnLugar)
+    {
+      var sugerencia = 
+      {
+        "texto": "", 
+        "tipo": "lugar",
+        "id": $.urlParam('idLugar'),
+      };
+      arrayTagsQuery.push(sugerencia);
+    }
+    var query=JSON.stringify(arrayTagsQuery);
+    if(window.isFollowing)
+    {
+      $.post( "changeSubscriptionStatus.php", { query: query, clase: window.clase, action: 'unsubscribe' } )
+      .done(function(data){
+        console.log(data);
+      });
+      $("#boton-avisos").val("Recibir avisos");        
+      window.isFollowing=false;
+    }
+    else
+    {
+      $.post( "changeSubscriptionStatus.php", { query: query, clase: window.clase,  action: 'subscribe' } )
+      .done(function(data){
+        console.log(data);
+      });
+      $("#boton-avisos").val("Dejar de recibir avisos");        
+      window.isFollowing=true;
+    }
+  }
+  else
+  {
+
+  }
+  /*
   if(isValidEmailAddress($("#email-avisos").val()))
   {
     console.log($("#email-avisos").val());
@@ -659,6 +718,7 @@ function subscribe()
   {
     alert("Introduce un email correcto para recibir los avisos");
   }
+  */
 }
 
 $(".cabecera-propon").click(function()
@@ -671,6 +731,10 @@ $("#boton-avisos").click(function()
   subscribe();
 });
 
+function isLogged()
+{
+  return $('#logged').val()!="";
+}
 
 /* 
 ---------------------------------------------------------------------------------------------
@@ -840,7 +904,7 @@ $(".cabecera-derecha-inicia").click(function()
 
 $(".cabecera-derecha-registrate").click(function()
 {
-  console.log("Registrando");
+  loadOverlay("register.html",true);
 });
 
 $(".cabecera-derecha-micitysens").click(function()
@@ -852,6 +916,7 @@ $(".cabecera-derecha-logout").click(function()
 {
   $("#logout_form").submit();
 });
+
 
 
 
@@ -932,6 +997,85 @@ $("body").mouseup(function (e)
   
 });
 
+
+/* 
+---------------------------------------------------------------------------------------------
+----------------------------------------Notificaciones---------------------------------------
+---------------------------------------------------------------------------------------------
+*/
+
+function notificarError(html)
+{
+  jError
+  (
+      html,
+      {
+        autoHide : true,
+        clickOverlay : true,    
+        MinWidth : 200,
+        TimeShown : 5000,
+        ShowTimeEffect : 200,
+        HideTimeEffect : 200,
+        LongTrip :0,
+        HorizontalPosition : 'center',
+        VerticalPosition : 'top',
+        ShowOverlay : true,
+        ColorOverlay : '#000',
+        OpacityOverlay : 0.3,
+        onClosed : function(){},
+        onCompleted : function(){}
+      }
+  );
+}
+
+function notificarExito(html)
+{
+  jSuccess
+  (
+      html,
+      {
+        autoHide : true,
+        clickOverlay : true,    
+        MinWidth : 200,
+        TimeShown : 5000,
+        ShowTimeEffect : 200,
+        HideTimeEffect : 200,
+        LongTrip :0,
+        HorizontalPosition : 'center',
+        VerticalPosition : 'top',
+        ShowOverlay : true,
+        ColorOverlay : '#000',
+        OpacityOverlay : 0.3,
+        onClosed : function(){},
+        onCompleted : function(){}
+      }
+  );
+}
+
+function notificarNormal(html)
+{
+  jNotify
+  (
+      html,
+      {
+        autoHide : true,
+        clickOverlay : true,    
+        MinWidth : 400,
+        TimeShown : 5000,
+        ShowTimeEffect : 200,
+        HideTimeEffect : 200,
+        LongTrip :0,
+        HorizontalPosition : 'center',
+        VerticalPosition : 'top',
+        ShowOverlay : true,
+        ColorOverlay : '#000',
+        OpacityOverlay : 0.3,
+        onClosed : function(){},
+        onCompleted : function(){}
+      }
+  );
+}
+
 /* 
 ---------------------------------------------------------------------------------------------
 ----------------------------------------Inicialización---------------------------------------
@@ -942,6 +1086,36 @@ $("body").mouseup(function (e)
 var arrayTags = new Array();
 
 
+//Mostrar notificaciones
+
+var notificacion=$('#notificacion').val(); //Lanza un error si no hay tipo
+if(notificacion==="exitoRegistro")
+{
+  notificarExito('Gracias por verificar tu dirección de correo electrónico. Ya puedes iniciar sesión.');
+}
+else if(notificacion==="errorRegistro")
+{
+  notificarError('El enlace de verificación que has seguido es erroneo o ha caducado. Por favor, regístrate de nuevo o recupera la contraseña.');    
+}
+else if(notificacion==="loginCorrecto")
+{
+  notificarExito('Has iniciado sesión correctamente.');
+}
+else if(notificacion==="loginError")
+{
+  notificarError('El email o contraseña son incorrectos. Intenta iniciar sesión de nuevo.');    
+}
+else if(notificacion==="resetCorrecto")
+{
+  notificarExito('Has cambiado la contraseña correctamente. Ya puedes iniciar sesión.');
+}
+else if(notificacion==="resetError")
+{
+  notificarError('El enlace para cambiar la contraseña que has seguido no es correcto o ha caducado.');    
+}
+
+
+//Clicar la categoría que corresponda
 try
 {
   var categoria=$.urlParam('category'); //Lanza un error si no hay tipo
@@ -959,5 +1133,11 @@ catch(err)
     $(".cabecera-pestania-izq").click();  
 }
 
-
-
+if(isLogged())
+{
+  $(".logged-item").show();
+}
+else
+{
+  $(".public-item").show();
+}

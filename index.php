@@ -17,6 +17,7 @@ include "preload.php";
  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
  <link rel="stylesheet" href="css/leafletCustom.css" />
+ <link rel="stylesheet" type="text/css" href="css/jNotify.jquery.css" media="screen" />
 
 
  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
@@ -29,12 +30,17 @@ include "preload.php";
  <script src="js/leaflet-plugins-master/layer/tile/Google.js"></script>
  <script src="js/wysihtml5/parser_rules/advanced.js"></script>
  <script src="js/wysihtml5/dist/wysihtml5-0.3.0.min.js"></script>
+ <script type="text/javascript" src="js/jNotify.jquery.js"></script>
 
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5405f16570d4251b"></script>
 
 </head>
 
 <body>  
+
+<input type="hidden" id="notificacion" value="<?php echo $_SESSION['notificacion']; unset($_SESSION['notificacion']); //Exponemos la variable notificación?>"></input>
+<input type="hidden" id="logged" value="<?php echo $_SESSION['logged']; //Exponemos si estamos loggeados para JS?>"></input>
+
  <div class='darkOverlay'>
  	<div id='overlay' class='overlay'></div>
  </div>
@@ -80,25 +86,17 @@ include "preload.php";
 	 	</div>
 	 	<div class='cabecera-propon'>Propón un evento</div>
 	 	<div class='cabecera-derecha'>
-	 	 <?php
-	 	 	if($_SESSION["user"]!="")
-	 	 	{
-	 	 		?>
-					<div class='cabecera-derecha-micitysens'>Mi CitYsens</div>
-				 	<div class='cabecera-derecha-logout'>(Salir)</div>
-	 	 		<?php
-	 	 	}
-	 	 	else
-	 	 	{
-	 	 		?>
-				 	<div class='cabecera-derecha-inicia'>Inicia Sesión</div>
-				 	<div class='cabecera-derecha-registrate'>(Regístrate)</div>
-	 	 		<?php
-	 	 	}
-	 	 ?>
+					<div class='cabecera-derecha-micitysens logged-item'>Mi CitYsens</div>
+				 	<div class='cabecera-derecha-logout logged-item'>(Salir)</div>
+
+				 	<div class='cabecera-derecha-inicia public-item'>Inicia Sesión</div>
+				 	<div class='cabecera-derecha-registrate public-item'>(Regístrate)</div>
 	 	</div>
 	</div>
  </div>
+
+
+
  
  <div class='cuerpo'>
 	<?php

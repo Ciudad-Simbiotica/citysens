@@ -38,6 +38,10 @@ html,body
 
 }
 
+.logged-item,.public-item
+{
+	display: none;
+}
 
 
 .overlayPeque
@@ -58,6 +62,42 @@ html,body
   	margin-top: -175px;
 }
 
+.reestablece-header
+{
+	font-family: Helvetica;
+	font-size: 36px;
+	color:#444;
+	margin-bottom: 20px;
+}
+
+.reestablece-line
+{
+	margin-bottom: 5px;
+}
+
+.reestablece-desc
+{
+	font-family: Helvetica;
+	font-size: 24px;
+	color:#444;
+	float:left;
+	width: 222px;
+}
+
+.reestablece-input
+{
+	font-size: 20px;
+    width:420px;
+    height:26px;
+}
+
+.reestablece-submit
+{
+	margin-top: 20px;
+	margin-left:363px;
+	font-family: Verdana,Arial,Helvetica;
+	text-align: center;
+}
 
 .input-email-ciudad
 {
@@ -92,6 +132,21 @@ html,body
 	color:#fff;
 	font-size:20px;
 	cursor:default;
+}
+
+.password-reset,.register,.login
+{
+	cursor:hand;cursor:pointer;
+	font-style: italic;
+	color:blue;
+}
+
+.reset-texto
+{
+	width: 269px;
+	text-align: justify;
+	font-size: 14px;
+    margin-left:63px;
 }
 
 .div-email-submit-active

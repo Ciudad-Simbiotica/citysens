@@ -57,6 +57,25 @@ function create_hash($password)
 
 function validate_password($password, $correct_hash)
 {
+    /*
+    echo PHP_EOL;
+    echo $password;
+    echo PHP_EOL;
+    echo $correct_hash;
+    echo PHP_EOL;
+
+    $salt="APLjzNzpWZB3zhzVrtrBIOvb4qD3tQPn";
+    echo PBKDF2_HASH_ALGORITHM . ":" . PBKDF2_ITERATIONS . ":" .  $salt . ":" .
+        base64_encode(pbkdf2(
+            PBKDF2_HASH_ALGORITHM,
+            $password,
+            $salt,
+            PBKDF2_ITERATIONS,
+            PBKDF2_HASH_BYTE_SIZE,
+            true
+        ));
+    */
+
     $params = explode(":", $correct_hash);
     if(count($params) < HASH_SECTIONS)
        return false;

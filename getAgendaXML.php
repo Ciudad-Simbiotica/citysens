@@ -1,6 +1,8 @@
 <?php
 
 error_reporting(E_ERROR);
+include "loadSession.php";
+include "preload.php";
 
 $lorem="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 date_default_timezone_set("Europe/Madrid");
@@ -15,18 +17,29 @@ if(!in_array($_GET["clase"], array("eventos","procesos","organizaciones")))
 if($_GET["clase"]=="eventos")
 {
 	include "getEventos.php";
-	return;
 }
-
-
 else if($_GET["clase"]=="organizaciones")
 {
 	include "getEntidades.php";
-	return;
 }
+
+//Añadimos si el user está siguiendo (si estamos logueados)
+if($_SESSION["user"])
+{
+	$returnData["isFollowing"]=isFollowing($_SESSION["user"]["idUser"],$_GET["query"],$_GET["clase"]);
+}
+else
+{
+	$returnData["isFollowing"]=false;	
+}
+$returnJSON=json_encode($returnData);
+
+echo $returnJSON;
+
 
 exit();
 
+/*
 //A partir de aquí código viejo
 if($_GET["regenerar"]=="")
 {
@@ -127,12 +140,7 @@ if($_GET["clase"]=="organizaciones")
 		$datos["lugarOrg"]="Distr. ".$asociacion["DISTRITO"];
 		$datos["puntos"]=$puntos;
 		
-		/*
-		if(rand(1,100)>50)
-			$datos["participante"]=1;
-		else
-			$datos["participante"]=0;
-		*/
+		
 		array_push($filas,$datos);
 	}
 
@@ -237,4 +245,5 @@ else if($_GET["clase"]=="eventos")
 	echo $returnJSON;
 	file_put_contents("returnCache_eventos.txt", $returnJSON);
 }
+*/
 ?>

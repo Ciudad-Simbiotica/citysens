@@ -127,9 +127,4 @@ foreach($grupo["totalFilas"] as $key=>$value)
 }
 $returnData["tipo"]="eventos";
 $returnData["orden"]=$_GET["orden"];
-
-$returnJSON=json_encode($returnData);
-echo $returnJSON;
-
-
 ?>

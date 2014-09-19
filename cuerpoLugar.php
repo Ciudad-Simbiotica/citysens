@@ -33,8 +33,8 @@
 	  </div>
 	  <div class='agenda-segunda-linea'>
 	   <div class='div-avisos'>
-	  	<input type=text id="email-avisos" placeholder="escribe tu mail">
-	  	<input type=button id="boton-avisos" value="Recibir avisos">
+	   		  	<input type=text class="public-item" id="email-avisos" placeholder="escribe tu mail">
+			  	<input type=button id="boton-avisos" value="Recibir avisos">
 	   </div>
 	   <div class='div-ordenar'>
 	  	Ordenar por: 

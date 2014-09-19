@@ -10,8 +10,6 @@ function verifyAllFields()
 
 	if(!isValidEmailAddress($('#input-email').val()))
 		allFieldsValid=false;
-	if($('#input-password').val()=="")
-		allFieldsValid=false;
 	
 	if(allFieldsValid)
 		$('.div-login-submit').addClass('div-email-submit-active',250);
@@ -20,26 +18,13 @@ function verifyAllFields()
 	return allFieldsValid;
 }
 
+
 $('#input-email').on('input',function()
 {
   verifyAllFields();
 });
 
-
 $('#input-email').bind('keyup',function(event)
-{
-  verifyAllFields();
-  if(event.which==13) //Intro 
-  	$('.div-login-submit').trigger("click");
-});
-
-$('#input-password').on('input',function()
-{
-  verifyAllFields();
-});
-
-
-$('#input-password').bind('keyup',function(event)
 {
   verifyAllFields();
   if(event.which==13) //Intro 
@@ -50,20 +35,13 @@ $('.div-login-submit').click(function()
 {
 	if(verifyAllFields())
 	{
-		$("#login_form").submit();
+		$.post( "password-reset.php", { email: $('#input-email').val()})
+	    .done(function(data) 
+	    {
+		  loadOverlay("password-reset-end.html",true);	    	
+	    });
 	}
 });
 
-$('.password-reset').click(function()
-{
-	console.log('Reset Password');
-	loadOverlay("password-reset.html",true);
-});
-
-$('.register').click(function()
-{
-	console.log('Register');
-	loadOverlay("register.html",true);
-});
 
 $('#input-email').focus();

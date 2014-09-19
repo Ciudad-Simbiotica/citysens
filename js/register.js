@@ -13,6 +13,9 @@ function verifyAllFields()
 	if($('#input-password').val()=="")
 		allFieldsValid=false;
 	
+	if($('#input-nombre').val()=="")
+		allFieldsValid=false;
+	
 	if(allFieldsValid)
 		$('.div-login-submit').addClass('div-email-submit-active',250);
 	else
@@ -46,24 +49,36 @@ $('#input-password').bind('keyup',function(event)
   	$('.div-login-submit').trigger("click");
 });
 
+
+$('#input-nombre').on('input',function()
+{
+  verifyAllFields();
+});
+
+
+$('#input-nombre').bind('keyup',function(event)
+{
+  verifyAllFields();
+  if(event.which==13) //Intro 
+  	$('.div-login-submit').trigger("click");
+});
+
 $('.div-login-submit').click(function()
 {
 	if(verifyAllFields())
 	{
-		$("#login_form").submit();
+		$.post( "register.php", { email: $('#input-email').val(), nombre: $('#input-nombre').val(), password: $('#input-password').val()})
+	    .done(function(data) 
+	    {
+		  loadOverlay("register-end.html",true);	    	
+	    });
 	}
 });
 
-$('.password-reset').click(function()
+$('.login').click(function()
 {
-	console.log('Reset Password');
-	loadOverlay("password-reset.html",true);
-});
-
-$('.register').click(function()
-{
-	console.log('Register');
-	loadOverlay("register.html",true);
+	console.log('Login');
+	loadOverlay("login.html",true);
 });
 
 $('#input-email').focus();

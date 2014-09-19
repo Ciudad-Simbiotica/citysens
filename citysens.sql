@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost:8889
--- Tiempo de generación: 10-09-2014 a las 20:16:59
+-- Tiempo de generación: 20-09-2014 a las 00:24:36
 -- Versión del servidor: 5.5.34
 -- Versión de PHP: 5.5.10
 
@@ -2320,6 +2320,31 @@ INSERT INTO `asociaciones_tematicas` (`idAsociacionTematica`, `idAsociacion`, `i
 (1684, 231, 5),
 (1685, 231, 24),
 (1686, 231, 15);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `avisosListados`
+--
+
+DROP TABLE IF EXISTS `avisosListados`;
+CREATE TABLE `avisosListados` (
+  `idAvisoListado` int(11) NOT NULL AUTO_INCREMENT,
+  `idUser` int(11) NOT NULL,
+  `query` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `clase` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`idAvisoListado`),
+  UNIQUE KEY `idUser` (`idUser`,`query`,`clase`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=28 ;
+
+--
+-- Volcado de datos para la tabla `avisosListados`
+--
+
+INSERT INTO `avisosListados` (`idAvisoListado`, `idUser`, `query`, `clase`) VALUES
+(25, 0, '[{"texto":"","tipo":"lugar","id":"888004284"}]', 'eventos'),
+(27, 0, '[{"texto":"","tipo":"lugar","id":"888004284"}]', 'organizaciones'),
+(23, 23, '[{"texto":"","tipo":"lugar","id":"888004284"}]', 'eventos');
 
 -- --------------------------------------------------------
 
@@ -11580,6 +11605,32 @@ INSERT INTO `tematicas` (`idTematica`, `tematica`) VALUES
 (28, 'Transporte'),
 (29, 'Urbanismo'),
 (30, 'Vivienda');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+  `idUser` int(11) NOT NULL AUTO_INCREMENT,
+  `user` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `hash` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `verified` tinyint(1) NOT NULL,
+  `verificationToken` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`idUser`),
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `user` (`user`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=24 ;
+
+--
+-- Volcado de datos para la tabla `users`
+--
+
+INSERT INTO `users` (`idUser`, `user`, `email`, `hash`, `verified`, `verificationToken`) VALUES
+(23, 'Kike', 'correo@kike.es', 'sha256:1000:pe8ne/M/ISCa5O01D/ZQwl/+O5CnqUQF:iboWoPSva9F7c6ancbFBzxT+j6/Ax17K', 1, '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

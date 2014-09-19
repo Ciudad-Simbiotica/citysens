@@ -122,7 +122,5 @@ if(count($grupos)>0)
 	else
 		$returnData["grupos"]=$grupos;
 }
-$returnJSON=json_encode($returnData);
-echo $returnJSON;
 
 ?>
