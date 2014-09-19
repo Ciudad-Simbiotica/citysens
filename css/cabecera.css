@@ -351,14 +351,21 @@
 
 .cabecera-derecha
 {
-	top:30px;
-	right:-20px;
+	top:10px;
+	right:-30px;
 	position: absolute;
 	color:white;
 	text-shadow: 1px 1px 6px #000000;	
+	text-align: right;
+	cursor:hand;cursor:pointer;	
 }
 
 
+.cabecera-derecha-registrate,.cabecera-derecha-logout
+{
+	font-style: italic;
+	font-size: 14px;
+}
 
 .subcabecera-pestania-izq
 {

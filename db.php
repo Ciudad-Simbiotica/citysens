@@ -1,4 +1,7 @@
 <?php
+
+include_once "passwordHashing.php";
+
 function connect()
 {
     $conn = mysql_connect("localhost", "root", "root");
@@ -15,6 +18,61 @@ function connect()
     return $conn;
 }
 
+//USERS
+function createUser($user,$email,$pass)
+{
+    $link=connect();
+    mysql_query('SET CHARACTER SET utf8',$link);
+    $sql="SELECT * FROM users WHERE email='$email' OR user='$user'";
+    $result=mysql_query($sql,$link);
+    if($fila=mysql_fetch_assoc($result))
+        return false;
+
+    $hash=create_hash($pass);
+    $verificationToken=base64_encode(mcrypt_create_iv(PBKDF2_SALT_BYTE_SIZE, MCRYPT_DEV_URANDOM));
+
+    $sql="INSERT INTO users (user,email,hash,verified,verificationToken) VALUES ('$user','$email','$hash','0','$verificationToken')";
+    mysql_query($sql,$link);
+
+    //ToDo: Comprobar que se crea bien el usuario
+
+    $createdUser["user"]=$user;
+    $createdUser["email"]=$email;
+    $createdUser["verified"]=0;
+    $createdUser["verificationToken"]=$verificationToken;
+    return $createdUser;
+}
+
+function getUser($email,$pass)
+{
+    //Sanitize inputs
+    $email=safe($email);
+    $pass=safe($pass);
+
+    $link=connect();
+    mysql_query('SET CHARACTER SET utf8',$link);
+    $sql="SELECT * FROM users WHERE email='$email'";
+    $result=mysql_query($sql,$link);
+    if($fila=mysql_fetch_assoc($result))
+    {
+        if(validate_password($pass,$fila["hash"]))
+        {
+            $fila["hash"]="";
+            return $fila;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else
+    {
+        return false;
+    }
+    
+}
+
+//Asociaciones
 function getAsociacion($idAsociacion)
 {
     $link=connect();

@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ERROR);
+include "loadSession.php";
 include "preload.php";
 ?>
 
@@ -77,7 +79,24 @@ include "preload.php";
 	 	<div class='cabecera-lupa'>
 	 	</div>
 	 	<div class='cabecera-propon'>Propón un evento</div>
-	 	<div class='cabecera-derecha'>Mi CitYsens</div>
+	 	<div class='cabecera-derecha'>
+	 	 <?php
+	 	 	if($_SESSION["user"]!="")
+	 	 	{
+	 	 		?>
+					<div class='cabecera-derecha-micitysens'>Mi CitYsens</div>
+				 	<div class='cabecera-derecha-logout'>(Salir)</div>
+	 	 		<?php
+	 	 	}
+	 	 	else
+	 	 	{
+	 	 		?>
+				 	<div class='cabecera-derecha-inicia'>Inicia Sesión</div>
+				 	<div class='cabecera-derecha-registrate'>(Regístrate)</div>
+	 	 		<?php
+	 	 	}
+	 	 ?>
+	 	</div>
 	</div>
  </div>
  
@@ -92,6 +111,9 @@ include "preload.php";
 	?>
  </div>
 
+<FORM METHOD=POST id="logout_form">
+	<INPUT TYPE=hidden id='post_form' name='post_form' value='logout_form'>
+</FORM>
 
  </body>
 </html>

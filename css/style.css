@@ -80,6 +80,20 @@ html,body
 	cursor:default;
 }
 
+.div-login-submit
+{
+	margin-left: 105px;
+	margin-top: -10px;
+	width: 180px;
+	height: 40px;
+	line-height: 40px;
+	border-radius: 3px;
+	background-color: lightgrey;
+	color:#fff;
+	font-size:20px;
+	cursor:default;
+}
+
 .div-email-submit-active
 {
 	background-color:#6666ff;

@@ -832,6 +832,26 @@ $(".cabecera-pestania-noticias").click(function()
 
 });
 
+$(".cabecera-derecha-inicia").click(function()
+{
+  console.log("Iniciando sesión");
+  loadOverlay("login.html",true);
+});
+
+$(".cabecera-derecha-registrate").click(function()
+{
+  console.log("Registrando");
+});
+
+$(".cabecera-derecha-micitysens").click(function()
+{
+  console.log("MiCitysens");
+});
+
+$(".cabecera-derecha-logout").click(function()
+{
+  $("#logout_form").submit();
+});
 
 
 
