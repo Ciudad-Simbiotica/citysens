@@ -594,20 +594,53 @@ function getLugares($cadena,$lugarOriginal,$type,$cantidad=3,$inSet=array())
 function getLugaresSuggestions($cadena,$lugarOriginal,$cantidad=4)
 {
     //echo $lugarOriginal;
+    $lugarOriginal=safe($lugarOriginal);
+    $datosLugar=getDatosLugar($lugarOriginal);
+    if($datosLugar['nivel']<8)
+        $whereNiveles="AND nivel<='8'";
+
     $inSet=getAllChildren(array($lugarOriginal));
-    $link=connect();
     unset($inSet[0]);   //Quitamos el original
+    $link=connect();
+    mysql_query('SET CHARACTER SET utf8',$link);
     $sql="SELECT * FROM lugares_shp WHERE 
             nombre LIKE '%$cadena%' AND
-            id IN (".implode(",",$inSet).") 
+            id IN (".implode(",",$inSet).")
+            $whereNiveles
             LIMIT 0,$cantidad";
     //echo $sql;        
-    mysql_query('SET CHARACTER SET utf8',$link);
     $result=mysql_query($sql,$link);
     $returnData=array();
     while($fila=mysql_fetch_assoc($result))
         array_push($returnData,array($fila["id"],$fila["nombre"],$fila["xcentroid"],$fila["ycentroid"],$fila["geocodigo"]));
     return $returnData;
+
+}
+
+function getIrA($cadena,$lugarOriginal)
+{
+    //echo $lugarOriginal;
+    //$inSet=getAllChildren(array($lugarOriginal));
+    
+    $cadena=safe($cadena);
+
+    $link=connect();
+    $sql="SELECT * FROM lugares_shp WHERE 
+            nombre LIKE '$cadena' AND (
+            (nivel='8' AND ((idPadre BETWEEN 777000001 AND 777000007) OR (idPadre='666000028'))) OR
+            (nivel='6' OR nivel='7')
+            )";
+
+    //Por ahora forzado a niveles 6/7 de Madrid (no tenemos de otras provincias) Y nivel 8 de Madrid
+
+
+    mysql_query('SET CHARACTER SET utf8',$link);
+    $result=mysql_query($sql,$link);
+    $returnData=array();
+    if($fila=mysql_fetch_assoc($result))
+        return $fila;
+    else
+        return false;
 
 }
 

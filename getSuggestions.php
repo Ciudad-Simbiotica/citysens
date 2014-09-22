@@ -77,33 +77,21 @@ if($_GET["entidades"]=="")	//Sólo las mostramos si NO estamos buscando entidade
 		array_push($sugestions,$sugestion);
 	}
 }
-/*
-$sugestion["tipo"]="organizacion";
-$sugestion["texto1"]="Club de Atletismo San Fernando";
-$sugestion["texto2"]="San Fernando";
-array_push($sugestions,$sugestion);
-
-$sugestion["tipo"]="institucion";
-$sugestion["texto1"]="Ayuntamiento de Los Santos";
-$sugestion["texto2"]="Los Santos";
-array_push($sugestions,$sugestion);
-*/
-/*
-$returnSuggestions=array();
 
 
-//$palabras=split(" ",$_GET["query"]);
-//foreach($palabras as $palabra)
-//{
-	foreach($sugestions as $sugestion)
-	{
-		if(preg_match('/'.$_GET["query"].'/i', $sugestion["texto1"]))
-		{
-			array_push($returnSuggestions, $sugestion);
-		}
-	}	
-//}
-*/
+$lugaresIrA=getIrA($_GET["query"],$_GET["idLugar"]);
+if($lugaresIrA)
+{
+	//print_r($lugaresIrA);
+	$sugestion["tipo"]="IrA";
+	$sugestion["texto1"]=htmlentities(ucwords(strtolower(substr($lugaresIrA["nombre"],0,50))));
+	$sugestion["texto2"]="";
+	$sugestion["id"]=$lugaresIrA["id"];
+	$sugestion["activo"]=$lugaresIrA["activo"];
+	array_push($sugestions,$sugestion);
+}
+
+
 
 $return["suggestions"]=$sugestions;
 

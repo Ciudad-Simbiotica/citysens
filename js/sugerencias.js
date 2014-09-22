@@ -180,56 +180,69 @@ function suggestBusqueda(texto)
     var i=1;
     $.each(data.suggestions, function(key, value)
     {
-      //Creamos la sugerencia
-      $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1'>"+value.texto1.replace(texto, '<b>'+texto+'</b>')+"</div><div class='cabecera-suggest-texto2'>"+value.texto2+"</div></div>");
-      $("#cabecera-suggest").find(".cabecera-suggest-icono:last").addClass("cabecera-suggest-icono-"+value.tipo);
-      $("#cabecera-suggest").find(".cabecera-suggest-fila:last").attr("id","cabecera-suggest-fila-"+i);
-      if(value.texto2=="")
+      if(value.tipo=="IrA")
       {
-        $("#cabecera-suggest").find(".cabecera-suggest-texto1:last").addClass("cabecera-suggest-texto1-sinTexto2");
+        $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1 cabecera-suggest-texto1-sinTexto2'>Ir a "+texto.replace(texto,"<strong>"+value.texto1+"</strong>")+"</div></div>");
+        $("#cabecera-suggest").find(".cabecera-suggest-fila:last").addClass("cabecera-suggest-fila-IrA");
+        $("#cabecera-suggest").find(".cabecera-suggest-icono:last").addClass("cabecera-suggest-icono-IrA");
+        $("#cabecera-suggest").find(".cabecera-suggest-fila:last").attr("id","cabecera-suggest-fila-"+i);
+        $("#cabecera-suggest").find(".cabecera-suggest-fila:last").click(function()
+        {
+          if(value.activo==1)
+          {
+            window.location = "/citysens/?idLugar="+value.id;
+          }
+          else
+          {
+            $("#overlay").addClass("overlayPeque");
+            $(".darkOverlay").fadeIn("fast");
+            $("#overlay").load("cityNotReadyYet.html",function(){
+              $('#overlay').html($('#overlay').html().replace(/{CIUDAD}/g,value.texto1));
+              $('#input-email-idLugar').val(value.id);
+              $('#input-email-nombreCiudad').val(value.id);
+            });            
+          }
+          //clickSuggestion("/citysens/icons/gps.png",texto,"IrA",0); //Añadir value.id, texto buscado
+        });
       }
-
-      $("#cabecera-suggest").find(".cabecera-suggest-fila:last").click(function()
+      else
       {
-          var icono="";
-          if(value.tipo=="tematica")
-            icono="/citysens/icons/etiqueta30x30.png";
-          else if(value.tipo=="organizacion")
-            icono="/citysens/icons/icon_CitYsens.organizacion.png";
-          else if(value.tipo=="institucion")
-            icono="/citysens/icons/icon_CitYsens.institucion.png";
-          else if(value.tipo=="colectivo")
-            icono="/citysens/icons/CitYsens.people.png";
-          else if(value.tipo=="lugar")
-            icono="/citysens/icons/lugar.png";
-          else if(value.tipo=="lupa")
-            icono="/citysens/icons/lupa.png";
-          else if(value.tipo=="busqueda")
-            icono="/citysens/icons/lupa.png";
+        //Creamos la sugerencia
+        $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1'>"+value.texto1.replace(texto, '<b>'+texto+'</b>')+"</div><div class='cabecera-suggest-texto2'>"+value.texto2+"</div></div>");
+        $("#cabecera-suggest").find(".cabecera-suggest-icono:last").addClass("cabecera-suggest-icono-"+value.tipo);
+        $("#cabecera-suggest").find(".cabecera-suggest-fila:last").attr("id","cabecera-suggest-fila-"+i);
+        if(value.texto2=="")
+        {
+          $("#cabecera-suggest").find(".cabecera-suggest-texto1:last").addClass("cabecera-suggest-texto1-sinTexto2");
+        }
+
+        $("#cabecera-suggest").find(".cabecera-suggest-fila:last").click(function()
+        {
+            var icono="";
+            if(value.tipo=="tematica")
+              icono="/citysens/icons/etiqueta30x30.png";
+            else if(value.tipo=="organizacion")
+              icono="/citysens/icons/icon_CitYsens.organizacion.png";
+            else if(value.tipo=="institucion")
+              icono="/citysens/icons/icon_CitYsens.institucion.png";
+            else if(value.tipo=="colectivo")
+              icono="/citysens/icons/CitYsens.people.png";
+            else if(value.tipo=="lugar")
+              icono="/citysens/icons/lugar.png";
+            else if(value.tipo=="lupa")
+              icono="/citysens/icons/lupa.png";
+            else if(value.tipo=="busqueda")
+              icono="/citysens/icons/lupa.png";
 
 
-          clickSuggestion(icono,value.texto1,value.tipo,value.id);
-      });
+            clickSuggestion(icono,value.texto1,value.tipo,value.id);
+        });
+      }
       i++;
     
       //¿Animarlo?
       //$("#cabecera-suggest").find(".cabecera-suggest-fila").slideDown("fast");
-    });
-
-    if(texto=="Villalbilla")//IrAMadrid
-    {
-      //Creamos la fila de ir a Madrid
-      $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1 cabecera-suggest-texto1-sinTexto2'>Ir a "+texto.replace(texto,"<strong>"+texto+"</strong>")+"</div></div>");
-      $("#cabecera-suggest").find(".cabecera-suggest-fila:last").addClass("cabecera-suggest-fila-IrA");
-      $("#cabecera-suggest").find(".cabecera-suggest-icono:last").addClass("cabecera-suggest-icono-IrA");
-      $("#cabecera-suggest").find(".cabecera-suggest-fila:last").attr("id","cabecera-suggest-fila-"+i);
-      $("#cabecera-suggest").find(".cabecera-suggest-fila:last").click(function()
-      {
-        window.location = "/citysens/?idLugar=888004444";
-        //clickSuggestion("/citysens/icons/gps.png",texto,"IrA",0); //Añadir value.id, texto buscado
-      });
-    } 
-    
+    });    
   });
 
 
