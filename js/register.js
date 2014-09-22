@@ -81,4 +81,4 @@ $('.login').click(function()
 	loadOverlay("login.html",true);
 });
 
-$('#input-email').focus();
+$('#input-nombre').focus();

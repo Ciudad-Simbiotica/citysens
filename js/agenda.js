@@ -690,7 +690,8 @@ function subscribe()
       .done(function(data){
         console.log(data);
       });
-      $("#boton-avisos").val("Recibir avisos");        
+      $("#boton-avisos").val("Recibir avisos");
+      notificarError('Ya no recibirás avisos sobre esta búsqueda.');                
       window.isFollowing=false;
     }
     else
@@ -699,27 +700,37 @@ function subscribe()
       .done(function(data){
         console.log(data);
       });
-      $("#boton-avisos").val("Dejar de recibir avisos");        
+      $("#boton-avisos").val("Dejar de recibir avisos");
       window.isFollowing=true;
+      notificarExito('Acabas de apuntarte para recibir avisos sobre esta búsqueda.');
     }
   }
   else
   {
-
+    if(isValidEmailAddress($("#email-avisos").val()))
+    {
+      $("#overlay").addClass("overlayPeque");
+      $(".darkOverlay").fadeIn("fast");
+      $("#overlay").load("register.html", function() 
+      {
+        $("#input-email").val($("#email-avisos").val());
+      });
+    }
+    else
+    {
+      alert('Introduce un correo electrónico válido.');
+    }
   }
-  /*
-  if(isValidEmailAddress($("#email-avisos").val()))
-  {
-    console.log($("#email-avisos").val());
-    //nombreCiudad=$('#input-email-nombreCiudad').val();
-    //$.post( "registerMailCityNotReady.php", { email: $(".input-email-ciudad").val(), idCiudad: $("#input-email-idLugar").val() } );
-  }
-  else
-  {
-    alert("Introduce un email correcto para recibir los avisos");
-  }
-  */
 }
+
+$("#email-avisos").bind('keydown',function(event)
+{
+  if(event.which==13) 
+  {
+    subscribe();
+  }
+});
+
 
 $(".cabecera-propon").click(function()
 {
