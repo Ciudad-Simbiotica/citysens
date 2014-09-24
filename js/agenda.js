@@ -532,7 +532,7 @@ function cargarDatos(clase, orden)
       //Esperamos a que se hayan borrado los grupos (por si acaba antes) antes de clonar
       //console.log(arrayTagsQuery);
 
-      console.log(data);
+      //console.log(data);
 
       window.listado=data;
       
@@ -583,7 +583,9 @@ function cargarDatos(clase, orden)
       }
       
 
-      console.log(data.grupos);
+      //console.log(data.grupos);
+
+      window.cantidadPorLugar = [];
 
       if(!(typeof data.grupos === 'undefined'))
       { 
@@ -596,6 +598,10 @@ function cargarDatos(clase, orden)
             $.each(filas.filas,function(i,item)
             {
               createLine(grupo,item,0,nombreSuperGrupo);
+              //console.log(item);
+              if(typeof window.cantidadPorLugar[item.idDistritoPadre] === 'undefined')
+                window.cantidadPorLugar[item.idDistritoPadre]=0;
+              window.cantidadPorLugar[item.idDistritoPadre]++;
             });
           });
         });

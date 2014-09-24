@@ -211,29 +211,14 @@ function cargarMapa(idLugar)
         addPolygonToMap(datos.id,"shp/geoJSON/"+nivelHijos+"/"+datos.id+".geojson",datos.nombre,'#ffaaaa',datos.activo);
         if(response.nivel>7)
         {
+          if(typeof window.cantidadPorLugar[datos.id] === 'undefined')
+            cantidad='0';
+          else
+            cantidad=window.cantidadPorLugar[datos.id];
           new L.Marker([datos.ycentroid,datos.xcentroid], 
           {
-            icon: new L.NumberedDivIcon({number: datos.cantidad})
-          }).addTo(map).on('click',function()
-          {
-            if(datos.activo)
-            {
-              //history.pushState(null, null, "http://localhost:8888/citysens/?idLugar="+idLugar);
-              window.location="/citysens/?idLugar="+datos.id;
-            }
-            else
-            {
-              //No hay todavía para esta ciudad
-              loadOverlayNoDisponible("cityNotReadyYet.html",datos.id,datos.nombre);
-            }
-            //alert('Esto cargaría la página de '+texto);
-          }).on('mouseover', function(e) 
-          {
-            $(".map-footer").html("Ir a "+datos.nombre);
-          }).on('mouseout', function(e) 
-          {
-            $(".map-footer").html("&nbsp;");
-          });
+            icon: new L.NumberedDivIcon({number: cantidad})
+          }).addTo(map);
         }
       });
       

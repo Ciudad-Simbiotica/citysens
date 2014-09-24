@@ -305,7 +305,7 @@ function getAsociacionesQuery($query,$cantidad=10)
     {
         if($lugar!="")
             $lugar.=" OR ";
-        $lugar.="idDistritoPadre='$idLugar'";
+        $lugar.="idPadre='$idLugar'";
     }
 
 

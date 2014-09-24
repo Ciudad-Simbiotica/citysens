@@ -33,7 +33,7 @@ if($tipoGrupos=="puntuacion")
 
 			$datos["tituloOrg"]=utf8_encode($asociacion["asociacion"]);
 			$datos["textoOrg"]=utf8_encode($asociacion["domicilio"]);
-			$datos["lugarOrg"]="Distr. ".($asociacion["idDistritoPadre"]-999000004);
+			$datos["lugarOrg"]="Distr. ".($asociacion["idPadre"]-999000004);
 			$datos["puntos"]=$asociacion["points"];
 			$datos["x"]=$asociacion["long"];
 			$datos["y"]=$asociacion["lat"];
@@ -89,7 +89,7 @@ else
 		if($tipoGrupos=="tematica")
 			$grupoActual=utf8_encode($asociacion["tematica"]);
 		else if($tipoGrupos=="lugar")
-			$grupoActual="Distrito ".($asociacion["idDistritoPadre"]-999000004);			
+			$grupoActual="Distrito ".($asociacion["idPadre"]-999000004);			
 		
 		$datos["id"]=$asociacion["idAsociacion"];
 		$datos["clase"]="organizaciones";
