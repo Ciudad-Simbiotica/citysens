@@ -5,6 +5,10 @@
     border-radius: 50%;
     box-shadow:4px 4px 7px #aaa;
 }
+
+.leaflet-marker-icon
+{
+}
  
 .leaflet-marker-icon .number{
 	position: relative;
@@ -14,6 +18,10 @@
 	text-shadow:1px 1px 6px #000000;
 }
 
-.leaflet-target-icon {
-	background: transparent;
+.leaflet-target-icon,.leaflet-div-icon {
+	pointer-events:none;
+}
+.leaflet-target-icon
+{
+	background: transparent;	
 }

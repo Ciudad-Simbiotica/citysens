@@ -150,7 +150,17 @@
 	  <script src="js/agenda.js"></script>
 
 
-	<?php include "map.php";?>
+	 <div class='map'>
+	 	<div class='map-breadcrumbs'>
+	 		&nbsp;
+	 	</div>
+	 	<div class='map-map'>
+		 <div id="map"></div>
+		</div>
+	 	<div class='map-footer'>
+		 	&nbsp;
+	 	</div>
+	 </div>
 
 	  <div class='informacion'>
 	  	<div class='informacion-cabecera' title='Haz click para ver el evento completo'>

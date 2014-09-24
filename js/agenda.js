@@ -523,6 +523,7 @@ function cargarDatos(clase, orden)
     clase: clase,
     date: "any",
     query: query,
+    idLugarOriginal: $.urlParam('idLugar'),
     format: "json",
     orden: orden
   })
@@ -533,6 +534,7 @@ function cargarDatos(clase, orden)
 
       console.log(data);
 
+      window.listado=data;
       
       conFiltros=":";
       if(arrayTagsQuery.length>1)
@@ -543,11 +545,11 @@ function cargarDatos(clase, orden)
         case "eventos":
           if(jQuery.isEmptyObject(data.grupos))
           {
-            $(".agenda-primera-linea").html("Ningun evento satisface los filtros de búsqueda:");      
+            $(".agenda-primera-linea").html("Ningun evento satisface los filtros de búsqueda");      
           }
           else
           {
-            $(".agenda-primera-linea").html("Mostrando EVENTOS en <strong>"+window.ciudad+"</strong> en las proximas semanas"+conFiltros);
+            $(".agenda-primera-linea").html("Mostrando EVENTOS en <strong>"+data.lugarOriginal.nombre+"</strong> en las proximas semanas"+conFiltros);
           }
           $("#cabecera-suggest").empty();
           $(".input-busqueda").val('');
@@ -556,11 +558,11 @@ function cargarDatos(clase, orden)
         case "organizaciones":
           if(jQuery.isEmptyObject(data.grupos))
           {
-            $(".agenda-primera-linea").html("Ninguna entidad satisface los filtros de búsqueda:");      
+            $(".agenda-primera-linea").html("Ninguna entidad satisface los filtros de búsqueda");      
           }
           else
           {
-            $(".agenda-primera-linea").html("Mostrando ENTIDADES en <strong>"+window.ciudad+"</strong>"+conFiltros);
+            $(".agenda-primera-linea").html("Mostrando ENTIDADES en <strong>"+data.lugarOriginal.nombre+"</strong>"+conFiltros);
           }        
           $("#cabecera-suggest").empty();
           $(".input-busqueda").val('');
@@ -569,11 +571,11 @@ function cargarDatos(clase, orden)
         case "procesos":
           if(jQuery.isEmptyObject(data.grupos))
           {
-            $(".agenda-primera-linea").html("Ninguna iniciativa satisface los filtros de búsqueda:");      
+            $(".agenda-primera-linea").html("Ninguna iniciativa satisface los filtros de búsqueda");      
           }
           else
           {
-            $(".agenda-primera-linea").html("Mostrando INICIATIVAS en <strong>"+window.ciudad+"</strong> en las proximas semanas, que satisfacen los siguientes filtros de búsqueda:");
+            $(".agenda-primera-linea").html("Mostrando INICIATIVAS en <strong>"+data.lugarOriginal.nombre+"</strong> en las proximas semanas, que satisfacen los siguientes filtros de búsqueda:");
           }
           break;      
         case "noticias":
@@ -583,18 +585,21 @@ function cargarDatos(clase, orden)
 
       console.log(data.grupos);
 
-      $.each(data.grupos, function(nombreSuperGrupo,datosSuperGrupo)
-      {
-        createSuperGroup(nombreSuperGrupo);
-        $.each(datosSuperGrupo, function(grupo,filas)
+      if(!(typeof data.grupos === 'undefined'))
+      { 
+        $.each(data.grupos, function(nombreSuperGrupo,datosSuperGrupo)
         {
-          createGroup(grupo,filas.cabeceraIzq,filas.cabeceraCntr,filas.cabeceraDch,filas.totalFilas,nombreSuperGrupo);
-          $.each(filas.filas,function(i,item)
+          createSuperGroup(nombreSuperGrupo);
+          $.each(datosSuperGrupo, function(grupo,filas)
           {
-            createLine(grupo,item,0,nombreSuperGrupo);
+            createGroup(grupo,filas.cabeceraIzq,filas.cabeceraCntr,filas.cabeceraDch,filas.totalFilas,nombreSuperGrupo);
+            $.each(filas.filas,function(i,item)
+            {
+              createLine(grupo,item,0,nombreSuperGrupo);
+            });
           });
         });
-      });
+      }
 
       if(data.isFollowing)
       {
@@ -610,6 +615,7 @@ function cargarDatos(clase, orden)
     $(".supergrupo").fadeIn(500);
     $(".agenda-segunda-linea").fadeIn(500);
     comprobarPlegadoFilas();
+    cargarMapa($.urlParam('idLugar'));
     });  
 }
 

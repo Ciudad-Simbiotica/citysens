@@ -196,10 +196,11 @@ function suggestBusqueda(texto)
           {
             $("#overlay").addClass("overlayPeque");
             $(".darkOverlay").fadeIn("fast");
-            $("#overlay").load("cityNotReadyYet.html",function(){
+            $("#overlay").load("cityNotReadyYet.html",function()
+            {
               $('#overlay').html($('#overlay').html().replace(/{CIUDAD}/g,value.texto1));
               $('#input-email-idLugar').val(value.id);
-              $('#input-email-nombreCiudad').val(value.id);
+              $('#input-email-nombreCiudad').val(value.texto1);
             });            
           }
           //clickSuggestion("/citysens/icons/gps.png",texto,"IrA",0); //Añadir value.id, texto buscado

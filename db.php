@@ -309,7 +309,11 @@ function getAsociacionesQuery($query,$cantidad=10)
     }
 
 
-    $sql="SELECT * FROM asociaciones JOIN asociaciones_tematicas ON asociaciones.idAsociacion=asociaciones_tematicas.idAsociacion JOIN tematicas ON asociaciones_tematicas.idTematica=tematicas.idTematica WHERE ";
+    $sql="SELECT * FROM asociaciones 
+            JOIN asociaciones_tematicas ON asociaciones.idAsociacion=asociaciones_tematicas.idAsociacion 
+            JOIN tematicas ON asociaciones_tematicas.idTematica=tematicas.idTematica 
+            JOIN direcciones ON asociaciones.idDireccion=direcciones.idDireccion
+            WHERE ";
     if($busqueda!="")
         $sql.="($busqueda) AND ";
     if($tematica!="")
@@ -318,21 +322,22 @@ function getAsociacionesQuery($query,$cantidad=10)
         $sql.="($lugar) AND ";
     $sql.="1 GROUP BY asociaciones.idAsociacion ORDER BY points DESC LIMIT 0,$cantidad";
 
-     // echo $sql;
+     //echo $sql;
      // exit();
 
     $result=mysql_query($sql,$link);
     $returnData=array();
     while($fila=mysql_fetch_assoc($result))
+    {
         array_push($returnData,$fila);
+    }
     return $returnData;
-
 
     return;
 
 
     //id/clase=organizaciones/tipo/tituloOrg/textoOrg/lugarOrg/puntos
-
+    /*
     $link=connect();
     $sql="SELECT * 
             FROM asociaciones JOIN eventos 
@@ -345,6 +350,7 @@ function getAsociacionesQuery($query,$cantidad=10)
     while($fila=mysql_fetch_assoc($result))
         array_push($returnData,$fila);
     return $returnData;
+    */
 }
 
 function insertEmailPreregister($email, $idCiudad)
@@ -540,6 +546,7 @@ function getAllAncestors($idLugar)
 
 function getDatosLugar($idLugar)
 {
+    $idLugar=safe($idLugar);
     $link=connect();
     $sql="SELECT * 
             FROM  lugares_shp 
@@ -566,7 +573,11 @@ function getChildAreas($lugarOriginal,$nivel)
     $result=mysql_query($sql,$link);
     $returnData=array();
     while($fila=mysql_fetch_assoc($result))
-        array_push($returnData,array($fila["id"],$fila["nombre"],$fila["xcentroid"],$fila["ycentroid"],str_pad($fila["geocodigo"],5,0,STR_PAD_LEFT),$fila["cantidad"]));
+    {
+        $fila["geocodigo"]=str_pad($fila["geocodigo"],5,0,STR_PAD_LEFT);
+        array_push($returnData,$fila);
+        //array_push($returnData,array($fila["id"],$fila["nombre"],$fila["xcentroid"],$fila["ycentroid"],str_pad($fila["geocodigo"],5,0,STR_PAD_LEFT),$fila["cantidad"]));
+    }
     return $returnData;
 }
 
@@ -626,7 +637,7 @@ function getIrA($cadena,$lugarOriginal)
 
     $link=connect();
     $sql="SELECT * FROM lugares_shp WHERE 
-            nombre LIKE '$cadena' AND (
+            nombre LIKE '$cadena%' AND (
             (nivel='8' AND ((idPadre BETWEEN 777000001 AND 777000007) OR (idPadre='666000028'))) OR
             (nivel='6' OR nivel='7')
             )";
@@ -680,7 +691,10 @@ function getColindantes($lugarOriginal,$type,$xmin,$xmax,$ymin,$ymax)
     $returnData=array();
     while($fila=mysql_fetch_assoc($result))
         if($fila["id"]!=$lugarOriginal)
-            array_push($returnData,array($fila["id"],$fila["nombre"],$fila["xcentroid"],$fila["ycentroid"],$fila["geocodigo"]));
+        {
+            $fila["geocodigo"]=str_pad($fila["geocodigo"],5,0,STR_PAD_LEFT);
+            array_push($returnData,$fila);
+        }
     return $returnData;
 }
 

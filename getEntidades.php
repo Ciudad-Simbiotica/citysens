@@ -2,6 +2,7 @@
 error_reporting(E_ERROR);
 include_once "db.php";
 $query=json_decode($_GET["query"],true);
+
 $entidades=getAsociacionesQuery($query,50);
 
 
@@ -22,6 +23,7 @@ if($tipoGrupos=="puntuacion")
 
 		foreach($entidades as $asociacion)
 		{
+			//print_r($asociacion);
 			$i++;
 			$datos["id"]=$asociacion["idAsociacion"];
 			$datos["clase"]="organizaciones";
@@ -33,6 +35,9 @@ if($tipoGrupos=="puntuacion")
 			$datos["textoOrg"]=utf8_encode($asociacion["domicilio"]);
 			$datos["lugarOrg"]="Distr. ".($asociacion["idDistritoPadre"]-999000004);
 			$datos["puntos"]=$asociacion["points"];
+			$datos["x"]=$asociacion["long"];
+			$datos["y"]=$asociacion["lat"];
+			$datos["idDistritoPadre"]=$asociacion["idPadre"];
 			$datos["tematica"]=utf8_encode($asociacion["tematica"]);
 			array_push($filas,$datos);
 
@@ -97,6 +102,9 @@ else
 		$datos["lugarOrg"]="Distr. ".($asociacion["idDistritoPadre"]-999000004);
 		$datos["puntos"]=$asociacion["points"];
 		$datos["tematica"]=utf8_encode($asociacion["tematica"]);
+		$datos["x"]=$asociacion["long"];
+		$datos["y"]=$asociacion["lat"];
+		$datos["idDistritoPadre"]=$asociacion["idPadre"];
 
 		if(!is_array($grupos[$grupoActual][""]["filas"]))
 		{

@@ -16,8 +16,9 @@ function loadOverlayNoDisponible(url,idCiudad,ciudad)
 
 }
 
-function addPolygonToMap(idLugar,url,texto,color)
+function addPolygonToMap(idLugar,url,texto,color,activo)
 {
+
 $.ajax({
     type: "POST",
     url: url,
@@ -27,8 +28,7 @@ $.ajax({
       geojsonLayer = L.geoJson(response,{fillColor: color, weight: 1}).addTo(map);
       geojsonLayer.on('click',function()
       {
-        if($.inArray(parseInt(idLugar),[888004284,999000005,999000006,999000007,999000008,999000009,
-                              888004444,999000232])>=0) //Alcalá, Villalbilla a lo burro
+        if(activo==="1")
         {
           //history.pushState(null, null, "http://localhost:8888/citysens/?idLugar="+idLugar);
           window.location="/citysens/?idLugar="+idLugar;
@@ -52,6 +52,7 @@ $.ajax({
       {
         $(".map-footer").html("&nbsp;");
       });
+      polygons[idLugar]=geojsonLayer;
       
     }
 });  
@@ -59,18 +60,14 @@ $.ajax({
 
 function cargarMapa(idLugar)
 {
-  
   //Creamos el mapa
-  var map = L.map('map',{
-            zoomControl: false,
-            attributionControl: false,
-        });//.setView([40.47,-3.45], 11);
-
-  /*map.on('click', function() 
+  window.polygons = [];
+  $('.map-map').html('<div id="map"></div>');
+  var map = L.map('map',
   {
-    alert('Has hecho click en el mapa');
+    zoomControl: false,
+    attributionControl: false,
   });
-*/
   
   map.dragging.disable();
   map.touchZoom.disable();
@@ -79,15 +76,13 @@ function cargarMapa(idLugar)
   map.boxZoom.disable();
   map.keyboard.disable();
   
-  window.map=map;
   var ggl = new L.Google();
   L.Google('roadmap');
   map.addLayer(ggl);
-  
-
   //L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
+  window.map=map;
       
-
+  //Iconos a medida
   L.NumberedDivIcon = L.Icon.extend(
   {
     options: {
@@ -157,163 +152,81 @@ function cargarMapa(idLugar)
   });
 
 
-    $.getJSON("getMapData.php", 
+  $.getJSON("getMapData.php", 
+  {
+    dataType: 'json',
+    idLugar: idLugar,
+  })
+  .done(function (response) 
+  {
+    padding=0.1;
+    paddingX=padding*(response.xmax-response.xmin);
+    paddingY=padding*(response.ymax-response.ymin);
+
+    xmin=response.xmin;
+    ymin=response.ymin;
+    xmax=response.xmax;
+    ymax=response.ymax;
+
+
+
+    var southWest = L.latLng(ymin, xmin),
+    northEast = L.latLng(ymax, xmax),
+    bounds = L.latLngBounds(southWest, northEast);
+    map.fitBounds(bounds);
+    //map.setZoom(11.5);
+    //Cargamos las cosas relativas a la ciudad: Filtrado eventos, breadcrumbs, etc...
+    //España > Madrid > <?=$datosLugar["nombre"];?>
+
+    var breadcrumbs="";
+    var first=true;
+    $.each(response.breadcrumbs, function(i,lugar)
     {
-      dataType: 'json',
-      idLugar: idLugar,
+      if(!first)
+        breadcrumbs+=" > ";
+      breadcrumbs+='<A HREF=\'?idLugar='+lugar[0]+'\'>'+lugar[1]+'</A>';
+      first=false;
+    });
+    
+    $(".map-breadcrumbs").html(breadcrumbs);
+    window.ciudad=response.nombre;
+    window.idLugar=idLugar;
+    
+    var nivelHijos=parseInt(response.nivel,10)+1;
+
+    //Cargamos los polígonos hijos
+    $.getJSON("getChildAreas.php", 
+    {
+        dataType: 'json',
+        nivel:nivelHijos,
+        lugarOriginal:idLugar,
     })
-    .done(function (response) 
+    .done(function(data) 
     {
-      padding=0.1;
-      paddingX=padding*(response.xmax-response.xmin);
-      paddingY=padding*(response.ymax-response.ymin);
-
-      xmin=response.xmin;
-      ymin=response.ymin;
-      xmax=response.xmax;
-      ymax=response.ymax;
-
-      console.log(xmin+"-"+xmax+"-"+ymin+"-"+ymax);
-      console.log(paddingX+"-"+paddingY);
-
-
-      var southWest = L.latLng(ymin, xmin),
-      northEast = L.latLng(ymax, xmax),
-      bounds = L.latLngBounds(southWest, northEast);
-      map.fitBounds(bounds);
-      //map.setZoom(11.5);
-      //Cargamos las cosas relativas a la ciudad: Filtrado eventos, breadcrumbs, etc...
-      //España > Madrid > <?=$datosLugar["nombre"];?>
-
-      var breadcrumbs="";
-      var first=true;
-      $.each(response.breadcrumbs, function(i,lugar)
+      window.poligonos = [];
+      $.each(data, function(i,datos)
       {
-        if(!first)
-          breadcrumbs+=" > ";
-        breadcrumbs+='<A HREF=\'?idLugar='+lugar[0]+'\'>'+lugar[1]+'</A>';
-        first=false;
-      });
-      
-      $(".map-breadcrumbs").html(breadcrumbs);
-      window.ciudad=response.nombre;
-      window.idLugar=idLugar;
-      
+        window.poligonos[datos.id]=datos.nombre;
 
-
-
-
-      try
-      {
-        var categoria=$.urlParam('category'); //Lanza un error si no hay tipo
-        if(categoria==="ent")
+        addPolygonToMap(datos.id,"shp/geoJSON/"+nivelHijos+"/"+datos.id+".geojson",datos.nombre,'#ffaaaa',datos.activo);
+        if(response.nivel>7)
         {
-          $(".agenda-primera-linea").html("Mostrando ENTIDADES en <strong>"+response.nombre+"</strong> las proximas semanas:");
-        }
-        else if(categoria==="eve")
-        {
-          $(".agenda-primera-linea").html("Mostrando EVENTOS en <strong>"+response.nombre+"</strong> las proximas semanas:");
-        }
-      }
-      catch(err)
-      {
-          $(".agenda-primera-linea").html("Mostrando EVENTOS en <strong>"+response.nombre+"</strong> las proximas semanas:");
-      }
-
-
-      //Aquí cargaríamos los distritos
-      /*
-      addPolygonToMap("Distrito I","shp/geoJSON/9/00501.geojson","Distrito I",'#ffaaaa',true);
-      addPolygonToMap("Distrito II","shp/geoJSON/9/00502.geojson","Distrito II",'#ffaaaa',true);
-      addPolygonToMap("Distrito III","shp/geoJSON/9/00503.geojson","Distrito III",'#ffaaaa',true);
-      addPolygonToMap("Distrito IV","shp/geoJSON/9/00504.geojson","Distrito IV",'#ffaaaa',true);
-      addPolygonToMap("Distrito V","shp/geoJSON/9/00505.geojson","Distrito V",'#ffaaaa',true);
-      */
-
-      var nivelHijos=parseInt(response.nivel,10)+1;
-
-
-      $.getJSON("getChildAreas.php", 
-      {
-          dataType: 'json',
-          nivel:nivelHijos,
-          lugarOriginal:idLugar,
-      })
-      .done(function(data) 
-      {
-        $.each(data, function(i,datos)
-        {
-          console.log(datos);
-          addPolygonToMap(datos[0],"shp/geoJSON/"+nivelHijos+"/"+datos[0]+".geojson",datos[1],'#ffaaaa',true);
-          if(response.nivel>7)
+          new L.Marker([datos.ycentroid,datos.xcentroid], 
           {
-            new L.Marker([datos[3],datos[2]], 
-            {
-              icon: new L.NumberedDivIcon({number: datos[5]})
-            }).addTo(map).on('click',function()
-            {
-              console.log("paso por aquí");
-              if($.inArray(parseInt(datos[0]),[888004284,999000005,
-                                     999000006,999000007,999000008,999000009,888004444,999000232])>=0) //Alcalá, Villalbilla a lo burro
-              {
-                //history.pushState(null, null, "http://localhost:8888/citysens/?idLugar="+idLugar);
-                window.location="/citysens/?idLugar="+datos[0];
-              }
-              else
-              {
-                //No hay todavía para esta ciudad
-                loadOverlayNoDisponible("cityNotReadyYet.html",datos[0],datos[1]);
-              }
-              //alert('Esto cargaría la página de '+texto);
-            }).on('mouseover', function(e) 
-            {
-              $(".map-footer").html("Ir a "+datos[1]);
-            }).on('mouseout', function(e) 
-            {
-              $(".map-footer").html("&nbsp;");
-            });
-          }
-
-        });
-      });
-      
-      //Aquí cargamos los eventos: ¿Cogerlos del listado que se está mostrando?
-      $.getJSON("getEventosCoordenadas.php", 
-      {
-          dataType: 'json',
-          xmin:xmin,
-          ymin:ymin,
-          xmax:xmax,
-          ymax:ymax,
-      })
-      .done(function(data) 
-      {
-        //console.log(data);
-        window.markers = [];
-        $.each(data, function(i,datos)
-        {
-          //var marker=L.marker([datos.y,datos.x],{opacity:0.0}).addTo(map);
-          var marker=new L.Marker([datos.y,datos.x], 
+            icon: new L.NumberedDivIcon({number: datos.cantidad})
+          }).addTo(map).on('click',function()
           {
-            icon: new L.TargetIcon(),
-          }).setOpacity(0).setZIndexOffset(1000).addTo(map);
-          marker.dragging.disable();
-          
-          marker.on('click',function()
-          {
-
-              if($.inArray(parseInt(datos[0]),[888004284,999000005,
-                                     999000006,999000007,999000008,999000009,888004444,999000232])>=0) //Alcalá, Villalbilla a lo burro
-              {
-                //history.pushState(null, null, "http://localhost:8888/citysens/?idLugar="+idLugar);
-                window.location="/citysens/?idLugar="+datos[0];
-              }
-              else
-              {
-                //No hay todavía para esta ciudad
-                loadOverlayNoDisponible("cityNotReadyYet.html",datos[0],datos[1]);
-              }
-
+            if(datos.activo)
+            {
+              //history.pushState(null, null, "http://localhost:8888/citysens/?idLugar="+idLugar);
+              window.location="/citysens/?idLugar="+datos.id;
+            }
+            else
+            {
+              //No hay todavía para esta ciudad
+              loadOverlayNoDisponible("cityNotReadyYet.html",datos.id,datos.nombre);
+            }
+            //alert('Esto cargaría la página de '+texto);
           }).on('mouseover', function(e) 
           {
             $(".map-footer").html("Ir a "+datos.nombre);
@@ -321,48 +234,55 @@ function cargarMapa(idLugar)
           {
             $(".map-footer").html("&nbsp;");
           });
+        }
+      });
+      
+      //Cargamos los eventos
+      window.markers = [];
+      $.each(window.listado.grupos, function(nombreSuperGrupo,datosSuperGrupo)
+      {
+        $.each(datosSuperGrupo, function(grupo,filas)
+        {
+          $.each(filas.filas,function(i,datos)
+          {
+            var marker=new L.Marker([datos.y,datos.x], 
+            {
+              icon: new L.TargetIcon()
+            }).setOpacity(0).setZIndexOffset(100).addTo(map);
+            marker.dragging.disable();
+            
 
-
-
-          markers[datos.idEvento]=marker;
-          //.bindPopup("<b>"+datos.titulo+"</b><br />"+datos.texto);//.openPopup();
+            markers[datos.id]=marker;
+          });
         });
       });
 
-      //http://localhost:8888/citysens/getEventosCoordenadas.php?xmin=-3.64643&ymin=40.37454&xmax=-3.10192&ymax=40.60744
-
-      
-      //L.marker([40.470,-3.350]).addTo(map)
-      //    .bindPopup("<b>Esto es un evento</b><br />Soy un evento");//.openPopup();
-      
-
-      //Aquí cargamos los colindantes
-      $.getJSON("getLugaresColindantes.php", 
+    });
+    
+    
+    //Aquí cargamos los colindantes
+    var nivelColindantes=parseInt(response.nivel,10);
+    if(nivelColindantes>8)nivelColindantes=8; //Limitamos a nivel 8
+    $.getJSON("getLugaresColindantes.php", 
+    {
+        dataType: 'json',
+        tipo:nivelColindantes,
+        xmin:xmin,
+        ymin:ymin,
+        xmax:xmax,
+        ymax:ymax,
+        lugarOriginal:idLugar,
+    })
+    .done(function(data) 
+    {
+      $.each(data, function(i,datos)
       {
-          dataType: 'json',
-          tipo:response.nivel,
-          xmin:xmin,
-          ymin:ymin,
-          xmax:xmax,
-          ymax:ymax,
-          lugarOriginal:idLugar,
-      })
-      .done(function(data) 
-      {
-        $.each(data, function(i,datos)
-        {
-          addPolygonToMap(datos[0],"shp/geoJSON/"+response.nivel+"/"+datos[0]+".geojson",datos[1],'#aaaaff',true);
-          
-          /*
-          var marker = new L.Marker([datos[3],datos[2]], 
-          {
-            icon: new L.NumberedDivIcon({number: datos[0]})
-          }).addTo(map);
-          */
-
-        });
+        if(datos.id!=response.idPadre)  //No mostramos el padre
+          addPolygonToMap(datos.id,"shp/geoJSON/"+nivelColindantes+"/"+datos.id+".geojson",datos.nombre,'#aaaaff',datos.activo);
       });
     });
+    
+  });
 
   
 }

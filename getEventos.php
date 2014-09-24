@@ -4,6 +4,8 @@ include_once "db.php";
 $query=json_decode($_GET["query"],true);
 $eventos=getEventos($query,50,$_GET["orden"]);
 
+
+
 $tipoGrupos=$_GET["orden"];
 
 if($tipoGrupos=="popularidad")
@@ -28,6 +30,9 @@ foreach($eventos as $evento)
 	$datos["lugar"]=utf8_encode($evento["lugar"]);
 	$datos["temperatura"]=$evento["temperatura"];
 	$datos["tematicas"]=utf8_encode($evento["tematicas"]);
+	$datos["x"]=$evento["x"];
+	$datos["y"]=$evento["y"];
+	$datos["idDistritoPadre"]=$evento["idDistritoPadre"];
 
 	if($grupo==date("Y-m-d",strtotime("2014-05-13")))
 		$cabeceraIzq="Hoy, ";

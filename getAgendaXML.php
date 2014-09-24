@@ -32,6 +32,10 @@ else
 {
 	$returnData["isFollowing"]=false;	
 }
+
+//Añadimos los datos del lugar original
+$returnData["lugarOriginal"]=getDatosLugar($_GET["idLugarOriginal"]);
+
 $returnJSON=json_encode($returnData);
 
 echo $returnJSON;

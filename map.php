@@ -4,9 +4,6 @@
  	</div>
  	<div class='map-map'>
 	 <div id="map"></div>
-		<script language=javascript>
-			cargarMapa(<?=$_GET["idLugar"];?>);
-		</script>
 	</div>
  	<div class='map-footer'>
 	 	&nbsp;
