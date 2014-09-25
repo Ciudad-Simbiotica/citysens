@@ -3,6 +3,8 @@ include "../db.php";
 include_once('../vendor/phayes/geophp/geoPHP.inc');
 error_reporting(E_ERROR);
 
+exit();
+
 $nivel=8;
 $distritos=array();
 $link=connect();

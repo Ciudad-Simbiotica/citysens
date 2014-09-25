@@ -210,7 +210,7 @@ html,body
 
 #map { 
 	width: 320px;
-	height: 240px; 
+	height: 240px;
 }
 
 
@@ -234,7 +234,7 @@ html,body
 {
 	width: 320px;
 	height: 240px;
-	/*overflow: hidden;*/	
+	overflow: hidden;	
 }
 
 .map-footer

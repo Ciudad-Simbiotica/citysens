@@ -26,32 +26,34 @@ $.ajax({
     success: function (response) 
     {
       geojsonLayer = L.geoJson(response,{fillColor: color, weight: 1}).addTo(map);
-      geojsonLayer.on('click',function()
+
+      if(activo>=0) //Sólo hacen click y hover si es >0, si es <0 no es clicable
       {
-        if(activo==="1")
+        geojsonLayer.on('click',function()
         {
-          //history.pushState(null, null, "http://localhost:8888/citysens/?idLugar="+idLugar);
-          window.location="/citysens/?idLugar="+idLugar;
-        }
-        else
+          if(activo>0)
+          {
+            //history.pushState(null, null, "http://localhost:8888/citysens/?idLugar="+idLugar);
+            window.location="/citysens/?idLugar="+idLugar;
+          }
+          else
+          {
+            //No hay todavía para esta ciudad
+            loadOverlayNoDisponible("cityNotReadyYet.html",idLugar,texto);
+          }
+        });
+        
+        geojsonLayer.on('mouseover', function(e) 
         {
-          //No hay todavía para esta ciudad
-          loadOverlayNoDisponible("cityNotReadyYet.html",idLugar,texto);
-        }
+          $(".map-footer").html("Ir a "+texto);
+        });
+        
+        geojsonLayer.on('mouseout', function(e) 
+        {
+          $(".map-footer").html("&nbsp;");
+        });
+      }
 
-
-
-      });
-      
-      geojsonLayer.on('mouseover', function(e) 
-      {
-        $(".map-footer").html("Ir a "+texto);
-      });
-      
-      geojsonLayer.on('mouseout', function(e) 
-      {
-        $(".map-footer").html("&nbsp;");
-      });
       polygons[idLugar]=geojsonLayer;
       
     }
@@ -159,25 +161,52 @@ function cargarMapa(idLugar)
   })
   .done(function (response) 
   {
-    padding=0.1;
-    paddingX=padding*(response.xmax-response.xmin);
-    paddingY=padding*(response.ymax-response.ymin);
+    //Area a mostrar con padding
+    padding=0.025;  //2.5% por cada lado
+    paddingX=padding*(parseFloat(response.xmax)-parseFloat(response.xmin));
+    paddingY=padding*(parseFloat(response.ymax)-parseFloat(response.ymin));
 
-    xmin=response.xmin;
-    ymin=response.ymin;
-    xmax=response.xmax;
-    ymax=response.ymax;
-
-
+    xmin=parseFloat(response.xmin)-paddingX;
+    ymin=parseFloat(response.ymin)-paddingY;
+    xmax=parseFloat(response.xmax)+paddingX;
+    ymax=parseFloat(response.ymax)+paddingY;
 
     var southWest = L.latLng(ymin, xmin),
     northEast = L.latLng(ymax, xmax),
-    bounds = L.latLngBounds(southWest, northEast);
-    map.fitBounds(bounds);
-    //map.setZoom(11.5);
-    //Cargamos las cosas relativas a la ciudad: Filtrado eventos, breadcrumbs, etc...
-    //España > Madrid > <?=$datosLugar["nombre"];?>
+    originalBounds = L.latLngBounds(southWest, northEast);
+    map.fitBounds(originalBounds);
+    fittedBounds=map.getBounds();
 
+    fittedXMin=fittedBounds.getWest();
+    fittedXMax=fittedBounds.getEast();
+    fittedYMin=fittedBounds.getSouth();
+    fittedYMax=fittedBounds.getNorth();
+
+    //Cálculo de Zoom para encajar el mapa
+    originalLatSpan=ymax-ymin;
+    originalLngSpan=xmax-xmin;
+    fittedLatSpan=fittedYMax-fittedYMin;
+    fittedLngSpan=fittedXMax-fittedXMin;
+
+    zoomLat=fittedLatSpan/originalLatSpan;
+    zoomLng=fittedLngSpan/originalLngSpan;
+
+    if(zoomLat<zoomLng) //Hacemos zoom con el que menos necesite (para que el otro entre bien)
+      zoom=zoomLat;
+    else
+      zoom=zoomLng;
+
+    containerWidth=$("#map").width();
+    containerHeight=$("#map").height();
+
+    despLeft=-((containerWidth-(containerWidth/zoom))/2);
+    despTop=-((containerHeight-(containerHeight/zoom))/2);
+
+    $("#map").css("top",despTop);
+    $("#map").css("left",despLeft);
+    $("#map").css("zoom",zoom);
+
+    //Breadcrumbs
     var breadcrumbs="";
     var first=true;
     $.each(response.breadcrumbs, function(i,lugar)
@@ -247,15 +276,51 @@ function cargarMapa(idLugar)
     
     //Aquí cargamos los colindantes
     var nivelColindantes=parseInt(response.nivel,10);
-    if(nivelColindantes>8)nivelColindantes=8; //Limitamos a nivel 8
+    if(nivelColindantes==9)
+    {
+      //Apaño para distritos
+      addPolygonToMap(idLugar,"shp/geoJSON/9/"+idLugar+".geojson","ABCDE",'#ff33aa',-1);
+      if(typeof window.cantidadPorLugar[idLugar] === 'undefined')
+        cantidad='0';
+      else
+        cantidad=window.cantidadPorLugar[idLugar];
+      new L.Marker([response.ycentroid,response.xcentroid], 
+      {
+        icon: new L.NumberedDivIcon({number: cantidad})
+      }).addTo(map);
+
+      nivelColindantes=9;
+      $.getJSON("getLugaresColindantes.php", 
+      {
+          dataType: 'json',
+          tipo:nivelColindantes,
+          xmin:fittedXMin,
+          xmax:fittedXMax,
+          ymin:fittedYMin,
+          ymax:fittedYMax,
+          lugarOriginal:idLugar,
+      })
+      .done(function(data) 
+      {
+        $.each(data, function(i,datos)
+        {
+          if(datos.id!=response.idPadre)  //No mostramos el padre
+            if(datos.idPadre==response.idPadre) //Sólo mostramos a los hijos de su padre (es decir, a los hermanos)
+              addPolygonToMap(datos.id,"shp/geoJSON/9/"+datos.id+".geojson",datos.nombre,'#ffaaaa',datos.activo);
+        });
+      });
+      nivelColindantes=8; //Limitamos a nivel 8
+    }
+
+    //Todos los colindantes
     $.getJSON("getLugaresColindantes.php", 
     {
         dataType: 'json',
         tipo:nivelColindantes,
-        xmin:xmin,
-        ymin:ymin,
-        xmax:xmax,
-        ymax:ymax,
+        xmin:fittedXMin,
+        xmax:fittedXMax,
+        ymin:fittedYMin,
+        ymax:fittedYMax,
         lugarOriginal:idLugar,
     })
     .done(function(data) 

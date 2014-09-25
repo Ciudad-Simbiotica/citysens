@@ -305,14 +305,15 @@ function getAsociacionesQuery($query,$cantidad=10)
     {
         if($lugar!="")
             $lugar.=" OR ";
-        $lugar.="idPadre='$idLugar'";
+        $lugar.="direcciones.idPadre='$idLugar'";
     }
 
 
-    $sql="SELECT * FROM asociaciones 
+    $sql="SELECT asociaciones.*,asociaciones_tematicas.*,tematicas.*,direcciones.*, lugares_shp.nombre as nombreLugar FROM asociaciones 
             JOIN asociaciones_tematicas ON asociaciones.idAsociacion=asociaciones_tematicas.idAsociacion 
             JOIN tematicas ON asociaciones_tematicas.idTematica=tematicas.idTematica 
             JOIN direcciones ON asociaciones.idDireccion=direcciones.idDireccion
+            JOIN lugares_shp ON direcciones.idPadre=lugares_shp.id
             WHERE ";
     if($busqueda!="")
         $sql.="($busqueda) AND ";
@@ -321,9 +322,6 @@ function getAsociacionesQuery($query,$cantidad=10)
     if($lugar!="")
         $sql.="($lugar) AND ";
     $sql.="1 GROUP BY asociaciones.idAsociacion ORDER BY points DESC LIMIT 0,$cantidad";
-
-     //echo $sql;
-     // exit();
 
     $result=mysql_query($sql,$link);
     $returnData=array();
