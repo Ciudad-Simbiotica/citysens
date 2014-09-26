@@ -3,6 +3,22 @@
 <input type=TEXT name=titulo placeholder="Titulo" id="newEvent-titulo">
 <div id="newEvent-leftDiv">
 	<input type=TEXT id="newEvent-tematica" name=tematica placeholder="Temáticas">
+	<div id="tematicas-tooltip">
+	 	<div id="tematicas-tooltip-cabecera">Selecciona temática o escribe etiqueta para evento</div>
+		<div id="tematicas-tooltip-select"></div>
+	</div>
+	<div id="tematicas-grupo">
+	  	<div class='tagTematica' id='tagTematicaTemplate' style="display:none">
+		  	 <div class='tagTematica-imagen'>
+		     </div>
+		  	 <div class='tagTematica-texto'>
+		  	 	Filtro Ejemplo
+		     </div>
+		  	 <div class='tagTematica-x'>
+		  	  x
+		     </div>
+		</div>
+	</div>
 
 	<div id="newEvent-toolbar" style="display: none;">
 	  <div data-wysihtml5-command="bold" class='newEvent-command newEvent-command-bold'></div>

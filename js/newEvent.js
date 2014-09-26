@@ -1,3 +1,97 @@
+function suggestTematicas(texto)
+{
+
+  //Que cargue las sugerencias usando AJAX
+  var getAgenda = "getSuggestionsTematicas.php?";
+  $.getJSON(getAgenda, 
+  {
+    query: texto,
+    format: "json",
+  })
+  .done(function(data) 
+  {
+    $("#tematicas-tooltip-select").empty();
+
+    if(data.length<1)
+    {
+      $("#tematicas-tooltip-cabecera").html("Pulsa Enter para crear etiqueta");
+    }
+    else
+    {
+      $("#tematicas-tooltip-cabecera").html("Selecciona temática o escribe etiqueta para evento");
+      var i=1;
+      $.each(data, function(key, value)
+      {
+        $("#tematicas-tooltip-select").append("<div class='tematicas-tooltip-select-file'>"+value.tematica.replace(new RegExp("("+texto+")", 'gi'), "<b>$1</b>")+"</div>");
+        $("#tematicas-tooltip-select").find(".tematicas-tooltip-select-file:last").click(function()
+        {
+          addTematica(value.idTematica,value.tematica);
+        });
+        i++;
+      });  
+    }
+
+    $("#tematicas-tooltip").show();
+  });
+}
+
+function addTematica(idTematica,tematica)
+{
+  $("#newEvent-tematica").val("");
+  $("#tematicas-tooltip").hide();
+
+  repetida=false;
+  $.each(arrayTematicasNuevoEvento, function(key,value) 
+  {
+    if((value.idTematica==idTematica)&(value.tematica==tematica)) //Ya la teníamos
+    {
+      console.log("Repetida");
+      repetida=true;
+    }
+  });
+
+  if(repetida)
+    return;
+
+
+  var elemento= {};
+  elemento["idTematica"]=idTematica;
+  elemento["tematica"]=tematica;
+
+  arrayTematicasNuevoEvento.push(elemento);
+  
+  var clone=$("#tagTematicaTemplate").clone();
+  clone.hide();
+  clone.attr("id",idTematica);
+
+  clone.find('.tagTematica-texto').html(tematica);
+  if(idTematica>0)
+    clone.find('.tagTematica-imagen').addClass("tagTematica-imagen-tematica");
+  else
+    clone.find('.tagTematica-imagen').addClass("tagTematica-imagen-etiqueta");
+
+  
+  clone.find('.tagTematica-x').click(function()
+  {
+    //Borrado
+    arrayTematicasNuevoEvento = jQuery.grep(arrayTematicasNuevoEvento, function(value) 
+    {
+      var coincide=((value.idTematica==idTematica)&(value.tematica==tematica));
+      return !coincide;
+    });
+
+    $(this).fadeOut("fast",function()
+    {
+      $(this).parent().remove();
+    });
+  });
+  
+
+  clone.appendTo("#tematicas-grupo");
+  clone.fadeIn("fast");
+  $("#tematicas-grupo").animate({ scrollTop: $('#tematicas-grupo').height()}, 200);  
+  
+}
 
 function cargarMapaNewEvent()
 {
@@ -265,5 +359,27 @@ $('#newEvent-lugar').bind('keyup',function(event)
   }
 });
 
+$('#newEvent-tematica').bind('mousedown',function(event)
+{
+  suggestTematicas($(this).val());
+});
 
+$('#newEvent-tematica').bind('keyup',function(event)
+{
+  switch (event.which) 
+  {
+    case 13:  //Intro
+        if($(this).val()!="")
+          addTematica(0,$(this).val());
+        break;
+    case 27:  //Escape
+        $("#tematicas-tooltip").hide();
+        $(this).val("");
+        break;
+    default:
+        suggestTematicas($(this).val());
+  }
+});
+
+var arrayTematicasNuevoEvento = new Array();
 cargarMapaNewEvent();

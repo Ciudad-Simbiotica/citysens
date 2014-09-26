@@ -43,7 +43,7 @@ a.boxclose{
 {
 	position: absolute;
 	left:10px;
-	top:50px;
+	top:57px;
     height:26px;
     width: 110px;
 	font-size: 20px;
@@ -53,7 +53,7 @@ a.boxclose{
 {
 	position: absolute;
 	left:10px;
-	top:82px;
+	top:102px;
 	width:464px;
 	height:313px;
 
@@ -154,7 +154,7 @@ a.boxclose{
 {
 	position: absolute;
 	left:10px;
-	top:111px;
+	top:131px;
 	width:464px;
 	height:293px;
 
@@ -164,7 +164,7 @@ a.boxclose{
 {
 	position: absolute;
 	left:10px;
-	top:419px;
+	top:439px;
 	width:225px;
     height:26px;
 }
@@ -173,7 +173,7 @@ a.boxclose{
 {
 	position: absolute;
 	right:340px;
-	top:419px;
+	top:439px;
 	width:225px;
     height:26px;
 }
@@ -318,7 +318,7 @@ a.boxclose{
 	left:490px;
 	top:177px;
 	width:320px;
-	height:233px;
+	height:253px;
 	background-color:#0000FF;	
 }
 
@@ -326,7 +326,7 @@ a.boxclose{
 {
 	position: absolute;
 	left:490px;
-	top:425px;	
+	top:445px;	
 }
 
 #newEvent-cancel,#newEvent-propose
@@ -360,5 +360,148 @@ a.boxclose{
 	padding: 0px 5px 2px 5px;
 	z-index: 100;
 	border-bottom:thick solid #55DD55;
+}
+
+#tematicas-tooltip
+{
+ 	font-family: Arial, Helvetica, sans-serif;
+	position: absolute;
+	float:left;
+	top:89px;
+	left:11px;
+	width: 300px;
+	background-color: #FFFFFF;
+	z-index: 1000;
+	box-shadow:0 2px 3px 0px #aaa, 2px 0px 3px 0px #aaa, -2px 0px 3px 0px #aaa ;
+	display: none;
+}
+
+#tematicas-tooltip-cabecera
+{
+	height:18px;
+    font-size: 12px;
+    padding-left: 4px;
+    padding-top: 4px;
+    background-color: #e4e4e4;
+    font-style: italic;
+    font-weight: bold;
+    border-bottom: thin solid #aaa;	
+	margin-bottom: 0px;
+	padding-bottom: 0px;
+}
+#tematicas-tooltip-select
+{
+	width: 100%;
+	max-height:160px;
+	box-shadow:0 2px 3px 0px #aaa, 2px 0px 3px 0px #aaa, -2px 0px 3px 0px #aaa ;
+	overflow: auto;
+}
+
+.tematicas-tooltip-select-file
+{
+	padding-left: 5px;
+	padding-top: 3px;
+    vertical-align: middle;
+	cursor: pointer; cursor: hand;		
+}
+
+.tematicas-tooltip-select-file:hover
+{
+	background-color: #ffffe2;	
+	cursor: pointer; cursor: hand;		
+}
+
+#tematicas-grupo
+{
+	z-index: 100;
+	position: absolute;
+	left:131px;
+	top:49px;
+	width: 349px;
+	height: 50px;
+	overflow: auto;
+}
+
+.tagTematica
+{
+	border: 1px solid #a5d24a; 
+	-moz-border-radius:2px; 
+	-webkit-border-radius:2px; 
+	display: block; 
+	float: left; 
+	padding: 0px; 
+	text-decoration:none; 
+	background: #cde69c; 
+	color: #638421; 
+	margin-right: 5px; 
+	margin-bottom:5px;
+	font-family: helvetica;  
+	font-size:14px;
+	z-index:10;
+}
+
+.tagTematica-busqueda
+{
+	background: #cde69c; 
+	color: #638421; 
+	border: 1px solid #a5d24a; 
+}
+
+.tagTematica-tematica
+{
+	background: #C6DAF7; 
+	color: #4878BD; 
+	border: 1px solid #6A95D4; 
+}
+
+.tagTematica-lugar
+{
+	background: #FFCECE; 
+	color: #CF6D6D; 
+	border: 1px solid #F6A7A7; 
+}
+
+.tagTematica-entidad
+{
+	background: #DDB3CA; 
+	color: #A65784; 
+	border: 1px solid #C686AA; 
+}
+
+.tagTematica-imagen
+{
+	float:left;
+	width:14px;
+	height:14px;
+	margin-top: 2px;
+	margin-left: 2px;	
+	opacity:0.5;
+	background-size: contain;
+	background-repeat: no-repeat;
+    background-position: center;
+	margin-right: 3px;
+}
+.tagTematica-texto
+{
+	float:left;
+	margin-top: 1px;
+	margin-right: 4px;
+}
+.tagTematica-x
+{
+	font-weight: bold; text-decoration:none; font-size: 16px; 
+	float:left;
+	padding-right: 2px;
+	cursor:hand;cursor:pointer;
+}
+
+.tagTematica-imagen-tematica
+{
+	background-image: url("http://localhost:8888/citysens/icons/etiqueta30x30.png");		
+}
+
+.tagTematica-imagen-etiqueta
+{
+	background-image: url("http://localhost:8888/citysens/icons/etiquetas30x30.png");		
 }
 

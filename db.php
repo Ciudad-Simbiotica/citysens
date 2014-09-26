@@ -366,6 +366,7 @@ function safe($value){
 
 function getTematicas($cadena,$cantidad=10)
 {
+    $cadena=safe($cadena);
     $link=connect();
     $sql="SELECT * 
             FROM  tematicas 
