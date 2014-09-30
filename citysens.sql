@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost:8889
--- Tiempo de generación: 30-09-2014 a las 03:24:18
+-- Tiempo de generación: 30-09-2014 a las 19:00:57
 -- Versión del servidor: 5.5.34
 -- Versión de PHP: 5.5.10
 
@@ -2638,7 +2638,7 @@ CREATE TABLE `eventos` (
   PRIMARY KEY (`idEvento`),
   KEY `titulo` (`titulo`),
   KEY `idDistritoPadre` (`idDistritoPadre`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1848 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1849 ;
 
 --
 -- Volcado de datos para la tabla `eventos`
@@ -2696,11 +2696,12 @@ INSERT INTO `eventos` (`idEvento`, `fecha`, `fechaFin`, `clase`, `tipo`, `titulo
 (1839, '2014-05-17 18:00:00', NULL, 'eventos', 'convocatoria', 'CIne Forum Precarias a la deriva', 'CIne Forum Precarias a la deriva', 'Alcalá de Henares', 2, -3.36435, 40.4818, 999000005, 231, 179, 37, NULL, NULL, '', 0, 1),
 (1840, '2014-05-18 13:00:00', NULL, 'eventos', 'convocatoria', 'Vermú Rock PODEMOS', 'Vermú Rock PODEMOS', 'Alcalá de Henares', 3, -3.36802, 40.483, 999000005, 459, 218, 173, NULL, NULL, '', 0, 1),
 (1842, '2014-10-01 03:00:00', NULL, 'eventos', 'convocatoria', 'Título', 'Desc', 'Casa de Kike', 1, -3.36483, 40.471, 999000006, 158, 1, 324, 'kike.es', 'correo@kike.es', '', 0, 1),
-(1843, '2014-10-02 08:00:00', '2014-10-02 09:00:00', 'eventos', 'convocatoria', 'Título nuevo de evento', '<h1>Cabecera nivel 1</h1><h2><u>Cabecera subrayada nivel 2</u></h2>Texto inicial<br>Texto segundo<br><ol><li>Numerado 1</li><li>Numerado 2</li></ol><ul><li>Puntuado 1</li><li>Puntuado 2</li></ul>', 'Parque Copasa', 1, -3.3731, 40.4732, 0, 158, 1, 1, 'google.com', 'correo@kike.es', 'Etiqueta 1,Etiqueta 2,Etiqueta 3', 0, 0),
-(1844, '2014-10-02 03:00:00', NULL, 'eventos', 'convocatoria', 'Segundo título', '<h1>Descripción dos</h1>Eso, otra descripción<br>', 'Facultad de Filosofía y Letras (UAH) Colegio de Málaga', 1, -3.36354, 40.4813, 0, 158, 8, 7, 'facebook.com', 'correo@kike.es', '', 0, 0),
-(1845, '2014-10-03 06:00:00', '2014-10-03 04:00:00', 'eventos', 'convocatoria', 'Tercero', 'Desc', 'Prueba colegios 2', 1, -3.36354, 40.4813, 999000005, 158, 4, 325, 'google.com', 'correo@kike.es', '', 0, 0),
-(1846, '2014-10-04 05:00:00', NULL, 'eventos', 'convocatoria', 'Cuarto título', 'Descrip', 'Parque Copasa', 1, -3.3731, 40.4732, 999000006, 158, 0, 1, 'meneame.net', 'correo@kike.es', 'etiq1,etiq2', 0, 0),
-(1847, '2014-09-12 03:00:00', NULL, 'eventos', 'convocatoria', 'Quinto', 'aaaaa', 'Facultad de Filosofía y Letras (UAH) Colegio de Málaga', 1, -3.36354, 40.4813, 999000005, 158, 3, 7, 'meneame.net', 'correo@kike.es', '', 0, 0);
+(1843, '2014-10-02 08:00:00', '2014-10-02 09:00:00', 'eventos', 'convocatoria', 'Título nuevo de evento', '<h1>Cabecera nivel 1</h1><h2><u>Cabecera subrayada nivel 2</u></h2>Texto inicial<br>Texto segundo<br><ol><li>Numerado 1</li><li>Numerado 2</li></ol><ul><li>Puntuado 1</li><li>Puntuado 2</li></ul>', 'Parque Copasa', 1, -3.3731, 40.4732, 0, 158, 1, 1, 'google.com', 'acorreo@kike.es', 'Etiqueta 1,Etiqueta 2,Etiqueta 3', 0, 0),
+(1844, '2014-10-02 03:00:00', NULL, 'eventos', 'convocatoria', 'Segundo título', '<h1>Descripción dos</h1>Eso, otra descripción<br>', 'Facultad de Filosofía y Letras (UAH) Colegio de Málaga', 1, -3.36354, 40.4813, 0, 158, 8, 7, 'facebook.com', 'cdorreo@kike.es', '', 0, 0),
+(1845, '2014-10-03 06:00:00', '2014-10-03 04:00:00', 'eventos', 'convocatoria', 'Tercero', 'Desc', 'Prueba colegios 2', 1, -3.36354, 40.4813, 999000005, 158, 4, 325, 'google.com', 'cordreo@kike.es', '', 0, 0),
+(1846, '2014-10-04 05:00:00', NULL, 'eventos', 'convocatoria', 'Cuarto título', 'Descrip', 'Parque Copasa', 1, -3.3731, 40.4732, 999000006, 158, 0, 1, 'meneame.net', 'corraeo@kike.es', 'etiq1,etiq2', 0, 0),
+(1847, '2014-09-12 03:00:00', NULL, 'eventos', 'convocatoria', 'Quinto', 'aaaaa', 'Facultad de Filosofía y Letras (UAH) Colegio de Málaga', 1, -3.36354, 40.4813, 999000005, 158, 3, 7, 'meneame.net', 'coerreo@kike.es', '', 0, 0),
+(1848, '2014-09-12 04:00:00', NULL, 'eventos', 'convocatoria', 'Sexto', 'Texto', 'Cuatro Caños', 1, -3.36131, 40.4851, 999000005, 158, 0, 8, 'ab.ce', 'correro@kike.es', 'aa', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -11597,7 +11598,7 @@ CREATE TABLE `tematicas` (
   `tematica` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`idTematica`),
   KEY `tematica` (`tematica`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=31 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=32 ;
 
 --
 -- Volcado de datos para la tabla `tematicas`

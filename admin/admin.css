@@ -1,0 +1,310 @@
+.cuerpo
+{
+	font-family: Helvetica;
+}
+
+#eventoPendienteTemplate
+{
+	display: none;
+}
+
+.eventoPendiente
+{
+  width: 100%;
+  box-shadow:0 2px 3px #aaa;
+  background:white;
+  border-radius:3px;
+  padding: 5px;
+  margin-bottom: 20px;
+}
+
+.eventoPendiente-cabecera
+{
+    border-bottom: thin solid #aaa;
+    height: 45px;
+}
+
+.eventoPendiente-titulo
+{
+	font-weight: bold;
+	font-size: 24px;
+	float:left;
+}
+.eventoPendiente-asociacion
+{
+	float:right;
+	padding-top: 5px;
+	padding-right: 3px;
+	font-style: italic;
+}
+
+.eventoPendiente-fecha
+{
+	clear: both;
+}
+
+.eventoPendiente-fecha,.eventoPendiente-fechaFin
+{
+	float:left;
+	padding-right: 5px;
+	font-style: italic;
+}
+
+.eventoPendiente-distritoPadre
+{
+	float:right;
+}
+
+.eventoPendiente-lugar
+{
+	float:right;
+	font-weight: bold;
+	padding-right: 5px;
+}
+
+.eventoPendiente-texto
+{
+	clear:both;
+	display: none;
+}
+
+.eventoPendiente-textoSwitch
+{
+	color:blue;
+	font-style: italic;
+	cursor: pointer; cursor: hand;	
+}
+
+
+.eventoPendiente-pie
+{
+    border-top: thin solid #aaa;
+    border-bottom: thin solid #aaa;
+    height: 40px;
+}
+
+.eventoPendiente-pie2
+{
+	height: 60px;
+}
+
+.eventoPendiente-tematica
+{
+	float:left;	
+}
+
+.eventoPendiente-tematicaDesc
+{
+	font-weight: bold;
+	float:left;
+	padding-right: 5px;
+}
+
+.eventoPendiente-tematicaText
+{
+	float:left;
+}
+
+.eventoPendiente-etiquetas
+{
+	float:right;
+}
+
+.eventoPendiente-etiquetasDesc
+{
+	font-weight: bold;
+	float:left;
+	padding-right: 5px;
+}
+
+.eventoPendiente-etiquetasText
+{
+	float:left;	
+}
+
+.eventoPendiente-url
+{
+	clear:both;
+	float:left;
+}
+
+.eventoPendiente-email
+{
+	float:right;
+}
+
+.eventoPendiente-direccion
+{
+	clear:both;
+	float:left;
+}
+
+.eventoPendiente-direccionRechazada
+{
+	float:left;
+	font-weight: bold;
+	color:red;
+	font-size: 14px;
+	line-height: 18px;
+	display: none;
+}
+
+.eventoPendiente-direccionDesc
+{
+	font-weight: bold;
+	float:left;
+	margin-right: 5px;
+}
+
+.eventoPendiente-direccionNombre
+{
+	clear:both;
+}
+
+.eventoPendiente-direccionText
+{
+	font-style: italic;
+}
+
+
+.eventoPendiente-botones
+{
+	float:right;
+	margin-top: 30px;
+	margin-right: 10px;
+}
+
+.eventoPendiente-direccionValidar
+{
+	float:left;
+	font-family: Arial, Helvetica, sans-serif;
+	padding: 0px 5px 2px 5px;
+	border-bottom:thick solid #55DD55;
+
+	text-align: center;
+	vertical-align: middle;
+	cursor: pointer; cursor: hand;	
+	margin-right: 10px;
+	display:none;
+}	
+
+
+.eventoPendiente-botonesAceptar,.eventoPendiente-botonesRechazar
+{
+	float:left;
+	display: none;
+}
+
+.validarDireccion-botonesRechazar,.validarDireccion-botonesAceptar
+{
+	float:left;
+}
+
+
+.eventoPendiente-botonesRechazar
+{
+	margin-right: 10px;
+}
+
+.eventoPendiente-botonesRechazar,.eventoPendiente-botonesAceptar,.validarDireccion-botonesRechazar,.validarDireccion-botonesAceptar
+{
+	font-family: Arial, Helvetica, sans-serif;
+
+	text-align: center;
+	vertical-align: middle;
+	cursor: pointer; cursor: hand;	
+}
+
+.eventoPendiente-botonesRechazar:hover,.eventoPendiente-botonesAceptar:hover,.eventoPendiente-direccionValidar:hover,.validarDireccion-botonesRechazar:hover,.validarDireccion-botonesAceptar:hover
+{
+	border-bottom:thick solid #FFC830;
+	color:black;
+	cursor: pointer; cursor: hand;	
+}
+
+
+.eventoPendiente-botonesRechazar,.validarDireccion-botonesRechazar
+{
+	padding: 0px 5px 2px 5px;
+	border-bottom:thick solid #FF5555;
+}
+
+.eventoPendiente-botonesAceptar,.validarDireccion-botonesAceptar
+{
+	padding: 0px 5px 2px 5px;
+	border-bottom:thick solid #55DD55;
+}
+
+a.boxclose{
+    float:right;
+    margin-top:-24px;
+    margin-right:-24px;
+    cursor:pointer;
+    color: #fff;
+    border: 1px solid #AEAEAE;
+    border-radius: 32px;
+    background: #605F61;
+    font-size: 31px;
+    font-weight: bold;
+    display: inline-block;
+    line-height: 0px;
+    padding: 11px 4px 13px 4px;  
+}
+
+.validarDireccion-left
+{
+	height: 100%;
+	float:left;
+}
+
+.validarDireccion-map
+{
+	width: 320px;
+	height: 240px;
+	background-color: blue;
+}
+
+
+.validarDireccion-right
+{
+	float:left;
+	height: 238px;
+}
+
+.validarDireccion-nombre
+{
+	font-weight: bold;
+	width: 155px;
+	margin-left: 5px;
+	text-align: left;
+}
+
+.validarDireccion-direccion
+{
+	width: 155px;
+	text-align: left;
+	margin-left: 5px;
+}
+
+.validarDireccion-botonesRechazar
+{
+	position: absolute;
+	bottom: 10px;
+	left:335px;
+}
+
+.validarDireccion-botonesAceptar
+{
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+
+}
+
+
+
+.overlayPeque
+{
+	width: 480px;
+  	margin-left: -240px;
+}

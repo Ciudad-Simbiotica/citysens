@@ -565,6 +565,37 @@ function getEventos($query,$cantidad=50,$orden="fecha")
     return $returnData;
 }
 
+function getEventosPorValidar()
+{
+    $link=connect();
+
+    $sql="SELECT eventos.*,
+                 lugares_shp.nombre as nombreLugar,
+                 asociaciones.asociacion as asociacion,
+                 direcciones.nombre as nombreDireccion,
+                 direcciones.direccion as direccion,
+                 direcciones.direccionActiva as direccionActiva,                 
+                 (SELECT GROUP_CONCAT(tematicas.tematica)
+                 FROM eventos_tematicas, tematicas
+                 WHERE eventos_tematicas.idTematica=tematicas.idTematica 
+                 AND eventos_tematicas.idEvento = eventos.idEvento) AS tematicas
+            FROM eventos, direcciones, lugares_shp, asociaciones
+            WHERE eventoActivo=0
+            AND eventos.idDireccion=direcciones.idDireccion 
+            AND direcciones.idPadre=lugares_shp.id 
+            AND eventos.idAsociacion=asociaciones.idAsociacion
+            GROUP BY eventos.idEvento 
+            ORDER BY idEvento ASC";    
+    mysql_query('SET CHARACTER SET utf8',$link);
+    $result=mysql_query($sql,$link);
+    $returnData=array();
+    while($fila=mysql_fetch_assoc($result))
+    {
+        array_push($returnData,$fila);
+    }
+    return $returnData;
+}
+
 function getAllChildren($lugares)
 {
     $link=connect();
@@ -767,6 +798,18 @@ function getDistritoPadreDireccion($idDireccion)
     return $idDistritoPadre;
 }
 
+function getDireccion($idDireccion)
+{
+    $idDireccion=safe($idDireccion);
+    $link=connect();    
+    mysql_query('SET CHARACTER SET utf8',$link);
+
+    //Buscar el padre según las coordenadas
+    $sql="SELECT * FROM direcciones WHERE idDireccion='$idDireccion'";
+    $result=mysql_query($sql,$link);
+    return mysql_fetch_assoc($result);
+}
+
 function crearNuevaDireccion($nombreLugar,$direccion,$lat,$lng,$idPadre)
 {
     $nombreLugar=safe($nombreLugar);
@@ -805,6 +848,30 @@ function crearNuevaDireccion($nombreLugar,$direccion,$lat,$lng,$idPadre)
     $returnData["idLugar"]=mysql_insert_id();
     $returnData["idDistritoPadre"]=$idDistritoPadre;
     return $returnData;
+}
+
+function validarDireccion($idDireccion,$status)
+{
+    $idDireccion=safe($idDireccion);
+    $status=safe($status);
+    $link=connect();    
+    mysql_query('SET CHARACTER SET utf8',$link);
+
+    //Buscar el padre según las coordenadas
+    $sql="UPDATE direcciones SET direccionActiva='$status' WHERE idDireccion='$idDireccion'";
+    mysql_query($sql,$link);
+}
+
+function validarEvento($idEvento,$status)
+{
+    $idEvento=safe($idEvento);
+    $status=safe($status);
+    $link=connect();    
+    mysql_query('SET CHARACTER SET utf8',$link);
+
+    //Buscar el padre según las coordenadas
+    $sql="UPDATE eventos SET eventoActivo='$status' WHERE idEvento='$idEvento'";
+    mysql_query($sql,$link);
 }
 
 function getColindantes($lugarOriginal,$type,$xmin,$xmax,$ymin,$ymax)
