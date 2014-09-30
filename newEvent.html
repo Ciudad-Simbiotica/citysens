@@ -41,24 +41,23 @@
 
 	  <!-- Some wysihtml5 commands like 'createLink' require extra paramaters specified by the user (eg. href) -->
 	  <div data-wysihtml5-command="createLink" class='newEvent-command newEvent-command-link'></div>
-	  <div data-wysihtml5-dialog="createLink" style="display: none;">
+	  <div data-wysihtml5-dialog="createLink" style="display: none;" class='newEvent-url-form'>
 	    <label>
-	      Enlace:
 	      <input data-wysihtml5-dialog-field="href" value="http://" class="text">
 	    </label>
-	    <a data-wysihtml5-dialog-action="save">OK</a> <a data-wysihtml5-dialog-action="cancel">Cancelar</a>
+	    <a data-wysihtml5-dialog-action="save">OK</a> - 
+	    <a data-wysihtml5-dialog-action="cancel" class="cancel">Cancelar</a>
 	  </div>
 
 
 
 	  <div data-wysihtml5-command="insertImage" class='newEvent-command newEvent-command-image'></div>
-	  <div data-wysihtml5-dialog="insertImage" style="display: none;">
+	  <div data-wysihtml5-dialog="insertImage" style="display: none;" class='newEvent-url-form'>
 	    <label>
-	      Image:
 	      <input data-wysihtml5-dialog-field="src" value="http://">
 	    </label>
-	    <a data-wysihtml5-dialog-action="save">OK</a>
-	    <a data-wysihtml5-dialog-action="cancel">Cancel</a>
+	    <a data-wysihtml5-dialog-action="save">OK</a> - 
+	    <a data-wysihtml5-dialog-action="cancel" class="cancel">Cancelar</a>
 	  </div>
 
 

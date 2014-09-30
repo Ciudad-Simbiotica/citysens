@@ -62,23 +62,22 @@ $.getJSON( "getEventosPendientes.php")
 				{
 					//Cargamos los parámetros
 					$(".validarDireccion-nombre").html(direccion.nombre);
-					$(".validarDireccion-direccion").html(direccion.direccion+" esto es un texto largo que estoy probando");
+					$(".validarDireccion-direccion").html(direccion.direccion);
 
 					//Creamos el mapa
 					var map = L.map('validarDireccion-map',
 					    {
-					        zoomControl: false,
 					        attributionControl: false,
 					    }).setView([direccion.lat,direccion.lng], 15);
 
 					var marker = L.marker([direccion.lat,direccion.lng]).addTo(map);
 
 
-					map.dragging.disable();
-					map.touchZoom.disable();
-					map.doubleClickZoom.disable();
-					map.scrollWheelZoom.disable();
-					map.boxZoom.disable();
+					//map.dragging.disable();
+					//map.touchZoom.disable();
+					//map.doubleClickZoom.disable();
+					//map.scrollWheelZoom.disable();
+					//map.boxZoom.disable();
 					map.keyboard.disable();
 
 					window.map=map;

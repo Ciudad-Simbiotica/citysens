@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost:8889
--- Tiempo de generación: 30-09-2014 a las 19:00:57
+-- Tiempo de generación: 30-09-2014 a las 20:59:31
 -- Versión del servidor: 5.5.34
 -- Versión de PHP: 5.5.10
 
@@ -2363,7 +2363,7 @@ CREATE TABLE `direcciones` (
   `zoom` int(11) NOT NULL,
   `direccionActiva` tinyint(1) NOT NULL,
   PRIMARY KEY (`idDireccion`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=326 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=327 ;
 
 --
 -- Volcado de datos para la tabla `direcciones`
@@ -2605,7 +2605,8 @@ INSERT INTO `direcciones` (`idDireccion`, `idPadre`, `nombre`, `direccion`, `lat
 (309, 999000186, '', 'Recinto ferial de Coslada Coslada', 40.4234, -3.52411, 15, 1),
 (310, 999000063, '', 'Merenderos del Lago, Parque Avenida de España Calle Honduras Coslada', 40.4249, -3.54564, 15, 1),
 (324, 999000006, 'Casa de Kike', 'Bolarque 3', 40.471, -3.36483, 15, 1),
-(325, 999000005, 'Prueba colegios 2', 'Calle colegios 2', 40.4813, -3.36354, 15, 0);
+(325, 999000005, 'Prueba colegios 2', 'Calle colegios 2', 40.4813, -3.36354, 15, 0),
+(326, 999000007, 'Casa de Rafa', 'Dámaso Alonso 15', 40.4946, -3.37478, 15, 0);
 
 -- --------------------------------------------------------
 
@@ -2638,7 +2639,7 @@ CREATE TABLE `eventos` (
   PRIMARY KEY (`idEvento`),
   KEY `titulo` (`titulo`),
   KEY `idDistritoPadre` (`idDistritoPadre`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1849 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1850 ;
 
 --
 -- Volcado de datos para la tabla `eventos`
@@ -2699,9 +2700,9 @@ INSERT INTO `eventos` (`idEvento`, `fecha`, `fechaFin`, `clase`, `tipo`, `titulo
 (1843, '2014-10-02 08:00:00', '2014-10-02 09:00:00', 'eventos', 'convocatoria', 'Título nuevo de evento', '<h1>Cabecera nivel 1</h1><h2><u>Cabecera subrayada nivel 2</u></h2>Texto inicial<br>Texto segundo<br><ol><li>Numerado 1</li><li>Numerado 2</li></ol><ul><li>Puntuado 1</li><li>Puntuado 2</li></ul>', 'Parque Copasa', 1, -3.3731, 40.4732, 0, 158, 1, 1, 'google.com', 'acorreo@kike.es', 'Etiqueta 1,Etiqueta 2,Etiqueta 3', 0, 0),
 (1844, '2014-10-02 03:00:00', NULL, 'eventos', 'convocatoria', 'Segundo título', '<h1>Descripción dos</h1>Eso, otra descripción<br>', 'Facultad de Filosofía y Letras (UAH) Colegio de Málaga', 1, -3.36354, 40.4813, 0, 158, 8, 7, 'facebook.com', 'cdorreo@kike.es', '', 0, 0),
 (1845, '2014-10-03 06:00:00', '2014-10-03 04:00:00', 'eventos', 'convocatoria', 'Tercero', 'Desc', 'Prueba colegios 2', 1, -3.36354, 40.4813, 999000005, 158, 4, 325, 'google.com', 'cordreo@kike.es', '', 0, 0),
-(1846, '2014-10-04 05:00:00', NULL, 'eventos', 'convocatoria', 'Cuarto título', 'Descrip', 'Parque Copasa', 1, -3.3731, 40.4732, 999000006, 158, 0, 1, 'meneame.net', 'corraeo@kike.es', 'etiq1,etiq2', 0, 0),
 (1847, '2014-09-12 03:00:00', NULL, 'eventos', 'convocatoria', 'Quinto', 'aaaaa', 'Facultad de Filosofía y Letras (UAH) Colegio de Málaga', 1, -3.36354, 40.4813, 999000005, 158, 3, 7, 'meneame.net', 'coerreo@kike.es', '', 0, 0),
-(1848, '2014-09-12 04:00:00', NULL, 'eventos', 'convocatoria', 'Sexto', 'Texto', 'Cuatro Caños', 1, -3.36131, 40.4851, 999000005, 158, 0, 8, 'ab.ce', 'correro@kike.es', 'aa', 0, 0);
+(1848, '2014-09-12 04:00:00', NULL, 'eventos', 'convocatoria', 'Sexto', 'Texto', 'Cuatro Caños', 1, -3.36131, 40.4851, 999000005, 158, 1, 8, 'ab.ce', 'correro@kike.es', 'aa', 0, 1),
+(1849, '2014-10-01 19:00:00', NULL, 'eventos', 'convocatoria', 'Prueba final editor texto', '<h1>Cabecera</h1><h2>Cuerpo</h2><ol><li>Uno</li><li>Dos</li><li>Tres</li></ol><b>Enlace:</b><br><a href="http://www.google.es" title="Link: http://www.google.es">Vamos a Google</a><br><br><b>Foto:<br></b><img src="https://c1.staticflickr.com/5/4046/4670729810_f3811e83b7_n.jpg" title="Image: https://c1.staticflickr.com/5/4046/4670729810_f3811e83b7_n.jpg"><br><br><i>Pie en cursiva</i><br>', 'Casa de Rafa', 1, -3.37478, 40.4946, 999000007, 158, 6, 326, 'google.es', 'pedro@citysens.net', 'Etiqueta Creada', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -2717,7 +2718,7 @@ CREATE TABLE `eventos_tematicas` (
   PRIMARY KEY (`idEventoTematica`),
   KEY `idAsociacion` (`idEvento`),
   KEY `idTematica` (`idTematica`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=162 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=164 ;
 
 --
 -- Volcado de datos para la tabla `eventos_tematicas`
@@ -2882,7 +2883,9 @@ INSERT INTO `eventos_tematicas` (`idEventoTematica`, `idEvento`, `idTematica`) V
 (158, 1844, 8),
 (159, 1844, 14),
 (160, 1845, 4),
-(161, 1847, 3);
+(161, 1847, 3),
+(162, 1848, 1),
+(163, 1849, 6);
 
 -- --------------------------------------------------------
 

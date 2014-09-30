@@ -541,7 +541,7 @@ function cargarDatos(clase, orden)
       window.listado=data;
       
       conFiltros=":";
-      if(arrayTagsQuery.length>1)
+      if(arrayTags.length>0)
         conFiltros=" que satisfacen los siguientes filtros de búsqueda:";
       
       switch(clase)

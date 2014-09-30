@@ -33,6 +33,7 @@ a.boxclose{
     height: 380px;
     margin-right: 10px;
     text-align: left;
+    font-family: Verdana, Arial, Helvetica;
 }
 #newEvent-rightDiv
 {
@@ -56,10 +57,28 @@ a.boxclose{
 	left:10px;
 	top:102px;
 	width:464px;
-	height:313px;
-
+	height:26px;
+	overflow: hidden;
 }
 
+.newEvent-url-form
+{
+	font-size: 12px;
+}
+
+.newEvent-url-form a
+{
+	cursor: hand;cursor: pointer;
+	font-weight: bold;
+	color:blue;
+}
+
+.cancel
+{
+	color:red !important;
+	font-style: italic;
+	font-weight: normal !important;
+}
 
 .newEvent-command
 {

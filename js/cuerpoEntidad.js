@@ -27,6 +27,27 @@ $.fn.scrollTo = function( target, options, callback ){
   });
 }
 
+function loadOverlay(url,peque)
+{
+  if(peque)
+    $("#overlay").addClass("overlayPeque");
+  else
+    $("#overlay").removeClass("overlayPeque");
+
+  $(".darkOverlay").fadeIn("fast");
+  $("#overlay").load(url);
+}
+
+function hideOverlay(url)
+{
+  $(".darkOverlay").fadeOut("fast",function()
+  {
+    $('#overlay').removeClass('overlayPeque');
+    $('#overlay').removeClass('overlayPeque2');
+    $("#overlay").html('');
+  });
+}
+
 $.getJSON('getDatosEntidad.php', 
 {
       id: $.urlParam('idAsociacion'),
@@ -216,5 +237,10 @@ $('#input-busqueda').keyup(function(event)
      
    }
   }
+});
+
+$(".cabecera-propon").click(function()
+{
+  loadOverlay("newEvent.html");
 });
 

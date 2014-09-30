@@ -217,41 +217,6 @@ function updateMapLocationCoordinatesCentroid(xmin,ymin,xmax,ymax,xcentroid,ycen
 
 }
 
-/*
-function updateMapLocationNewEvent(lugar, zoom, withMarker)
-{
-  console.log(lugar);
-  
-  $.getJSON("http://maps.google.com/maps/api/geocode/json", 
-  {
-    address: lugar,
-    sensor: 'false',
-  })
-  .done(function (response) 
-  {
-    //console.log(response.results[0].geometry.bounds);   
-
-    southWest = L.latLng(response.results[0].geometry.viewport.southwest.lat, response.results[0].geometry.viewport.southwest.lng),
-    northEast = L.latLng(response.results[0].geometry.viewport.northeast.lat, response.results[0].geometry.viewport.northeast.lng),
-    bounds = L.latLngBounds(southWest, northEast);
-
-    if(!typeof zoom ==='undefined')
-      mapNewEvent.setZoom(zoom);
-    else
-      mapNewEvent.fitBounds(bounds);
-    
-    if(withMarker)
-    {
-      if(!(typeof window.marker==='undefined'))
-        mapNewEvent.removeLayer(window.marker);
-      window.marker = L.marker(mapNewEvent.getCenter()).addTo(mapNewEvent);
-    }
-
-  });
-  
-}
-*/
-
 function prevLugarSuggestionNewEvent()
 {
   if((typeof window.selectedLugarSuggestion==='undefined')|(window.selectedLugarSuggestion==0)) //todavía no hay ninguna seleccionada
@@ -427,7 +392,8 @@ function createNewPlace(lugar, zoom, withMarker,ciudad)
 }  
 
 
-var editor = new wysihtml5.Editor("newEvent-descripcion", { // id of textarea element
+var editor = new wysihtml5.Editor("newEvent-descripcion", 
+{ // id of textarea element
   toolbar:      "newEvent-toolbar", // id of toolbar element
   parserRules:  wysihtml5ParserRules // defined in parser rules set 
 });
