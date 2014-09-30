@@ -278,6 +278,10 @@ function cargarContenido(id)
 
     $(".informacion-cuerpo-etiquetas-listado").html(data.etiquetas);
 
+    if(data.url!=null)
+      if((data.url.indexOf("http://") < 0) & (data.url.indexOf("https://") < 0))
+        data.url="http://"+data.url;
+
     $(".informacion-cuerpo-contacto-url").attr("href", data.url);
     $(".informacion-cuerpo-contacto-url").html(data.url);
     $(".informacion-cuerpo-contacto-email").attr("href", "mailto:"+data.email);

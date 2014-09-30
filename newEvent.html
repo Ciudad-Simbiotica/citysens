@@ -80,11 +80,18 @@
 	<input type=TEXT id="newEvent-horaInicio" name=horaInicio placeholder="Hora Inicio" >
 	<input type=TEXT id="newEvent-horaFinal" name=horaFinal placeholder="Hora Fin (Opcional)" >
 	<input type=TEXT id="newEvent-ciudad" name=ciudad placeholder="Ciudad" >
+	<input type=hidden id="newEvent-idCiudad">
+	<div id="ciudad-tooltip">
+	 	<div id="ciudad-tooltip-cabecera">Elige una ciudad para el evento</div>
+		<div id="ciudad-tooltip-select"></div>
+	</div>
+
+	<input type=hidden id="newEvent-idLugar">
 	<div class='newEvent-lugarDiv' id='newEvent-lugarDiv'>
 		<div class='newEvent-lugarDiv-texto1'>PlaceHolder 1</div>
 		<div class='newEvent-lugarDiv-texto2'>PlaceHolder 1</div>
 	</div>	
-	<input type=TEXT id="newEvent-lugar" name=nombreLugar placeholder="Lugar" >
+	<input type=TEXT id="newEvent-lugar" name=nombreLugar placeholder="(Elige primero una ciudad)" disabled>
 	<div class='newEvent-lugarSuggest' id='newEvent-lugarSuggest'></div>	
 	<div id="newEvent-map"></div>
 	<div id="newEvent-actions">

@@ -36,6 +36,16 @@ $.getJSON('getDatos.php',
     console.log(data);
 	$(".detalle-cabecera").text(data.titulo);
 	$(".detalle-cuerpo-texto").html(data.texto);
+
+  if(data.url!=null)
+    if((data.url.indexOf("http://") < 0) & (data.url.indexOf("https://") < 0))
+      data.url="http://"+data.url;
+
+  $(".informacion-cuerpo-contacto-url").attr("href", data.url);
+  $(".informacion-cuerpo-contacto-url").html(data.url);
+  $(".informacion-cuerpo-contacto-email").attr("href", "mailto:"+data.email);
+  $(".informacion-cuerpo-contacto-email").html(data.email);
+
 	$(".detalle-izq").fadeIn(1000);
 
     $.each(data.tematicas,function(id,tematica)
@@ -73,7 +83,7 @@ $.getJSON('getDatos.php',
 
     fechaLegible=date.getDate()+" de "+monthNames2[date.getMonth()]+" a las "+paddingZeros(date.getHours())+":"+paddingZeros(date.getMinutes());
 
-    cargarMapa(data.direccion.lat,data.direccion.long,data.titulo+" → El "+fechaLegible+" @ "+data.direccion.nombre+" - "+data.direccion.direccion);
+    cargarMapa(data.direccion.lat,data.direccion.lng,data.titulo+" → El "+fechaLegible+" @ "+data.direccion.nombre+" - "+data.direccion.direccion);
     $(".detalle-mapa-cabecera-lugar").text("Evento en "+data.lugar);
     $(".detalle-mapa-pie-nombre").text(data.direccion.nombre);
     $(".detalle-mapa-pie-direccion").text(data.direccion.direccion);

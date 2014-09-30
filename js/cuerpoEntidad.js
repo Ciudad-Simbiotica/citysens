@@ -38,6 +38,15 @@ $.getJSON('getDatosEntidad.php',
 	$(".detalle-cabecera").text(data.asociacion);
 	$(".detalle-cuerpo-texto").html(data.texto);
 
+  if(data.url!=null)
+    if((data.url.indexOf("http://") < 0) & (data.url.indexOf("https://") < 0))
+      data.url="http://"+data.url;
+
+  $(".informacion-cuerpo-contacto-url").attr("href", data.url);
+  $(".informacion-cuerpo-contacto-url").html(data.url);
+  $(".informacion-cuerpo-contacto-email").attr("href", "mailto:"+data.email);
+  $(".informacion-cuerpo-contacto-email").html(data.email);
+
   if(data.tipoAsociacion=="institucion")
     $(".detalle-tipo").css("background-image", "url(icons/icon_CitYsens.institucion.png)");
   else if(data.tipoAsociacion=="organizacion")
@@ -77,7 +86,7 @@ $.getJSON('getDatosEntidad.php',
 
     contactoScrollPosition=Math.round($("#informacion-cuerpo-contacto").offset().top-177);
     
-    cargarMapa(data.direccion.lat,data.direccion.long,data.asociacion+" @ "+data.direccion.nombre);
+    cargarMapa(data.direccion.lat,data.direccion.lng,data.asociacion+" @ "+data.direccion.nombre);
     $(".detalle-mapa-cabecera-lugar").text("Entidad en "+data.direccion.nombre);
     
     $(".detalle-mapa-pie-nombre").text(data.direccion.nombre);

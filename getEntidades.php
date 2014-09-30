@@ -35,7 +35,7 @@ if($tipoGrupos=="puntuacion")
 			$datos["textoOrg"]=utf8_encode($asociacion["domicilio"]);
 			$datos["lugarOrg"]=utf8_encode($asociacion["nombreLugar"]);
 			$datos["puntos"]=$asociacion["points"];
-			$datos["x"]=$asociacion["long"];
+			$datos["x"]=$asociacion["lng"];
 			$datos["y"]=$asociacion["lat"];
 			$datos["idDistritoPadre"]=$asociacion["idPadre"];
 			$datos["tematica"]=utf8_encode($asociacion["tematica"]);
@@ -102,7 +102,7 @@ else
 		$datos["lugarOrg"]=utf8_encode($asociacion["nombreLugar"]);
 		$datos["puntos"]=$asociacion["points"];
 		$datos["tematica"]=utf8_encode($asociacion["tematica"]);
-		$datos["x"]=$asociacion["long"];
+		$datos["x"]=$asociacion["lng"];
 		$datos["y"]=$asociacion["lat"];
 		$datos["idDistritoPadre"]=$asociacion["idPadre"];
 

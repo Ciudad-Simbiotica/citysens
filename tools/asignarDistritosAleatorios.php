@@ -14,7 +14,7 @@ while($fila=mysql_fetch_assoc($result))
 	$result2=mysql_query($sql,$link);
 	$fila2=mysql_fetch_assoc($result2);
 	$sql="UPDATE eventos SET y='{$fila2["lat"]}',";
-	$sql.=					" x='{$fila2["long"]}',"; 
+	$sql.=					" x='{$fila2["lng"]}',"; 
 	$sql.=					" idDireccion='{$fila2["idDireccion"]}'";
 	$sql.=			 "  WHERE idEvento='{$fila["idEvento"]}';";
 	echo $sql.PHP_EOL;

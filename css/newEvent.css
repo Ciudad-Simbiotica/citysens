@@ -25,6 +25,7 @@ a.boxclose{
     height:26px;
     margin-bottom: 10px;
 }
+
 #newEvent-leftDiv
 {
 	float: left;
@@ -218,6 +219,7 @@ a.boxclose{
 #newEvent-lugar
 {
 	position: absolute;
+	font-style: italic;;
 	left:490px;
 	top:137px;
 	width:314px;
@@ -231,6 +233,7 @@ a.boxclose{
 	left:490px;
 	top:137px;
 	width:314px;	
+	height:29px;
 	text-align: left;
  	font-family: Arial, Helvetica, sans-serif;
  	border:thin solid #AAA;
@@ -245,13 +248,17 @@ a.boxclose{
 	left:0px;
 	font-weight: bold;
     font-size: 13px;	
+	height: 16px;
+ 	overflow: hidden;
 }
 
 .newEvent-lugarDiv-texto2
 {
 	position:relative;
 	left:0px;
+	height: 16px;
     font-size: 12px;	
+ 	overflow: hidden;
 }
 
 #newEvent-lugarSuggest
@@ -316,9 +323,9 @@ a.boxclose{
 {
 	position: absolute;
 	left:490px;
-	top:177px;
+	top:180px;
 	width:320px;
-	height:253px;
+	height:250px;
 	background-color:#0000FF;	
 }
 
@@ -406,6 +413,56 @@ a.boxclose{
 }
 
 .tematicas-tooltip-select-file:hover
+{
+	background-color: #ffffe2;	
+	cursor: pointer; cursor: hand;		
+}
+
+#ciudad-tooltip
+{
+ 	font-family: Arial, Helvetica, sans-serif;
+	position: absolute;
+	float:left;
+	top:132px;
+	left:492px;
+	width: 316px;
+	background-color: #FFFFFF;
+	z-index: 1000;
+	box-shadow:0 2px 3px 0px #aaa, 2px 0px 3px 0px #aaa, -2px 0px 3px 0px #aaa ;
+	display: none;
+}
+
+#ciudad-tooltip-cabecera
+{
+	height:18px;
+    font-size: 12px;
+    padding-left: 4px;
+    padding-top: 4px;
+    background-color: #e4e4e4;
+    font-style: italic;
+    font-weight: bold;
+    border-bottom: thin solid #aaa;	
+	margin-bottom: 0px;
+	padding-bottom: 0px;
+}
+#ciudad-tooltip-select
+{
+	width: 100%;
+	max-height:160px;
+	box-shadow:0 2px 3px 0px #aaa, 2px 0px 3px 0px #aaa, -2px 0px 3px 0px #aaa ;
+	overflow: auto;
+}
+
+.ciudad-tooltip-select-file
+{
+	padding-left: 5px;
+	padding-top: 3px;
+    vertical-align: middle;
+    text-align: left;
+	cursor: pointer; cursor: hand;		
+}
+
+.ciudad-tooltip-select-file:hover
 {
 	background-color: #ffffe2;	
 	cursor: pointer; cursor: hand;		

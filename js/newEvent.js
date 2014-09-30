@@ -1,3 +1,15 @@
+function isValidEmailAddress(emailAddress) 
+{
+    var pattern = new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i);
+    return pattern.test(emailAddress);
+};
+
+function isValidURL(url)
+{
+  var pattern = new RegExp(/^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/ig);
+  return pattern.test(url);
+};
+
 function suggestTematicas(texto)
 {
 
@@ -93,6 +105,73 @@ function addTematica(idTematica,tematica)
   
 }
 
+function suggestCiudades(texto)
+{
+
+  $("#newEvent-idCiudad").val("");
+
+  //Que cargue las sugerencias usando AJAX
+  var getAgenda = "getSuggestionsCiudades.php?";
+  $.getJSON(getAgenda, 
+  {
+    query: texto,
+    format: "json",
+  })
+  .done(function(data) 
+  {
+    $("#ciudad-tooltip-select").empty();
+
+    if(data.length<1)
+    {
+      $("#ciudad-tooltip-cabecera").html("No hay ninguna ciudad con ese nombre");
+    }
+    else
+    {
+      $("#ciudad-tooltip-cabecera").html("Selecciona una ciudad para el evento");
+      var i=1;
+      $.each(data, function(key, value)
+      {
+        $("#ciudad-tooltip-select").append("<div class='ciudad-tooltip-select-file'>"+value.nombre.replace(new RegExp("("+texto+")", 'gi'), "<b>$1</b>")+"</div>");
+        $("#ciudad-tooltip-select").find(".ciudad-tooltip-select-file:last").click(function()
+        {
+          if(value.activo==="1")
+          {
+            $("#newEvent-idCiudad").val(value.id);
+            $("#newEvent-idLugar").val("");
+            window.newEventCiudadID=value.id;
+            window.newEventCiudad=value;
+            $('#newEvent-ciudad').val(value.nombre);
+            $("#ciudad-tooltip").hide();
+            $("#newEvent-lugar").css('font-style','inherit').attr('placeholder','Lugar').prop('disabled', false);
+            updateMapLocationCoordinatesCentroid(value.xmin,value.ymin,value.xmax,value.ymax,value.xcentroid,value.ycentroid);
+            if(!(typeof window.marker==='undefined'))
+              mapNewEvent.removeLayer(window.marker);
+            $("#newEvent-lugar").val("");
+            $("#newEvent-lugar").show();
+          }
+          else
+          {
+            $("#overlay").fadeOut("fast",function()
+            {
+              $("#overlay").addClass("overlayPeque");
+              $("#overlay").load("cityNotReadyYet.html",function()
+              {
+                $('#overlay').html($('#overlay').html().replace(/{CIUDAD}/g,value.nombre));
+                $('#input-email-idLugar').val(value.id);
+                $('#input-email-nombreCiudad').val(value.nombre);   
+                $("#overlay").fadeIn("fast");
+              });       
+            });  
+          }
+        });
+        i++;
+      });  
+    }
+
+    $("#ciudad-tooltip").show();
+  });
+}
+
 function cargarMapaNewEvent()
 {
   
@@ -125,7 +204,21 @@ function cargarMapaNewEvent()
   
 }
 
-function updateMapLocationNewEvent(lugar)
+function updateMapLocationCoordinatesCentroid(xmin,ymin,xmax,ymax,xcentroid,ycentroid)
+{
+    southWest = L.latLng(ymin, xmin),
+    northEast = L.latLng(ymax, xmax),
+    bounds = L.latLngBounds(southWest, northEast);
+
+    mapNewEvent.fitBounds(bounds);
+
+    mapNewEvent.setView(L.latLng(ycentroid, xcentroid),mapNewEvent.getZoom()+1);
+
+
+}
+
+/*
+function updateMapLocationNewEvent(lugar, zoom, withMarker)
 {
   console.log(lugar);
   
@@ -142,12 +235,22 @@ function updateMapLocationNewEvent(lugar)
     northEast = L.latLng(response.results[0].geometry.viewport.northeast.lat, response.results[0].geometry.viewport.northeast.lng),
     bounds = L.latLngBounds(southWest, northEast);
 
+    if(!typeof zoom ==='undefined')
+      mapNewEvent.setZoom(zoom);
+    else
+      mapNewEvent.fitBounds(bounds);
+    
+    if(withMarker)
+    {
+      if(!(typeof window.marker==='undefined'))
+        mapNewEvent.removeLayer(window.marker);
+      window.marker = L.marker(mapNewEvent.getCenter()).addTo(mapNewEvent);
+    }
 
-    mapNewEvent.fitBounds(bounds);
- 
   });
   
 }
+*/
 
 function prevLugarSuggestion()
 {
@@ -191,11 +294,15 @@ function clickSuggestion(index)
   console.log(window.arraySuggestionsDirecciones[index]);
   $("#newEvent-lugarSuggest").empty();
   updateMapLocationDireccion(window.arraySuggestionsDirecciones[index]);
+  $(".newEvent-lugarDiv-texto1").html(window.arraySuggestionsDirecciones[index].texto1);
+  $(".newEvent-lugarDiv-texto2").html(window.arraySuggestionsDirecciones[index].texto2);
+  $("#newEvent-lugar").hide();
+  $("#newEvent-idLugar").val(window.arraySuggestionsDirecciones[index].id);
+
 }
 
 function updateMapLocationDireccion(direccion)
 {
-
     var latlng = L.latLng(direccion.lat, direccion.lon);
     mapNewEvent.setView(latlng,direccion.zoom);
     if(!(typeof window.marker==='undefined'))
@@ -207,27 +314,21 @@ function updateMapLocationDireccion(direccion)
 function suggestLugar(texto)
 {
   
-  if(window.previousSuggestLugar==texto)
+  if((window.previousSuggestLugar==texto)&(texto!=""))
   {
     return;
   }
 
+  $('#newEvent-idLugar').val("");
   window.previousSuggestLugar=texto;
-  if(texto=="")
-  {
-    $("#newEvent-lugarSuggest").empty();
-    return;    
-  }
-  
+ 
 
   //Que cargue las sugerencias usando AJAX
   var getAgenda = "getSuggestionsDirecciones.php?";
   $.getJSON(getAgenda, 
   {
     query: texto,
-    idLugar: $.urlParam('idLugar'),
-    date: "any",
-    format: "json"
+    idLugar: window.newEventCiudadID,
   })
   .done(function(data) 
   {
@@ -261,22 +362,70 @@ function suggestLugar(texto)
 
     $("#newEvent-lugarSuggest").append("<div class='newEvent-lugarSuggest-fila newEvent-lugarSuggest-crear'><div class='newEvent-lugarSuggest-texto1-sinTexto2'><strong>Crear un nuevo lugar</strong></div></div>");
     $("#newEvent-lugarSuggest").find(".newEvent-lugarSuggest-fila:last").attr("id","newEvent-lugarSuggest-fila-"+i);
+    if(data.suggestions.length<=0)
+    {
+      $("#newEvent-lugarSuggest").width($("#newEvent-lugar").width()+4);
+      $("#newEvent-lugarSuggest").css('margin-left',1);
+    }
+    else
+    {
+      $("#newEvent-lugarSuggest").css('width','');
+      $("#newEvent-lugarSuggest").css('margin-left','');
+    }
+
     $("#newEvent-lugarSuggest").find(".newEvent-lugarSuggest-fila:last").click(function()
     {
-        //clickSuggestion(icono,value.texto1,value.tipo,value.id);
+
+      createNewPlace($('#newEvent-lugar').val(),15,true,window.newEventCiudad);
     });
 
   });
 
 }
 
+function createNewPlace(lugar, zoom, withMarker,ciudad)
+{  
+  $.getJSON("http://maps.google.com/maps/api/geocode/json", 
+  {
+    address: lugar,
+    sensor: 'false',
+    components: 'locality:'+ciudad.nombre
+  })
+  .done(function (response) 
+  {
+    if(($.inArray('street_address', response.results[0].types) < 0)&($.inArray('route', response.results[0].types) < 0))
+    {
+      alert("Lo sentimos, no hemos encontrado esa dirección dentro de "+ciudad.nombre+". Por favor, inténtalo con otra dirección.");
+      return;
+    }
 
+    southWest = L.latLng(response.results[0].geometry.viewport.southwest.lat, response.results[0].geometry.viewport.southwest.lng),
+    northEast = L.latLng(response.results[0].geometry.viewport.northeast.lat, response.results[0].geometry.viewport.northeast.lng),
+    bounds = L.latLngBounds(southWest, northEast);
 
+    if(!typeof zoom ==='undefined')
+      mapNewEvent.setZoom(zoom);
+    else
+      mapNewEvent.fitBounds(bounds);
 
-$(function() 
-{
-  $( "#newEvent-datepicker" ).datepicker($.datepicker.regional["es"]);
-});
+    if(withMarker)
+    {
+      if(!(typeof window.marker==='undefined'))
+        mapNewEvent.removeLayer(window.marker);
+      window.marker = L.marker(mapNewEvent.getCenter()).addTo(mapNewEvent);
+    }
+    $("#newEvent-lugarSuggest").empty();
+
+    var result = prompt("¿Cual es el nombre de este lugar?");
+    $(".newEvent-lugarDiv-texto1").html(result);
+    $(".newEvent-lugarDiv-texto2").html($("#newEvent-lugar").val());
+    $("#newEvent-idLugar").val(0);
+    $("#newEvent-lugar").hide();
+
+  });
+  
+}  
+
 
 var editor = new wysihtml5.Editor("newEvent-descripcion", { // id of textarea element
   toolbar:      "newEvent-toolbar", // id of toolbar element
@@ -284,41 +433,17 @@ var editor = new wysihtml5.Editor("newEvent-descripcion", { // id of textarea el
 });
 
 
-$('#newEvent-ciudad').bind('keyup',function(event)
+$(".newEvent-lugarDiv").on("click",function()
 {
-  switch (event.which) 
-  {
-    case 13:  //Intro
-      updateMapLocationNewEvent($('#newEvent-direccion').val()+", "+$('#newEvent-ciudad').val());
-      /*
-      if(window.selectedSuggestion==0)
-        window.selectedSuggestion=1;
-      var fila="#cabecera-suggest-fila-"+(window.selectedSuggestion-1);
-      $(fila).trigger("click");
-      */
-      /*
-      var icono=$(fila).find(".cabecera-suggest-icono").css('background-image');
-      icono=icono.substring(4,icono.length-1);
-      var texto=$(fila).find(".cabecera-suggest-texto1").text();
-      clickSuggestion(icono,texto,'busqueda',0);
-      */
-        return;
-        break;
-    case 27:  //Escape
-        //$("#cabecera-suggest").empty();
-        //$(this).val("");
-        break;
-    case 38:  //Up
-        //prevSuggestion();
-        //return;
-        break;
-    case 40:  //Down
-        //nextSuggestion();
-        //return;
-        break;
-    default:
-        //suggestBusqueda($(this).val());
-  }
+  $("#newEvent-lugar").val("");
+  $("#newEvent-lugar").show();
+  suggestLugar("");
+  $("#newEvent-lugar").focus();  
+});
+
+$('#newEvent-lugar').on("click",function()
+{
+  suggestLugar("");
 });
 
 $('#newEvent-lugar').bind('keyup',function(event)
@@ -364,6 +489,162 @@ $('#newEvent-tematica').bind('mousedown',function(event)
   suggestTematicas($(this).val());
 });
 
+/*
+$('#newEvent-tematica').focusout(function()
+{
+  //Al salir deberíamos de perder el foco, siempre que no sea en el tooltip
+  //$("#tematicas-tooltip").hide();
+  //$(this).val("");
+});
+*/
+
+$('#newEvent-propose').bind('mousedown',function(event)
+{
+  var enviar=true;
+
+  if($('#newEvent-titulo').val()==="")
+  {
+    enviar=false;
+    $('#newEvent-titulo').css('border-color','red').focus(function(){$('#newEvent-titulo').css('border-color','')});
+  }
+  else
+  {
+    $('#newEvent-titulo').css('border-color','');    
+  }
+
+  if(!isValidEmailAddress($('#newEvent-email').val()))
+  {
+    enviar=false;
+    $('#newEvent-email').css('border-color','red').focus(function(){$('#newEvent-email').css('border-color','')});
+  }
+  else
+  {
+    $('#newEvent-email').css('border-color','');    
+  }
+
+  if(!isValidURL($('#newEvent-webEvento').val()))
+  {
+    enviar=false;
+    $('#newEvent-webEvento').css('border-color','red').focus(function(){$('#newEvent-webEvento').css('border-color','')});
+  }
+  else
+  {
+    $('#newEvent-webEvento').css('border-color','');    
+  }
+
+  if(arrayTematicasNuevoEvento.length<1)
+  {
+    enviar=false;
+    $('#newEvent-tematica').css('border-color','red').focus(function(){$('#newEvent-tematica').css('border-color','')});
+  }
+  else
+  {
+    $('#newEvent-tematica').css('border-color','');    
+  }
+
+  if($('#newEvent-idCiudad').val()==="")
+  {
+    enviar=false;
+    $('#newEvent-ciudad').css('border-color','red').focus(function(){$('#newEvent-ciudad').css('border-color','')});
+  }
+  else
+  {
+    $('#newEvent-ciudad').css('border-color','');    
+  }
+
+  if($('#newEvent-idLugar').val()==="")
+  {
+    enviar=false;
+    $('#newEvent-lugar').css('border-color','red').focus(function(){$('#newEvent-lugar').css('border-color','')});
+  }
+  else
+  {
+    $('#newEvent-lugar').css('border-color','');    
+  }
+
+  if($('#newEvent-descripcion').val()==="")
+  {
+    enviar=false;
+    $('.wysihtml5-sandbox').css('border-color','red');
+    $('.wysihtml5-sandbox').css('border-width','2px');
+  }
+  else
+  {
+    $('.wysihtml5-editor').css('border-color','');    
+  }
+  
+  if(!($('#newEvent-datepicker').val().match(/\b\d{2}\/\d{2}\/\d{4}\b/g)))
+  {
+    enviar=false;
+    $('#newEvent-datepicker').css('border-color','red').focus(function(){$('#newEvent-datepicker').css('border-color','')});
+  }
+  else
+  {
+    $('#newEvent-datepicker').css('border-color','');    
+  }
+  
+  if(!($('#newEvent-horaInicio').val().match(/\b\d{2}:\d{2}\b/g)))
+  {
+    enviar=false;
+    $('#newEvent-horaInicio').css('border-color','red').focus(function(){$('#newEvent-horaInicio').css('border-color','')});
+  }
+  else
+  {
+    $('#newEvent-horaInicio').css('border-color','');    
+  }
+  
+  if(($('#newEvent-horaFinal').val()!="")&(!($('#newEvent-horaFinal').val().match(/\b\d{2}:\d{2}\b/g))))
+  {
+    enviar=false;
+    $('#newEvent-horaFinal').css('border-color','red').focus(function(){$('#newEvent-horaFinal').css('border-color','')});
+  }
+  else
+  {
+    $('#newEvent-horaFinal').css('border-color','');    
+  }
+  
+  if(enviar)
+  {
+
+    var datosAEnviar= {};
+    datosAEnviar["titulo"]=$("#newEvent-titulo").val();
+    datosAEnviar["email"]=$("#newEvent-email").val();
+    datosAEnviar["webEvento"]=$("#newEvent-webEvento").val();
+    datosAEnviar["tematicas"]=arrayTematicasNuevoEvento;
+    datosAEnviar["idCiudad"]=$("#newEvent-idCiudad").val();
+    datosAEnviar["ciudad"]=$("#newEvent-ciudad").val();
+    datosAEnviar["idLugar"]=$("#newEvent-idLugar").val();
+    datosAEnviar["lugar"]=$("#newEvent-lugar").val();
+    datosAEnviar["nombreLugar"]=$(".newEvent-lugarDiv-texto1").html();
+    datosAEnviar["coordenadas"]=window.marker.getLatLng();
+    datosAEnviar["descripcion"]=$("#newEvent-descripcion").val();
+    datosAEnviar["fecha"]=$("#newEvent-datepicker").val();
+    datosAEnviar["horaInicio"]=$("#newEvent-horaInicio").val();
+    datosAEnviar["horaFinal"]=$("#newEvent-horaFinal").val();
+
+    $.post( "newEvent.php", { data: escape(JSON.stringify(datosAEnviar))})
+    .done(function(data) 
+    {
+      $("#overlay").fadeOut("fast",function()
+      {
+        $("#overlay").addClass("overlayPeque");
+        $("#overlay").load("eventoEnviado.html",function()
+        {
+          $("#overlay").fadeIn("fast");
+        });       
+      });  
+    });
+  }
+
+});
+
+
+
+$('#newEvent-ciudad').bind('mousedown',function(event)
+{
+  suggestCiudades($(this).val());
+});
+
 $('#newEvent-tematica').bind('keyup',function(event)
 {
   switch (event.which) 
@@ -381,5 +662,70 @@ $('#newEvent-tematica').bind('keyup',function(event)
   }
 });
 
+
+$('#newEvent-ciudad').bind('keyup',function(event)
+{
+  switch (event.which) 
+  {
+    case 13:  //Intro
+        if($(this).val()!="")
+        {
+          //Preseleccionar una ciudad
+        }
+        break;
+    case 27:  //Escape
+        $("#newEvent-lugar").css('font-style','Italic').attr('placeholder','(Elige primero una ciudad)').prop('disabled','disabled');
+        $("#ciudad-tooltip").hide();
+        $(this).val("");
+        break;
+    default:
+        suggestCiudades($(this).val());
+  }
+});
+
 var arrayTematicasNuevoEvento = new Array();
+
+jQuery('#newEvent-datepicker').datetimepicker({
+ lang:'es',
+  i18n:{
+  es:{
+   months:[
+    'Enero','Febrero','Marzo','Abril',
+    'Mayo','Junio','Julio','Agosto',
+    'Septiembre','Octubre','Noviembre','Diciembre',
+   ],
+   dayOfWeek:[
+    "Do", "Lu", "Ma", "Mi", 
+    "Ju", "Vi", "Sa",
+   ]
+  }
+ },
+ dayOfWeekStart: 1,
+ timepicker:false,
+ format:'d/m/Y',
+ validateOnBlur:false,
+ closeOnDateSelect:true
+});
+
+jQuery('#newEvent-horaInicio').datetimepicker({
+ lang:'es',
+ datepicker:false,
+ format:'H:i',
+ validateOnBlur:false,
+ closeOnDateSelect:true
+});
+
+jQuery('#newEvent-horaFinal').datetimepicker({
+ lang:'es',
+ datepicker:false,
+ format:'H:i',
+ validateOnBlur:false,
+ closeOnDateSelect:true
+});
+
+
+/*
+ 
+ */
+
 cargarMapaNewEvent();
