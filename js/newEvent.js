@@ -252,7 +252,7 @@ function updateMapLocationNewEvent(lugar, zoom, withMarker)
 }
 */
 
-function prevLugarSuggestion()
+function prevLugarSuggestionNewEvent()
 {
   if((typeof window.selectedLugarSuggestion==='undefined')|(window.selectedLugarSuggestion==0)) //todavía no hay ninguna seleccionada
   {
@@ -270,7 +270,7 @@ function prevLugarSuggestion()
   }
 }
 
-function nextLugarSuggestion()
+function nextLugarSuggestionNewEvent()
 {
   if((typeof window.selectedLugarSuggestion==='undefined')|(window.selectedLugarSuggestion==0)) //todavía no hay ninguna seleccionada
   {
@@ -288,7 +288,7 @@ function nextLugarSuggestion()
   }
 }
 
-function clickSuggestion(index)
+function clickSuggestionNewEvent(index)
 {
   console.log(index);
   console.log(window.arraySuggestionsDirecciones[index]);
@@ -352,7 +352,7 @@ function suggestLugar(texto)
 
       $("#newEvent-lugarSuggest").find(".newEvent-lugarSuggest-fila:last").click(function()
       {
-          clickSuggestion(value.id);
+          clickSuggestionNewEvent(value.id);
       });
       i++;
     
@@ -462,7 +462,7 @@ $('#newEvent-lugar').bind('keyup',function(event)
       var icono=$(fila).find(".cabecera-suggest-icono").css('background-image');
       icono=icono.substring(4,icono.length-1);
       var texto=$(fila).find(".cabecera-suggest-texto1").text();
-      clickSuggestion(icono,texto,'busqueda',0);
+      clickSuggestionNewEvent(icono,texto,'busqueda',0);
       */
         return;
         break;
@@ -472,11 +472,11 @@ $('#newEvent-lugar').bind('keyup',function(event)
         window.selectedLugarSuggestion=0;
         break;
     case 38:  //Up
-        prevLugarSuggestion();
+        prevLugarSuggestionNewEvent();
         //return;
         break;
     case 40:  //Down
-        nextLugarSuggestion();
+        nextLugarSuggestionNewEvent();
         //return;
         break;
     default:
@@ -532,9 +532,18 @@ $('#newEvent-propose').bind('mousedown',function(event)
     $('#newEvent-webEvento').css('border-color','');    
   }
 
-  if(arrayTematicasNuevoEvento.length<1)
+
+  alMenosUnaTematica=false;
+  $.each(arrayTematicasNuevoEvento,function(key,tematica)
+  {
+    if(tematica.idTematica>0)
+      alMenosUnaTematica=true;
+  });
+
+  if(!alMenosUnaTematica)
   {
     enviar=false;
+    alert('Tienes que elegir al menos una temática de la lista desplegable, a parte de las etiquetas que crees.');
     $('#newEvent-tematica').css('border-color','red').focus(function(){$('#newEvent-tematica').css('border-color','')});
   }
   else

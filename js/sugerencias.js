@@ -235,7 +235,6 @@ function suggestBusqueda(texto)
             else if(value.tipo=="busqueda")
               icono="/citysens/icons/lupa.png";
 
-
             clickSuggestion(icono,value.texto1,value.tipo,value.id);
         });
       }
