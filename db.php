@@ -659,7 +659,6 @@ function getChildAreas($lugarOriginal,$nivel)
             ON lugares_shp.id=eventos.idDistritoPadre 
             WHERE nivel='$nivel'
             AND idPadre='$lugarOriginal'
-            AND eventos.eventoActivo='1' 
             GROUP BY lugares_shp.id";
 
 
