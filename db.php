@@ -653,6 +653,7 @@ function getDatosLugar($idLugar)
 
 function getChildAreas($lugarOriginal,$nivel)
 {
+    //Quizás no haría falta hacer el Join con eventos, ya que queremos todos
     $link=connect();
     $sql="SELECT lugares_shp.*,count(eventos.idDistritoPadre) as cantidad
             FROM lugares_shp LEFT OUTER JOIN eventos 
