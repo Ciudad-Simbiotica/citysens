@@ -88,7 +88,7 @@
     float:left;
     width: 50px;
     height: 50px;
-    background-image: url("/citysens/icons/CitYsens.people.png");    
+    background-image: url("/icons/CitYsens.people.png");    
     background-size: 85%;
     background-repeat: no-repeat;
     background-position: 90% 50%;
@@ -105,7 +105,7 @@
 .informacion-cabecera-izq-entidad-top
 {
     height: 25px;
-    background-image: url("/citysens/icons/icon_CitYsens.Libros.png");    
+    background-image: url("/icons/icon_CitYsens.Libros.png");    
     background-size: 50%;
     background-repeat: no-repeat;
     background-position: 90% 70%;
@@ -114,7 +114,7 @@
 .informacion-cabecera-izq-entidad-bottom
 {
     height: 25px;
-    background-image: url("/citysens/icons/icon_CitYsens.house.png");    
+    background-image: url("/icons/icon_CitYsens.house.png");    
     background-size: 50%;
     background-repeat: no-repeat;
     background-position: 90% 30%;

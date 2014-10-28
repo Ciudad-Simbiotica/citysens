@@ -12,7 +12,7 @@ $.ajax({
       geojsonLayer = L.geoJson(response,{fillColor: color, weight: 1}).addTo(map);
       geojsonLayer.on('click',function()
       {
-        //history.pushState(null, null, "http://localhost:8888/citysens/?idLugar="+idLugar);
+        //history.pushState(null, null, "http://localhost:8888/?idLugar="+idLugar);
         window.location="/citysens/?idLugar="+idLugar;
         //alert('Esto cargaría la página de '+texto);
       });
@@ -207,7 +207,7 @@ function cargarMapa(idLugar)
               icon: new L.NumberedDivIcon({number: datos[5]})
             }).addTo(map).on('click',function()
             {
-              //history.pushState(null, null, "http://localhost:8888/citysens/?idLugar="+idLugar);
+              //history.pushState(null, null, "http://localhost:8888/?idLugar="+idLugar);
               window.location="/citysens/?idLugar="+datos[0];
               //alert('Esto cargaría la página de '+texto);
             }).on('mouseover', function(e) 
@@ -244,7 +244,7 @@ function cargarMapa(idLugar)
           }).setOpacity(0).setZIndexOffset(1000).addTo(map);
           marker.on('click',function()
           {
-            //history.pushState(null, null, "http://localhost:8888/citysens/?idLugar="+idLugar);
+            //history.pushState(null, null, "http://localhost:8888/?idLugar="+idLugar);
             window.location="/citysens/?idLugar="+datos.idDistritoPadre;
             //alert('Esto cargaría la página de '+texto);
           }).on('mouseover', function(e) 
@@ -261,7 +261,7 @@ function cargarMapa(idLugar)
         });
       });
 
-      //http://localhost:8888/citysens/getEventosCoordenadas.php?xmin=-3.64643&ymin=40.37454&xmax=-3.10192&ymax=40.60744
+      //http://localhost:8888/getEventosCoordenadas.php?xmin=-3.64643&ymin=40.37454&xmax=-3.10192&ymax=40.60744
 
       
       //L.marker([40.470,-3.350]).addTo(map)

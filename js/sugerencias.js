@@ -203,7 +203,7 @@ function suggestBusqueda(texto)
               $('#input-email-nombreCiudad').val(value.texto1);
             });            
           }
-          //clickSuggestion("/citysens/icons/gps.png",texto,"IrA",0); //Añadir value.id, texto buscado
+          //clickSuggestion("/icons/gps.png",texto,"IrA",0); //Añadir value.id, texto buscado
         });
       }
       else

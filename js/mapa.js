@@ -33,7 +33,7 @@ $.ajax({
         {
           if(activo>0)
           {
-            //history.pushState(null, null, "http://localhost:8888/citysens/?idLugar="+idLugar);
+            //history.pushState(null, null, "http://localhost:8888/?idLugar="+idLugar);
             window.location="/citysens/?idLugar="+idLugar;
           }
           else

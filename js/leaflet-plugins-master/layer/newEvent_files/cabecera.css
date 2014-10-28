@@ -65,7 +65,7 @@
 	overflow: hidden;
 	z-index: 10;
 
-	background-image: url("/citysens/icons/UniqueEvent.64.png");	
+	background-image: url("/icons/UniqueEvent.64.png");	
 	background-size: 40%;
 	background-repeat: no-repeat;
     background-position: 50% 5px;
@@ -82,7 +82,7 @@
 	box-shadow: 0 2px 3px 0 #aaa;
 	z-index: 10;
 
-	background-image: url("/citysens/icons/pezGrandeChico.png");	
+	background-image: url("/icons/pezGrandeChico.png");	
 	background-size: 80%;
 	background-repeat: no-repeat;
     background-position: 50% 5px;
@@ -98,7 +98,7 @@
 	z-index: 10;
 	box-shadow: 0 2px 3px 0 #aaa;
 
-	background-image: url("/citysens/icons/CitYsens.Monigote.png");	
+	background-image: url("/icons/CitYsens.Monigote.png");	
 	background-size: 40%;
 	background-repeat: no-repeat;
     background-position: 55% 5px;
@@ -116,7 +116,7 @@
 	z-index: 10;
 	box-shadow: 0 2px 3px 0 #aaa;
 
-	background-image: url("/citysens/icons/noticias.png");	
+	background-image: url("/icons/noticias.png");	
 	background-size: 50%;
 	background-repeat: no-repeat;
     background-position: 50% 5px;
@@ -218,43 +218,43 @@
 
 .cabecera-suggest-icono-busqueda
 {
-	background-image: url("/citysens/icons/lupa.png");	
+	background-image: url("/icons/lupa.png");	
 }
 
 .cabecera-suggest-icono-lugar
 {
-	background-image: url("/citysens/icons/lugar.png");	
+	background-image: url("/icons/lugar.png");	
 }
 
 .cabecera-suggest-icono-sanidad
 {
-	background-image: url("/citysens/icons/sanidad.png");	
+	background-image: url("/icons/sanidad.png");	
 }
 
 .cabecera-suggest-icono-tematica
 {
-	background-image: url("/citysens/icons/etiqueta30x30.png");	
+	background-image: url("/icons/etiqueta30x30.png");	
 }
 
 .cabecera-suggest-icono-organizacion
 {
-	background-image: url("/citysens/icons/icon_CitYsens.organizacion.png");	
+	background-image: url("/icons/icon_CitYsens.organizacion.png");	
 }
 
 .cabecera-suggest-icono-colectivo
 {
-	background-image: url("/citysens/icons/CitYsens.people.png");	
+	background-image: url("/icons/CitYsens.people.png");	
 }
 
 .cabecera-suggest-icono-institucion
 {
-	background-image: url("/citysens/icons/icon_CitYsens.institucion.png");	
+	background-image: url("/icons/icon_CitYsens.institucion.png");	
 }
 
 
 .cabecera-suggest-icono-IrA
 {
-	background-image: url("/citysens/icons/gps.png");	
+	background-image: url("/icons/gps.png");	
 }
 
 .cabecera-lupa
@@ -262,7 +262,7 @@
 	left: 795px;
 	top: 14px;
 
-	background-image: url("/citysens/icons/lupa.png");	
+	background-image: url("/icons/lupa.png");	
 	background-size: 40%;
 	background-repeat: no-repeat;
     background-position: center;
