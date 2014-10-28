@@ -62,13 +62,13 @@
 
 	  //Cargamos los perímetros
 	  /*
-	  addPolygonToMap("/citysens/mapItDownloads/Madrid/579300.geojson",'alcalá','#ffffff');
+	  addPolygonToMap("/mapItDownloads/Madrid/579300.geojson",'alcalá','#ffffff');
 
 
 
 	  	
 
-		$.getJSON("/citysens/mapItDownloads/Madrid/579300.geojson", 
+		$.getJSON("/mapItDownloads/Madrid/579300.geojson", 
 		  {
 		    format: "json"
 		  })
@@ -88,7 +88,7 @@
 				
 		    });  
 		
-		$.getJSON("/citysens/mapItDownloads/Madrid/Distrito II.geojson", 
+		$.getJSON("/mapItDownloads/Madrid/Distrito II.geojson", 
 		  {
 		    format: "json"
 		  })
@@ -109,10 +109,10 @@
 		    });  
 	   
 		
-	   addPolygonToMap("/citysens/mapItDownloads/DistritoV.geojson",'Distrito V','#aaffff');
-	   addPolygonToMap("/citysens/mapItDownloads/DistritoIV.geojson",'Distrito IV','#aaffff');
-	   addPolygonToMap("/citysens/mapItDownloads/DistritoIII.geojson",'Distrito III','#aaffff');
-	   addPolygonToMap("/citysens/mapItDownloads/DistritoII.geojson",'Distrito II','#aaffff');
+	   addPolygonToMap("/mapItDownloads/DistritoV.geojson",'Distrito V','#aaffff');
+	   addPolygonToMap("/mapItDownloads/DistritoIV.geojson",'Distrito IV','#aaffff');
+	   addPolygonToMap("/mapItDownloads/DistritoIII.geojson",'Distrito III','#aaffff');
+	   addPolygonToMap("/mapItDownloads/DistritoII.geojson",'Distrito II','#aaffff');
 
 
 		

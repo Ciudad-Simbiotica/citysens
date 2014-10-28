@@ -28,7 +28,7 @@ error_reporting(E_ERROR);
  </div>
 
  <div class='cuerpo'>
- 	<FORM METHOD=POST ACTION='/citysens/?idLugar=888004284' id='login_form'>
+ 	<FORM METHOD=POST ACTION='/?idLugar=888004284' id='login_form'>
  		<input type=hidden name='email' value='<?php echo $_GET['email'];?>'>
  		<input type=hidden name='token' value='<?php echo $_GET['token'];?>'>
  		<input type=hidden name='post_form' value='reset_form'>

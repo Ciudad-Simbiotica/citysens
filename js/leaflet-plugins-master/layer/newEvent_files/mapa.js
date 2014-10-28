@@ -13,7 +13,7 @@ $.ajax({
       geojsonLayer.on('click',function()
       {
         //history.pushState(null, null, "http://localhost:8888/?idLugar="+idLugar);
-        window.location="/citysens/?idLugar="+idLugar;
+        window.location="/?idLugar="+idLugar;
         //alert('Esto cargaría la página de '+texto);
       });
       
@@ -99,7 +99,7 @@ function cargarMapa(idLugar)
   L.TargetIcon = L.Icon.extend(
   {
     options: {
-      iconUrl: '/citysens/icons/mira.png',
+      iconUrl: '/icons/mira.png',
       number: '',
       shadowUrl: null,
       iconSize: new L.Point(38, 37),
@@ -208,7 +208,7 @@ function cargarMapa(idLugar)
             }).addTo(map).on('click',function()
             {
               //history.pushState(null, null, "http://localhost:8888/?idLugar="+idLugar);
-              window.location="/citysens/?idLugar="+datos[0];
+              window.location="/?idLugar="+datos[0];
               //alert('Esto cargaría la página de '+texto);
             }).on('mouseover', function(e) 
             {
@@ -245,7 +245,7 @@ function cargarMapa(idLugar)
           marker.on('click',function()
           {
             //history.pushState(null, null, "http://localhost:8888/?idLugar="+idLugar);
-            window.location="/citysens/?idLugar="+datos.idDistritoPadre;
+            window.location="/?idLugar="+datos.idDistritoPadre;
             //alert('Esto cargaría la página de '+texto);
           }).on('mouseover', function(e) 
           {

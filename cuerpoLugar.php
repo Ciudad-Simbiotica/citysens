@@ -212,11 +212,11 @@
 		 	 Descripción breve de la entidad, que se corresponde con la que se muestra en la celda de la entidad en la lista, aunque ampliado.
 		 	</div>
 		 	<div class='informacion-cuerpo-tematicas'>
-				<div class='informacion-cuerpo-tematicas-elemento'><img src='/citysens/icons/etiqueta30x30.png' class="informacion-cuerpo-tematicas-img"> <B>Tematicas: </B></div> 
+				<div class='informacion-cuerpo-tematicas-elemento'><img src='/icons/etiqueta30x30.png' class="informacion-cuerpo-tematicas-img"> <B>Tematicas: </B></div> 
 		  		<div class='informacion-cuerpo-tematicas-listado'>Temática 1, Temática 2, Temática 3</div>
 		 	</div>
 		 	<div class='informacion-cuerpo-etiquetas'>
-		  		<div class='informacion-cuerpo-etiquetas-elemento'><img src='/citysens/icons/etiquetas30x30.png' class="informacion-cuerpo-tematicas-img"> <B>Etiquetas: </B></div>
+		  		<div class='informacion-cuerpo-etiquetas-elemento'><img src='/icons/etiquetas30x30.png' class="informacion-cuerpo-tematicas-img"> <B>Etiquetas: </B></div>
 		  		<div class='informacion-cuerpo-etiquetas-listado'>Etiqueta 1, Etiqueta 2, Etiqueta 3</div>
 		 	</div>
 		 	<div class='informacion-cuerpo-contacto'>
@@ -250,27 +250,27 @@
 			<!--
 			<a class='share-mail' href="mailto:?subject=Asunto&amp;body=Cuerpo"
 			   onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=350,width=480');return false;"
-			   target="_blank" title="Share on Google+"><img width="16px" src='/citysens/icons/mail.png'></a>
+			   target="_blank" title="Share on Google+"><img width="16px" src='/icons/mail.png'></a>
 
 			<a class='share-facebook' href="https://www.facebook.com/sharer/sharer.php?u=http://www.google.com&t=Titulo&s=Texto"
 			   onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
-			   target="_blank" title="Share on Facebook"><img width="16px" src='/citysens/icons/facebook.ico'></a>
+			   target="_blank" title="Share on Facebook"><img width="16px" src='/icons/facebook.ico'></a>
 
 			<a class='share-twitter' href="https://twitter.com/share?url=http://www.google.com&text=Titulo"
 			   onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
-			   target="_blank" title="Share on Twitter"><img width="16px" src='/citysens/icons/twitter.ico'></a>
+			   target="_blank" title="Share on Twitter"><img width="16px" src='/icons/twitter.ico'></a>
 
 			<a class='share-googleplus' href="https://plus.google.com/share?url=http://www.google.com"
 			   onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=350,width=480');return false;"
-			   target="_blank" title="Share on Google+"><img width="16px" src='/citysens/icons/googleplus.ico'></a>
+			   target="_blank" title="Share on Google+"><img width="16px" src='/icons/googleplus.ico'></a>
 
 			<a class='share-linkedin' href="http://www.linkedin.com/shareArticle?mini=true&url=http://www.google.com&title=Titulo&summary=Texto&source=http://www.citysens.net"
 			   onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=350,width=480');return false;"
-			   target="_blank" title="Share on Google+"><img width="16px" src='/citysens/icons/linkedin.ico'></a>
+			   target="_blank" title="Share on Google+"><img width="16px" src='/icons/linkedin.ico'></a>
 			-->
 			<!--<a class='share-link' href="#"
 			   onclick=''
-			   target="_blank" title="Share on Google+"><img width="16px" src='/citysens/icons/link.png'></a>-->
+			   target="_blank" title="Share on Google+"><img width="16px" src='/icons/link.png'></a>-->
 
 		 </div>
 	 </div>

@@ -34,7 +34,7 @@ $.ajax({
           if(activo>0)
           {
             //history.pushState(null, null, "http://localhost:8888/?idLugar="+idLugar);
-            window.location="/citysens/?idLugar="+idLugar;
+            window.location="/?idLugar="+idLugar;
           }
           else
           {
@@ -122,7 +122,7 @@ function cargarMapa(idLugar)
   L.TargetIcon = L.Icon.extend(
   {
     options: {
-      iconUrl: '/citysens/icons/mira.png',
+      iconUrl: '/icons/mira.png',
       number: '',
       shadowUrl: null,
       iconSize: new L.Point(38, 37),
