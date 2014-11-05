@@ -55,7 +55,7 @@ include "preload.php";
  </div>
  <div class='cabecera'>
  	<div class='cabecera-cuerpo'>
-	 	<div class='cabecera-logo'><A HREF='/'><!-- it was /citysens/ --><IMG SRC='icons/citysens.logoPrincipal.png' width='49px' height='40px'></A></div>
+	 	<div class='cabecera-logo'><A HREF='/'><IMG SRC='icons/citysens.logoPrincipal.png' width='49px' height='40px'></A></div>
 	 	<div class='cabecera-pestanias'>
 	 		<div id='cabecera-pestania-izq' class='cabecera-pestania-izq'>Eventos</div>
 	 		<div class='subcabecera-pestania-izq'>

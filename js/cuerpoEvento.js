@@ -109,7 +109,7 @@ $.getJSON('getDatos.php',
     $(".detalle-mapa-pie-nombre").text(data.direccion.nombre);
     $(".detalle-mapa-pie-direccion").text(data.direccion.direccion);
     $(".detalle-mapa-cabecera-volver").click(function(){
-        window.location="/citysens/?idLugar="+$.urlParam('idOrigen');
+        window.location="/?idLugar="+$.urlParam('idOrigen');
     });
 
 
@@ -169,7 +169,7 @@ $.getJSON('getDatos.php',
 
     addthis.toolbox("#toolbox",addthis_config,addthis_share);
 
-    $(".detalle-termometro").css("background-image", "url(/citysens/icons/termometro_"+data.temperatura+".png)");  
+    $(".detalle-termometro").css("background-image", "url(/icons/termometro_"+data.temperatura+".png)");  
     //$(".detalle-termometro").show();  //Por ahora queda oculto
     document.title = data.titulo;
 
@@ -224,13 +224,13 @@ $("#contacto").click(function ()
 
 $(".cabecera-pestania-izq").click(function()
 {
-    window.location="/citysens/?idLugar="+$.urlParam('idOrigen');
+    window.location="/?idLugar="+$.urlParam('idOrigen');
 });
 
 
 $(".cabecera-pestania-dch").click(function()
 {
-    window.location="/citysens/?idLugar="+$.urlParam('idOrigen')+'&category=ent';
+    window.location="/?idLugar="+$.urlParam('idOrigen')+'&category=ent';
 });
 
 $('#input-busqueda').attr('placeholder','Buscar en el evento...');

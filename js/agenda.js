@@ -293,7 +293,7 @@ function cargarContenido(id)
 
     $(".informacion-cabecera").click(function()
     {
-      window.location="/citysens/?idEvento="+data.idEvento+"&idOrigen="+window.idLugar;
+      window.location="?idEvento="+data.idEvento+"&idOrigen="+window.idLugar;
     });
 
     url="http://www.citysens.net/?idEvento="+data.idEvento+"%26idOrigen="+window.idLugar;
@@ -427,7 +427,7 @@ function cargarContenidoEntidad(id)
 
     $(".informacion-cabecera").click(function()
     {
-      window.location="/citysens/?idAsociacion="+data.idAsociacion+"&idOrigen="+window.idLugar;
+      window.location="/?idAsociacion="+data.idAsociacion+"&idOrigen="+window.idLugar;
     });
 
     url="http://www.citysens.net/?idAsociacion="+data.idAsociacion+"%26idOrigen="+window.idLugar;
