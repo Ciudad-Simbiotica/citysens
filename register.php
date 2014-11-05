@@ -14,7 +14,7 @@ if($user)
 	$cadena.= "¡Bienvenido a CitYsens!".PHP_EOL;
 	$cadena.= "Para empezar necesitamos que verifiques tu dirección de correo electrónico. Haz click en el siguiente enlace:".PHP_EOL;
 	$cadena.= PHP_EOL;
-	$cadena.= "http://localhost:8888/citysens/verifySignup.php?email=".$user["email"]."&token=".urlencode($user["verificationToken"]).PHP_EOL;
+	$cadena.= "http://localhost:8888/verifySignup.php?email=".$user["email"]."&token=".urlencode($user["verificationToken"]).PHP_EOL;
 	$cadena.= PHP_EOL;
 	$cadena.= "Un saludo,".PHP_EOL;
 	$cadena.= "El equipo de CitYsens".PHP_EOL;

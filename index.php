@@ -3,7 +3,7 @@ error_reporting(E_ERROR);
 //Página por defecto
 if(($_GET["idLugar"]=="")&($_GET["idEvento"]=="")&($_GET["idAsociacion"]==""))
 {
-	header('Location: http://localhost:8888/citysens/?idLugar=777000002');
+	header('Location: http://localhost:8888/?idLugar=777000002');
 	exit();
 }
 
@@ -55,7 +55,7 @@ include "preload.php";
  </div>
  <div class='cabecera'>
  	<div class='cabecera-cuerpo'>
-	 	<div class='cabecera-logo'><A HREF='/citysens/'><IMG SRC='icons/citysens.logoPrincipal.png' width='49px' height='40px'></A></div>
+	 	<div class='cabecera-logo'><A HREF='/'><IMG SRC='icons/citysens.logoPrincipal.png' width='49px' height='40px'></A></div>
 	 	<div class='cabecera-pestanias'>
 	 		<div id='cabecera-pestania-izq' class='cabecera-pestania-izq'>Eventos</div>
 	 		<div class='subcabecera-pestania-izq'>

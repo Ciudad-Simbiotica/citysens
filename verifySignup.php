@@ -13,5 +13,5 @@ else
 	//No verificado
 	$_SESSION["notificacion"]="errorRegistro";
 }
-header('Location: http://localhost:8888/citysens/?idLugar=888004284');
+header('Location: http://localhost:8888/?idLugar=888004284');
 ?>

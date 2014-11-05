@@ -157,7 +157,7 @@ function suggestBusqueda(texto)
     $("#cabecera-suggest").find(".cabecera-suggest-fila:last").attr("id","cabecera-suggest-fila-0");
       $("#cabecera-suggest").find(".cabecera-suggest-fila:last").click(function()
       {
-          clickSuggestion("/citysens/icons/lupa.png",texto,'busqueda',0);
+          clickSuggestion("/icons/lupa.png",texto,'busqueda',0);
       });
     var i=1;
     $.each(data.suggestions, function(key, value)
@@ -175,19 +175,19 @@ function suggestBusqueda(texto)
       {
           var icono="";
           if(value.tipo=="tematica")
-            icono="/citysens/icons/etiqueta30x30.png";
+            icono="/icons/etiqueta30x30.png";
           else if(value.tipo=="organizacion")
-            icono="/citysens/icons/icon_CitYsens.organizacion.png";
+            icono="/icons/icon_CitYsens.organizacion.png";
           else if(value.tipo=="institucion")
-            icono="/citysens/icons/icon_CitYsens.institucion.png";
+            icono="/icons/icon_CitYsens.institucion.png";
           else if(value.tipo=="colectivo")
-            icono="/citysens/icons/CitYsens.people.png";
+            icono="/icons/CitYsens.people.png";
           else if(value.tipo=="lugar")
-            icono="/citysens/icons/lugar.png";
+            icono="/icons/lugar.png";
           else if(value.tipo=="lupa")
-            icono="/citysens/icons/lupa.png";
+            icono="/icons/lupa.png";
           else if(value.tipo=="busqueda")
-            icono="/citysens/icons/lupa.png";
+            icono="/icons/lupa.png";
 
 
           clickSuggestion(icono,value.texto1,value.tipo,value.id);
@@ -207,7 +207,7 @@ function suggestBusqueda(texto)
       $("#cabecera-suggest").find(".cabecera-suggest-fila:last").attr("id","cabecera-suggest-fila-"+i);
       $("#cabecera-suggest").find(".cabecera-suggest-fila:last").click(function()
       {
-        clickSuggestion("/citysens/icons/gps.png",texto,"IrA",0); //Añadir value.id, texto buscado
+        clickSuggestion("/icons/gps.png",texto,"IrA",0); //Añadir value.id, texto buscado
       });
     } 
     
