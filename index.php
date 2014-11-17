@@ -1,10 +1,12 @@
 <?php
 error_reporting(E_ERROR);
+
+include "settings.php";
 //Página por defecto
 if(($_GET["idLugar"]=="")&($_GET["idEvento"]=="")&($_GET["idAsociacion"]==""))
 {
-	header('Location: http://localhost:8888/?idLugar=777000002');
-	exit();
+    header('Location: '.BASE_URL.'/?idLugar=777000002');
+    exit();
 }
 
 include "loadSession.php";

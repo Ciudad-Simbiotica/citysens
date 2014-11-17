@@ -34,7 +34,7 @@ $.ajax({
           if(activo>0)
           {
             //history.pushState(null, null, "http://localhost:8888/?idLugar="+idLugar);
-            window.location="/?idLugar="+idLugar;
+            window.location="?idLugar="+idLugar;
           }
           else
           {
