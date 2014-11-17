@@ -1,10 +1,10 @@
 <?php
-
+include "settings.php";
 include_once "passwordHashing.php";
 
 function connect()
 {
-    $conn = mysql_connect("localhost", "root", "root");
+    $conn = mysql_connect(DB_DOMAIN, DB_USERNAME, DB_PASSWORD);
     if (!$conn) {
         echo "Unable to connect to DB: " . mysql_error();
         exit;
