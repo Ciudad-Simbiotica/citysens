@@ -10,7 +10,7 @@ function connect()
         exit;
     }
 
-    if (!mysql_select_db("citysens")) {
+    if (!mysql_select_db(DB_DB)) {
         echo "Unable to select citysens: " . mysql_error();
         exit;
     }
