@@ -57,7 +57,7 @@ if($_GET["clase"]=="organizaciones")
 {
 	//Generar organizaciones
 
-	$asociaciones=array();
+	$entidades=array();
 
 	$fila = 1;
 	if (($gestor = fopen("asociaciones.csv", "r")) !== FALSE) 
@@ -73,11 +73,11 @@ if($_GET["clase"]=="organizaciones")
 	    		}
 	    		else
 	    		{
-	    			$asociacion[$variables[$c]]=$datos[$c];
+	    			$entidad[$variables[$c]]=$datos[$c];
 	    		}
 	        }
 		    if($fila>1)
-		        array_push($asociaciones, $asociacion);
+		        array_push($entidades, $entidad);
 	        $fila++;
 	    }
 	    fclose($gestor);
@@ -92,7 +92,7 @@ if($_GET["clase"]=="organizaciones")
 
 	$puntos=5000;
 
-	foreach($asociaciones as $asociacion)
+	foreach($entidades as $entidad)
 	{
 		//echo $grupoActual;
 		$i++;
@@ -139,9 +139,9 @@ if($_GET["clase"]=="organizaciones")
 
 		$puntos-=rand(50,150);
 
-		$datos["tituloOrg"]=$asociacion["ASOCIACION"];
-		$datos["textoOrg"]=$asociacion["DOMICILIO"];
-		$datos["lugarOrg"]="Distr. ".$asociacion["DISTRITO"];
+		$datos["tituloOrg"]=$entidad["ASOCIACION"];
+		$datos["textoOrg"]=$entidad["DOMICILIO"];
+		$datos["lugarOrg"]="Distr. ".$entidad["DISTRITO"];
 		$datos["puntos"]=$puntos;
 		
 		

@@ -23,13 +23,13 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `asociaciones`
+-- Estructura de tabla para la tabla `entidades`
 --
 
-DROP TABLE IF EXISTS `asociaciones`;
-CREATE TABLE `asociaciones` (
-  `idAsociacion` int(11) NOT NULL AUTO_INCREMENT,
-  `asociacion` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+DROP TABLE IF EXISTS `entidades`;
+CREATE TABLE `entidades` (
+  `idEntidad` int(11) NOT NULL AUTO_INCREMENT,
+  `entidad` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `siglas` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tipo` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `domicilio` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE `asociaciones` (
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `idDistritoPadre` int(255) NOT NULL,
   `clasificacion` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `tipoAsociacion` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `tipoEntidad` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `points` int(11) NOT NULL,
   `url` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `twitter` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -48,16 +48,16 @@ CREATE TABLE `asociaciones` (
   `descBreve` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `texto` text COLLATE utf8_unicode_ci NOT NULL,
   `idDireccion` int(11) NOT NULL,
-  PRIMARY KEY (`idAsociacion`),
-  KEY `asociacion` (`asociacion`),
+  PRIMARY KEY (`idEntidad`),
+  KEY `entidad` (`entidad`),
   KEY `idDireccion` (`idDireccion`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=554 ;
 
 --
--- Volcado de datos para la tabla `asociaciones`
+-- Volcado de datos para la tabla `entidades`
 --
 
-INSERT INTO `asociaciones` (`idAsociacion`, `asociacion`, `siglas`, `tipo`, `domicilio`, `cp`, `prefijo`, `telefono`, `email`, `idDistritoPadre`, `clasificacion`, `tipoAsociacion`, `points`, `url`, `twitter`, `facebook`, `etiquetas`, `descBreve`, `texto`, `idDireccion`) VALUES
+INSERT INTO `entidades` (`idEntidad`, `entidad`, `siglas`, `tipo`, `domicilio`, `cp`, `prefijo`, `telefono`, `email`, `idDistritoPadre`, `clasificacion`, `tipoEntidad`, `points`, `url`, `twitter`, `facebook`, `etiquetas`, `descBreve`, `texto`, `idDireccion`) VALUES
 (2, 'ASOCIACION GALLEGA CORREDOR DEL HENARES', '', '', 'C/ CAMPO REAL 1 Bº', '28806', '', '670 58 86 67', 'galiciahenares@hotmail.com', 999000008, 'CASAS REGIONALES', 'organizacion', 1396, '', '', '', '', '', '', 188),
 (3, 'ASOCIACION HOGAR DE AVILA', '', '', 'C/ TENIENTE RUIZ 4', '28805', '91', '878 73 87', 'info@inmoinverhouse.com', 999000007, 'CASAS REGIONALES', 'colectivo', 1409, '', '', '', '', '', '', 168),
 (4, 'CASA DE ANDALUCIA DE ALCALA DE HENARES', '', '', 'C/ PORTILLA  39  CENTRO COMUNIDADES ', '28801', '91', '889 41 76', '', 999000007, 'CASAS REGIONALES', 'colectivo', 857, '', '', '', '', '', '', 94),
@@ -306,7 +306,7 @@ INSERT INTO `asociaciones` (`idAsociacion`, `asociacion`, `siglas`, `tipo`, `dom
 (247, 'AMPA CP HENARES', '', 'AMPAS CP', 'C/ RIO GUADARRAMA 5', '28803', '91', '889 90 76', '', 999000006, 'EDUCATIVAS', 'colectivo', 1127, '', '', '', '', '', '', 181),
 (248, 'AMPA CP INFANTA CATALINA', '', 'AMPAS CP', 'C/ SAN VIDAL 6', '28803', '91', '888 61 45', '', 999000009, 'EDUCATIVAS', 'colectivo', 1652, '', '', '', '', '', '', 71),
 (249, 'AMPA CP IPLACEA', '', 'AMPAS CP', 'C/ GUADARRAMA 1', '28803', '91', '889 88 85', 'cp.iplacea.alcala@educa.madrid.org', 999000007, 'EDUCATIVAS', 'institucion', 1137, '', '', '', '', '', '', 159);
-INSERT INTO `asociaciones` (`idAsociacion`, `asociacion`, `siglas`, `tipo`, `domicilio`, `cp`, `prefijo`, `telefono`, `email`, `idDistritoPadre`, `clasificacion`, `tipoAsociacion`, `points`, `url`, `twitter`, `facebook`, `etiquetas`, `descBreve`, `texto`, `idDireccion`) VALUES
+INSERT INTO `entidades` (`idEntidad`, `entidad`, `siglas`, `tipo`, `domicilio`, `cp`, `prefijo`, `telefono`, `email`, `idDistritoPadre`, `clasificacion`, `tipoEntidad`, `points`, `url`, `twitter`, `facebook`, `etiquetas`, `descBreve`, `texto`, `idDireccion`) VALUES
 (250, 'AMPA CP JUAN DE AUSTRIA', '', 'AMPAS CP', 'AVDA JUAN DE AUSTRIA 17', '28804', '91', '888 63 50', '', 999000005, 'EDUCATIVAS', 'colectivo', 471, '', '', '', '', '', '', 155),
 (251, 'AMPA CP LA GARENA', '', 'AMPAS CP', 'C/ ARTURO SORIA S/N', '28806', '', '628 94 75 16', 'ampalagarena@yahoo.com', 999000007, 'EDUCATIVAS', 'colectivo', 436, '', '', '', '', '', '', 29),
 (252, 'AMPA CP LUIS VIVES', '', 'AMPAS CP', 'C/ LUIS VIVES 18', '28803', '91', '880 67 91', '', 999000008, 'EDUCATIVAS', 'institucion', 511, '', '', '', '', '', '', 115),
@@ -524,7 +524,7 @@ INSERT INTO `asociaciones` (`idAsociacion`, `asociacion`, `siglas`, `tipo`, `dom
 (464, 'ASOCIACION DE MUJERES DE ALCALA', '', '', 'PASEO DE LOS PINOS 1 JUNTA MUNICIPAL DISTRITO III', '28806', '91', '881 06 12', 'chelines@telefonica.net', 999000006, 'MUJERES', 'organizacion', 1092, '', '', '', '', '', '', 154),
 (465, 'ASOCIACION DE MUJERES DEMOCRATAS INDEPENDIENTES COMPLUTENSES', 'AMDIC', '', '', '', '91', '888 05 53', 'n-murillo-2@hotmail.com', 999000008, 'MUJERES', 'colectivo', 1649, '', '', '', '', '', '', 114),
 (466, 'ASOCIACION DE MUJERES DISTRITO IV', '', '', 'C/ ENTREPEÑAS 6 2ª PLANTA ', '28803', '91', '882 64 14', '', 999000006, 'MUJERES', 'colectivo', 1224, '', '', '', '', '', '', 181);
-INSERT INTO `asociaciones` (`idAsociacion`, `asociacion`, `siglas`, `tipo`, `domicilio`, `cp`, `prefijo`, `telefono`, `email`, `idDistritoPadre`, `clasificacion`, `tipoAsociacion`, `points`, `url`, `twitter`, `facebook`, `etiquetas`, `descBreve`, `texto`, `idDireccion`) VALUES
+INSERT INTO `entidades` (`idEntidad`, `entidad`, `siglas`, `tipo`, `domicilio`, `cp`, `prefijo`, `telefono`, `email`, `idDistritoPadre`, `clasificacion`, `tipoEntidad`, `points`, `url`, `twitter`, `facebook`, `etiquetas`, `descBreve`, `texto`, `idDireccion`) VALUES
 (467, 'ASOCIACION DE MUJERES EN IGUALDAD', '', '', 'C/ RICO HOME 3-5', '28801', '', '686 63 62 34', 'mdalcala2005@yahoo.es', 999000006, 'MUJERES', 'institucion', 922, '', '', '', '', '', '', 62),
 (468, 'ASOCIACION DE MUJERES INMIGRANTES', '', '', 'PASEO DE LOS PINOS 1 JUNTA MUNICIPAL DISTRITO III', '28806', '', '638 05 05 80', '', 999000005, 'MUJERES', 'colectivo', 680, '', '', '', '', '', '', 82),
 (469, 'ASOCIACION DE MUJERES PARA EL 2000', '', '', 'VIA COMPLUTENSE 130 CENTRO DE FORMACION DE LA MUJER', '28805', '91', '880 30 48', '', 999000005, 'MUJERES', 'institucion', 380, '', '', '', '', '', '', 127),
@@ -616,24 +616,24 @@ INSERT INTO `asociaciones` (`idAsociacion`, `asociacion`, `siglas`, `tipo`, `dom
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `asociaciones_tematicas`
+-- Estructura de tabla para la tabla `entidades_tematicas`
 --
 
-DROP TABLE IF EXISTS `asociaciones_tematicas`;
-CREATE TABLE `asociaciones_tematicas` (
-  `idAsociacionTematica` int(11) NOT NULL AUTO_INCREMENT,
-  `idAsociacion` int(11) NOT NULL,
+DROP TABLE IF EXISTS `entidades_tematicas`;
+CREATE TABLE `entidades_tematicas` (
+  `idEntidadTematica` int(11) NOT NULL AUTO_INCREMENT,
+  `idEntidad` int(11) NOT NULL,
   `idTematica` int(11) NOT NULL,
-  PRIMARY KEY (`idAsociacionTematica`),
-  KEY `idAsociacion` (`idAsociacion`),
+  PRIMARY KEY (`idEntidadTematica`),
+  KEY `idEntidad` (`idEntidad`),
   KEY `idTematica` (`idTematica`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1687 ;
 
 --
--- Volcado de datos para la tabla `asociaciones_tematicas`
+-- Volcado de datos para la tabla `entidades_tematicas`
 --
 
-INSERT INTO `asociaciones_tematicas` (`idAsociacionTematica`, `idAsociacion`, `idTematica`) VALUES
+INSERT INTO `entidades_tematicas` (`idEntidadTematica`, `idEntidad`, `idTematica`) VALUES
 (1, 425, 28),
 (2, 425, 2),
 (3, 513, 15),
@@ -2628,7 +2628,7 @@ CREATE TABLE `eventos` (
   `x` float NOT NULL,
   `y` float NOT NULL,
   `idDistritoPadre` int(11) NOT NULL,
-  `idAsociacion` int(11) NOT NULL,
+  `idEntidad` int(11) NOT NULL,
   `idTematica` int(11) NOT NULL,
   `idDireccion` int(11) NOT NULL,
   `url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -2645,7 +2645,7 @@ CREATE TABLE `eventos` (
 -- Volcado de datos para la tabla `eventos`
 --
 
-INSERT INTO `eventos` (`idEvento`, `fecha`, `fechaFin`, `clase`, `tipo`, `titulo`, `texto`, `lugar`, `temperatura`, `x`, `y`, `idDistritoPadre`, `idAsociacion`, `idTematica`, `idDireccion`, `url`, `email`, `etiquetas`, `repeatsAfter`, `eventoActivo`) VALUES
+INSERT INTO `eventos` (`idEvento`, `fecha`, `fechaFin`, `clase`, `tipo`, `titulo`, `texto`, `lugar`, `temperatura`, `x`, `y`, `idDistritoPadre`, `idEntidad`, `idTematica`, `idDireccion`, `url`, `email`, `etiquetas`, `repeatsAfter`, `eventoActivo`) VALUES
 (667, '2014-05-27 20:00:00', NULL, 'eventos', 'convocatoria', 'Bicicrítica Torrejón ¡Usa la bici todos los días, celébralo una vez al mes!', 'Bicicrítica Torrejón ¡Usa la bici todos los días, celébralo una vez al mes!', 'Torrejón de Ardoz', 1, -3.47981, 40.4589, 999000206, 31, 179, 266, NULL, NULL, '', 0, 1),
 (737, '2014-05-25 09:00:00', NULL, 'eventos', 'convocatoria', 'Elecciones al Parlamento Europeo', 'Elecciones al Parlamento Europeo', 'Alcalá de Henares', 3, -3.35946, 40.478, 999000005, 241, 35, 45, NULL, NULL, '', 0, 1),
 (886, '2014-05-16 16:30:00', NULL, 'eventos', 'recurrente', 'Lactancia Reunión Grupo Lactard', 'Lactancia Reunión Grupo Lactard', 'Torres, CM', 4, -3.3637, 40.4066, 999000213, 8, 203, 41, NULL, NULL, '', 21, 1),
@@ -2716,7 +2716,7 @@ CREATE TABLE `eventos_tematicas` (
   `idEvento` int(11) NOT NULL,
   `idTematica` int(11) NOT NULL,
   PRIMARY KEY (`idEventoTematica`),
-  KEY `idAsociacion` (`idEvento`),
+  KEY `idEntidad` (`idEvento`),
   KEY `idTematica` (`idTematica`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=164 ;
 

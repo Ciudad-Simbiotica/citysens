@@ -182,47 +182,47 @@ function isFollowing($idUser,$query,$clase)
         return false;
 }
 
-//Asociaciones
-function getAsociacion($idAsociacion)
+//Entidades
+function getEntidad($idEntidad)
 {
     $link=connect();
     mysql_query('SET CHARACTER SET utf8',$link);
-    $sql="SELECT * FROM asociaciones WHERE idAsociacion='$idAsociacion'";
+    $sql="SELECT * FROM entidades WHERE idEntidad='$idEntidad'";
     $result=mysql_query($sql,$link);
     if($fila=mysql_fetch_assoc($result))
     {
-        $asociacion=$fila;
+        $entidad=$fila;
         
         
         $sql="SELECT * FROM direcciones WHERE idDireccion='{$fila['idDireccion']}'";
         $result=mysql_query($sql,$link);
         if($fila=mysql_fetch_assoc($result))
         {
-            $asociacion['direccion']=$fila;
+            $entidad['direccion']=$fila;
         }
         else
         {
-            $asociacion['direccion']['direccion']="Sin dirección";
-            $asociacion['direccion']['idDireccion']="0";
-            $asociacion['direccion']['idPadre']="0";
-            $asociacion['direccion']['lat']=0;
-            $asociacion['direccion']['lng']=0;
-            $asociacion['direccion']['nombre']="Sin nombre";
-            $asociacion['direccion']['zoom']="15";
+            $entidad['direccion']['direccion']="Sin dirección";
+            $entidad['direccion']['idDireccion']="0";
+            $entidad['direccion']['idPadre']="0";
+            $entidad['direccion']['lat']=0;
+            $entidad['direccion']['lng']=0;
+            $entidad['direccion']['nombre']="Sin nombre";
+            $entidad['direccion']['zoom']="15";
         }
         
 
-        //$asociacion['direccion']="Distrito ".($asociacion["idDistritoPadre"]-999000004);
-        $sql="SELECT * FROM asociaciones_tematicas, tematicas 
-                WHERE asociaciones_tematicas.idasociacion='$idAsociacion' AND
-                asociaciones_tematicas.idTematica=tematicas.idTematica";
+        //$entidad['direccion']="Distrito ".($entidad["idDistritoPadre"]-999000004);
+        $sql="SELECT * FROM entidades_tematicas, tematicas 
+                WHERE entidades_tematicas.identidad='$idEntidad' AND
+                entidades_tematicas.idTematica=tematicas.idTematica";
         $result=mysql_query($sql,$link);
         while($fila=mysql_fetch_assoc($result))
         {
-            $asociacion['tematicas'][$fila['idTematica']]=ucfirst(strtolower($fila['tematica']));
+            $entidad['tematicas'][$fila['idTematica']]=ucfirst(strtolower($fila['tematica']));
         }
 
-        return $asociacion;
+        return $entidad;
     }
     else
     {
@@ -231,12 +231,12 @@ function getAsociacion($idAsociacion)
 
 }
 
-function getAsociaciones($cadena,$cantidad=10)
+function getEntidades($cadena,$cantidad=10)
 {
     $link=connect();
     $sql="SELECT * 
-            FROM  asociaciones 
-            WHERE asociacion LIKE '%$cadena%'
+            FROM  entidades 
+            WHERE entidad LIKE '%$cadena%'
             LIMIT 0,$cantidad";
     $result=mysql_query($sql,$link);
     $returnData=array();
@@ -245,13 +245,13 @@ function getAsociaciones($cadena,$cantidad=10)
     return $returnData;
 }
 
-function getAsociacionesZonaConEventos($cadena,$cantidad=10,$idDistritoPadre=0)
+function getEntidadesZonaConEventos($cadena,$cantidad=10,$idDistritoPadre=0)
 {
     $link=connect();
     $sql="SELECT * 
-            FROM asociaciones JOIN eventos 
-            ON asociaciones.idAsociacion=eventos.idAsociacion
-            WHERE asociacion LIKE '%$cadena%'";
+            FROM entidades JOIN eventos 
+            ON entidades.idEntidad=eventos.idEntidad
+            WHERE entidad LIKE '%$cadena%'";
 
     if($idDistritoPadre!=0)
     {
@@ -259,7 +259,7 @@ function getAsociacionesZonaConEventos($cadena,$cantidad=10,$idDistritoPadre=0)
         $sql.=" AND eventos.idDistritoPadre IN ('".join($hijos,"','")."')";
     }
 
-    $sql.=" GROUP BY asociaciones.idAsociacion
+    $sql.=" GROUP BY entidades.idEntidad
             LIMIT 0,$cantidad";
 
     $result=mysql_query($sql,$link);
@@ -269,7 +269,7 @@ function getAsociacionesZonaConEventos($cadena,$cantidad=10,$idDistritoPadre=0)
     return $returnData;
 }
 
-function getAsociacionesQuery($query,$cantidad=10)
+function getEntidadesQuery($query,$cantidad=10)
 {
     $link=connect();
     $busqueda="";
@@ -286,12 +286,12 @@ function getAsociacionesQuery($query,$cantidad=10)
             case "busqueda":
                 if($busqueda!="")
                     $busqueda.=" OR ";
-                $busqueda.="asociacion LIKE '%$texto%'";
+                $busqueda.="entidad LIKE '%$texto%'";
                 break;
             case "tematica":
                 if($tematica!="")
                     $tematica.=" OR ";
-                $tematica.="asociaciones_tematicas.idTematica='$id'";
+                $tematica.="entidades_tematicas.idTematica='$id'";
                 break;
             case "lugar":
                 array_push($lugares,$id);
@@ -309,10 +309,10 @@ function getAsociacionesQuery($query,$cantidad=10)
     }
 
 
-    $sql="SELECT asociaciones.*,asociaciones_tematicas.*,tematicas.*,direcciones.*, lugares_shp.nombre as nombreLugar FROM asociaciones 
-            JOIN asociaciones_tematicas ON asociaciones.idAsociacion=asociaciones_tematicas.idAsociacion 
-            JOIN tematicas ON asociaciones_tematicas.idTematica=tematicas.idTematica 
-            JOIN direcciones ON asociaciones.idDireccion=direcciones.idDireccion
+    $sql="SELECT entidades.*,entidades_tematicas.*,tematicas.*,direcciones.*, lugares_shp.nombre as nombreLugar FROM entidades 
+            JOIN entidades_tematicas ON entidades.idEntidad=entidades_tematicas.idEntidad 
+            JOIN tematicas ON entidades_tematicas.idTematica=tematicas.idTematica 
+            JOIN direcciones ON entidades.idDireccion=direcciones.idDireccion
             JOIN lugares_shp ON direcciones.idPadre=lugares_shp.id
             WHERE ";
     if($busqueda!="")
@@ -321,7 +321,7 @@ function getAsociacionesQuery($query,$cantidad=10)
         $sql.="($tematica) AND ";
     if($lugar!="")
         $sql.="($lugar) AND ";
-    $sql.="1 GROUP BY asociaciones.idAsociacion ORDER BY points DESC LIMIT 0,$cantidad";
+    $sql.="1 GROUP BY entidades.idEntidad ORDER BY points DESC LIMIT 0,$cantidad";
 
     $result=mysql_query($sql,$link);
     $returnData=array();
@@ -338,10 +338,10 @@ function getAsociacionesQuery($query,$cantidad=10)
     /*
     $link=connect();
     $sql="SELECT * 
-            FROM asociaciones JOIN eventos 
-            ON asociaciones.idAsociacion=eventos.idAsociacion
-            WHERE asociacion LIKE '%$cadena%'
-            GROUP BY asociaciones.idAsociacion
+            FROM entidades JOIN eventos 
+            ON entidades.idEntidad=eventos.idEntidad
+            WHERE entidad LIKE '%$cadena%'
+            GROUP BY entidades.idEntidad
             LIMIT 0,$cantidad";
     $result=mysql_query($sql,$link);
     $returnData=array();
@@ -413,7 +413,7 @@ function crearNuevoEvento($datosNuevoEvento)
     $x=safe($datosNuevoEvento["x"]);
     $y=safe($datosNuevoEvento["y"]);
     $idDistritoPadre=safe($datosNuevoEvento["idDistritoPadre"]);
-    $idAsociacion=safe($datosNuevoEvento["idAsociacion"]);
+    $idEntidad=safe($datosNuevoEvento["idEntidad"]);
     $temperatura=safe($datosNuevoEvento["temperatura"]);
     $tematicas=array();
     foreach($datosNuevoEvento["tematicas"] as $tematica)
@@ -431,9 +431,9 @@ function crearNuevoEvento($datosNuevoEvento)
     $link=connect();
     mysql_query('SET CHARACTER SET utf8',$link);
 
-    $sql="INSERT INTO eventos (fecha,fechaFin,clase,tipo,titulo,texto,lugar,temperatura,x,y,idDistritoPadre,idAsociacion,
+    $sql="INSERT INTO eventos (fecha,fechaFin,clase,tipo,titulo,texto,lugar,temperatura,x,y,idDistritoPadre,idEntidad,
                                 idTematica,idDireccion,url,email,etiquetas,repeatsAfter,eventoActivo)
-                       VALUES ('$fecha',$fechaFin,'$clase','$tipo','$titulo','$texto','$lugar','$temperatura','$x','$y','$idDistritoPadre','$idAsociacion',
+                       VALUES ('$fecha',$fechaFin,'$clase','$tipo','$titulo','$texto','$lugar','$temperatura','$x','$y','$idDistritoPadre','$idEntidad',
                                 '$idTematica','$idDireccion','$url','$email','$etiquetas','$repeatsAfter','$eventoActivo')";
     mysql_query($sql,$link);
     $idEvento=mysql_insert_id();
@@ -521,7 +521,7 @@ function getEventos($query,$cantidad=50,$orden="fecha")
             case "colectivo":
                 if($organizacion!="")
                     $organizacion.=" OR ";
-                $organizacion.="idAsociacion='$id'";
+                $organizacion.="idEntidad='$id'";
                 break;                
         }
     }
@@ -571,7 +571,7 @@ function getEventosPorValidar()
 
     $sql="SELECT eventos.*,
                  lugares_shp.nombre as nombreLugar,
-                 asociaciones.asociacion as asociacion,
+                 entidades.entidad as entidad,
                  direcciones.nombre as nombreDireccion,
                  direcciones.direccion as direccion,
                  direcciones.direccionActiva as direccionActiva,                 
@@ -579,11 +579,11 @@ function getEventosPorValidar()
                  FROM eventos_tematicas, tematicas
                  WHERE eventos_tematicas.idTematica=tematicas.idTematica 
                  AND eventos_tematicas.idEvento = eventos.idEvento) AS tematicas
-            FROM eventos, direcciones, lugares_shp, asociaciones
+            FROM eventos, direcciones, lugares_shp, entidades
             WHERE eventoActivo=0
             AND eventos.idDireccion=direcciones.idDireccion 
             AND direcciones.idPadre=lugares_shp.id 
-            AND eventos.idAsociacion=asociaciones.idAsociacion
+            AND eventos.idEntidad=entidades.idEntidad
             GROUP BY eventos.idEvento 
             ORDER BY idEvento ASC";    
     mysql_query('SET CHARACTER SET utf8',$link);

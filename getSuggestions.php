@@ -18,7 +18,7 @@ array_push($sugestions,$sugestion);
 $tematicas=getTematicas($_GET["query"],4);
 foreach($tematicas as $tematica)
 {
-	//print_r($asociacion);
+	//print_r($entidad);
 	$sugestion["tipo"]="tematica";
 	$sugestion["texto1"]=substr($tematica["tematica"],0,50);
 	$sugestion["texto2"]="";
@@ -66,14 +66,14 @@ foreach($lugares as $lugar)
 
 if($_GET["entidades"]=="")	//Sólo las mostramos si NO estamos buscando entidades
 {
-	$asociaciones=getAsociacionesZonaConEventos($_GET["query"],4,$_GET["idLugar"]);
-	foreach($asociaciones as $asociacion)
+	$entidades=getEntidadesZonaConEventos($_GET["query"],4,$_GET["idLugar"]);
+	foreach($entidades as $entidad)
 	{
-		//print_r($asociacion);
-		$sugestion["tipo"]=$asociacion["tipoAsociacion"];
-		$sugestion["texto1"]=htmlentities(ucwords(strtolower(substr($asociacion["asociacion"],0,50))));
-		$sugestion["texto2"]=htmlentities("Distrito ".$asociacion["distrito"]);
-		$sugestion["id"]=$asociacion["idAsociacion"];
+		//print_r($entidad);
+		$sugestion["tipo"]=$entidad["tipoEntidad"];
+		$sugestion["texto1"]=htmlentities(ucwords(strtolower(substr($entidad["entidad"],0,50))));
+		$sugestion["texto2"]=htmlentities("Distrito ".$entidad["distrito"]);
+		$sugestion["id"]=$entidad["idEntidad"];
 		array_push($sugestions,$sugestion);
 	}
 }
