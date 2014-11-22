@@ -3,7 +3,7 @@ error_reporting(E_ERROR);
 include_once "db.php";
 $query=json_decode($_GET["query"],true);
 
-$entidades=getAsociacionesQuery($query,50);
+$entidades=getEntidadesQuery($query,50);
 
 
 $i=0;
@@ -21,24 +21,24 @@ if($tipoGrupos=="puntuacion")
 		$grupos[$grupoActual]["totalFilas"]["organizacion"]=0;
 		$grupos[$grupoActual]["totalFilas"]["colectivo"]=0;
 
-		foreach($entidades as $asociacion)
+		foreach($entidades as $entidad)
 		{
-			//print_r($asociacion);
+			//print_r($entidad);
 			$i++;
-			$datos["id"]=$asociacion["idAsociacion"];
+			$datos["id"]=$entidad["idEntidad"];
 			$datos["clase"]="organizaciones";
-			$datos["tipo"]=utf8_encode($asociacion["tipoAsociacion"]);	
+			$datos["tipo"]=utf8_encode($entidad["tipoEntidad"]);	
 			$grupos[$grupoActual]["totalFilas"][$datos["tipo"]]++;
 
 
-			$datos["tituloOrg"]=utf8_encode($asociacion["asociacion"]);
-			$datos["textoOrg"]=utf8_encode($asociacion["domicilio"]);
-			$datos["lugarOrg"]=utf8_encode($asociacion["nombreLugar"]);
-			$datos["puntos"]=$asociacion["points"];
-			$datos["x"]=$asociacion["lng"];
-			$datos["y"]=$asociacion["lat"];
-			$datos["idDistritoPadre"]=$asociacion["idPadre"];
-			$datos["tematica"]=utf8_encode($asociacion["tematica"]);
+			$datos["tituloOrg"]=utf8_encode($entidad["entidad"]);
+			$datos["textoOrg"]=utf8_encode($entidad["domicilio"]);
+			$datos["lugarOrg"]=utf8_encode($entidad["nombreLugar"]);
+			$datos["puntos"]=$entidad["points"];
+			$datos["x"]=$entidad["lng"];
+			$datos["y"]=$entidad["lat"];
+			$datos["idDistritoPadre"]=$entidad["idPadre"];
+			$datos["tematica"]=utf8_encode($entidad["tematica"]);
 			array_push($filas,$datos);
 
 			if((($i%10)==0))
@@ -84,27 +84,27 @@ if($tipoGrupos=="puntuacion")
 else
 {
 	
-	foreach($entidades as $asociacion)
+	foreach($entidades as $entidad)
 	{
 		if($tipoGrupos=="tematica")
-			$grupoActual=utf8_encode($asociacion["tematica"]);
+			$grupoActual=utf8_encode($entidad["tematica"]);
 		else if($tipoGrupos=="lugar")
-			$grupoActual=utf8_encode($asociacion["nombreLugar"]);			
+			$grupoActual=utf8_encode($entidad["nombreLugar"]);			
 		
-		$datos["id"]=$asociacion["idAsociacion"];
+		$datos["id"]=$entidad["idEntidad"];
 		$datos["clase"]="organizaciones";
-		$datos["tipo"]=utf8_encode($asociacion["tipoAsociacion"]);	
+		$datos["tipo"]=utf8_encode($entidad["tipoEntidad"]);	
 		$grupos[$grupoActual][""]["totalFilas"][$datos["tipo"]]++;
 
 
-		$datos["tituloOrg"]=utf8_encode($asociacion["asociacion"]);
-		$datos["textoOrg"]=utf8_encode($asociacion["domicilio"]);
-		$datos["lugarOrg"]=utf8_encode($asociacion["nombreLugar"]);
-		$datos["puntos"]=$asociacion["points"];
-		$datos["tematica"]=utf8_encode($asociacion["tematica"]);
-		$datos["x"]=$asociacion["lng"];
-		$datos["y"]=$asociacion["lat"];
-		$datos["idDistritoPadre"]=$asociacion["idPadre"];
+		$datos["tituloOrg"]=utf8_encode($entidad["entidad"]);
+		$datos["textoOrg"]=utf8_encode($entidad["domicilio"]);
+		$datos["lugarOrg"]=utf8_encode($entidad["nombreLugar"]);
+		$datos["puntos"]=$entidad["points"];
+		$datos["tematica"]=utf8_encode($entidad["tematica"]);
+		$datos["x"]=$entidad["lng"];
+		$datos["y"]=$entidad["lat"];
+		$datos["idDistritoPadre"]=$entidad["idPadre"];
 
 		if(!is_array($grupos[$grupoActual][""]["filas"]))
 		{

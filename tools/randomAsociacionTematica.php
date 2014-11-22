@@ -11,30 +11,30 @@ while($fila=mysql_fetch_assoc($result))
 	array_push($tematicas,$fila["idTematica"]);
 }
 
-$sql="SELECT idAsociacion FROM asociaciones";
+$sql="SELECT idEntidad FROM entidades";
 $result=mysql_query($sql,$link);
-$asociaciones=array();
+$entidades=array();
 while($fila=mysql_fetch_assoc($result))
 {
-	array_push($asociaciones,$fila["idAsociacion"]);
+	array_push($entidades,$fila["idEntidad"]);
 }
 
-foreach($asociaciones as $asociacion)
+foreach($entidades as $entidad)
 {
-	$tematicasAsociacion=array();
+	$tematicasEntidad=array();
 	$cantidadTematicas=rand(2,4);
-	while(count($tematicasAsociacion)<$cantidadTematicas)
+	while(count($tematicasEntidad)<$cantidadTematicas)
 	{
-		array_push($tematicasAsociacion, $tematicas[rand(0,29)]);
-		$tematicasAsociacion=array_unique($tematicasAsociacion);
+		array_push($tematicasEntidad, $tematicas[rand(0,29)]);
+		$tematicasEntidad=array_unique($tematicasEntidad);
 	}
 
-	foreach($tematicasAsociacion as $tematica)
+	foreach($tematicasEntidad as $tematica)
 	{
-		$sql="INSERT INTO asociaciones_tematicas (idAsociacion, idTematica) VALUES ('$asociacion','$tematica')";
+		$sql="INSERT INTO entidades_tematicas (idEntidad, idTematica) VALUES ('$entidad','$tematica')";
 		mysql_query($sql,$link);
 	}
-	echo $asociacion.PHP_EOL;
+	echo $entidad.PHP_EOL;
 }
 
 ?>

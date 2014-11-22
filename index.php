@@ -3,7 +3,7 @@ error_reporting(E_ERROR);
 
 include "settings.php";
 //Página por defecto
-if(($_GET["idLugar"]=="")&($_GET["idEvento"]=="")&($_GET["idAsociacion"]==""))
+if(($_GET["idLugar"]=="")&($_GET["idEvento"]=="")&($_GET["idEntidad"]==""))
 {
     header('Location: '.BASE_URL.'?idLugar=777000002');
     exit();
@@ -18,6 +18,7 @@ include "preload.php";
 <head>
  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
  <title>CitYsens</title>
+ <base href="<?php echo BASE_URL; //Base URL?>" target="_blank">
  <link href="css/style.css" rel="stylesheet" type="text/css" />
  <link href="css/cabecera.css" rel="stylesheet" type="text/css" />
  <link href="css/grupos.css" rel="stylesheet" type="text/css" />
@@ -115,7 +116,7 @@ include "preload.php";
 			include "cuerpoLugar.php";
 		else if($_GET["idEvento"]!="")
 			include "cuerpoEvento.php";
-		else if($_GET["idAsociacion"]!="")
+		else if($_GET["idEntidad"]!="")
 			include "cuerpoEntidad.php";
 	?>
  </div>
