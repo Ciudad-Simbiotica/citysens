@@ -122,7 +122,7 @@ function cargarMapa(idLugar)
   L.TargetIcon = L.Icon.extend(
   {
     options: {
-      iconUrl: '/icons/mira.png',
+      iconUrl: 'icons/mira.png',
       number: '',
       shadowUrl: null,
       iconSize: new L.Point(38, 37),
