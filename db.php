@@ -255,7 +255,7 @@ function getEntidadesZonaConEventos($cadena,$cantidad=10,$idDistritoPadre=0)
   // Sanitize inputs
   $cadena=safe($cadena);
   $cantidad=safe(filter_var($cantidad,FILTER_SANITIZE_NUMBER_INT));
-  $cantidad=safe(filter_var($idDistritoPadre,FILTER_SANITIZE_NUMBER_INT));
+  $idDistritoPadre=safe($idDistritoPadre);
   
   $link=connect();
     $sql="SELECT * 
@@ -513,7 +513,7 @@ function getEventos($query,$cantidad=50,$orden="fecha")
 {
     //Sanitize inputs
     $query=safe($query);
-    $cantidad=$safe(filter_var($cantidad, FILTER_VALIDATE_INT));
+    $cantidad=$safe(filter_var($cantidad, FILTER_SANITIZE_NUMBER_INT));
     $orden=safe($orden);
     
     $link=connect();
@@ -710,7 +710,7 @@ function getLugares($cadena,$lugarOriginal,$type,$cantidad=3,$inSet=array())
     $cadena=safe($cadena);
     $lugarOriginal=safe($lugarOriginal);
     $type=safe($type);
-    $cantidad=safe(filter_var($cantidad, FILTER_VALIDATE_INT));
+    $cantidad=safe(filter_var($cantidad, FILTER_SANITIZE_NUMBER_INT));
   
     $link=connect();
     $sql="SELECT * FROM lugares_shp WHERE 
@@ -735,7 +735,7 @@ function getLugaresSuggestions($cadena,$lugarOriginal,$cantidad=4)
 {
     //Sanitize input
     $cadena=safe($cadena);
-    $cantidad=safe(filter_var($cantidad, FILTER_VALIDATE_INT));
+    $cantidad=safe(filter_var($cantidad, FILTER_SANITIZE_NUMBER_INT));
     $lugarOriginal=safe($lugarOriginal);
     
     $datosLugar=getDatosLugar($lugarOriginal);
@@ -795,7 +795,7 @@ function getDireccionesSuggestions($cadena,$lugarOriginal,$cantidad=5)
     //sanitize inputs
     $cadena=safe($cadena);
     $lugarOriginal=safe($lugarOriginal);
-    $cantidad=safe(filter_var($cantidad, FILTER_VALIDATE_INT));
+    $cantidad=safe(filter_var($cantidad, FILTER_SANITIZE_NUMBER_INT));
   
     //echo $lugarOriginal;
     $inSet=getAllChildren(array($lugarOriginal));
