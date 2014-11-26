@@ -103,7 +103,7 @@ function getUser($email,$pass)
 
 function resetUser($email)
 {
-    $email=safe($email);
+    $email=safe(filter_var($email,FILTER_SANITIZE_EMAIL));
 
     $link=connect();
     mysql_query('SET CHARACTER SET utf8',$link);
@@ -185,6 +185,8 @@ function isFollowing($idUser,$query,$clase)
 //Entidades
 function getEntidad($idEntidad)
 {
+    $idEntidad=safe($idEntidad);
+    
     $link=connect();
     mysql_query('SET CHARACTER SET utf8',$link);
     $sql="SELECT * FROM entidades WHERE idEntidad='$idEntidad'";
@@ -233,6 +235,9 @@ function getEntidad($idEntidad)
 
 function getEntidades($cadena,$cantidad=10)
 {
+    $cadena=safe($cadena);
+    $cantidad=safe(filter_var($cantidad,FILTER_SANITIZE_NUMBER_INT));
+    
     $link=connect();
     $sql="SELECT * 
             FROM  entidades 
@@ -247,7 +252,12 @@ function getEntidades($cadena,$cantidad=10)
 
 function getEntidadesZonaConEventos($cadena,$cantidad=10,$idDistritoPadre=0)
 {
-    $link=connect();
+  // Sanitize inputs
+  $cadena=safe($cadena);
+  $cantidad=safe(filter_var($cantidad,FILTER_SANITIZE_NUMBER_INT));
+  $cantidad=safe(filter_var($idDistritoPadre,FILTER_SANITIZE_NUMBER_INT));
+  
+  $link=connect();
     $sql="SELECT * 
             FROM entidades JOIN eventos 
             ON entidades.idEntidad=eventos.idEntidad
@@ -271,6 +281,10 @@ function getEntidadesZonaConEventos($cadena,$cantidad=10,$idDistritoPadre=0)
 
 function getEntidadesQuery($query,$cantidad=10)
 {
+  // Sanitize inpusts
+  $query=safe($query);
+  $cantidad=safe(filter_var($cantidad,FILTER_SANITIZE_NUMBER_INT));
+  
     $link=connect();
     $busqueda="";
     $tematicas=array();
@@ -350,9 +364,11 @@ function getEntidadesQuery($query,$cantidad=10)
 
 function insertEmailPreregister($email, $idCiudad)
 {
-    $link=connect();
+    //Sanitize inputs
     $email=safe(filter_var($email,FILTER_SANITIZE_EMAIL));
     $idCiudad=safe($idCiudad);
+    
+    $link=connect();
     $sql="INSERT INTO preregister (email, idCiudad) VALUES ('$email','$idCiudad')";
     mysql_query($sql,$link);
 }
@@ -363,7 +379,10 @@ function safe($value){
 
 function getTematicas($cadena,$cantidad=10)
 {
-    $cadena=safe($cadena);
+  //Sanitize inputs  
+  $cadena=safe($cadena);
+    $cantidad=safe(filter_var($cantidad,FILTER_SANITIZE_NUMBER_INT));
+    
     $link=connect();
     $sql="SELECT * 
             FROM  tematicas 
@@ -379,7 +398,10 @@ function getTematicas($cadena,$cantidad=10)
 
 function getCiudadesMadrid($cadena,$cantidad=10)
 {
+    //Sanitize inputs
     $cadena=safe($cadena);
+    $cantidad=safe(filter_var($cantidad,FILTER_SANITIZE_NUMBER_INT));
+    
     $link=connect();
     $sql="SELECT * 
             FROM  lugares_shp 
@@ -417,12 +439,11 @@ function crearNuevoEvento($datosNuevoEvento)
         array_push($tematicas,safe($tematica));
     $idTematica=$tematicas[0];
     $idDireccion=safe($datosNuevoEvento["idDireccion"]);
-    $url=safe($datosNuevoEvento["url"]);
-    $email=safe($datosNuevoEvento["email"]);
+    $url=safe(filter_var($datosNuevoEvento["url"], FILTER_SANITIZE_URL));
+    $email=safe(filter_var($datosNuevoEvento["email"], FILTER_SANITIZE_EMAIL));
     $etiquetas=safe($datosNuevoEvento["etiquetas"]);
     $repeatsAfter=safe($datosNuevoEvento["repeatsAfter"]);
     $eventoActivo=safe($datosNuevoEvento["eventoActivo"]);
-
 
 
     $link=connect();
@@ -443,6 +464,9 @@ function crearNuevoEvento($datosNuevoEvento)
 
 function getEvento($idEvento)
 {
+    //sanitize input
+    $idEvento=safe($idEvento);
+  
     $link=connect();
     mysql_query('SET CHARACTER SET utf8',$link);
     $sql="SELECT * FROM eventos WHERE idEvento='$idEvento' AND eventos.eventoActivo='1'";
@@ -487,6 +511,11 @@ function getEvento($idEvento)
 
 function getEventos($query,$cantidad=50,$orden="fecha")
 {
+    //Sanitize inputs
+    $query=safe($query);
+    $cantidad=$safe(filter_var($cantidad, FILTER_VALIDATE_INT));
+    $orden=safe($orden);
+    
     $link=connect();
     $busqueda="";
     $tematica="";
@@ -637,7 +666,9 @@ function getAllAncestors($idLugar)
 
 function getDatosLugar($idLugar)
 {
+    //Sanitize input
     $idLugar=safe($idLugar);
+    
     $link=connect();
     $sql="SELECT * 
             FROM  lugares_shp 
@@ -675,6 +706,12 @@ function getChildAreas($lugarOriginal,$nivel)
 
 function getLugares($cadena,$lugarOriginal,$type,$cantidad=3,$inSet=array())
 {
+    //Sanitize inputs
+    $cadena=safe($cadena);
+    $lugarOriginal=safe($lugarOriginal);
+    $type=safe($type);
+    $cantidad=safe(filter_var($cantidad, FILTER_VALIDATE_INT));
+  
     $link=connect();
     $sql="SELECT * FROM lugares_shp WHERE 
             nivel='$type' AND
@@ -696,8 +733,11 @@ function getLugares($cadena,$lugarOriginal,$type,$cantidad=3,$inSet=array())
 
 function getLugaresSuggestions($cadena,$lugarOriginal,$cantidad=4)
 {
-    //echo $lugarOriginal;
+    //Sanitize input
+    $cadena=safe($cadena);
+    $cantidad=safe(filter_var($cantidad, FILTER_VALIDATE_INT));
     $lugarOriginal=safe($lugarOriginal);
+    
     $datosLugar=getDatosLugar($lugarOriginal);
     if($datosLugar['nivel']<8)
         $whereNiveles="AND nivel<='8'";
@@ -725,7 +765,9 @@ function getIrA($cadena,$lugarOriginal)
     //echo $lugarOriginal;
     //$inSet=getAllChildren(array($lugarOriginal));
     
+    //Sanitize inputs
     $cadena=safe($cadena);
+    $lugarOriginal=safe($lugarOriginal);
 
     $link=connect();
     $sql="SELECT * FROM lugares_shp WHERE 
@@ -749,6 +791,12 @@ function getIrA($cadena,$lugarOriginal)
 
 function getDireccionesSuggestions($cadena,$lugarOriginal,$cantidad=5)
 {
+    
+    //sanitize inputs
+    $cadena=safe($cadena);
+    $lugarOriginal=safe($lugarOriginal);
+    $cantidad=safe(filter_var($cantidad, FILTER_VALIDATE_INT));
+  
     //echo $lugarOriginal;
     $inSet=getAllChildren(array($lugarOriginal));
     $link=connect();
@@ -797,7 +845,9 @@ function getDistritoPadreDireccion($idDireccion)
 
 function getDireccion($idDireccion)
 {
+    //Sanitize input
     $idDireccion=safe($idDireccion);
+    
     $link=connect();    
     mysql_query('SET CHARACTER SET utf8',$link);
 
@@ -809,6 +859,7 @@ function getDireccion($idDireccion)
 
 function crearNuevaDireccion($nombreLugar,$direccion,$lat,$lng,$idPadre)
 {
+    // Sanitize input
     $nombreLugar=safe($nombreLugar);
     $lat=safe($lat);
     $lng=safe($lng);
@@ -849,8 +900,10 @@ function crearNuevaDireccion($nombreLugar,$direccion,$lat,$lng,$idPadre)
 
 function validarDireccion($idDireccion,$status)
 {
+    //Sanitize inputs
     $idDireccion=safe($idDireccion);
     $status=safe($status);
+    
     $link=connect();    
     mysql_query('SET CHARACTER SET utf8',$link);
 
@@ -861,8 +914,10 @@ function validarDireccion($idDireccion,$status)
 
 function validarEvento($idEvento,$status)
 {
+    //Sanitiza inputs
     $idEvento=safe($idEvento);
     $status=safe($status);
+    
     $link=connect();    
     mysql_query('SET CHARACTER SET utf8',$link);
 
@@ -873,6 +928,14 @@ function validarEvento($idEvento,$status)
 
 function getColindantes($lugarOriginal,$type,$xmin,$xmax,$ymin,$ymax)
 {
+    //sanitize inputs
+    $lugarOriginal=safe($lugarOriginal);
+    $type=safe($type);
+    $xmin=safe($xmin);
+    $xmax=safe($xmax);
+    $ymin=safe($ymin);
+    $ymax=safe($ymax);
+      
     $link=connect();
     $sql="SELECT * FROM lugares_shp WHERE 
             nivel='$type' AND
@@ -895,6 +958,12 @@ function getColindantes($lugarOriginal,$type,$xmin,$xmax,$ymin,$ymax)
 
 function getEventosCoordenadas($xmin,$xmax,$ymin,$ymax)
 {
+    //sanitize inputs
+    $xmin=safe($xmin);
+    $xmax=safe($xmax);
+    $ymin=safe($ymin);
+    $ymax=safe($ymax);
+    
     $link=connect();
     $sql="SELECT * FROM eventos,lugares_shp WHERE 
             x>$xmin AND x<$xmax AND y>$ymin AND y<$ymax AND eventos.idDistritoPadre=lugares_shp.id AND eventos.eventoActivo='1' ";
@@ -909,6 +978,10 @@ function getEventosCoordenadas($xmin,$xmax,$ymin,$ymax)
 
 function getLevels($provincia,$type)
 {
+    //sanitize inputs
+    $provincia=safe($provincia);
+    $type=safe($type);
+  
     $link=connect();
     $sql="SELECT * FROM lugares_shp WHERE 
             nivel='$type' AND
