@@ -331,9 +331,6 @@ function getEntidadesQuery($query,$cantidad=10)
     }
     return $returnData;
 
-    return;
-
-
     //id/clase=organizaciones/tipo/tituloOrg/textoOrg/lugarOrg/puntos
     /*
     $link=connect();
@@ -495,7 +492,7 @@ function getEventos($query,$cantidad=50,$orden="fecha")
     $tematica="";
     $lugar="";
     $lugares=array();
-    $organizacio="";
+    $organizacion="";
     foreach($query as $tag)
     {
         $tipo=$tag["tipo"];
