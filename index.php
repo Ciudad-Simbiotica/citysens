@@ -58,33 +58,33 @@ include "preload.php";
  </div>
  <div class='cabecera'>
  	<div class='cabecera-cuerpo'>
-	 	<div class='cabecera-logo'><A HREF='/'><IMG SRC='icons/citysens.logoPrincipal.png' width='49px' height='40px'></A></div>
+	 	<div class='cabecera-logo'><A HREF='/'><IMG SRC='css/icons/citysens.logoPrincipal.png' width='49px' height='40px'></A></div>
 	 	<div class='cabecera-pestanias'>
 	 		<div id='cabecera-pestania-izq' class='cabecera-pestania-izq'>Eventos</div>
 	 		<div class='subcabecera-pestania-izq'>
 	 			<div class='switch-filas switch-filas-convocatoria' id='switch-puntuales'>
-	 				<img src='icons/Event-Unique.64.png' width="32px">
+	 				<img src='css/icons/Event-Unique.64.png' width="32px">
 	 			</div>
 	 			<div class='switch-filas switch-filas-recurrente' id='switch-recurrentes'>
-		 			<img src='icons/Event-Recurring.64.png' width="32px">
+		 			<img src='css/icons/Event-Recurring.64.png' width="32px">
 		 		</div>
 	 		</div>
 	 		<div id='cabecera-pestania-dch'  class='cabecera-pestania-dch'>Entidades</div>
 	 		<div class='subcabecera-pestania-dch'>
 	 			<div class='switch-filas switch-filas-instituciones' id='switch-instituciones'>
-	 				<img src='icons/icon_CitYsens.institucion.png' width="32px">	
+	 				<img src='css/icons/icon_CitYsens.institucion.png' width="32px">	
 	 			</div>
 				<div class='switch-filas switch-filas-organizaciones' id='switch-organizaciones'>
-		 			<img src='icons/icon_CitYsens.organizacion.png' width="32px">	 		
+		 			<img src='css/icons/icon_CitYsens.organizacion.png' width="32px">	 		
 		 		</div>
 		 		<div class='switch-filas switch-filas-colectivos' id='switch-colectivos'>
-		 			<img src='icons/CitYsens.people.png' width="32px">	 		
+		 			<img src='css/icons/CitYsens.people.png' width="32px">	 		
 				</div>
 	 		</div>
 	 		<!--
 	 		<div id='cabecera-pestania-ctr'  class='cabecera-pestania-ctr'>Iniciativas</div>
 	 		<div class='subcabecera-pestania-ctr'>
-	 			<img class='switch-filas' id='switch-puntuales' src='icons/icon_iniciativa.png' width="32px">
+	 			<img class='switch-filas' id='switch-puntuales' src='css/icons/icon_iniciativa.png' width="32px">
 	 		</div>
 	 		<div id='cabecera-pestania-noticias'  class='cabecera-pestania-noticias'>Noticias</div>
 	 		-->

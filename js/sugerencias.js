@@ -175,7 +175,7 @@ function suggestBusqueda(texto)
     $("#cabecera-suggest").find(".cabecera-suggest-fila:last").attr("id","cabecera-suggest-fila-0");
       $("#cabecera-suggest").find(".cabecera-suggest-fila:last").click(function()
       {
-          clickSuggestion("/icons/lupa.png",texto,'busqueda',0);
+          clickSuggestion("css/icons/lupa.png",texto,'busqueda',0);
       });
     var i=1;
     $.each(data.suggestions, function(key, value)
@@ -203,7 +203,7 @@ function suggestBusqueda(texto)
               $('#input-email-nombreCiudad').val(value.texto1);
             });            
           }
-          //clickSuggestion("/icons/gps.png",texto,"IrA",0); //Añadir value.id, texto buscado
+          //clickSuggestion("css/icons/gps.png",texto,"IrA",0); //Añadir value.id, texto buscado
         });
       }
       else
@@ -221,19 +221,19 @@ function suggestBusqueda(texto)
         {
             var icono="";
             if(value.tipo=="tematica")
-              icono="/icons/etiqueta30x30.png";
+              icono="css/icons/etiqueta30x30.png";
             else if(value.tipo=="organizacion")
-              icono="/icons/icon_CitYsens.organizacion.png";
+              icono="css/icons/icon_CitYsens.organizacion.png";
             else if(value.tipo=="institucion")
-              icono="/icons/icon_CitYsens.institucion.png";
+              icono="css/icons/icon_CitYsens.institucion.png";
             else if(value.tipo=="colectivo")
-              icono="/icons/CitYsens.people.png";
+              icono="css/icons/CitYsens.people.png";
             else if(value.tipo=="lugar")
-              icono="/icons/lugar.png";
+              icono="css/icons/lugar.png";
             else if(value.tipo=="lupa")
-              icono="/icons/lupa.png";
+              icono="css/icons/lupa.png";
             else if(value.tipo=="busqueda")
-              icono="/icons/lupa.png";
+              icono="css/icons/lupa.png";
 
             clickSuggestion(icono,value.texto1,value.tipo,value.id);
         });

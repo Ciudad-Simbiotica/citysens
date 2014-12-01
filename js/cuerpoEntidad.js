@@ -69,11 +69,11 @@ $.getJSON('getDatosEntidad.php',
   $(".informacion-cuerpo-contacto-email").html(data.email);
 
   if(data.tipoEntidad=="institucion")
-    $(".detalle-tipo").css("background-image", "url(icons/icon_CitYsens.institucion.png)");
+    $(".detalle-tipo").css("background-image", "url(css/icons/icon_CitYsens.institucion.png)");
   else if(data.tipoEntidad=="organizacion")
-    $(".detalle-tipo").css("background-image", "url(icons/icon_CitYsens.organizacion.png)");
+    $(".detalle-tipo").css("background-image", "url(css/icons/icon_CitYsens.organizacion.png)");
   else if(data.tipoEntidad=="colectivo")
-    $(".detalle-tipo").css("background-image", "url(icons/CitYsens.People.png)");
+    $(".detalle-tipo").css("background-image", "url(css/icons/CitYsens.People.png)");
 
   $(".detalle-puntos-puntos").text(data.points);
 

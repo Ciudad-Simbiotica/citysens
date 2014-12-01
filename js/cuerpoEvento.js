@@ -169,7 +169,7 @@ $.getJSON('getDatos.php',
 
     addthis.toolbox("#toolbox",addthis_config,addthis_share);
 
-    $(".detalle-termometro").css("background-image", "url(/icons/termometro_"+data.temperatura+".png)");  
+    $(".detalle-termometro").css("background-image", "url(css/icons/termometro_"+data.temperatura+".png)");  
     //$(".detalle-termometro").show();  //Por ahora queda oculto
     document.title = data.titulo;
 

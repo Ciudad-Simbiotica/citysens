@@ -66,16 +66,16 @@
 			 <div class='grupo-filas'>
 				 <div class='grupo-fila-eventos' id='grupo-fila-template-eventos'>
 					<div class='grupo-elemento-tipo'>
-				 		<img class="imagen-tipo"  src='icons/Event-Unique.64.png' width="20px">
+				 		<img class="imagen-tipo"  src='css/icons/Event-Unique.64.png' width="20px">
 					</div>
 				 	<div class='grupo-elemento-hora'>
 				 		11:00
 					</div>
 				 	<div class='grupo-elemento-handup'>
-				 		<IMG SRC='icons/flecha_arriba.png'>
+				 		<IMG SRC='css/icons/flecha_arriba.png'>
 					</div>
 				 	<div class='grupo-elemento-temp'>
-				 		<IMG class='imagen-temp' SRC='icons/termometro_3.png' height='32px'>
+				 		<IMG class='imagen-temp' SRC='css/icons/termometro_3.png' height='32px'>
 					</div>
 				 	<div class='grupo-elemento-titulo'>
 				 		Convocatoria
@@ -90,16 +90,16 @@
 
 				<div class='grupo-fila-procesos' id='grupo-fila-template-procesos'>
 					<div class='grupo-elemento-tipo'>
-				 		<img class="imagen-tipo" src='icons/Event-Unique.64.png' width="20px">
+				 		<img class="imagen-tipo" src='css/icons/Event-Unique.64.png' width="20px">
 					</div>
 				 	<div class='grupo-elemento-hora'>
 				 		11:00
 					</div>
 				 	<div class='grupo-elemento-handup'>
-				 		<IMG SRC='icons/flecha_arriba.png'>
+				 		<IMG SRC='css/icons/flecha_arriba.png'>
 					</div>
 				 	<div class='grupo-elemento-temp'>
-				 		<IMG class='imagen-temp' SRC='icons/termometro_1.png' height='32px'>
+				 		<IMG class='imagen-temp' SRC='css/icons/termometro_1.png' height='32px'>
 					</div>
 				 	<div class='grupo-elemento-titulo'>
 				 		Convocatoria
@@ -118,10 +118,10 @@
 					</div>
 				 	<div class='grupo-elemento-copa'></div>
 					<div class='grupo-elemento-tipo'>
-				 		<img class="imagen-tipo"  src='icons/UniqueEvent.64.png' width="20px">
+				 		<img class="imagen-tipo"  src='css/icons/UniqueEvent.64.png' width="20px">
 					</div>
 				 	<div class='grupo-elemento-logo'>
-				 		<IMG SRC='icons/icon_logo1.png' height='40px'>
+				 		<IMG SRC='css/icons/icon_logo1.png' height='40px'>
 					</div>
 				 	<div class='grupo-elemento-tituloOrg'>
 				 		Convocatoria
@@ -212,11 +212,11 @@
 		 	 Descripción breve de la entidad, que se corresponde con la que se muestra en la celda de la entidad en la lista, aunque ampliado.
 		 	</div>
 		 	<div class='informacion-cuerpo-tematicas'>
-				<div class='informacion-cuerpo-tematicas-elemento'><img src='icons/etiqueta30x30.png' class="informacion-cuerpo-tematicas-img"> <B>Tematicas: </B></div> 
+				<div class='informacion-cuerpo-tematicas-elemento'><img src='css/icons/etiqueta30x30.png' class="informacion-cuerpo-tematicas-img"> <B>Tematicas: </B></div> 
 		  		<div class='informacion-cuerpo-tematicas-listado'>Temática 1, Temática 2, Temática 3</div>
 		 	</div>
 		 	<div class='informacion-cuerpo-etiquetas'>
-		  		<div class='informacion-cuerpo-etiquetas-elemento'><img src='icons/etiquetas30x30.png' class="informacion-cuerpo-tematicas-img"> <B>Etiquetas: </B></div>
+		  		<div class='informacion-cuerpo-etiquetas-elemento'><img src='css/icons/etiquetas30x30.png' class="informacion-cuerpo-tematicas-img"> <B>Etiquetas: </B></div>
 		  		<div class='informacion-cuerpo-etiquetas-listado'>Etiqueta 1, Etiqueta 2, Etiqueta 3</div>
 		 	</div>
 		 	<div class='informacion-cuerpo-contacto'>
@@ -250,27 +250,27 @@
 			<!--
 			<a class='share-mail' href="mailto:?subject=Asunto&amp;body=Cuerpo"
 			   onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=350,width=480');return false;"
-			   target="_blank" title="Share on Google+"><img width="16px" src='icons/mail.png'></a>
+			   target="_blank" title="Share on Google+"><img width="16px" src='css/icons/mail.png'></a>
 
 			<a class='share-facebook' href="https://www.facebook.com/sharer/sharer.php?u=http://www.google.com&t=Titulo&s=Texto"
 			   onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
-			   target="_blank" title="Share on Facebook"><img width="16px" src='icons/facebook.ico'></a>
+			   target="_blank" title="Share on Facebook"><img width="16px" src='css/icons/facebook.ico'></a>
 
 			<a class='share-twitter' href="https://twitter.com/share?url=http://www.google.com&text=Titulo"
 			   onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
-			   target="_blank" title="Share on Twitter"><img width="16px" src='icons/twitter.ico'></a>
+			   target="_blank" title="Share on Twitter"><img width="16px" src='css/icons/twitter.ico'></a>
 
 			<a class='share-googleplus' href="https://plus.google.com/share?url=http://www.google.com"
 			   onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=350,width=480');return false;"
-			   target="_blank" title="Share on Google+"><img width="16px" src='icons/googleplus.ico'></a>
+			   target="_blank" title="Share on Google+"><img width="16px" src='css/icons/googleplus.ico'></a>
 
 			<a class='share-linkedin' href="http://www.linkedin.com/shareArticle?mini=true&url=http://www.google.com&title=Titulo&summary=Texto&source=http://www.citysens.net"
 			   onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=350,width=480');return false;"
-			   target="_blank" title="Share on Google+"><img width="16px" src='icons/linkedin.ico'></a>
+			   target="_blank" title="Share on Google+"><img width="16px" src='css/icons/linkedin.ico'></a>
 			-->
 			<!--<a class='share-link' href="#"
 			   onclick=''
-			   target="_blank" title="Share on Google+"><img width="16px" src='icons/link.png'></a>-->
+			   target="_blank" title="Share on Google+"><img width="16px" src='css/icons/link.png'></a>-->
 
 		 </div>
 	 </div>

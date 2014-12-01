@@ -102,15 +102,15 @@ function createLine(grupo,datos,animated,nombreSuperGrupo)
         //Cambiamos las imágenes según el tipo
         //ToDo: Sustituir el IMG por DIV y cambiar el background por CSS
         if(contenido=="convocatoria")
-          clone.find(".imagen-tipo").attr("src", "icons/Event-Unique.64.png");
+          clone.find(".imagen-tipo").attr("src", "css/icons/Event-Unique.64.png");
         else if(contenido=="recurrente")
-          clone.find(".imagen-tipo").attr("src", "icons/Event-Recurring.64.png");
+          clone.find(".imagen-tipo").attr("src", "css/icons/Event-Recurring.64.png");
         else if(contenido=="institucion")
-          clone.find(".imagen-tipo").attr("src", "icons/icon_CitYsens.institucion.png");
+          clone.find(".imagen-tipo").attr("src", "css/icons/icon_CitYsens.institucion.png");
         else if(contenido=="organizacion")
-          clone.find(".imagen-tipo").attr("src", "icons/icon_CitYsens.organizacion.png");
+          clone.find(".imagen-tipo").attr("src", "css/icons/icon_CitYsens.organizacion.png");
         else if(contenido=="colectivo")
-          clone.find(".imagen-tipo").attr("src", "icons/CitYsens.People.png");
+          clone.find(".imagen-tipo").attr("src", "css/icons/CitYsens.People.png");
       }
       /*
       else if(clase=="participante")
@@ -123,7 +123,7 @@ function createLine(grupo,datos,animated,nombreSuperGrupo)
       else if(clase=="temperatura")
       {
         //Cambiamos el termometro
-        clone.find(".imagen-temp").attr("src", "icons/termometro_"+contenido+".png");
+        clone.find(".imagen-temp").attr("src", "css/icons/termometro_"+contenido+".png");
       }
       else
       {
@@ -418,11 +418,11 @@ function cargarContenidoEntidad(id)
     $(".informacion-cuerpo-texto").html(data.texto);
 
     if(data.tipoEntidad=="institucion")
-      $(".informacion-cabecera-izq-entidad-izq").css('background-image', "url(icons/icon_CitYsens.institucion.png)");
+      $(".informacion-cabecera-izq-entidad-izq").css('background-image', "url(css/icons/icon_CitYsens.institucion.png)");
     else if(data.tipoEntidad=="organizacion")
-      $(".informacion-cabecera-izq-entidad-izq").css('background-image', "url(icons/icon_CitYsens.organizacion.png)");
+      $(".informacion-cabecera-izq-entidad-izq").css('background-image', "url(css/icons/icon_CitYsens.organizacion.png)");
     else if(data.tipoEntidad=="colectivo")
-      $(".informacion-cabecera-izq-entidad-izq").css('background-image', "url(icons/CitYsens.People.png)");
+      $(".informacion-cabecera-izq-entidad-izq").css('background-image', "url(css/icons/CitYsens.People.png)");
 
 
     $(".informacion-cabecera").click(function()

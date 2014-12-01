@@ -124,31 +124,31 @@
 .grupo-pie-convocatoria-imagen
 {
 	background-color:#FFCCCC;
-	background-image: url("/icons/Event-Unique.64.png");	
+	background-image: url("icons/Event-Unique.64.png");	
 }
 
 .grupo-pie-recurrente-imagen
 {
 	background-color:#CCCCFF;
-	background-image: url("/icons/Event-Recurring.64.png");	
+	background-image: url("icons/Event-Recurring.64.png");	
 }
 
 .grupo-pie-institucion-imagen
 {
 	background-color:#BBDDFF;
-	background-image: url("/icons/icon_CitYsens.institucion.png");	
+	background-image: url("icons/icon_CitYsens.institucion.png");	
 }
 
 .grupo-pie-organizacion-imagen
 {
 	background-color:#CCFFCC;
-	background-image: url("/icons/icon_CitYsens.organizacion.png");	
+	background-image: url("icons/icon_CitYsens.organizacion.png");	
 }
 
 .grupo-pie-colectivo-imagen
 {
 	background-color:#FFBBDD;
-	background-image: url("/icons/CitYsens.people.png");	
+	background-image: url("icons/CitYsens.people.png");	
 }
 
 .grupo-fila-eventos,
@@ -238,7 +238,7 @@ div[class*='grupo-elemento-']
 
 .grupo-elemento-copa
 {
-	background-image: url("/icons/copaBig.png");	
+	background-image: url("icons/copaBig.png");	
 	background-size: contain;
 	background-repeat: no-repeat;
     background-position: center;
