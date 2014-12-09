@@ -5,7 +5,7 @@ error_reporting(E_ERROR);
 
 exit();
 
-$nivel=8;
+$nivel=8;  // Seems districts are level 9, not 8
 $distritos=array();
 $link=connect();
 $sql="SELECT * FROM lugares_shp WHERE nivel='$nivel'";
@@ -17,7 +17,7 @@ while($fila=mysql_fetch_assoc($result))
 
 $direcciones=array();
 $link=connect();
-$sql="SELECT * FROM direcciones WHERE idDistritoPadre=0";
+$sql="SELECT * FROM direcciones WHERE idPadre=0";
 $result=mysql_query($sql,$link);
 while($fila=mysql_fetch_assoc($result))
 {
@@ -34,7 +34,7 @@ foreach($distritos as $distrito)
 
 	foreach($direcciones as $direccion)
 	{
-		$punto = geoPHP::load("POINT({$direccion['long']} {$direccion['lat']})","wkt");
+		$punto = geoPHP::load("POINT({$direccion['lng']} {$direccion['lat']})","wkt");
 		if($poligono->contains($punto))
 		{
 			$asociados[$direccion["idDireccion"]]=$distrito;
