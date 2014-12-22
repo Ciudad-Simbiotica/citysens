@@ -205,6 +205,7 @@ function cargarMapa(idLugar)
     $("#map").css("top",despTop);
     $("#map").css("left",despLeft);
     $("#map").css("zoom",zoom);
+    $("#map").css("-moz-transform","scale("+zoom+")");
 
     //Breadcrumbs
     var breadcrumbs="";
