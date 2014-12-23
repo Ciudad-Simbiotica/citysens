@@ -195,18 +195,20 @@ function cargarMapa(idLugar)
       zoom=zoomLat;
     else
       zoom=zoomLng;
-
-    containerWidth=$("#map").width();
-    containerHeight=$("#map").height();
-
-    despLeft=-((containerWidth-(containerWidth/zoom))/2);
-    despTop=-((containerHeight-(containerHeight/zoom))/2);
-
-    $("#map").css("top",despTop);
-    $("#map").css("left",despLeft);
-    $("#map").css("zoom",zoom);
+// Not needed after changing css properties zoom for transform:scale
+//    containerWidth=$("#map").width();
+//    containerHeight=$("#map").height();
+//    despLeft=-((containerWidth-(containerWidth/zoom))/2);
+//    despTop=-((containerHeight-(containerHeight/zoom))/2);
+//
+//
+//  $("#map").css("top",despTop);
+//  $("#map").css("left",despLeft);
+//  $("#map").css("zoom",zoom);
+    $("#map").css("transform","scale("+zoom+")");
+    $("#map").css("-ms-transform","scale("+zoom+")");
     $("#map").css("-moz-transform","scale("+zoom+")");
-
+    $("#map").css("-webkit-transform","scale("+zoom+")");
     //Breadcrumbs
     var breadcrumbs="";
     var first=true;
