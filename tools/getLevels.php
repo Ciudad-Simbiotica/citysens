@@ -1,4 +1,5 @@
 <?php
+// Get the municipalities for a given province 
 include_once "../db.php";
 error_reporting(0);
 
