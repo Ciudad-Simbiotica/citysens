@@ -975,6 +975,7 @@ function getEventosCoordenadas($xmin,$xmax,$ymin,$ymax)
 }
 
 function getLevels($provincia,$type)
+// Gets a list of municipalities that are part of a province
 {
     //sanitize inputs
     $provincia=safe($provincia);

@@ -10,7 +10,12 @@ $idCiudad="888004284";  //Id of the city addresses to update. In this case, Alca
 $direcciones=array();
 $link=connect();
 mysql_query("SET NAMES 'utf8'");
-$sql="SELECT * FROM direcciones WHERE idCiudad='$idCiudad'";
+$sql="SELECT * FROM lugares_shp WHERE id='$idCiudad'";
+$result=mysql_query($sql,$link);
+$area=mysql_fetch_assoc($result);
+$nombreCiudad=$area["nombre"];
+    
+$sql="SELECT * FROM direcciones WHERE idCiudad='$idCiudad' AND lat='0'";
 $result=mysql_query($sql,$link);
 while($fila=mysql_fetch_assoc($result))
 {
@@ -21,6 +26,7 @@ foreach($direcciones as $direccion)
 {
     $idDireccion=$direccion['idDireccion'];
     $strDireccion = $direccion['direccion'];
+    $strDireccion = $strDireccion.", ".$nombreCiudad;
     echo PHP_EOL, $strDireccion, PHP_EOL;
     
     $strDireccionClean = str_replace (" ", "+", $strDireccion);
