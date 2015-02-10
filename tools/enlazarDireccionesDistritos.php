@@ -4,6 +4,7 @@ include_once('../vendor/phayes/geophp/geoPHP.inc');
 error_reporting(E_ERROR);
 
 exit();
+// Links an address to the district it lies within (lugares_shp with level 9).
 
 $nivel=8;  // Seems districts are level 9, not 8
 $distritos=array();

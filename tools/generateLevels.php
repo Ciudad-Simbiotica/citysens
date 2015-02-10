@@ -1,5 +1,7 @@
 <?php
 /*
+// Allows to generate regions by selecting a set of municipalites. 
+ 
 error_reporting(E_ERROR);
 if($_POST["regionIDs"]!="")
 {
@@ -58,6 +60,8 @@ if($_POST["regionIDs"]!="")
 	var colorSeleccionado='#ff0000';
 	if(idPadre>0)
 	{
+      // TODO: Generalize this: Check against an array of the parentsID already found. Create an array with all parents that appear assigning a color to them
+      //       adding a new one when an unknown parent appears.
 		switch(idPadre)
 		{
 			case '777000001':
@@ -175,6 +179,7 @@ $('#map').width(800);
 $('#map').height(600);
 
 cargarMapa([40.49166,-3.364136], 10);
+// TODO: Instead of this: use coordinates of the provice: xmax, ymin?
 
 var arrayIDs = new Array();
 

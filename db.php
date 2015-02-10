@@ -921,6 +921,9 @@ function validarEvento($idEvento,$status)
     mysql_query($sql,$link);
 }
 
+// Gets the areas of level $type that are contained within the limits, excluding the central $lugarOriginal
+// Seems to use old areas IDs (5chars)
+
 function getColindantes($lugarOriginal,$type,$xmin,$xmax,$ymin,$ymax)
 {
     //sanitize inputs
@@ -972,6 +975,7 @@ function getEventosCoordenadas($xmin,$xmax,$ymin,$ymax)
 }
 
 function getLevels($provincia,$type)
+// Gets a list of municipalities that are part of a province
 {
     //sanitize inputs
     $provincia=safe($provincia);
