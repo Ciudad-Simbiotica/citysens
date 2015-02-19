@@ -74,83 +74,112 @@ include "../db.php";
 set_time_limit(0);
 error_reporting(E_ALL);
 
-//$shp = new ShapeFile("lineas_limite/SHP_ETRS89/poligonos_municipio_etrs89/poligonos_municipio_etrs89.shp"); // along this file the class will use file.shx and file.dbf
-$shp = new ShapeFile("Distritos-1/Distritos.shp"); // along this file the class will use file.shx and file.dbf
+//Script not active, unless needed.
+exit();
 
+//$shp = new ShapeFile("lineas_limite/SHP_ETRS89/poligonos_municipio_etrs89/poligonos_municipio_etrs89.shp"); // along this file the class will use file.shx and file.dbf
+//$shp = new ShapeFile("Distritos-1/Distritos.shp"); // along this file the class will use file.shx and file.dbf
+//$shp = new ShapeFile("lineas_limite/SHP_ETRS89/poligonos_provincia_etrs89/poligonos_provincia_etrs89.shp"); // along this file the class will use file.shx and file.dbf
+$shp = new ShapeFile("lineas_limite/SHP_ETRS89/poligonos_ccaa_etrs89/poligonos_ccaa_etrs89.shp"); // along this file the class will use file.shx and file.dbf
 
 $link=connect();
 $i=0;
 while ($record = $shp->getNext()) 
 {
-	$i++;//echo $i;
+	$i++; 
+    //echo $i;
 
 	$datos=$record->getDbfData();
 
-	$codbdt=trim(utf8_encode($datos["CODBDT"]));
-	$geocodigo=trim(utf8_encode($datos["GEOCODIGO"]));
-	$desbdt=trim(utf8_encode($datos["DESBDT"]));
-	$deleted=trim(utf8_encode($datos["deleted"]));
+// does not apply	$codbdt=trim(utf8_encode($datos["CODBDT"]));
+// does not apply	$geocodigo=trim(utf8_encode($datos["GEOCODIGO"]));
+// does not apply	$desbdt=trim(utf8_encode($datos["DESBDT"]));
+// not needed	$deleted=trim(utf8_encode($datos["deleted"]));
+    $nombre = trim(utf8_encode($datos["NOMBRE"]));
+//    $codine = trim(utf8_encode($datos["CODINE"]));
+    $cod_ccaa = trim(utf8_encode($datos["COD_CCAA"]));
+    
+
+    $coordenadas=$record->getShpData();   
 
 
-    //if($nombre=="Alcalá de Henares")
+    /* There is no need to convert coordinates. They can be used directly for the geoJSON
+    $latlong=ToLL($coordenadas["ymin"],$coordenadas["xmin"],30);
+    $xmin=$latlong["lon"];
+    $ymin=$latlong["lat"];
+
+    
+    $latlong=ToLL($coordenadas["ymax"],$coordenadas["xmax"],30);
+
+    $xmax=$latlong["lon"];
+    $ymax=$latlong["lat"];
+
+    //print_r($coordenadas);
+
+     */
+    
+    // Seems the transformation is not needed. The existing data from Madrid is consistent with the one in the source file.
+    $xmin=$coordenadas["xmin"];
+    $ymin=$coordenadas["ymin"];
+    $xmax=$coordenadas["xmax"];
+    $ymax=$coordenadas["ymax"];
+       
+    $geoJSON="";
+    $firstPart=true;
+    if($coordenadas["numparts"]==1)
+        $geoJSON='{"type":"Polygon","coordinates":[[';
+    else
+        $geoJSON='{"type":"MultiPolygon","coordinates":[[[';
+
+    foreach($coordenadas["parts"] as $idPart=>$part)
     {
-		$coordenadas=$record->getShpData();   
+        $first=true;
+        if(!$firstPart)
+            $geoJSON.="]],[[";
+        $firstPart=false;
+        foreach($part["points"] as $point)
+        {
+            /*$latlong=ToLL($point["y"],$point["x"],30);
+            $x=$latlong["lon"];
+            $y=$latlong["lat"];
+            ////print_r($latlong);
+            //exit();
+            */
+            $x=$point["x"];
+            $y=$point["y"];
+            $coordenada="[$x,$y]";
+            if(!$first)
+                $geoJSON.=",";
+            $first=false;
+            $geoJSON.=$coordenada;
+        }
+    }
 
-   		$latlong=ToLL($coordenadas["ymin"],$coordenadas["xmin"],30);
-	    $xmin=$latlong["lon"];
-	    $ymin=$latlong["lat"];
-
-   		$latlong=ToLL($coordenadas["ymax"],$coordenadas["xmax"],30);
-
-	    $xmax=$latlong["lon"];
-	    $ymax=$latlong["lat"];
-
-	    //print_r($coordenadas);
-
-	    //exit();
-
-	    $geoJSON="";
-		$firstPart=true;
-	 	if($coordenadas["numparts"]==1)
-			$geoJSON='{"type":"Polygon","coordinates":[[';
-		else
-			$geoJSON='{"type":"MultiPolygon","coordinates":[[[';
-
-	    foreach($coordenadas["parts"] as $idPart=>$part)
-	    {
-			$first=true;
-			if(!$firstPart)
-				$geoJSON.="]],[[";
-			$firstPart=false;
-	    	foreach($part["points"] as $point)
-	    	{
-	    		$latlong=ToLL($point["y"],$point["x"],30);
-	    		$x=$latlong["lon"];
-	    		$y=$latlong["lat"];
-	    		//print_r($latlong);
-	    		//exit();
-	    		
-				$coordenada="[$x,$y]";
-				if(!$first)
-					$geoJSON.=",";
-				$first=false;
-				$geoJSON.=$coordenada;
-	    	}
-	    }
 	 	if($coordenadas["numparts"]==1)
 			$geoJSON.=']]}';
 		else
 			$geoJSON.=']]]}';
 
-		
-		$id=999000000+$i;
+		// id codes are going to be:
+        // CCAA: level(1)+country(2)+CCAA(6)    CORRECTO
+        //           401000009
+        // Province: level(1)+country(2)+CCAA(2)+province(4)  CORRECTO
+        //           601XX0028 (Madrid)
+        // Region: level(1)+country(2)+Province(2)+region(4) (in province) CORRECTO - Pero faltan casi todas.
+        //           701280002 (Corredor del Henares)
+        // City: level(1)+country(2)+Province(2)+cityNumber(4) (in province) CORRECTO //Faltan asignaciones a región
+        //           801280005
+        // District: level(1)+country(2)+Province(2)+DistrictNumber(4)(in province) CORRECTO
+        //           901280009
+		//$id=999000000+$i;
+        $id=401000000+$i;
 		//echo $id.PHP_EOL;
-		file_put_contents("geoJSON/9/$geocodigo.geojson", $geoJSON);
+		file_put_contents("geoJSON/4/$id.geojson", $geoJSON);
 		$sql=utf8_decode("INSERT INTO lugares_shp 
-				(id,codbdt,geocodigo,desbdt,deleted,
-					xmin,ymin,xmax,ymax,nivel)
-				VALUES ('$id','$codbdt','$geocodigo','$desbdt','$deleted',
-					'$xmin','$ymin','$xmax','$ymax','9')");	
+				(id,nombre,provincia,ine,
+					xmin,ymin,xmax,ymax,nivel,activo)
+				VALUES ('$id','$nombre','$cod_ccaa','$cod_ccaa',
+					'$xmin','$ymin','$xmax','$ymax','4','1')");	
 		//echo $sql;
 		
 		mysql_query($sql,$link);
@@ -159,10 +188,8 @@ while ($record = $shp->getNext())
 
 		//echo $id."\t".$nombre."\t".$ine."\t".$jurisdiccion."\t".$provincia."\t".$deleted.PHP_EOL;
 		//exit();
-		
     }
     
-    //echo PHP_EOL;
-}	
+    //echo PHP_EOL;}	
 
 ?>
