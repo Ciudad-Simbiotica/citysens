@@ -393,26 +393,6 @@ function getTematicas($cadena,$cantidad=10)
     return $returnData;
 }
 
-function getCiudadesMadrid($cadena,$cantidad=10)
-{
-    $link=connect();
-    //Sanitize inputs
-    $cadena=safe($link, $cadena);    
-    $cantidad=safe($link, filter_var($cantidad,FILTER_SANITIZE_NUMBER_INT));
-   
-    $sql="SELECT *
-            FROM  lugares_shp
-            WHERE idPadre BETWEEN 777000001 AND 777000008 AND nivel='8'
-            AND nombre LIKE '%$cadena%'
-            LIMIT 0,$cantidad";
-    mysqli_query($link, 'SET CHARACTER SET utf8');
-    $result=mysqli_query($link, $sql);
-    $returnData=array();
-    while($fila=mysqli_fetch_assoc($result))
-        array_push($returnData,$fila);
-    return $returnData;
-}
-
 function crearNuevoEvento($datosNuevoEvento)
 {
     $link=connect();
@@ -698,7 +678,6 @@ function getChildAreas($lugarOriginal,$nivel)
     }
     return $returnData;
 }
-
 //function is used?
 function getLugares($cadena,$lugarOriginal,$type,$cantidad=3,$inSet=array())
 {
