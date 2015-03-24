@@ -4,39 +4,30 @@ include_once "passwordHashing.php";
 
 function connect()
 {
-    $conn = mysql_connect(DB_DOMAIN, DB_USERNAME, DB_PASSWORD);
-    if (!$conn) {
-        echo "Unable to connect to DB: " . mysql_error();
-        exit;
-    }
-
-    if (!mysql_select_db(DB_DB)) {
-        echo "Unable to select citysens: " . mysql_error();
-        exit;
-    }
-    //mysql_query('SET CHARACTER SET utf8',$conn);
-    return $conn;
+    $conn = mysqli_connect(DB_DOMAIN, DB_USERNAME, DB_PASSWORD, DB_DB) or die("Unable to connect to DB: " . mysqli_error($conn));
+    //mysqli_query($link, 'SET CHARACTER SET utf8',$conn);
+    return $conn;   
 }
 
 //USERS
 function createUser($user,$email,$pass)
 {
-    $user=safe($user);
-    $email=safe(filter_var($email,FILTER_SANITIZE_EMAIL));
-    $pass=safe($pass);
-
     $link=connect();
-    mysql_query('SET CHARACTER SET utf8',$link);
+    $user=safe($link, $user);
+    $email=safe($link, filter_var($email,FILTER_SANITIZE_EMAIL));
+    $pass=safe($link, $pass);
+    
+    mysqli_query($link, 'SET CHARACTER SET utf8');
     $sql="SELECT * FROM users WHERE email='$email' OR user='$user'";
-    $result=mysql_query($sql,$link);
-    if($fila=mysql_fetch_assoc($result))
+    $result=mysqli_query($sql,$link);
+    if($fila=mysqli_fetch_assoc($result))
         return false;
 
     $hash=create_hash($pass);
     $verificationToken=base64_encode(mcrypt_create_iv(PBKDF2_SALT_BYTE_SIZE, MCRYPT_DEV_URANDOM));
 
     $sql="INSERT INTO users (user,email,hash,verified,verificationToken) VALUES ('$user','$email','$hash','0','$verificationToken')";
-    mysql_query($sql,$link);
+    mysqli_query($link, $sql);
 
     //ToDo: Comprobar que se crea bien el usuario
 
@@ -51,20 +42,20 @@ function createUser($user,$email,$pass)
 
 function verifyUser($email,$token)
 {
-    $email=safe(filter_var($email,FILTER_SANITIZE_EMAIL));
-    $token=safe($token);
-
     $link=connect();
-    mysql_query('SET CHARACTER SET utf8',$link);
+    $email=safe($link, filter_var($email,FILTER_SANITIZE_EMAIL));
+    $token=safe($link, $token);
+    
+    mysqli_query($link, 'SET CHARACTER SET utf8');
     $sql="SELECT * FROM users WHERE email='$email' AND verificationToken='$token'";
-    $result=mysql_query($sql,$link);
+    $result=mysqli_query($link, $sql);
     //echo $sql;
     
-    if($fila=mysql_fetch_assoc($result))
+    if($fila=mysqli_fetch_assoc($result))
     {
         $sql="UPDATE users SET verified=1, verificationToken='' WHERE idUser='{$fila["idUser"]}'";
         //echo $sql;
-        mysql_query($sql,$link);
+        mysqli_query($link, $sql);
         return true;
     }
     else
@@ -74,15 +65,16 @@ function verifyUser($email,$token)
 
 function getUser($email,$pass)
 {
-    //Sanitize inputs
-    $email=safe(filter_var($email,FILTER_SANITIZE_EMAIL));
-    $pass=safe($pass);
-
     $link=connect();
-    mysql_query('SET CHARACTER SET utf8',$link);
+    //Sanitize inputs
+    $email=safe($link, filter_var($email,FILTER_SANITIZE_EMAIL));
+    $pass=safe($link, $pass);
+
+    
+    mysqli_query($link, 'SET CHARACTER SET utf8');
     $sql="SELECT * FROM users WHERE email='$email'";
-    $result=mysql_query($sql,$link);
-    if($fila=mysql_fetch_assoc($result))
+    $result=mysqli_query($link, $sql);
+    if($fila=mysqli_fetch_assoc($result))
     {
         if(validate_password($pass,$fila["hash"]))
         {
@@ -103,17 +95,18 @@ function getUser($email,$pass)
 
 function resetUser($email)
 {
-    $email=safe(filter_var($email,FILTER_SANITIZE_EMAIL));
-
     $link=connect();
-    mysql_query('SET CHARACTER SET utf8',$link);
+    $email=safe($link, filter_var($email,FILTER_SANITIZE_EMAIL));
+
+    
+    mysqli_query($link, 'SET CHARACTER SET utf8');
     $sql="SELECT * FROM users WHERE email='$email'";
-    $result=mysql_query($sql,$link);
-    if($fila=mysql_fetch_assoc($result))
+    $result=mysqli_query($link, $sql);
+    if($fila=mysqli_fetch_assoc($result))
     {
         $verificationToken=base64_encode(mcrypt_create_iv(PBKDF2_SALT_BYTE_SIZE, MCRYPT_DEV_URANDOM));
         $sql="UPDATE users SET verificationToken='$verificationToken' WHERE idUser='{$fila["idUser"]}'";
-        mysql_query($sql,$link);
+        mysqli_query($link, $sql);
         return $verificationToken;
     }
     return false;
@@ -121,19 +114,20 @@ function resetUser($email)
 
 function changeUserPassword($email,$token,$nuevoPassword)
 {
-    $email=safe($email);
-    $token=safe($token);
-    $nuevoPassword=safe($nuevoPassword);
-
     $link=connect();
-    mysql_query('SET CHARACTER SET utf8',$link);
+    $email=safe($link, $email);
+    $token=safe($link, $token);
+    $nuevoPassword=safe($link, $nuevoPassword);
+
+    
+    mysqli_query($link, 'SET CHARACTER SET utf8');
     $sql="SELECT * FROM users WHERE email='$email' AND verificationToken='$token'";
-    $result=mysql_query($sql,$link);
-    if($fila=mysql_fetch_assoc($result))
+    $result=mysqli_query($link, $sql);
+    if($fila=mysqli_fetch_assoc($result))
     {
         $hash=create_hash($nuevoPassword);
         $sql="UPDATE users SET hash='$hash', verificationToken='', verified='1' WHERE idUser='{$fila["idUser"]}'";
-        mysql_query($sql,$link);
+        mysqli_query($link, $sql);
         return true;
     }
     return false;
@@ -144,36 +138,38 @@ function changeUserPassword($email,$token,$nuevoPassword)
 
 function follow($idUser,$params,$clase)
 {
-    $idUser=safe($idUser);
-    $clase=safe($clase);
-
     $link=connect();
-    mysql_query('SET CHARACTER SET utf8',$link);
+    $idUser=safe($link, $idUser);
+    $clase=safe($link, $clase);
+    
+    mysqli_query($link, 'SET CHARACTER SET utf8');
     $sql="INSERT INTO avisosListados (idUser, query,clase) VALUES ('$idUser','$params','$clase')";
-    mysql_query($sql,$link);
+    mysqli_query($link, $sql);
 }
 
 function unfollow($idUser,$params,$clase)
-{
-    $idUser=safe($idUser);
-    $clase=safe($clase);
-
+{   
     $link=connect();
-    mysql_query('SET CHARACTER SET utf8',$link);
+    $idUser=safe($link, $idUser);
+    $clase=safe($link, $clase);
+
+    
+    mysqli_query($link, 'SET CHARACTER SET utf8');
     $sql="DELETE FROM avisosListados WHERE idUser='$idUser' AND query='$params' AND clase='$clase'";
-    mysql_query($sql,$link);
+    mysqli_query($link, $sql);
 }
 
 function isFollowing($idUser,$params,$clase)
 {
-    $idUser=safe($idUser);
-    $clase=safe($clase);
-
     $link=connect();
-    mysql_query('SET CHARACTER SET utf8',$link);
+    $idUser=safe($link, $idUser);
+    $clase=safe($link, $clase);
+
+    
+    mysqli_query($link, 'SET CHARACTER SET utf8');
     $sql="SELECT idAvisoListado FROM avisosListados WHERE idUser='$idUser' AND query='$params' AND clase='$clase'";
-    $result=mysql_query($sql,$link);
-    if($fila=mysql_fetch_assoc($result))
+    $result=mysqli_query($link, $sql);
+    if($fila=mysqli_fetch_assoc($result))
         return true;
     else
         return false;
@@ -182,20 +178,21 @@ function isFollowing($idUser,$params,$clase)
 //Entidades
 function getEntidad($idEntidad)
 {
-    $idEntidad=safe($idEntidad);
-
     $link=connect();
-    mysql_query('SET CHARACTER SET utf8',$link);
+    $idEntidad=safe($link, $idEntidad);
+
+    
+    mysqli_query($link, 'SET CHARACTER SET utf8');
     $sql="SELECT * FROM entidades WHERE idEntidad='$idEntidad'";
-    $result=mysql_query($sql,$link);
-    if($fila=mysql_fetch_assoc($result))
+    $result=mysqli_query($link, $sql);
+    if($fila=mysqli_fetch_assoc($result))
     {
         $entidad=$fila;
 
 
         $sql="SELECT * FROM direcciones WHERE idDireccion='{$fila['idDireccion']}'";
-        $result=mysql_query($sql,$link);
-        if($fila=mysql_fetch_assoc($result))
+        $result=mysqli_query($link, $sql);
+        if($fila=mysqli_fetch_assoc($result))
         {
             $entidad['direccion']=$fila;
         }
@@ -215,8 +212,8 @@ function getEntidad($idEntidad)
         $sql="SELECT * FROM entidades_tematicas, tematicas 
                 WHERE entidades_tematicas.identidad='$idEntidad' AND
                 entidades_tematicas.idTematica=tematicas.idTematica";
-        $result=mysql_query($sql,$link);
-        while($fila=mysql_fetch_assoc($result))
+        $result=mysqli_query($sql,$link);
+        while($fila=mysqli_fetch_assoc($result))
         {
             $entidad['tematicas'][$fila['idTematica']]=ucfirst(strtolower($fila['tematica']));
         }
@@ -232,17 +229,18 @@ function getEntidad($idEntidad)
 
 function getEntidades($cadena,$cantidad=10)
 {
-    $cadena=safe($cadena);
-    $cantidad=safe(filter_var($cantidad,FILTER_SANITIZE_NUMBER_INT));
-    
     $link=connect();
+    $cadena=safe($link, $cadena);
+    $cantidad=safe($link, filter_var($cantidad,FILTER_SANITIZE_NUMBER_INT));
+   
+    
     $sql="SELECT * 
             FROM  entidades 
             WHERE entidad LIKE '%$cadena%'
             LIMIT 0,$cantidad";
-    $result=mysql_query($sql,$link);
+    $result=mysqli_query($link, $sql);
     $returnData=array();
-    while($fila=mysql_fetch_assoc($result))
+    while($fila=mysqli_fetch_assoc($result))
     	array_push($returnData,$fila);
     return $returnData;
 }
@@ -250,9 +248,9 @@ function getEntidades($cadena,$cantidad=10)
 function getEntidadesZonaConEventos($cadena,$cantidad=10,$idDistritoPadre=0)
 {
   // Sanitize inputs
-  $cadena=safe($cadena);
-  $cantidad=safe(filter_var($cantidad,FILTER_SANITIZE_NUMBER_INT));
-  $idDistritoPadre=safe($idDistritoPadre);
+  $cadena=safe($link, $cadena);
+  $cantidad=safe($link, filter_var($cantidad,FILTER_SANITIZE_NUMBER_INT));
+  $idDistritoPadre=safe($link, $idDistritoPadre);
 
   $link=connect();
     $sql="SELECT *
@@ -269,19 +267,20 @@ function getEntidadesZonaConEventos($cadena,$cantidad=10,$idDistritoPadre=0)
     $sql.=" GROUP BY entidades.idEntidad
             LIMIT 0,$cantidad";
 
-    $result=mysql_query($sql,$link);
+    $result=mysqli_query($link, $sql);
     $returnData=array();
-    while($fila=mysql_fetch_assoc($result))
+    while($fila=mysqli_fetch_assoc($result))
         array_push($returnData,$fila);
     return $returnData;
 }
 
 function getEntidadesQuery($params,$cantidad=10)
 {
-  // Sanitize inpusts
-  $cantidad=safe(filter_var($cantidad,FILTER_SANITIZE_NUMBER_INT));
-
     $link=connect();
+  // Sanitize inpusts
+    $cantidad=safe($link, filter_var($cantidad,FILTER_SANITIZE_NUMBER_INT));
+
+    
     $busqueda="";
     $tematicas=array();
     $lugar="";
@@ -333,9 +332,9 @@ function getEntidadesQuery($params,$cantidad=10)
         $sql.="($lugar) AND ";
     $sql.="1 GROUP BY entidades.idEntidad ORDER BY points DESC LIMIT 0,$cantidad";
 
-    $result=mysql_query($sql,$link);
+    $result=mysqli_query($link, $sql);
     $returnData=array();
-    while($fila=mysql_fetch_assoc($result))
+    while($fila=mysqli_fetch_assoc($result))
     {
         array_push($returnData,$fila);
     }
@@ -350,9 +349,9 @@ function getEntidadesQuery($params,$cantidad=10)
             WHERE entidad LIKE '%$cadena%'
             GROUP BY entidades.idEntidad
             LIMIT 0,$cantidad";
-    $result=mysql_query($sql,$link);
+    $result=mysqli_query($link, $sql);
     $returnData=array();
-    while($fila=mysql_fetch_assoc($result))
+    while($fila=mysqli_fetch_assoc($result))
         array_push($returnData,$fila);
     return $returnData;
     */
@@ -360,120 +359,123 @@ function getEntidadesQuery($params,$cantidad=10)
 
 function insertEmailPreregister($email, $idCiudad)
 {
-    //Sanitize inputs
-    $email=safe(filter_var($email,FILTER_SANITIZE_EMAIL));
-    $idCiudad=safe($idCiudad);
-
     $link=connect();
+    //Sanitize inputs
+    $email=safe($link, filter_var($email,FILTER_SANITIZE_EMAIL));
+    $idCiudad=safe($link, $idCiudad);
+
+    
     $sql="INSERT INTO preregister (email, idCiudad) VALUES ('$email','$idCiudad')";
-    mysql_query($sql,$link);
+    mysqli_query($link, $sql);
 }
 
-function safe($value){
-   return mysql_real_escape_string($value);
+function safe($link, $value){
+      return mysqli_real_escape_string($link, $value);
 }
 
 function getTematicas($cadena,$cantidad=10)
 {
+    $link=connect();   
   //Sanitize inputs
-  $cadena=safe($cadena);
-    $cantidad=safe(filter_var($cantidad,FILTER_SANITIZE_NUMBER_INT));
+  $cadena=safe($link, $cadena);
+    $cantidad=safe($link, filter_var($cantidad,FILTER_SANITIZE_NUMBER_INT));
 
-    $link=connect();
+    
     $sql="SELECT *
             FROM  tematicas
             WHERE tematica LIKE '%$cadena%'
             LIMIT 0,$cantidad";
-    mysql_query('SET CHARACTER SET utf8',$link);
-    $result=mysql_query($sql,$link);
+    mysqli_query($link, 'SET CHARACTER SET utf8');
+    $result=mysqli_query($link, $sql);
     $returnData=array();
-    while($fila=mysql_fetch_assoc($result))
+    while($fila=mysqli_fetch_assoc($result))
         array_push($returnData,$fila);
     return $returnData;
 }
 
 function getCiudadesMadrid($cadena,$cantidad=10)
 {
-    //Sanitize inputs
-    $cadena=safe($cadena);
-    $cantidad=safe(filter_var($cantidad,FILTER_SANITIZE_NUMBER_INT));
-
     $link=connect();
+    //Sanitize inputs
+    $cadena=safe($link, $cadena);    
+    $cantidad=safe($link, filter_var($cantidad,FILTER_SANITIZE_NUMBER_INT));
+   
     $sql="SELECT *
             FROM  lugares_shp
             WHERE idPadre BETWEEN 777000001 AND 777000008 AND nivel='8'
             AND nombre LIKE '%$cadena%'
             LIMIT 0,$cantidad";
-    mysql_query('SET CHARACTER SET utf8',$link);
-    $result=mysql_query($sql,$link);
+    mysqli_query($link, 'SET CHARACTER SET utf8');
+    $result=mysqli_query($link, $sql);
     $returnData=array();
-    while($fila=mysql_fetch_assoc($result))
+    while($fila=mysqli_fetch_assoc($result))
         array_push($returnData,$fila);
     return $returnData;
 }
 
 function crearNuevoEvento($datosNuevoEvento)
 {
-    $fecha=safe($datosNuevoEvento["fecha"]);
-    $fechaFin=safe($datosNuevoEvento["fechaFin"]);
+    $link=connect();
+    $fecha=safe($link, $datosNuevoEvento["fecha"]);
+    $fechaFin=safe($link, $datosNuevoEvento["fechaFin"]);
     if($fechaFin=="")
         $fechaFin='NULL';
     else
         $fechaFin="'$fechaFin'";
-    $clase=safe($datosNuevoEvento["clase"]);
-    $tipo=safe($datosNuevoEvento["tipo"]);
-    $titulo=safe($datosNuevoEvento["titulo"]);
-    $texto=safe($datosNuevoEvento["texto"]);
-    $lugar=safe($datosNuevoEvento["lugar"]);
-    $x=safe($datosNuevoEvento["x"]);
-    $y=safe($datosNuevoEvento["y"]);
-    $idDistritoPadre=safe($datosNuevoEvento["idDistritoPadre"]);
-    $idEntidad=safe($datosNuevoEvento["idEntidad"]);
-    $temperatura=safe($datosNuevoEvento["temperatura"]);
+    $clase=safe($link, $datosNuevoEvento["clase"]);
+    $tipo=safe($link, $datosNuevoEvento["tipo"]);
+    $titulo=safe($link, $datosNuevoEvento["titulo"]);
+    $texto=safe($link, $datosNuevoEvento["texto"]);
+    $lugar=safe($link, $datosNuevoEvento["lugar"]);
+    $x=safe($link, $datosNuevoEvento["x"]);
+    $y=safe($link, $datosNuevoEvento["y"]);
+    $idDistritoPadre=safe($link, $datosNuevoEvento["idDistritoPadre"]);
+    $idEntidad=safe($link, $datosNuevoEvento["idEntidad"]);
+    $temperatura=safe($link, $datosNuevoEvento["temperatura"]);
     $tematicas=array();
     foreach($datosNuevoEvento["tematicas"] as $tematica)
-        array_push($tematicas,safe($tematica));
+        array_push($tematicas,safe($link, $tematica));
     $idTematica=$tematicas[0];
-    $idDireccion=safe($datosNuevoEvento["idDireccion"]);
-    $url=safe(filter_var($datosNuevoEvento["url"], FILTER_SANITIZE_URL));
-    $email=safe(filter_var($datosNuevoEvento["email"], FILTER_SANITIZE_EMAIL));
-    $etiquetas=safe($datosNuevoEvento["etiquetas"]);
-    $repeatsAfter=safe($datosNuevoEvento["repeatsAfter"]);
-    $eventoActivo=safe($datosNuevoEvento["eventoActivo"]);
+    $idDireccion=safe($link, $datosNuevoEvento["idDireccion"]);
+    $url=safe($link, filter_var($datosNuevoEvento["url"], FILTER_SANITIZE_URL));
+    $email=safe($link, filter_var($datosNuevoEvento["email"], FILTER_SANITIZE_EMAIL));
+    $etiquetas=safe($link, $datosNuevoEvento["etiquetas"]);
+    $repeatsAfter=safe($link, $datosNuevoEvento["repeatsAfter"]);
+    $eventoActivo=safe($link, $datosNuevoEvento["eventoActivo"]);
 
 
-    $link=connect();
-    mysql_query('SET CHARACTER SET utf8',$link);
+    
+    mysqli_query($link, 'SET CHARACTER SET utf8');
 
     $sql="INSERT INTO eventos (fecha,fechaFin,clase,tipo,titulo,texto,lugar,temperatura,x,y,idDistritoPadre,idEntidad,
                                 idTematica,idDireccion,url,email,etiquetas,repeatsAfter,eventoActivo)
                        VALUES ('$fecha',$fechaFin,'$clase','$tipo','$titulo','$texto','$lugar','$temperatura','$x','$y','$idDistritoPadre','$idEntidad',
                                 '$idTematica','$idDireccion','$url','$email','$etiquetas','$repeatsAfter','$eventoActivo')";
-    mysql_query($sql,$link);
+    mysqli_query($link, $sql);
     $idEvento=mysql_insert_id();
     foreach($tematicas as $tematica)
     {
         $sql="INSERT INTO eventos_tematicas (idEvento, idTematica) VALUES ('$idEvento', '$tematica')";
-        mysql_query($sql,$link);
+        mysqli_query($link, $sql);
     }
 }
 
 function getEvento($idEvento)
 {
     //sanitize input
-    $idEvento=safe($idEvento);
-
     $link=connect();
-    mysql_query('SET CHARACTER SET utf8',$link);
+    $idEvento=safe($link, $idEvento);
+    
+    mysqli_query($link, 'SET CHARACTER SET utf8');
     $sql="SELECT * FROM eventos WHERE idEvento='$idEvento' AND eventos.eventoActivo='1'";
-    $result=mysql_query($sql,$link);
-    if($fila=mysql_fetch_assoc($result))
+    $result=mysqli_query($link, $sql);
+    if($fila=mysqli_fetch_assoc($result))
     {
         $evento=$fila;
 
         $sql="SELECT * FROM direcciones WHERE idDireccion='{$fila['idDireccion']}'";
-        $result=mysql_query($sql,$link);
-        if($fila=mysql_fetch_assoc($result))
+        $result=mysqli_query($link, $sql);
+        if($fila=mysqli_fetch_assoc($result))
         {
             $evento['direccion']=$fila;
         }
@@ -491,8 +493,8 @@ function getEvento($idEvento)
         $sql="SELECT * FROM eventos_tematicas, tematicas 
                 WHERE eventos_tematicas.idEvento='$idEvento' AND
                 eventos_tematicas.idTematica=tematicas.idTematica";
-        $result=mysql_query($sql,$link);
-        while($fila=mysql_fetch_assoc($result))
+        $result=mysqli_query($link, $sql);
+        while($fila=mysqli_fetch_assoc($result))
         {
             $evento['tematicas'][$fila['idTematica']]=ucfirst(strtolower($fila['tematica']));
         }
@@ -507,11 +509,11 @@ function getEvento($idEvento)
 
 function getEventos($params,$cantidad=50,$orden="fecha")
 {
-    //Sanitize inputs
-    $cantidad=safe(filter_var($cantidad, FILTER_SANITIZE_NUMBER_INT));
-    $orden=safe($orden);
-
     $link=connect();
+    //Sanitize inputs
+    $cantidad=safe($link, filter_var($cantidad, FILTER_SANITIZE_NUMBER_INT));
+    $orden=safe($link, $orden);
+
     $busqueda="";
     $tematica="";
     $lugar="";
@@ -576,9 +578,9 @@ function getEventos($params,$cantidad=50,$orden="fecha")
     //echo $sql;
     //exit();
 
-    $result=mysql_query($sql,$link);
+    $result=mysqli_query($link, $sql);
     $returnData=array();
-    while($fila=mysql_fetch_assoc($result))
+    while($fila=mysqli_fetch_assoc($result))
     {
         unset($fila["texto"]);
     	array_push($returnData,$fila);
@@ -607,10 +609,10 @@ function getEventosPorValidar()
             AND eventos.idEntidad=entidades.idEntidad
             GROUP BY eventos.idEvento 
             ORDER BY idEvento ASC";    
-    mysql_query('SET CHARACTER SET utf8',$link);
-    $result=mysql_query($sql,$link);
+    mysqli_query($link, 'SET CHARACTER SET utf8');
+    $result=mysqli_query($link, $sql);
     $returnData=array();
-    while($fila=mysql_fetch_assoc($result))
+    while($fila=mysqli_fetch_assoc($result))
     {
         array_push($returnData,$fila);
     }
@@ -624,8 +626,8 @@ function getAllChildren($lugares)
     {
         $ids=implode(",",$lugares);
         $sql="SELECT id FROM lugares_shp WHERE nivel='$nivel' AND idPadre IN ($ids)";
-        $result=mysql_query($sql,$link);
-        while($fila=mysql_fetch_assoc($result))
+        $result=mysqli_query($link, $sql);
+        while($fila=mysqli_fetch_assoc($result))
             array_push($lugares,$fila['id']);
     }
     return(array_unique($lugares));
@@ -662,15 +664,15 @@ function getAllAncestors($idLugar)
 function getDatosLugar($idLugar)
 {
     //Sanitize input
-    $idLugar=safe($idLugar);
-    
     $link=connect();
+    $idLugar=safe($link, $idLugar);  
+    
     $sql="SELECT * 
             FROM  lugares_shp 
             WHERE id='$idLugar'";
-    mysql_query('SET CHARACTER SET utf8',$link);
-    $result=mysql_query($sql,$link);
-    $fila=mysql_fetch_assoc($result);
+    mysqli_query($link, 'SET CHARACTER SET utf8');
+    $result=mysqli_query($link, $sql);
+    $fila=mysqli_fetch_assoc($result);
     return $fila;
 }
 
@@ -687,10 +689,10 @@ function getChildAreas($lugarOriginal,$nivel)
 
 
 
-    mysql_query('SET CHARACTER SET utf8',$link);
-    $result=mysql_query($sql,$link);
+    mysqli_query($link, 'SET CHARACTER SET utf8');
+    $result=mysqli_query($link, $sql);
     $returnData=array();
-    while($fila=mysql_fetch_assoc($result))
+    while($fila=mysqli_fetch_assoc($result))
     {
         $fila["geocodigo"]=str_pad($fila["geocodigo"],5,0,STR_PAD_LEFT);
         array_push($returnData,$fila);
@@ -702,12 +704,12 @@ function getChildAreas($lugarOriginal,$nivel)
 function getLugares($cadena,$lugarOriginal,$type,$cantidad=3,$inSet=array())
 {
     //Sanitize inputs
-    $cadena=safe($cadena);
-    $lugarOriginal=safe($lugarOriginal);
-    $type=safe($type);
-    $cantidad=safe(filter_var($cantidad, FILTER_SANITIZE_NUMBER_INT));
-
     $link=connect();
+    $cadena=safe($link, $cadena);
+    $lugarOriginal=safe($link, $lugarOriginal);
+    $type=safe($link, $type);
+    $cantidad=safe($link, filter_var($cantidad, FILTER_SANITIZE_NUMBER_INT));
+   
     $sql="SELECT * FROM lugares_shp WHERE
             nivel='$type' AND
             provincia=28 AND
@@ -717,10 +719,10 @@ function getLugares($cadena,$lugarOriginal,$type,$cantidad=3,$inSet=array())
         $sql.="";
     $sql.="LIMIT 0,$cantidad";
 
-    mysql_query('SET CHARACTER SET utf8',$link);
-    $result=mysql_query($sql,$link);
+    mysqli_query($link, 'SET CHARACTER SET utf8');
+    $result=mysqli_query($link, $sql);
     $returnData=array();
-    while($fila=mysql_fetch_assoc($result))
+    while($fila=mysqli_fetch_assoc($result))
         array_push($returnData,array($fila["id"],$fila["nombre"],$fila["xcentroid"],$fila["ycentroid"],$fila["geocodigo"]));
     return $returnData;
 
@@ -729,9 +731,10 @@ function getLugares($cadena,$lugarOriginal,$type,$cantidad=3,$inSet=array())
 function getLugaresSuggestions($cadena,$lugarOriginal,$cantidad=4)
 {
     //Sanitize input
-    $cadena=safe($cadena);
-    $cantidad=safe(filter_var($cantidad, FILTER_SANITIZE_NUMBER_INT));
-    $lugarOriginal=safe($lugarOriginal);
+    $link=connect();
+    $cadena=safe($link, $cadena);
+    $cantidad=safe($link, filter_var($cantidad, FILTER_SANITIZE_NUMBER_INT));
+    $lugarOriginal=safe($link, $lugarOriginal);
 
     $datosLugar=getDatosLugar($lugarOriginal);
     if($datosLugar['nivel']<8)
@@ -739,17 +742,17 @@ function getLugaresSuggestions($cadena,$lugarOriginal,$cantidad=4)
 
     $inSet=getAllChildren(array($lugarOriginal));
     unset($inSet[0]);   //Quitamos el original
-    $link=connect();
-    mysql_query('SET CHARACTER SET utf8',$link);
+    
+    mysqli_query($link, 'SET CHARACTER SET utf8');
     $sql="SELECT * FROM lugares_shp WHERE
             nombre LIKE '%$cadena%' AND
             id IN (".implode(",",$inSet).")
             $whereNiveles
             LIMIT 0,$cantidad";
     //echo $sql;
-    $result=mysql_query($sql,$link);
+    $result=mysqli_query($link, $sql);
     $returnData=array();
-    while($fila=mysql_fetch_assoc($result))
+    while($fila=mysqli_fetch_assoc($result))
         array_push($returnData,array($fila["id"],$fila["nombre"],$fila["xcentroid"],$fila["ycentroid"],$fila["geocodigo"]));
     return $returnData;
 
@@ -761,23 +764,24 @@ function getIrA($cadena,$lugarOriginal)
     //$inSet=getAllChildren(array($lugarOriginal));
 
     //Sanitize inputs
-    $cadena=safe($cadena);
-    $lugarOriginal=safe($lugarOriginal);
-
     $link=connect();
-    $sql="SELECT * FROM lugares_shp WHERE
+    $cadena=safe($link, $cadena);
+    $lugarOriginal=safe($link, $lugarOriginal);
+
+   $sql="SELECT * FROM lugares_shp)";
+   /* $sql="SELECT * FROM lugares_shp WHERE
             nombre LIKE '$cadena%' AND (
             (nivel='8' AND ((idPadre BETWEEN 777000001 AND 777000007) OR (idPadre='666000028'))) OR
             (nivel='6' OR nivel='7')
-            )";
+            )";*/
 
     //Por ahora forzado a niveles 6/7 de Madrid (no tenemos de otras provincias) Y nivel 8 de Madrid
 
 
-    mysql_query('SET CHARACTER SET utf8',$link);
-    $result=mysql_query($sql,$link);
+    mysqli_query($link, 'SET CHARACTER SET utf8');
+    $result=mysqli_query($link, $sql);
     $returnData=array();
-    if($fila=mysql_fetch_assoc($result))
+    if($fila=mysqli_fetch_assoc($result))
         return $fila;
     else
         return false;
@@ -788,23 +792,24 @@ function getDireccionesSuggestions($cadena,$lugarOriginal,$cantidad=5)
 {
 
     //sanitize inputs
-    $cadena=safe($cadena);
-    $lugarOriginal=safe($lugarOriginal);
-    $cantidad=safe(filter_var($cantidad, FILTER_SANITIZE_NUMBER_INT));
+    $link=connect();
+    $cadena=safe($link, $cadena);
+    $lugarOriginal=safe($link, $lugarOriginal);
+    $cantidad=safe($link, filter_var($cantidad, FILTER_SANITIZE_NUMBER_INT));
 
     //echo $lugarOriginal;
     $inSet=getAllChildren(array($lugarOriginal));
-    $link=connect();
+    
     //unset($inSet[0]);   //Quitamos el original
     $sql="SELECT * FROM direcciones WHERE 
             (nombre LIKE '%$cadena%' OR direccion LIKE '%$cadena%') AND
             idPadre IN (".implode(",",$inSet).")  AND direcciones.direccionActiva='1' 
             LIMIT 0,$cantidad";
     //echo $sql;
-    mysql_query('SET CHARACTER SET utf8',$link);
-    $result=mysql_query($sql,$link);
+    mysqli_query($link, 'SET CHARACTER SET utf8');
+    $result=mysqli_query($link, $sql);
     $returnData=array();
-    while($fila=mysql_fetch_assoc($result))
+    while($fila=mysqli_fetch_assoc($result))
     {
         if($fila["nombre"]==="")
             $fila["nombre"]="Dirección";
@@ -816,17 +821,17 @@ function getDireccionesSuggestions($cadena,$lugarOriginal,$cantidad=5)
 
 function getDistritoPadreDireccion($idDireccion)
 {
-    $direccion=safe($direccion);
+    $link=connect();
+    $direccion=safe($link, $direccion);
 
     //Buscar el padre según las coordenadas
     $sql="SELECT * FROM direcciones WHERE 
                     idDireccion='$idDireccion'";
+   
+    mysqli_query($link, 'SET CHARACTER SET utf8');
 
-    $link=connect();
-    mysql_query('SET CHARACTER SET utf8',$link);
-
-    $result=mysql_query($sql,$link);
-    if($fila=mysql_fetch_assoc($result))
+    $result=mysqli_query($link, $sql);
+    if($fila=mysqli_fetch_assoc($result))
     {
         $idDistritoPadre=$fila["idPadre"];
     }
@@ -841,28 +846,28 @@ function getDistritoPadreDireccion($idDireccion)
 function getDireccion($idDireccion)
 {
     //Sanitize input
-    $idDireccion=safe($idDireccion);
-
     $link=connect();
-    mysql_query('SET CHARACTER SET utf8',$link);
+    $idDireccion=safe($link, $idDireccion);
+
+    mysqli_query($link, 'SET CHARACTER SET utf8');
 
     //Buscar el padre según las coordenadas
     $sql="SELECT * FROM direcciones WHERE idDireccion='$idDireccion'";
-    $result=mysql_query($sql,$link);
-    return mysql_fetch_assoc($result);
+    $result=mysqli_query($link, $sql);
+    return mysqli_fetch_assoc($result);
 }
 
 function crearNuevaDireccion($nombreLugar,$direccion,$lat,$lng,$idPadre)
 {
     // Sanitize input
-    $nombreLugar=safe($nombreLugar);
-    $lat=safe($lat);
-    $lng=safe($lng);
-    $idPadre=safe($idPadre);
-    $direccion=safe($direccion);
-
     $link=connect();
-    mysql_query('SET CHARACTER SET utf8',$link);
+    $nombreLugar=safe($link, $nombreLugar);
+    $lat=safe($link, $lat);
+    $lng=safe($link, $lng);
+    $idPadre=safe($link, $idPadre);
+    $direccion=safe($link, $direccion);
+    
+    mysqli_query($link, 'SET CHARACTER SET utf8');
 
     //Buscar el padre según las coordenadas
     $sql="SELECT * FROM lugares_shp WHERE
@@ -872,8 +877,8 @@ function crearNuevaDireccion($nombreLugar,$direccion,$lat,$lng,$idPadre)
                     ymax>'$lat' AND
                     idPadre='$idPadre'";
 
-    $result=mysql_query($sql,$link);
-    if($fila=mysql_fetch_assoc($result))
+    $result=mysqli_query($link, $sql);
+    if($fila=mysqli_fetch_assoc($result))
     {
         $idDistritoPadre=$fila["id"];
     }
@@ -887,7 +892,7 @@ function crearNuevaDireccion($nombreLugar,$direccion,$lat,$lng,$idPadre)
     //Activa=0
     $sql="INSERT INTO direcciones (idPadre,nombre,direccion,lat,lng,zoom,direccionActiva)
                            VALUES ('$idDistritoPadre','$nombreLugar','$direccion','$lat','$lng','15','0')";
-    mysql_query($sql,$link);
+    mysqli_query($link, $sql);
     $returnData["idLugar"]=mysql_insert_id();
     $returnData["idDistritoPadre"]=$idDistritoPadre;
     return $returnData;
@@ -896,29 +901,29 @@ function crearNuevaDireccion($nombreLugar,$direccion,$lat,$lng,$idPadre)
 function validarDireccion($idDireccion,$status)
 {
     //Sanitize inputs
-    $idDireccion=safe($idDireccion);
-    $status=safe($status);
-
     $link=connect();
-    mysql_query('SET CHARACTER SET utf8',$link);
+    $idDireccion=safe($link, $idDireccion);
+    $status=safe($link, $status);
+   
+    mysqli_query($link, 'SET CHARACTER SET utf8');
 
     //Buscar el padre según las coordenadas
     $sql="UPDATE direcciones SET direccionActiva='$status' WHERE idDireccion='$idDireccion'";
-    mysql_query($sql,$link);
+    mysqli_query($link, $sql);
 }
 
 function validarEvento($idEvento,$status)
 {
     //Sanitiza inputs
-    $idEvento=safe($idEvento);
-    $status=safe($status);
-
     $link=connect();
-    mysql_query('SET CHARACTER SET utf8',$link);
+    $idEvento=safe($link, $idEvento);
+    $status=safe($link, $status);
+    
+    mysqli_query($link, 'SET CHARACTER SET utf8');
 
     //Buscar el padre según las coordenadas
     $sql="UPDATE eventos SET eventoActivo='$status' WHERE idEvento='$idEvento'";
-    mysql_query($sql,$link);
+    mysqli_query($link, $sql);
 }
 
 // Gets the areas of level $type that are contained within the limits, excluding the central $lugarOriginal
@@ -926,15 +931,16 @@ function validarEvento($idEvento,$status)
 
 function getColindantes($lugarOriginal,$type,$xmin,$xmax,$ymin,$ymax)
 {
-    //sanitize inputs
-    $lugarOriginal=safe($lugarOriginal);
-    $type=safe($type);
-    $xmin=safe($xmin);
-    $xmax=safe($xmax);
-    $ymin=safe($ymin);
-    $ymax=safe($ymax);
-
     $link=connect();
+    //sanitize inputs
+    $lugarOriginal=safe($link, $lugarOriginal);
+    $type=safe($link, $type);
+    $xmin=safe($link, $xmin);
+    $xmax=safe($link, $xmax);
+    $ymin=safe($link, $ymin);
+    $ymax=safe($link, $ymax);
+
+
     $sql="SELECT * FROM lugares_shp WHERE
             nivel='$type' AND
             NOT(xmin > $xmax
@@ -942,10 +948,10 @@ function getColindantes($lugarOriginal,$type,$xmin,$xmax,$ymin,$ymax)
             OR  ymax < $ymin
             OR $ymax < ymin)";
 
-    mysql_query('SET CHARACTER SET utf8',$link);
-    $result=mysql_query($sql,$link);
+    mysqli_query($link, 'SET CHARACTER SET utf8');
+    $result=mysqli_query($link, $sql);
     $returnData=array();
-    while($fila=mysql_fetch_assoc($result))
+    while($fila=mysqli_fetch_assoc($result))
         if($fila["id"]!=$lugarOriginal)
         {
             $fila["geocodigo"]=str_pad($fila["geocodigo"],5,0,STR_PAD_LEFT);
@@ -956,20 +962,21 @@ function getColindantes($lugarOriginal,$type,$xmin,$xmax,$ymin,$ymax)
 
 function getEventosCoordenadas($xmin,$xmax,$ymin,$ymax)
 {
-    //sanitize inputs
-    $xmin=safe($xmin);
-    $xmax=safe($xmax);
-    $ymin=safe($ymin);
-    $ymax=safe($ymax);
-
     $link=connect();
+    //sanitize inputs
+    $xmin=safe($link, $xmin);
+    $xmax=safe($link, $xmax);
+    $ymin=safe($link, $ymin);
+    $ymax=safe($link, $ymax);
+
+    
     $sql="SELECT * FROM eventos,lugares_shp WHERE 
             x>$xmin AND x<$xmax AND y>$ymin AND y<$ymax AND eventos.idDistritoPadre=lugares_shp.id AND eventos.eventoActivo='1' ";
 
-    mysql_query('SET CHARACTER SET utf8',$link);
-    $result=mysql_query($sql,$link);
+    mysqli_query($link, 'SET CHARACTER SET utf8');
+    $result=mysqli_query($link, $sql);
     $returnData=array();
-    while($fila=mysql_fetch_assoc($result))
+    while($fila=mysqli_fetch_assoc($result))
         array_push($returnData,$fila);
     return $returnData;
 }
@@ -978,18 +985,19 @@ function getLevels($provincia,$type)
 // Gets a list of municipalities that are part of a province
 {
     //sanitize inputs
-    $provincia=safe($provincia);
-    $type=safe($type);
-
     $link=connect();
+    $provincia=safe($link, $provincia);
+    $type=safe($link, $type);
+
+    
     $sql="SELECT * FROM lugares_shp WHERE
             nivel='$type' AND
             provincia='$provincia'";
 
-    mysql_query('SET CHARACTER SET utf8',$link);
-    $result=mysql_query($sql,$link);
+    mysqli_query($link, 'SET CHARACTER SET utf8');
+    $result=mysqli_query($link, $sql);
     $returnData=array();
-    while($fila=mysql_fetch_assoc($result))
+    while($fila=mysqli_fetch_assoc($result))
         if($fila["id"]!=$lugarOriginal)
             array_push($returnData,array($fila["id"],$fila["nombre"],$fila["xcentroid"],$fila["ycentroid"],$fila["geocodigo"],$fila["idPadre"]));
     return $returnData;
