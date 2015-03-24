@@ -3,10 +3,12 @@ set_time_limit(0);
 include_once('../vendor/phayes/geophp/geoPHP.inc');
 include_once "../db.php";
 
+// Script is unactive unless it is required
+// exit();
 
 $link=connect();
 
-$sql="SELECT * FROM lugares_shp WHERE nivel=6";       
+$sql="SELECT * FROM lugares_shp WHERE nivel=6 AND xcentroid=0";       
 $result=mysql_query($sql,$link);
 $data=array();
 while($fila=mysql_fetch_assoc($result))
@@ -17,6 +19,7 @@ while($fila=mysql_fetch_assoc($result))
 foreach($data as $idRegion)
 {
 	 //$idFichero=str_pad($fila[4],5,0,STR_PAD_LEFT);
+     // This failed for Islas Baleares 601040007 and Santa Cruz de Tenerife 38 Girona 17 A coruña 15
 	 $polygon = geoPHP::load(file_get_contents("../shp/geoJSON/6/$idRegion.geojson"),'json');
 	 $area = $polygon->getArea();
 	 $centroid = $polygon->getCentroid();
