@@ -107,64 +107,64 @@ a.boxclose{
 
 .newEvent-command-bold
 {
-	background-image: url("/citysens/icons/editor-bold.png");		
+	background-image: url("icons/editor-bold.png");		
 }
 
 .newEvent-command-italic
 {
-	background-image: url("/citysens/icons/editor-italic.png");		
+	background-image: url("icons/editor-italic.png");		
 }
 
 .newEvent-command-underline
 {
-	background-image: url("/citysens/icons/editor-underline.png");		
+	background-image: url("icons/editor-underline.png");		
 }
 
 .newEvent-command-link
 {
-	background-image: url("/citysens/icons/editor-link.png");	
+	background-image: url("icons/editor-link.png");	
 	opacity: 1.0;	
 }
 
 .newEvent-command-image
 {
-	background-image: url("/citysens/icons/editor-image.png");	
+	background-image: url("icons/editor-image.png");	
 	opacity: 1.0;	
 }
 
 .newEvent-command-insertOrderedList
 {
-	background-image: url("/citysens/icons/editor-numberedList.png");	
+	background-image: url("icons/editor-numberedList.png");	
 }
 
 .newEvent-command-insertUnorderedList
 {
-	background-image: url("/citysens/icons/editor-dottedList.png");	
+	background-image: url("icons/editor-dottedList.png");	
 }
 
 .newEvent-command-leftAlign
 {
-	background-image: url("/citysens/icons/editor-leftAlign.png");	
+	background-image: url("icons/editor-leftAlign.png");	
 }
 
 .newEvent-command-centerAlign
 {
-	background-image: url("/citysens/icons/editor-centerAlign.png");	
+	background-image: url("icons/editor-centerAlign.png");	
 }
 
 .newEvent-command-rightAlign
 {
-	background-image: url("/citysens/icons/editor-rightAlign.png");	
+	background-image: url("icons/editor-rightAlign.png");	
 }
 
 .newEvent-command-t1
 {
-	background-image: url("/citysens/icons/editor-t1.png");	
+	background-image: url("icons/editor-t1.png");	
 }
 
 .newEvent-command-t2
 {
-	background-image: url("/citysens/icons/editor-t2.png");	
+	background-image: url("icons/editor-t2.png");	
 }
 
 
@@ -573,11 +573,11 @@ a.boxclose{
 
 .tagTematica-imagen-tematica
 {
-	background-image: url("http://localhost:8888/citysens/icons/etiqueta30x30.png");		
+	background-image: url("icons/etiqueta30x30.png");		
 }
 
 .tagTematica-imagen-etiqueta
 {
-	background-image: url("http://localhost:8888/citysens/icons/etiquetas30x30.png");		
+	background-image: url("icons/etiquetas30x30.png");		
 }
 

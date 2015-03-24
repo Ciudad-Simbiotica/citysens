@@ -50,13 +50,13 @@ function hideOverlay(url)
 
 $.getJSON('getDatosEntidad.php', 
 {
-      id: $.urlParam('idAsociacion'),
+      id: $.urlParam('idEntidad'),
 })
 .done(function(data) 
 {
   console.log(data);
   
-	$(".detalle-cabecera").text(data.asociacion);
+	$(".detalle-cabecera").text(data.entidad);
 	$(".detalle-cuerpo-texto").html(data.texto);
 
   if(data.url!=null)
@@ -68,12 +68,12 @@ $.getJSON('getDatosEntidad.php',
   $(".informacion-cuerpo-contacto-email").attr("href", "mailto:"+data.email);
   $(".informacion-cuerpo-contacto-email").html(data.email);
 
-  if(data.tipoAsociacion=="institucion")
-    $(".detalle-tipo").css("background-image", "url(icons/icon_CitYsens.institucion.png)");
-  else if(data.tipoAsociacion=="organizacion")
-    $(".detalle-tipo").css("background-image", "url(icons/icon_CitYsens.organizacion.png)");
-  else if(data.tipoAsociacion=="colectivo")
-    $(".detalle-tipo").css("background-image", "url(icons/CitYsens.People.png)");
+  if(data.tipoEntidad=="institucion")
+    $(".detalle-tipo").css("background-image", "url(css/icons/icon_CitYsens.institucion.png)");
+  else if(data.tipoEntidad=="organizacion")
+    $(".detalle-tipo").css("background-image", "url(css/icons/icon_CitYsens.organizacion.png)");
+  else if(data.tipoEntidad=="colectivo")
+    $(".detalle-tipo").css("background-image", "url(css/icons/CitYsens.People.png)");
 
   $(".detalle-puntos-puntos").text(data.points);
 
@@ -107,13 +107,13 @@ $.getJSON('getDatosEntidad.php',
 
     contactoScrollPosition=Math.round($("#informacion-cuerpo-contacto").offset().top-177);
     
-    cargarMapa(data.direccion.lat,data.direccion.lng,data.asociacion+" @ "+data.direccion.nombre);
+    cargarMapa(data.direccion.lat,data.direccion.lng,data.entidad+" @ "+data.direccion.nombre);
     $(".detalle-mapa-cabecera-lugar").text("Entidad en "+data.direccion.nombre);
     
     $(".detalle-mapa-pie-nombre").text(data.direccion.nombre);
     $(".detalle-mapa-pie-direccion").text(data.direccion.direccion);
     $(".detalle-mapa-cabecera-volver").click(function(){
-        window.location="/citysens/?idLugar="+$.urlParam('idOrigen');
+        window.location="/?idLugar="+$.urlParam('idOrigen');
     });
     
     /*
@@ -132,7 +132,7 @@ $.getJSON('getDatosEntidad.php',
 
 
     //Sharing code
-    url="http://www.citysens.net/?idAsociacion="+data.idAsociacion+"%26idOrigen="+$.urlParam('idOrigen');
+    url="http://www.citysens.net/?idEntidad="+data.idEntidad+"%26idOrigen="+$.urlParam('idOrigen');
     mensaje="¡¡¡Esta entidad te puede interesar!!!";
     
     var tbx = document.getElementById("toolbox");
@@ -150,11 +150,11 @@ $.getJSON('getDatosEntidad.php',
     var addthis_share = 
     { 
       url: url,
-      title: data.asociacion,
+      title: data.entidad,
       description: mensaje,
       templates: 
       {
-        twitter: data.asociacion+" - "+url,
+        twitter: data.entidad+" - "+url,
       },
       url_transforms : 
       {
@@ -172,7 +172,7 @@ $.getJSON('getDatosEntidad.php',
     }
 
     addthis.toolbox("#toolbox",addthis_config,addthis_share);
-    document.title = data.asociacion;
+    document.title = data.entidad;
 });
 
 $("head").append($("<link rel='stylesheet' type='text/css' href='css/cuerpoEntidad.css'>")); 
@@ -195,13 +195,13 @@ $("#contacto").click(function ()
 
 $(".cabecera-pestania-izq").click(function()
 {
-    window.location="/citysens/?idLugar="+$.urlParam('idOrigen');
+    window.location="/?idLugar="+$.urlParam('idOrigen');
 });
 
 
 $(".cabecera-pestania-dch").click(function()
 {
-    window.location="/citysens/?idLugar="+$.urlParam('idOrigen')+'&category=ent';
+    window.location="/?idLugar="+$.urlParam('idOrigen')+'&category=ent';
 });
 
 $('#input-busqueda').attr('placeholder','Buscar en la entidad...');

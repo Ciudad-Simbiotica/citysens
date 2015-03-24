@@ -11,7 +11,7 @@ if($verificationToken)
 	$cadena.= PHP_EOL;
 	$cadena.= "Te enviamos este correo porque nos has dicho que has olvidado tu contraseña.Haz click en el siguiente enlace para cambiarla:".PHP_EOL;
 	$cadena.= PHP_EOL;
-	$cadena.= "http://localhost:8888/citysens/resetPassword.php?email=".$_POST["email"]."&token=".urlencode($verificationToken).PHP_EOL;
+	$cadena.= BASE_URL."/resetPassword.php?email=".$_POST["email"]."&token=".urlencode($verificationToken).PHP_EOL;
 	$cadena.= PHP_EOL;
 	$cadena.= "Un saludo,".PHP_EOL;
 	$cadena.= "El equipo de CitYsens".PHP_EOL;

@@ -3,7 +3,7 @@
 <div class='eventoPendiente' id='eventoPendienteTemplate'>
 	<div class='eventoPendiente-cabecera'>
 		<div class='eventoPendiente-titulo'>Este será el título</div>
-		<div class='eventoPendiente-asociacion'>Asociación de amigos del golf</div>
+		<div class='eventoPendiente-entidad'>Asociación de amigos del golf</div>
 		<div class='eventoPendiente-fecha'>27/12/2014 08:00</div>
 		<div class='eventoPendiente-fechaFin'> - 27/12/2014 09:00</div>
 		<div class='eventoPendiente-distritoPadre'>Distrito III</div>
@@ -53,7 +53,7 @@ temperatura
 x
 y
 idDistritoPadre
-idAsociacion
+idEntidad
 idTematica
 idDireccion
 url

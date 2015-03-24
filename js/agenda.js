@@ -102,15 +102,15 @@ function createLine(grupo,datos,animated,nombreSuperGrupo)
         //Cambiamos las imágenes según el tipo
         //ToDo: Sustituir el IMG por DIV y cambiar el background por CSS
         if(contenido=="convocatoria")
-          clone.find(".imagen-tipo").attr("src", "icons/Event-Unique.64.png");
+          clone.find(".imagen-tipo").attr("src", "css/icons/Event-Unique.64.png");
         else if(contenido=="recurrente")
-          clone.find(".imagen-tipo").attr("src", "icons/Event-Recurring.64.png");
+          clone.find(".imagen-tipo").attr("src", "css/icons/Event-Recurring.64.png");
         else if(contenido=="institucion")
-          clone.find(".imagen-tipo").attr("src", "icons/icon_CitYsens.institucion.png");
+          clone.find(".imagen-tipo").attr("src", "css/icons/icon_CitYsens.institucion.png");
         else if(contenido=="organizacion")
-          clone.find(".imagen-tipo").attr("src", "icons/icon_CitYsens.organizacion.png");
+          clone.find(".imagen-tipo").attr("src", "css/icons/icon_CitYsens.organizacion.png");
         else if(contenido=="colectivo")
-          clone.find(".imagen-tipo").attr("src", "icons/CitYsens.People.png");
+          clone.find(".imagen-tipo").attr("src", "css/icons/CitYsens.People.png");
       }
       /*
       else if(clase=="participante")
@@ -123,7 +123,7 @@ function createLine(grupo,datos,animated,nombreSuperGrupo)
       else if(clase=="temperatura")
       {
         //Cambiamos el termometro
-        clone.find(".imagen-temp").attr("src", "icons/termometro_"+contenido+".png");
+        clone.find(".imagen-temp").attr("src", "css/icons/termometro_"+contenido+".png");
       }
       else
       {
@@ -178,8 +178,9 @@ function clickFila(id)
 
 function enterFila(id)
 {
-  if(markers[id]!=null)
-    markers[id].setOpacity(0.6);  
+    if(!($("#"+id).hasClass("grupo-fila-selected")))
+       if(markers[id]!=null)   
+          markers[id].setOpacity(0.6);  
 }
 
 function leaveFila(id)
@@ -293,7 +294,7 @@ function cargarContenido(id)
 
     $(".informacion-cabecera").click(function()
     {
-      window.location="/citysens/?idEvento="+data.idEvento+"&idOrigen="+window.idLugar;
+      window.location="?idEvento="+data.idEvento+"&idOrigen="+window.idLugar;
     });
 
     url="http://www.citysens.net/?idEvento="+data.idEvento+"%26idOrigen="+window.idLugar;
@@ -382,7 +383,7 @@ function cargarContenidoEntidad(id)
   {
     console.log(data);
 
-    $(".informacion-cabecera-dch-titulo-top").html(data.asociacion);
+    $(".informacion-cabecera-dch-titulo-top").html(data.entidad);
     $(".informacion-cabecera-dch-titulo-bottom").html(data.direccion);
 
 
@@ -417,20 +418,20 @@ function cargarContenidoEntidad(id)
     $(".informacion-cuerpo-descBreve").html(data.descBreve);
     $(".informacion-cuerpo-texto").html(data.texto);
 
-    if(data.tipoAsociacion=="institucion")
-      $(".informacion-cabecera-izq-entidad-izq").css('background-image', "url(icons/icon_CitYsens.institucion.png)");
-    else if(data.tipoAsociacion=="organizacion")
-      $(".informacion-cabecera-izq-entidad-izq").css('background-image', "url(icons/icon_CitYsens.organizacion.png)");
-    else if(data.tipoAsociacion=="colectivo")
-      $(".informacion-cabecera-izq-entidad-izq").css('background-image', "url(icons/CitYsens.People.png)");
+    if(data.tipoEntidad=="institucion")
+      $(".informacion-cabecera-izq-entidad-izq").css('background-image', "url(css/icons/icon_CitYsens.institucion.png)");
+    else if(data.tipoEntidad=="organizacion")
+      $(".informacion-cabecera-izq-entidad-izq").css('background-image', "url(css/icons/icon_CitYsens.organizacion.png)");
+    else if(data.tipoEntidad=="colectivo")
+      $(".informacion-cabecera-izq-entidad-izq").css('background-image', "url(css/icons/CitYsens.People.png)");
 
 
     $(".informacion-cabecera").click(function()
     {
-      window.location="/citysens/?idAsociacion="+data.idAsociacion+"&idOrigen="+window.idLugar;
+      window.location="/?idEntidad="+data.idEntidad+"&idOrigen="+window.idLugar;
     });
 
-    url="http://www.citysens.net/?idAsociacion="+data.idAsociacion+"%26idOrigen="+window.idLugar;
+    url="http://www.citysens.net/?idEntidad="+data.idEntidad+"%26idOrigen="+window.idLugar;
     mensaje="¡¡¡Esta asociación te puede interesar!!!";
     
     var tbx = document.getElementById("toolbox");
@@ -447,7 +448,7 @@ function cargarContenidoEntidad(id)
     var addthis_share = 
     { 
       url: url,
-      title: data.asociacion,
+      title: data.entidad,
       description: mensaje,
       templates: 
       {

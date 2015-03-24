@@ -421,7 +421,7 @@ html,body
 	background-size: contain;
 	background-repeat: no-repeat;
     background-position: center;
-	background-image: url("/citysens/icons/Event-Unique.64.png");	
+	background-image: url("icons/Event-Unique.64.png");	
 	margin-right: 4px;
 }
 .tagFiltro-texto
@@ -475,6 +475,6 @@ html,body
 	height: 20px;
 	line-height: 21px;
 	cursor:hand;cursor:pointer;
-	background-image: url("/citysens/icons/follow_eye20x20.png");		
+	background-image: url("icons/follow_eye20x20.png");		
 	background-repeat: no-repeat;
 }

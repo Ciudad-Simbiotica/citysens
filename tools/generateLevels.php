@@ -1,17 +1,35 @@
 <?php
 /*
+// PHP part commented to prevent usage unless required.
+// Allows to generate regions by selecting a set of municipalites. 
+ 
 error_reporting(E_ERROR);
 if($_POST["regionIDs"]!="")
 {
 	include_once "../db.php";
 	$ids=json_decode($_POST["regionIDs"],true);
-	$sql='SELECT MAX(id)+1 AS nextID FROM lugares_shp WHERE id>=777000000 AND id<778000000';
+    $provincia=$_POST["provincia"];
+        // Region: level(1)+country(2)+Province(2)+region(4) (in province) CORRECTO - Pero faltan casi todas.
+        //           701280002 (Corredor del Henares)
+    $idregionmin=701000000+10000*$provincia;
+    $idregionmax=701009999+10000*$provincia;
+	$sql='SELECT MAX(id)+1 AS nextID FROM lugares_shp WHERE id>='.$idregionmin.' AND id<'.$idregionmax;
 	$link=connect();
     mysql_query('SET CHARACTER SET utf8',$link);
 	$result=mysql_query($sql,$link);
 	$fila=mysql_fetch_assoc($result);
-	$nextID=$fila["nextID"];
-	$sql="INSERT INTO lugares_shp (id,nombre,provincia,nivel) VALUES ('$nextID','{$_POST["nombre"]}','28','7')";	
+    $nextID=$fila["nextID"];
+	if ($nextID==null)
+      $nextID=701000001+10000*$provincia;
+    
+    
+    $sql="SELECT id as ccaaID from lugares_shp where nivel=6 and provincia=$provincia";	
+	mysql_query($sql,$link);
+    $result=mysql_query($sql,$link);
+    $fila=mysql_fetch_assoc($result);
+    $ccaaID=$fila["ccaaID"];
+    
+	$sql="INSERT INTO lugares_shp (id,nombre,provincia,nivel,idPadre) VALUES ('$nextID','{$_POST["nombre"]}','$provincia','7','$ccaaID')";	
 	mysql_query($sql,$link);
 	foreach($ids as $id)
 	{
@@ -47,44 +65,55 @@ if($_POST["regionIDs"]!="")
   <form method=POST id=formulario>
 	Región: <input type=text name=nombre id=nombre size=80><input type=submit value=Guardar>
 	<input type=hidden name=regionIDs id=regionIDs>
+<input type=hidden name=provincia id=provincia value=52>
   </form>
 	 <ul id='sitios'>
-	 </ul>
+	 </ul>              
  </div>
 
  <script type="text/javascript">
 	function addPolygonToMap(id,url,texto,color,idPadre)
 	{
-	var colorSeleccionado='#ff0000';
-	if(idPadre>0)
-	{
-		switch(idPadre)
+      var colorSeleccionado='#ff0000';
+      if(idPadre>0)
+      {
+        // Quick & dirty way to get several colours.
+		switch(idPadre%10)
 		{
-			case '777000001':
-				color='#ff0000';
+			case 1:
+				color='#444444';
 				break;
-			case '777000002':
+			case 2:
 				color='#00ff00';
 				break;
-			case '777000003':
+			case 3:
 				color='#0000ff';
 				break;
-			case '777000004':
+			case 4:
 				color='#ffff00';
 				break;
-			case '777000005':
+			case 5:
 				color='#ff00ff';
 				break;
-			case '777000006':
+			case 6:
 				color='#00ffff';
 				break;
-			case '777000007':
+			case 7:
 				color='#44ff00';
 				break;
-		}
+                         case 8:
+                                color='#ff44ff';
+                                break;
+                         case 9:
+                                color='#ffff44';
+                                break;
+                         case 0:
+                                color='#44ff44';
+                
+        }
 		colorSeleccionado='#ff9900';
-	}
-	$.ajax({
+      }
+      $.ajax({
 	    type: "POST",
 	    url: url,
 	    dataType: 'json',
@@ -119,14 +148,15 @@ if($_POST["regionIDs"]!="")
 	      	
 	      });
 	    }
-	});  
+      });  
 	}
 
 	function cargarMapa(coordinates,zoom)
 	{
 	  //Creamos el mapa
 	  var map = L.map('map',{zoomControl: false,attributionControl: false}).setView(coordinates,zoom);
-	  /*map.on('click', function(e) 
+	  /*
+      map.on('click', function(e) 
 	  {
 	    alert('Has hecho click en: '+e.latlng.toString());
 	  });
@@ -153,13 +183,13 @@ if($_POST["regionIDs"]!="")
       {
           dataType: 'json',
           tipo:'8',
-          provincia:'28'
+          provincia:$("#provincia").val()
       })
       .done(function(data) 
       {
         $.each(data, function(i,datos)
         {
-          addPolygonToMap(datos[0],"../shp/geoJSON/8/"+datos[0]+".geojson",datos[1],'#aaaaff',datos[5]);
+          addPolygonToMap(datos[0],"../shp/geoJSON/8/"+datos[0]+".geojson",datos[1],'#aaaaff',datos[4]);
         });
       });
 	 
@@ -174,7 +204,8 @@ if($_POST["regionIDs"]!="")
 $('#map').width(800);
 $('#map').height(600);
 
-cargarMapa([40.49166,-3.364136], 10);
+cargarMapa([40,-3], 6);
+// TODO: Instead of this: use coordinates of the provice: xmax, ymin?
 
 var arrayIDs = new Array();
 
@@ -196,20 +227,3 @@ $("#formulario").submit(function()
  </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

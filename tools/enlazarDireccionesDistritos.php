@@ -3,12 +3,13 @@ include "../db.php";
 include_once('../vendor/phayes/geophp/geoPHP.inc');
 error_reporting(E_ERROR);
 
-exit();
+ exit();
+// Links an address to the district it lies within (lugares_shp with level 9).
 
-$nivel=8;
+$nivel=9;  // Districts are level 9
 $distritos=array();
 $link=connect();
-$sql="SELECT * FROM lugares_shp WHERE nivel='$nivel'";
+$sql="SELECT * FROM lugares_shp WHERE nivel='$nivel' AND idPadre=801280005";
 $result=mysql_query($sql,$link);
 while($fila=mysql_fetch_assoc($result))
 {
@@ -17,7 +18,7 @@ while($fila=mysql_fetch_assoc($result))
 
 $direcciones=array();
 $link=connect();
-$sql="SELECT * FROM direcciones WHERE idDistritoPadre=0";
+$sql="SELECT * FROM direcciones WHERE idPadre=0";
 $result=mysql_query($sql,$link);
 while($fila=mysql_fetch_assoc($result))
 {
@@ -34,7 +35,7 @@ foreach($distritos as $distrito)
 
 	foreach($direcciones as $direccion)
 	{
-		$punto = geoPHP::load("POINT({$direccion['long']} {$direccion['lat']})","wkt");
+		$punto = geoPHP::load("POINT({$direccion['lng']} {$direccion['lat']})","wkt");
 		if($poligono->contains($punto))
 		{
 			$asociados[$direccion["idDireccion"]]=$distrito;

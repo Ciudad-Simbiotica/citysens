@@ -21,7 +21,7 @@ $.getJSON( "getEventosPendientes.php")
 	clone.attr('id',"eventoPorValidar-"+evento.idEvento);
 
 	clone.find(".eventoPendiente-titulo").html(evento.titulo);
-	clone.find(".eventoPendiente-asociacion").html(evento.asociacion);
+	clone.find(".eventoPendiente-entidad").html(evento.entidad);
 	clone.find(".eventoPendiente-fecha").html(evento.fecha);
 	if(evento.fechaFin)
 		clone.find(".eventoPendiente-fechaFin").html(" - "+evento.fechaFin);

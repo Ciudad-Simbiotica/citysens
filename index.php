@@ -1,10 +1,12 @@
 <?php
 error_reporting(E_ERROR);
+
+include "settings.php";
 //Página por defecto
-if(($_GET["idLugar"]=="")&($_GET["idEvento"]=="")&($_GET["idAsociacion"]==""))
+if(($_GET["idLugar"]=="")&($_GET["idEvento"]=="")&($_GET["idEntidad"]==""))
 {
-	header('Location: http://localhost:8888/citysens/?idLugar=777000002');
-	exit();
+    header('Location: '.BASE_URL.'?idLugar=701280002');
+    exit();
 }
 
 include "loadSession.php";
@@ -16,6 +18,7 @@ include "preload.php";
 <head>
  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
  <title>CitYsens</title>
+ <base href="<?php echo BASE_URL; //Base URL?>">
  <link href="css/style.css" rel="stylesheet" type="text/css" />
  <link href="css/cabecera.css" rel="stylesheet" type="text/css" />
  <link href="css/grupos.css" rel="stylesheet" type="text/css" />
@@ -55,33 +58,33 @@ include "preload.php";
  </div>
  <div class='cabecera'>
  	<div class='cabecera-cuerpo'>
-	 	<div class='cabecera-logo'><A HREF='/citysens/'><IMG SRC='icons/citysens.logoPrincipal.png' width='49px' height='40px'></A></div>
+	 	<div class='cabecera-logo'><A HREF=''><IMG SRC='css/icons/citysens.logoPrincipal.png' width='49px' height='40px'></A></div>
 	 	<div class='cabecera-pestanias'>
 	 		<div id='cabecera-pestania-izq' class='cabecera-pestania-izq'>Eventos</div>
 	 		<div class='subcabecera-pestania-izq'>
 	 			<div class='switch-filas switch-filas-convocatoria' id='switch-puntuales'>
-	 				<img src='icons/Event-Unique.64.png' width="32px">
+	 				<img src='css/icons/Event-Unique.64.png' width="32px">
 	 			</div>
 	 			<div class='switch-filas switch-filas-recurrente' id='switch-recurrentes'>
-		 			<img src='icons/Event-Recurring.64.png' width="32px">
+		 			<img src='css/icons/Event-Recurring.64.png' width="32px">
 		 		</div>
 	 		</div>
 	 		<div id='cabecera-pestania-dch'  class='cabecera-pestania-dch'>Entidades</div>
 	 		<div class='subcabecera-pestania-dch'>
 	 			<div class='switch-filas switch-filas-instituciones' id='switch-instituciones'>
-	 				<img src='icons/icon_CitYsens.institucion.png' width="32px">	
+	 				<img src='css/icons/icon_CitYsens.institucion.png' width="32px">	
 	 			</div>
 				<div class='switch-filas switch-filas-organizaciones' id='switch-organizaciones'>
-		 			<img src='icons/icon_CitYsens.organizacion.png' width="32px">	 		
+		 			<img src='css/icons/icon_CitYsens.organizacion.png' width="32px">	 		
 		 		</div>
 		 		<div class='switch-filas switch-filas-colectivos' id='switch-colectivos'>
-		 			<img src='icons/CitYsens.people.png' width="32px">	 		
+		 			<img src='css/icons/CitYsens.people.png' width="32px">	 		
 				</div>
 	 		</div>
 	 		<!--
 	 		<div id='cabecera-pestania-ctr'  class='cabecera-pestania-ctr'>Iniciativas</div>
 	 		<div class='subcabecera-pestania-ctr'>
-	 			<img class='switch-filas' id='switch-puntuales' src='icons/icon_iniciativa.png' width="32px">
+	 			<img class='switch-filas' id='switch-puntuales' src='css/icons/icon_iniciativa.png' width="32px">
 	 		</div>
 	 		<div id='cabecera-pestania-noticias'  class='cabecera-pestania-noticias'>Noticias</div>
 	 		-->
@@ -113,7 +116,7 @@ include "preload.php";
 			include "cuerpoLugar.php";
 		else if($_GET["idEvento"]!="")
 			include "cuerpoEvento.php";
-		else if($_GET["idAsociacion"]!="")
+		else if($_GET["idEntidad"]!="")
 			include "cuerpoEntidad.php";
 	?>
  </div>

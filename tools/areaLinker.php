@@ -12,7 +12,7 @@ $nivel9=getColindantes(-1,9,-19,5,0,44);
 foreach($nivel9 as $distrito)
 {
 	//print_r($distrito);
-	$idFichero=str_pad($distrito[4],5,0,STR_PAD_LEFT);
+	$idFichero=str_pad($distrito[4],5,0,STR_PAD_LEFT);  //adds 0's to reach lenght 5. This is the old GeoJSON format
 	$poly1 = geoPHP::load(file_get_contents("../shp/geoJSON/9/$idFichero.geojson"),'json');	
 	$boundingBox=$poly1->getBBox();
 	//print_r($boundingBox);

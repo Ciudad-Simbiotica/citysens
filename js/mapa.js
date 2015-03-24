@@ -33,8 +33,8 @@ $.ajax({
         {
           if(activo>0)
           {
-            //history.pushState(null, null, "http://localhost:8888/citysens/?idLugar="+idLugar);
-            window.location="/citysens/?idLugar="+idLugar;
+            //history.pushState(null, null, "http://localhost:8888/?idLugar="+idLugar);
+            window.location="?idLugar="+idLugar;
           }
           else
           {
@@ -122,7 +122,7 @@ function cargarMapa(idLugar)
   L.TargetIcon = L.Icon.extend(
   {
     options: {
-      iconUrl: '/citysens/icons/mira.png',
+      iconUrl: 'css/icons/mira.png',
       number: '',
       shadowUrl: null,
       iconSize: new L.Point(38, 37),
@@ -195,17 +195,20 @@ function cargarMapa(idLugar)
       zoom=zoomLat;
     else
       zoom=zoomLng;
-
-    containerWidth=$("#map").width();
-    containerHeight=$("#map").height();
-
-    despLeft=-((containerWidth-(containerWidth/zoom))/2);
-    despTop=-((containerHeight-(containerHeight/zoom))/2);
-
-    $("#map").css("top",despTop);
-    $("#map").css("left",despLeft);
-    $("#map").css("zoom",zoom);
-
+// Not needed after changing css properties zoom for transform:scale
+//    containerWidth=$("#map").width();
+//    containerHeight=$("#map").height();
+//    despLeft=-((containerWidth-(containerWidth/zoom))/2);
+//    despTop=-((containerHeight-(containerHeight/zoom))/2);
+//
+//
+//  $("#map").css("top",despTop);
+//  $("#map").css("left",despLeft);
+//  $("#map").css("zoom",zoom);
+    $("#map").css("transform","scale("+zoom+")");
+    $("#map").css("-ms-transform","scale("+zoom+")");
+    $("#map").css("-moz-transform","scale("+zoom+")");
+    $("#map").css("-webkit-transform","scale("+zoom+")");
     //Breadcrumbs
     var breadcrumbs="";
     var first=true;

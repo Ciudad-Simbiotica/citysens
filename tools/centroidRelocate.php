@@ -62,13 +62,13 @@
 
 	  //Cargamos los perímetros
 	  /*
-	  addPolygonToMap("/citysens/mapItDownloads/Madrid/579300.geojson",'alcalá','#ffffff');
+	  addPolygonToMap("/mapItDownloads/Madrid/579300.geojson",'alcalá','#ffffff');
 
 
 
 	  	
 
-		$.getJSON("/citysens/mapItDownloads/Madrid/579300.geojson", 
+		$.getJSON("/mapItDownloads/Madrid/579300.geojson", 
 		  {
 		    format: "json"
 		  })
@@ -88,7 +88,7 @@
 				
 		    });  
 		
-		$.getJSON("/citysens/mapItDownloads/Madrid/Distrito II.geojson", 
+		$.getJSON("/mapItDownloads/Madrid/Distrito II.geojson", 
 		  {
 		    format: "json"
 		  })
@@ -109,10 +109,10 @@
 		    });  
 	   
 		
-	   addPolygonToMap("/citysens/mapItDownloads/DistritoV.geojson",'Distrito V','#aaffff');
-	   addPolygonToMap("/citysens/mapItDownloads/DistritoIV.geojson",'Distrito IV','#aaffff');
-	   addPolygonToMap("/citysens/mapItDownloads/DistritoIII.geojson",'Distrito III','#aaffff');
-	   addPolygonToMap("/citysens/mapItDownloads/DistritoII.geojson",'Distrito II','#aaffff');
+	   addPolygonToMap("/mapItDownloads/DistritoV.geojson",'Distrito V','#aaffff');
+	   addPolygonToMap("/mapItDownloads/DistritoIV.geojson",'Distrito IV','#aaffff');
+	   addPolygonToMap("/mapItDownloads/DistritoIII.geojson",'Distrito III','#aaffff');
+	   addPolygonToMap("/mapItDownloads/DistritoII.geojson",'Distrito II','#aaffff');
 
 
 		
@@ -123,9 +123,9 @@
 	  //addPolygonToMap("mapItDownloads/Madrid/Distrito IV.geojson",'Distrito IV','#aaffff');
 	  //addPolygonToMap("mapItDownloads/Madrid/Distrito V.geojson",'Distrito V','#aaffff');
 	  */
-	  //addPolygonToMap("http://localhost:8888/citysens/shp/200001442.json",'Torrejón','#aaffff');
-	  //addPolygonToMap("http://localhost:8888/citysens/shp/AlcalaShp.geojson",'Alcalá','#aaffff');
-	  //addPolygonToMap("http://localhost:8888/citysens/shp/geoJSON/8/4284.geojson",'Alcalá','#aaffff');
+	  //addPolygonToMap("http://localhost:8888/shp/200001442.json",'Torrejón','#aaffff');
+	  //addPolygonToMap("http://localhost:8888/shp/AlcalaShp.geojson",'Alcalá','#aaffff');
+	  //addPolygonToMap("http://localhost:8888/shp/geoJSON/8/4284.geojson",'Alcalá','#aaffff');
 
       //Aquí cargaríamos los distritos
       /*
@@ -138,7 +138,7 @@
 	  
 	  <?
 
-	  	//http://localhost:8888/citysens/mapChecker.php?type=8&xmin=-3.64643&ymin=40.37454&xmax=-3.10192&ymax=40.60744
+	  	//http://localhost:8888/mapChecker.php?type=8&xmin=-3.64643&ymin=40.37454&xmax=-3.10192&ymax=40.60744
 	  	include_once "../db.php";
 	  	error_reporting(0);
 		$link=connect();
