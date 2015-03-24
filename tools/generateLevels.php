@@ -65,10 +65,10 @@ if($_POST["regionIDs"]!="")
   <form method=POST id=formulario>
 	Región: <input type=text name=nombre id=nombre size=80><input type=submit value=Guardar>
 	<input type=hidden name=regionIDs id=regionIDs>
-    <input type=hidden name=provincia id=provincia value=3>
+<input type=hidden name=provincia id=provincia value=52>
   </form>
 	 <ul id='sitios'>
-	 </ul>
+	 </ul>              
  </div>
 
  <script type="text/javascript">
@@ -101,14 +101,14 @@ if($_POST["regionIDs"]!="")
 			case 7:
 				color='#44ff00';
 				break;
-            case 8:
-                color='#ff44ff';
-                break;
-            case 9:
-                color='#ffff44';
-                break;
-            case 0:
-                color='#44ff44';
+                         case 8:
+                                color='#ff44ff';
+                                break;
+                         case 9:
+                                color='#ffff44';
+                                break;
+                         case 0:
+                                color='#44ff44';
                 
         }
 		colorSeleccionado='#ff9900';
@@ -189,7 +189,7 @@ if($_POST["regionIDs"]!="")
       {
         $.each(data, function(i,datos)
         {
-          addPolygonToMap(datos[0],"../shp/geoJSON/8/"+datos[0]+".geojson",datos[1],'#aaaaff',datos[5]);
+          addPolygonToMap(datos[0],"../shp/geoJSON/8/"+datos[0]+".geojson",datos[1],'#aaaaff',datos[4]);
         });
       });
 	 

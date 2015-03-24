@@ -694,13 +694,12 @@ function getChildAreas($lugarOriginal,$nivel)
     $returnData=array();
     while($fila=mysqli_fetch_assoc($result))
     {
-        $fila["geocodigo"]=str_pad($fila["geocodigo"],5,0,STR_PAD_LEFT);
         array_push($returnData,$fila);
-        //array_push($returnData,array($fila["id"],$fila["nombre"],$fila["xcentroid"],$fila["ycentroid"],str_pad($fila["geocodigo"],5,0,STR_PAD_LEFT),$fila["cantidad"]));
     }
     return $returnData;
 }
 
+//function is used?
 function getLugares($cadena,$lugarOriginal,$type,$cantidad=3,$inSet=array())
 {
     //Sanitize inputs
@@ -709,7 +708,6 @@ function getLugares($cadena,$lugarOriginal,$type,$cantidad=3,$inSet=array())
     $lugarOriginal=safe($link, $lugarOriginal);
     $type=safe($link, $type);
     $cantidad=safe($link, filter_var($cantidad, FILTER_SANITIZE_NUMBER_INT));
-   
     $sql="SELECT * FROM lugares_shp WHERE
             nivel='$type' AND
             provincia=28 AND
@@ -723,7 +721,7 @@ function getLugares($cadena,$lugarOriginal,$type,$cantidad=3,$inSet=array())
     $result=mysqli_query($link, $sql);
     $returnData=array();
     while($fila=mysqli_fetch_assoc($result))
-        array_push($returnData,array($fila["id"],$fila["nombre"],$fila["xcentroid"],$fila["ycentroid"],$fila["geocodigo"]));
+        array_push($returnData,array($fila["id"],$fila["nombre"],$fila["xcentroid"],$fila["ycentroid"]));
     return $returnData;
 
 }
@@ -753,7 +751,7 @@ function getLugaresSuggestions($cadena,$lugarOriginal,$cantidad=4)
     $result=mysqli_query($link, $sql);
     $returnData=array();
     while($fila=mysqli_fetch_assoc($result))
-        array_push($returnData,array($fila["id"],$fila["nombre"],$fila["xcentroid"],$fila["ycentroid"],$fila["geocodigo"]));
+        array_push($returnData,array($fila["id"],$fila["nombre"],$fila["xcentroid"],$fila["ycentroid"]));
     return $returnData;
 
 }
@@ -954,7 +952,6 @@ function getColindantes($lugarOriginal,$type,$xmin,$xmax,$ymin,$ymax)
     while($fila=mysqli_fetch_assoc($result))
         if($fila["id"]!=$lugarOriginal)
         {
-            $fila["geocodigo"]=str_pad($fila["geocodigo"],5,0,STR_PAD_LEFT);
             array_push($returnData,$fila);
         }
     return $returnData;
@@ -999,7 +996,7 @@ function getLevels($provincia,$type)
     $returnData=array();
     while($fila=mysqli_fetch_assoc($result))
         if($fila["id"]!=$lugarOriginal)
-            array_push($returnData,array($fila["id"],$fila["nombre"],$fila["xcentroid"],$fila["ycentroid"],$fila["geocodigo"],$fila["idPadre"]));
+            array_push($returnData,array($fila["id"],$fila["nombre"],$fila["xcentroid"],$fila["ycentroid"],$fila["idPadre"]));
     return $returnData;
 }
 
