@@ -5,7 +5,7 @@ include "settings.php";
 //Página por defecto
 if(($_GET["idLugar"]=="")&($_GET["idEvento"]=="")&($_GET["idEntidad"]==""))
 {
-    header('Location: '.BASE_URL.'?idLugar=777000002');
+    header('Location: '.BASE_URL.'?idLugar=701280002');
     exit();
 }
 

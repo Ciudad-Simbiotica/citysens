@@ -178,8 +178,9 @@ function clickFila(id)
 
 function enterFila(id)
 {
-  if(markers[id]!=null)
-    markers[id].setOpacity(0.6);  
+    if(!($("#"+id).hasClass("grupo-fila-selected")))
+       if(markers[id]!=null)   
+          markers[id].setOpacity(0.6);  
 }
 
 function leaveFila(id)
