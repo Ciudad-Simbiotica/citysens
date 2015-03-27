@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.10
+-- version 4.0.10deb1
 -- http://www.phpmyadmin.net
 --
--- Servidor: localhost:8889
--- Tiempo de generación: 25-03-2015 a las 12:29:18
--- Versión del servidor: 5.5.38
--- Versión de PHP: 5.5.18
+-- Servidor: localhost:3306
+-- Tiempo de generación: 27-03-2015 a las 15:41:22
+-- Versión del servidor: 5.5.41-0ubuntu0.14.04.1
+-- Versión de PHP: 5.5.22-1+deb.sury.org~trusty+1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -62,12 +62,14 @@ DELIMITER ;
 --
 
 DROP TABLE IF EXISTS `avisoslistados`;
-CREATE TABLE `avisoslistados` (
-`idAvisoListado` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `avisoslistados` (
+  `idAvisoListado` int(11) NOT NULL AUTO_INCREMENT,
   `idUser` int(11) NOT NULL,
   `query` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `clase` varchar(20) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `clase` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`idAvisoListado`),
+  UNIQUE KEY `idUser` (`idUser`,`query`,`clase`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=40 ;
 
 --
 -- Volcado de datos para la tabla `avisoslistados`
@@ -85,8 +87,8 @@ INSERT INTO `avisoslistados` (`idAvisoListado`, `idUser`, `query`, `clase`) VALU
 --
 
 DROP TABLE IF EXISTS `direcciones`;
-CREATE TABLE `direcciones` (
-`idDireccion` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `direcciones` (
+  `idDireccion` int(11) NOT NULL AUTO_INCREMENT,
   `idCiudad` int(11) NOT NULL COMMENT 'Id of the city (lugares_shp of level 9) the place is located in.',
   `idPadre` int(11) NOT NULL COMMENT 'id of the lower lugares_shp area (district/neighborhood) the direction is located in.',
   `nombre` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Name of the place. Answers question "what"?',
@@ -96,8 +98,11 @@ CREATE TABLE `direcciones` (
   `lat` float NOT NULL,
   `lng` float NOT NULL,
   `zoom` int(11) NOT NULL,
-  `direccionActiva` tinyint(1) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=1411 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='This table refers to lugares/places, not just direcciones';
+  `direccionActiva` tinyint(1) NOT NULL,
+  PRIMARY KEY (`idDireccion`),
+  KEY `idCiudad` (`idCiudad`),
+  KEY `idPadre` (`idPadre`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='This table refers to lugares/places, not just direcciones' AUTO_INCREMENT=1411 ;
 
 --
 -- Volcado de datos para la tabla `direcciones`
@@ -705,8 +710,8 @@ INSERT INTO `direcciones` (`idDireccion`, `idCiudad`, `idPadre`, `nombre`, `dire
 --
 
 DROP TABLE IF EXISTS `entidades`;
-CREATE TABLE `entidades` (
-`idEntidad` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `entidades` (
+  `idEntidad` int(11) NOT NULL AUTO_INCREMENT,
   `entidad` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `siglas` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tipo` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -725,8 +730,11 @@ CREATE TABLE `entidades` (
   `etiquetas` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `descBreve` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `texto` text COLLATE utf8_unicode_ci NOT NULL,
-  `idDireccion` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=554 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `idDireccion` int(11) NOT NULL,
+  PRIMARY KEY (`idEntidad`),
+  KEY `entidad` (`entidad`),
+  KEY `idDireccion` (`idDireccion`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=554 ;
 
 --
 -- Volcado de datos para la tabla `entidades`
@@ -1288,11 +1296,14 @@ INSERT INTO `entidades` (`idEntidad`, `entidad`, `siglas`, `tipo`, `domicilio`, 
 --
 
 DROP TABLE IF EXISTS `entidades_tematicas`;
-CREATE TABLE `entidades_tematicas` (
-`idEntidadTematica` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `entidades_tematicas` (
+  `idEntidadTematica` int(11) NOT NULL AUTO_INCREMENT,
   `idEntidad` int(11) NOT NULL,
-  `idTematica` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=1687 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `idTematica` int(11) NOT NULL,
+  PRIMARY KEY (`idEntidadTematica`),
+  KEY `idEntidad` (`idEntidad`),
+  KEY `idTematica` (`idTematica`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1687 ;
 
 --
 -- Volcado de datos para la tabla `entidades_tematicas`
@@ -2993,8 +3004,8 @@ INSERT INTO `entidades_tematicas` (`idEntidadTematica`, `idEntidad`, `idTematica
 --
 
 DROP TABLE IF EXISTS `eventos`;
-CREATE TABLE `eventos` (
-`idEvento` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `eventos` (
+  `idEvento` int(11) NOT NULL AUTO_INCREMENT,
   `fecha` datetime NOT NULL,
   `fechaFin` datetime DEFAULT NULL,
   `clase` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'So far, only class "evento". What else?',
@@ -3013,8 +3024,11 @@ CREATE TABLE `eventos` (
   `email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `etiquetas` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `repeatsAfter` int(11) NOT NULL,
-  `eventoActivo` tinyint(1) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=1850 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `eventoActivo` tinyint(1) NOT NULL,
+  PRIMARY KEY (`idEvento`),
+  KEY `titulo` (`titulo`),
+  KEY `idDistritoPadre` (`idDistritoPadre`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1850 ;
 
 --
 -- Volcado de datos para la tabla `eventos`
@@ -3086,11 +3100,14 @@ INSERT INTO `eventos` (`idEvento`, `fecha`, `fechaFin`, `clase`, `tipo`, `titulo
 --
 
 DROP TABLE IF EXISTS `eventos_tematicas`;
-CREATE TABLE `eventos_tematicas` (
-`idEventoTematica` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `eventos_tematicas` (
+  `idEventoTematica` int(11) NOT NULL AUTO_INCREMENT,
   `idEvento` int(11) NOT NULL,
-  `idTematica` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=164 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `idTematica` int(11) NOT NULL,
+  PRIMARY KEY (`idEventoTematica`),
+  KEY `idEntidad` (`idEvento`),
+  KEY `idTematica` (`idTematica`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=164 ;
 
 --
 -- Volcado de datos para la tabla `eventos_tematicas`
@@ -3266,10 +3283,11 @@ INSERT INTO `eventos_tematicas` (`idEventoTematica`, `idEvento`, `idTematica`) V
 --
 
 DROP TABLE IF EXISTS `lugares_mapit`;
-CREATE TABLE `lugares_mapit` (
+CREATE TABLE IF NOT EXISTS `lugares_mapit` (
   `id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `nombre` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `nivel` int(11) NOT NULL
+  `nivel` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -3515,7 +3533,7 @@ INSERT INTO `lugares_mapit` (`id`, `nombre`, `nivel`) VALUES
 --
 
 DROP TABLE IF EXISTS `lugares_shp`;
-CREATE TABLE `lugares_shp` (
+CREATE TABLE IF NOT EXISTS `lugares_shp` (
   `id` int(11) unsigned NOT NULL,
   `provincia` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `nivel` int(11) DEFAULT NULL,
@@ -3530,7 +3548,9 @@ CREATE TABLE `lugares_shp` (
   `ycentroid` float DEFAULT NULL,
   `idPadre` int(11) DEFAULT NULL,
   `nombreCorto` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `activo` tinyint(1) NOT NULL DEFAULT '0'
+  `activo` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `nivel` (`nivel`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -3538,90 +3558,91 @@ CREATE TABLE `lugares_shp` (
 --
 
 INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
-(401000001, '01', 4, 'Andalucía', '01', NULL, -7.52288, 35.9376, -1.63012, 38.7291, NULL, NULL, 201000034, 'AN', 1),
-(401000002, '02', 4, 'Aragón', '02', NULL, -2.17367, 39.8468, 0.771307, 42.9245, NULL, NULL, 201000034, 'AR', 1),
-(401000003, '03', 4, 'Principado de Asturias', '03', NULL, -7.18249, 42.8825, -4.51059, 43.6665, NULL, NULL, 201000034, 'AS', 1),
-(401000004, '04', 4, 'Illes Balears', '04', NULL, 1.15724, 38.6404, 4.32778, 40.0946, NULL, NULL, 201000034, 'IB', 1),
-(401000005, '05', 4, 'Canarias', '05', NULL, -18.1613, 27.6378, -13.3336, 29.4165, NULL, NULL, 201000034, 'CN', 1),
-(401000006, '06', 4, 'Cantabria', '06', NULL, -4.85178, 42.758, -3.14963, 43.5137, NULL, NULL, 201000034, 'CB', 1),
-(401000007, '07', 4, 'Castilla y León', '07', NULL, -7.07705, 40.0825, -1.77537, 43.2386, NULL, NULL, 201000034, 'CL', 1),
-(401000008, '08', 4, 'Castilla-La Mancha', '08', NULL, -5.40618, 38.0224, -0.915793, 41.3276, NULL, NULL, 201000034, 'CM', 1),
-(401000009, '09', 4, 'Cataluña/Catalunya', '09', NULL, 0.159181, 40.523, 3.33255, 42.8615, NULL, NULL, 201000034, 'CT', 1),
-(401000010, '10', 4, 'Comunitat Valenciana', '10', NULL, -1.52894, 37.8439, 0.691227, 40.7886, NULL, NULL, 201000034, 'VC', 1),
-(401000011, '11', 4, 'Extremadura', '11', NULL, -7.54502, 37.941, -4.64758, 40.4867, NULL, NULL, 201000034, 'EX', 1),
-(401000012, '12', 4, 'Galicia', '12', NULL, -9.30152, 41.8075, -6.73395, 43.7924, NULL, NULL, 201000034, 'GA', 1),
-(401000013, '13', 4, 'Comunidad de Madrid', '13', NULL, -4.57908, 39.8847, -3.05298, 41.1658, -3.71701, 40.4951, 201000034, 'MD', 1),
-(401000014, '14', 4, 'Región de Murcia', '14', NULL, -2.34441, 37.3738, -0.647983, 38.7551, NULL, NULL, 201000034, 'MC', 1),
-(401000015, '15', 4, 'Comunidad Foral de Navarra', '15', NULL, -2.50008, 41.9099, -0.72395, 43.3148, NULL, NULL, 201000034, 'NC', 1),
-(401000016, '16', 4, 'País Vasco/Euskadi', '16', NULL, -3.45033, 42.4723, -1.72934, 43.4572, NULL, NULL, 201000034, 'PV', 1),
-(401000017, '17', 4, 'La Rioja', '17', NULL, -3.13427, 41.919, -1.6787, 42.6443, NULL, NULL, 201000034, 'RI', 1),
-(401000018, '18', 4, 'Ciudad Autónoma de Ceuta', '18', NULL, -5.42041, 35.1682, -4.29543, 35.9174, NULL, NULL, 201000034, 'CE', 1),
-(401000019, '19', 4, 'Ciudad Autónoma de Melilla', '19', NULL, -2.97032, 35.2655, -2.92326, 35.3203, NULL, NULL, 201000034, 'ML', 1),
-(601010004, '04', 6, 'Almería', '04', NULL, -3.14019, 35.9376, -1.63012, 37.9166, NULL, NULL, 401000001, 'AL', 1),
-(601010011, '11', 6, 'Cádiz', '11', NULL, -6.47207, 36.0001, -5.08677, 37.0524, NULL, NULL, 401000001, 'CA', 1),
-(601010014, '14', 6, 'Córdoba', '14', NULL, -5.58592, 37.1843, -4.00082, 38.7291, NULL, NULL, 401000001, 'CO', 1),
-(601010018, '18', 6, 'Granada', '18', NULL, -4.32762, 36.6935, -2.20767, 38.0841, NULL, NULL, 401000001, 'GR', 1),
-(601010021, '21', 6, 'Huelva', '21', NULL, -7.52288, 36.795, -6.12156, 38.2083, NULL, NULL, 401000001, 'H', 1),
-(601010023, '23', 6, 'Jaén', '23', NULL, -4.28764, 37.3783, -2.43539, 38.533, NULL, NULL, 401000001, 'J', 1),
-(601010029, '29', 6, 'Málaga', '29', NULL, -5.61178, 36.3103, -3.76597, 37.2824, NULL, NULL, 401000001, 'MA', 1),
-(601010041, '41', 6, 'Sevilla', '41', NULL, -6.53851, 36.8422, -4.65335, 38.1974, NULL, NULL, 401000001, 'SE', 1),
-(601020022, '22', 6, 'Huesca', '22', NULL, -0.934168, 41.3478, 0.771307, 42.9245, NULL, NULL, 401000002, 'HU', 1),
-(601020044, '44', 6, 'Teruel', '44', NULL, -1.80636, 39.8468, 0.293501, 41.3544, NULL, NULL, 401000002, 'TE', 1),
-(601020050, '50', 6, 'Zaragoza', '50', NULL, -2.17367, 40.9362, 0.385664, 42.7441, NULL, NULL, 401000002, 'Z', 1),
-(601030033, '33', 6, 'Asturias', '33', NULL, -7.18249, 42.8825, -4.51059, 43.6665, NULL, NULL, 401000003, 'AST', 1),
-(601040007, '07', 6, 'Illes Balears', '07', NULL, 1.15724, 38.6404, 4.32778, 40.0946, NULL, NULL, 401000004, 'IB', 1),
-(601050035, '35', 6, 'Las Palmas', '35', NULL, -15.8347, 27.7346, -13.3336, 29.4165, NULL, NULL, 401000005, 'GC', 1),
-(601050038, '38', 6, 'Santa Cruz de Tenerife', '38', NULL, -18.1613, 27.6378, -16.1185, 28.8576, NULL, NULL, 401000005, 'TF', 1),
-(601060039, '39', 6, 'Cantabria', '39', NULL, -4.85178, 42.758, -3.14963, 43.5137, NULL, NULL, 401000006, 'S', 1),
-(601070005, '05', 6, 'Ávila', '05', NULL, -5.73756, 40.0825, -4.16023, 41.1642, NULL, NULL, 401000007, 'AV', 1),
-(601070009, '09', 6, 'Burgos', '09', NULL, -4.33533, 41.4508, -2.5174, 43.1986, NULL, NULL, 401000007, 'BU', 1),
-(601070024, '24', 6, 'León', '24', NULL, -7.07705, 42.0292, -4.73422, 43.2386, NULL, NULL, 401000007, 'LE', 1),
-(601070034, '34', 6, 'Palencia', '34', NULL, -5.03189, 41.7582, -3.88962, 43.061, NULL, NULL, 401000007, 'P', 1),
-(601070037, '37', 6, 'Salamanca', '37', NULL, -6.93136, 40.2389, -5.08984, 41.2943, NULL, NULL, 401000007, 'SA', 1),
-(601070040, '40', 6, 'Segovia', '40', NULL, -4.72465, 40.633, -3.20693, 41.5861, NULL, NULL, 401000007, 'SG', 1),
-(601070042, '42', 6, 'Soria', '42', NULL, -3.55044, 41.0565, -1.77537, 42.1467, NULL, NULL, 401000007, 'SO', 1),
-(601070047, '47', 6, 'Valladolid', '47', NULL, -5.52089, 41.094, -3.98044, 42.3118, NULL, NULL, 401000007, 'VA', 1),
-(601070049, '49', 6, 'Zamora', '49', NULL, -7.03404, 41.1172, -5.22887, 42.2542, NULL, NULL, 401000007, 'ZA', 1),
-(601080002, '02', 6, 'Albacete', '02', NULL, -2.88289, 38.0224, -0.915793, 39.423, NULL, NULL, 401000008, 'AB', 1),
-(601080013, '13', 6, 'Ciudad Real', '13', NULL, -5.04695, 38.3428, -2.63789, 39.5768, NULL, NULL, 401000008, 'CR', 1),
-(601080016, '16', 6, 'Cuenca', '16', NULL, -3.17023, 39.2267, -1.1424, 40.6587, NULL, NULL, 401000008, 'CU', 1),
-(601080019, '19', 6, 'Guadalajara', '19', NULL, -3.5411, 40.1525, -1.53564, 41.3276, NULL, NULL, 401000008, 'GU', 1),
-(601080045, '45', 6, 'Toledo', '45', NULL, -5.40618, 39.2584, -2.90823, 40.3183, NULL, NULL, 401000008, 'TO', 1),
-(601090008, '08', 6, 'Barcelona', '08', NULL, 1.35962, 41.1927, 2.77777, 42.3233, NULL, NULL, 401000009, 'B', 1),
-(601090017, '17', 6, 'Girona', '17', NULL, 1.72427, 41.6502, 3.33255, 42.4955, NULL, NULL, 401000009, 'GI', 1),
-(601090025, '25', 6, 'Lleida', '25', NULL, 0.320036, 41.2741, 1.85506, 42.8615, NULL, NULL, 401000009, 'L', 1),
-(601090043, '43', 6, 'Tarragona', '43', NULL, 0.159181, 40.523, 1.65315, 41.5826, NULL, NULL, 401000009, 'T', 1),
-(601100003, '03', 6, 'Alacant/Alicante', '03', NULL, -1.09416, 37.8439, 0.234211, 38.8874, NULL, NULL, 401000010, 'A', 1),
-(601100012, '12', 6, 'Castelló/Castellón', '12', NULL, -0.846297, 39.7147, 0.691227, 40.7886, NULL, NULL, 401000010, 'CS', 1),
-(601100046, '46', 6, 'València/Valencia', '46', NULL, -1.52894, 38.6866, -0.0247934, 40.2117, NULL, NULL, 401000010, 'V', 1),
-(601110006, '06', 6, 'Badajoz', '06', NULL, -7.33596, 37.941, -4.64758, 39.4518, NULL, NULL, 401000011, 'BA', 1),
-(601110010, '10', 6, 'Cáceres', '10', NULL, -7.54502, 39.0316, -4.95251, 40.4867, NULL, NULL, 401000011, 'CC', 1),
-(601120015, '15', 6, 'A Coruña', '15', NULL, -9.30152, 42.459, -7.66172, 43.7924, NULL, NULL, 401000012, 'C', 1),
-(601120027, '27', 6, 'Lugo', '27', NULL, -7.99973, 42.3257, -6.81489, 43.7616, NULL, NULL, 401000012, 'LU', 1),
-(601120032, '32', 6, 'Ourense', '32', NULL, -8.36634, 41.8075, -6.73395, 42.5786, NULL, NULL, 401000012, 'OU', 1),
-(601120036, '36', 6, 'Pontevedra', '36', NULL, -8.94945, 41.8651, -7.86143, 42.8602, NULL, NULL, 401000012, 'PO', 1),
-(601130028, '28', 6, 'Madrid', '28', NULL, -4.57908, 39.8847, -3.05298, 41.1658, -3.71701, 40.4951, 401000013, 'M', 1),
-(601140030, '30', 6, 'Murcia', '30', NULL, -2.34441, 37.3738, -0.647983, 38.7551, NULL, NULL, 401000014, 'MU', 1),
-(601150031, '31', 6, 'Navarra', '31', NULL, -2.50008, 41.9099, -0.72395, 43.3148, NULL, NULL, 401000015, 'NA', 1),
-(601160001, '01', 6, 'Araba/Álava', '01', NULL, -3.28677, 42.4723, -2.23269, 43.217, NULL, NULL, 401000016, 'VI', 1),
-(601160020, '20', 6, 'Gipuzkoa', '20', NULL, -2.60268, 42.8952, -1.72934, 43.3959, NULL, NULL, 401000016, 'SS', 1),
-(601160048, '48', 6, 'Bizkaia', '48', NULL, -3.45033, 42.9819, -2.4126, 43.4572, NULL, NULL, 401000016, 'BI', 1),
-(601170026, '26', 6, 'La Rioja', '26', NULL, -3.13427, 41.919, -1.6787, 42.6443, NULL, NULL, 401000017, 'LO', 1),
-(601180051, '51', 6, 'Ceuta', '51', NULL, -5.42041, 35.1682, -4.29543, 35.9174, NULL, NULL, 401000018, 'CE', 1),
-(601190052, '52', 6, 'Melilla', '52', NULL, -2.97032, 35.2655, -2.92326, 35.3203, NULL, NULL, 401000019, 'ML', 1),
-(701010001, '1', 7, 'Ayala', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601160001, '', 0),
-(701010002, '1', 7, 'Zuya/Zuia', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601160001, '', 0),
-(701010003, '1', 7, 'Salvatierra', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601160001, '', 0),
-(701010004, '1', 7, 'Campezo - Montaña Alavesa', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601160001, '', 0),
-(701010005, '1', 7, 'La Guardia - Rioja Alavesa', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601160001, '', 0),
-(701010006, '1', 7, 'Añana', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601160001, '', 0),
-(701010007, '1', 7, 'Vitoria-Gasteiz', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601160001, '', 0),
-(701020001, '2', 7, 'La Mancha', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080002, '', 0),
-(701020002, '2', 7, 'La Manchuela', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080002, '', 0),
-(701020003, '2', 7, 'Corredor de Almansa', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080002, '', 0),
-(701020004, '2', 7, 'Campo de Hellín', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080002, '', 0),
-(701020005, '2', 7, 'Sierra de Alcaraz-Segura', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080002, '', 0),
-(701020006, '2', 7, 'Centro', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080002, '', 0),
+(401000034, '', 4, '', '', '', -18.1672, 27.6422, 4.33709, 43.7934, -3.65264, 40.2272, 0, 'ES', 1),
+(501000001, '01', 5, 'Andalucía', '01', NULL, -7.52288, 35.9376, -1.63012, 38.7291, -4.57561, 37.4633, 401000034, 'AN', 1),
+(501000002, '02', 5, 'Aragón', '02', NULL, -2.17367, 39.8468, 0.771307, 42.9245, -0.660474, 41.5206, 401000034, 'AR', 1),
+(501000003, '03', 5, 'Principado de Asturias', '03', NULL, -7.18249, 42.8825, -4.51059, 43.6665, -5.99364, 43.2924, 401000034, 'AS', 1),
+(501000004, '04', 5, 'Illes Balears', '04', NULL, 1.15724, 38.6404, 4.32778, 40.0946, NULL, NULL, 401000034, 'IB', 1),
+(501000005, '05', 5, 'Canarias', '05', NULL, -18.1613, 27.6378, -13.3336, 29.4165, NULL, NULL, 401000034, 'CN', 1),
+(501000006, '06', 5, 'Cantabria', '06', NULL, -4.85178, 42.758, -3.14963, 43.5137, -4.0296, 43.1968, 401000034, 'CB', 1),
+(501000007, '07', 5, 'Castilla y León', '07', NULL, -7.07705, 40.0825, -1.77537, 43.2386, -4.78176, 41.7541, 401000034, 'CL', 1),
+(501000008, '08', 5, 'Castilla-La Mancha', '08', NULL, -5.40618, 38.0224, -0.915793, 41.3276, -3.00462, 39.581, 401000034, 'CM', 1),
+(501000009, '09', 5, 'Cataluña/Catalunya', '09', NULL, 0.159181, 40.523, 3.33255, 42.8615, NULL, NULL, 401000034, 'CT', 1),
+(501000010, '10', 5, 'Comunitat Valenciana', '10', NULL, -1.52894, 37.8439, 0.691227, 40.7886, -0.55473, 39.4014, 401000034, 'VC', 1),
+(501000011, '11', 5, 'Extremadura', '11', NULL, -7.54502, 37.941, -4.64758, 40.4867, -6.15073, 39.1915, 401000034, 'EX', 1),
+(501000012, '12', 5, 'Galicia', '12', NULL, -9.30152, 41.8075, -6.73395, 43.7924, NULL, NULL, 401000034, 'GA', 1),
+(501000013, '13', 5, 'Comunidad de Madrid', '13', NULL, -4.57908, 39.8847, -3.05298, 41.1658, -3.71701, 40.4951, 401000034, 'MD', 1),
+(501000014, '14', 5, 'Región de Murcia', '14', NULL, -2.34441, 37.3738, -0.647983, 38.7551, NULL, NULL, 401000034, 'MC', 1),
+(501000015, '15', 5, 'Comunidad Foral de Navarra', '15', NULL, -2.50008, 41.9099, -0.72395, 43.3148, -1.64606, 42.6671, 401000034, 'NC', 1),
+(501000016, '16', 5, 'País Vasco/Euskadi', '16', NULL, -3.45033, 42.4723, -1.72934, 43.4572, -2.62558, 43.0218, 401000034, 'PV', 1),
+(501000017, '17', 5, 'La Rioja', '17', NULL, -3.13427, 41.919, -1.6787, 42.6443, -2.51759, 42.2753, 401000034, 'RI', 1),
+(501000018, '18', 5, 'Ciudad Autónoma de Ceuta', '18', NULL, -5.42041, 35.1682, -4.29543, 35.9174, -5.34053, 35.8919, 401000034, 'CE', 1),
+(501000019, '19', 5, 'Ciudad Autónoma de Melilla', '19', NULL, -2.97032, 35.2655, -2.92326, 35.3203, -2.9506, 35.2909, 401000034, 'ML', 1),
+(601010004, '04', 6, 'Almería', '04', NULL, -3.14019, 35.9376, -1.63012, 37.9166, -2.34482, 37.1961, 501000001, 'AL', 1),
+(601010011, '11', 6, 'Cádiz', '11', NULL, -6.47207, 36.0001, -5.08677, 37.0524, -5.76043, 36.554, 501000001, 'CA', 1),
+(601010014, '14', 6, 'Córdoba', '14', NULL, -5.58592, 37.1843, -4.00082, 38.7291, -4.80925, 37.9927, 501000001, 'CO', 1),
+(601010018, '18', 6, 'Granada', '18', NULL, -4.32762, 36.6935, -2.20767, 38.0841, -3.26789, 37.3125, 501000001, 'GR', 1),
+(601010021, '21', 6, 'Huelva', '21', NULL, -7.52288, 36.795, -6.12156, 38.2083, -6.82932, 37.5773, 501000001, 'H', 1),
+(601010023, '23', 6, 'Jaén', '23', NULL, -4.28764, 37.3783, -2.43539, 38.533, -3.44163, 38.0165, 501000001, 'J', 1),
+(601010029, '29', 6, 'Málaga', '29', NULL, -5.61178, 36.3103, -3.76597, 37.2824, -4.72586, 36.8139, 501000001, 'MA', 1),
+(601010041, '41', 6, 'Sevilla', '41', NULL, -6.53851, 36.8422, -4.65335, 38.1974, -5.68219, 37.4359, 501000001, 'SE', 1),
+(601020022, '22', 6, 'Huesca', '22', NULL, -0.934168, 41.3478, 0.771307, 42.9245, -0.0729986, 42.2031, 501000002, 'HU', 1),
+(601020044, '44', 6, 'Teruel', '44', NULL, -1.80636, 39.8468, 0.293501, 41.3544, -0.815542, 40.6613, 501000002, 'TE', 1),
+(601020050, '50', 6, 'Zaragoza', '50', NULL, -2.17367, 40.9362, 0.385664, 42.7441, -1.06472, 41.6231, 501000002, 'Z', 1),
+(601030033, '33', 6, 'Asturias', '33', NULL, -7.18249, 42.8825, -4.51059, 43.6665, -5.99364, 43.2924, 501000003, 'AST', 1),
+(601040007, '07', 6, 'Illes Balears', '07', NULL, 1.15724, 38.6404, 4.32778, 40.0946, NULL, NULL, 501000004, 'IB', 1),
+(601050035, '35', 6, 'Las Palmas', '35', NULL, -15.8347, 27.7346, -13.3336, 29.4165, -14.5477, 28.3654, 501000005, 'GC', 1),
+(601050038, '38', 6, 'Santa Cruz de Tenerife', '38', NULL, -18.1613, 27.6378, -16.1185, 28.8576, NULL, NULL, 501000005, 'TF', 1),
+(601060039, '39', 6, 'Cantabria', '39', NULL, -4.85178, 42.758, -3.14963, 43.5137, -4.0296, 43.1968, 501000006, 'S', 1),
+(601070005, '05', 6, 'Ávila', '05', NULL, -5.73756, 40.0825, -4.16023, 41.1642, -4.94557, 40.571, 501000007, 'AV', 1),
+(601070009, '09', 6, 'Burgos', '09', NULL, -4.33533, 41.4508, -2.5174, 43.1986, -3.58638, 42.3684, 501000007, 'BU', 1),
+(601070024, '24', 6, 'León', '24', NULL, -7.07705, 42.0292, -4.73422, 43.2386, -5.83918, 42.6195, 501000007, 'LE', 1),
+(601070034, '34', 6, 'Palencia', '34', NULL, -5.03189, 41.7582, -3.88962, 43.061, -4.53565, 42.3719, 501000007, 'P', 1),
+(601070037, '37', 6, 'Salamanca', '37', NULL, -6.93136, 40.2389, -5.08984, 41.2943, -6.06545, 40.805, 501000007, 'SA', 1),
+(601070040, '40', 6, 'Segovia', '40', NULL, -4.72465, 40.633, -3.20693, 41.5861, -4.05417, 41.171, 501000007, 'SG', 1),
+(601070042, '42', 6, 'Soria', '42', NULL, -3.55044, 41.0565, -1.77537, 42.1467, -2.58879, 41.6208, 501000007, 'SO', 1),
+(601070047, '47', 6, 'Valladolid', '47', NULL, -5.52089, 41.094, -3.98044, 42.3118, -4.84719, 41.6341, 501000007, 'VA', 1),
+(601070049, '49', 6, 'Zamora', '49', NULL, -7.03404, 41.1172, -5.22887, 42.2542, -5.98055, 41.7272, 501000007, 'ZA', 1),
+(601080002, '02', 6, 'Albacete', '02', NULL, -2.88289, 38.0224, -0.915793, 39.423, -1.98032, 38.8254, 501000008, 'AB', 1),
+(601080013, '13', 6, 'Ciudad Real', '13', NULL, -5.04695, 38.3428, -2.63789, 39.5768, -3.82807, 38.9256, 501000008, 'CR', 1),
+(601080016, '16', 6, 'Cuenca', '16', NULL, -3.17023, 39.2267, -1.1424, 40.6587, -2.19564, 39.8961, 501000008, 'CU', 1),
+(601080019, '19', 6, 'Guadalajara', '19', NULL, -3.5411, 40.1525, -1.53564, 41.3276, -2.62367, 40.8135, 501000008, 'GU', 1),
+(601080045, '45', 6, 'Toledo', '45', NULL, -5.40618, 39.2584, -2.90823, 40.3183, -4.14813, 39.7937, 501000008, 'TO', 1),
+(601090008, '08', 6, 'Barcelona', '08', NULL, 1.35962, 41.1927, 2.77777, 42.3233, 1.98362, 41.7315, 501000009, 'B', 1),
+(601090017, '17', 6, 'Girona', '17', NULL, 1.72427, 41.6502, 3.33255, 42.4955, NULL, NULL, 501000009, 'GI', 1),
+(601090025, '25', 6, 'Lleida', '25', NULL, 0.320036, 41.2741, 1.85506, 42.8615, 1.04796, 42.0439, 501000009, 'L', 1),
+(601090043, '43', 6, 'Tarragona', '43', NULL, 0.159181, 40.523, 1.65315, 41.5826, 0.817854, 41.0876, 501000009, 'T', 1),
+(601100003, '03', 6, 'Alacant/Alicante', '03', NULL, -1.09416, 37.8439, 0.234211, 38.8874, -0.568605, 38.4786, 501000010, 'A', 1),
+(601100012, '12', 6, 'Castelló/Castellón', '12', NULL, -0.846297, 39.7147, 0.691227, 40.7886, -0.146836, 40.2413, 501000010, 'CS', 1),
+(601100046, '46', 6, 'València/Valencia', '46', NULL, -1.52894, 38.6866, -0.0247934, 40.2117, -0.800776, 39.3702, 501000010, 'V', 1),
+(601110006, '06', 6, 'Badajoz', '06', NULL, -7.33596, 37.941, -4.64758, 39.4518, -6.14145, 38.7098, 501000011, 'BA', 1),
+(601110010, '10', 6, 'Cáceres', '10', NULL, -7.54502, 39.0316, -4.95251, 40.4867, -6.16076, 39.7119, 501000011, 'CC', 1),
+(601120015, '15', 6, 'A Coruña', '15', NULL, -9.30152, 42.459, -7.66172, 43.7924, NULL, NULL, 501000012, 'C', 1),
+(601120027, '27', 6, 'Lugo', '27', NULL, -7.99973, 42.3257, -6.81489, 43.7616, NULL, NULL, 501000012, 'LU', 1),
+(601120032, '32', 6, 'Ourense', '32', NULL, -8.36634, 41.8075, -6.73395, 42.5786, NULL, NULL, 501000012, 'OU', 1),
+(601120036, '36', 6, 'Pontevedra', '36', NULL, -8.94945, 41.8651, -7.86143, 42.8602, NULL, NULL, 501000012, 'PO', 1),
+(601130028, '28', 6, 'Madrid', '28', NULL, -4.57908, 39.8847, -3.05298, 41.1658, -3.71701, 40.4951, 501000013, 'M', 1),
+(601140030, '30', 6, 'Murcia', '30', NULL, -2.34441, 37.3738, -0.647983, 38.7551, NULL, NULL, 501000014, 'MU', 1),
+(601150031, '31', 6, 'Navarra', '31', NULL, -2.50008, 41.9099, -0.72395, 43.3148, -1.64606, 42.6671, 501000015, 'NA', 1),
+(601160001, '01', 6, 'Araba/Álava', '01', NULL, -3.28677, 42.4723, -2.23269, 43.217, -2.71714, 42.8177, 501000016, 'VI', 1),
+(601160020, '20', 6, 'Gipuzkoa', '20', NULL, -2.60268, 42.8952, -1.72934, 43.3959, -2.1942, 43.1438, 501000016, 'SS', 1),
+(601160048, '48', 6, 'Bizkaia', '48', NULL, -3.45033, 42.9819, -2.4126, 43.4572, -2.85922, 43.238, 501000016, 'BI', 1),
+(601170026, '26', 6, 'La Rioja', '26', NULL, -3.13427, 41.919, -1.6787, 42.6443, -2.51759, 42.2753, 501000017, 'LO', 1),
+(601180051, '51', 6, 'Ceuta', '51', NULL, -5.42041, 35.1682, -4.29543, 35.9174, -5.34053, 35.8919, 501000018, 'CE', 1),
+(601190052, '52', 6, 'Melilla', '52', NULL, -2.97032, 35.2655, -2.92326, 35.3203, -2.9506, 35.2909, 501000019, 'ML', 1),
+(701010001, '1', 7, 'Ayala', NULL, NULL, -3.18179, 42.9366, -2.88605, 43.217, -3.03586, 43.0812, 601160001, '', 0),
+(701010002, '1', 7, 'Zuya/Zuia', NULL, NULL, -2.97517, 42.8603, -2.52485, 43.088, -2.73923, 42.9807, 601160001, '', 0),
+(701010003, '1', 7, 'Salvatierra', NULL, NULL, -2.58028, 42.7839, -2.23594, 42.9734, -2.43106, 42.876, 601160001, '', 0),
+(701010004, '1', 7, 'Campezo - Montaña Alavesa', NULL, NULL, -2.79477, 42.5924, -2.23269, 42.851, -2.47201, 42.7083, 601160001, '', 0),
+(701010005, '1', 7, 'La Guardia - Rioja Alavesa', NULL, NULL, -2.85892, 42.4723, -2.38995, 42.645, -2.57651, 42.554, 601160001, '', 0),
+(701010006, '1', 7, 'Añana', NULL, NULL, -3.28677, 42.6313, -2.73769, 42.9497, -2.98211, 42.815, 601160001, '', 0),
+(701010007, '1', 7, 'Vitoria-Gasteiz', NULL, NULL, -2.85483, 42.7647, -2.54388, 42.937, -2.68786, 42.8504, 601160001, '', 0),
+(701020001, '2', 7, 'La Mancha', NULL, NULL, -2.88289, 38.7818, -1.82438, 39.3594, -2.44443, 39.0977, 601080002, '', 0),
+(701020002, '2', 7, 'La Manchuela', NULL, NULL, -1.85744, 39.0235, -1.16189, 39.423, -1.4921, 39.2181, 601080002, '', 0),
+(701020003, '2', 7, 'Corredor de Almansa', NULL, NULL, -1.54064, 38.6456, -0.915793, 39.055, -1.19609, 38.8273, 601080002, '', 0),
+(701020004, '2', 7, 'Campo de Hellín', NULL, NULL, -2.05536, 38.3087, -1.44329, 38.7911, -1.73251, 38.5376, 601080002, '', 0),
+(701020005, '2', 7, 'Sierra de Alcaraz-Segura', NULL, NULL, -2.7655, 38.0224, -1.7843, 38.9302, -2.32216, 38.5108, 601080002, '', 0),
+(701020006, '2', 7, 'Centro', NULL, NULL, -2.3004, 38.6189, -1.22539, 39.1965, -1.81165, 38.9176, 601080002, '', 0),
 (701030001, '3', 7, 'Baix Segura', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601100003, '', 1),
 (701030002, '3', 7, 'Baix Vinalopó', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601100003, '', 1),
 (701030003, '3', 7, 'Vinalopó Mitjà', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601100003, '', 1),
@@ -3629,161 +3650,160 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (701030005, '3', 7, 'Comtat', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601100003, '', 1),
 (701030006, '3', 7, 'Marina Alta', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601100003, '', 1),
 (701030007, '3', 7, 'Marina Baixa', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601100003, '', 1),
-(701040001, '4', 7, 'Los Vélez', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010004, '', 0),
-(701040002, '4', 7, 'Levante Almeriense', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010004, '', 0),
-(701040003, '4', 7, 'Valle Del Almanzora', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010004, '', 0),
-(701040004, '4', 7, 'Los Filabres-Tabernas', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010004, '', 0),
-(701040005, '4', 7, 'Comarca Metropolitana de Almería', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010004, '', 0),
-(701040006, '4', 7, 'Alpujarra Almeriense', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010004, '', 0),
-(701040007, '4', 7, 'Poniente Almeriense', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010004, '', 0),
-(701050001, '5', 7, 'Tierra de Arévalo', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070005, '', 0),
-(701050002, '5', 7, 'La Moraña', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070005, '', 0),
-(701050003, '5', 7, 'Área de Ávila', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070005, '', 0),
-(701050004, '5', 7, 'Sierra de Ávila', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070005, '', 0),
-(701050005, '5', 7, 'Valle del Tietar', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070005, '', 0),
-(701050006, '5', 7, 'Valle del Tormes', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070005, '', 0),
-(701050007, '5', 7, 'Valle del Alberche', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070005, '', 0),
-(701060001, '6', 7, 'Campiña Sur', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601110006, '', 0),
-(701060002, '6', 7, 'La Serena', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601110006, '', 0),
-(701060003, '6', 7, 'La Siberia', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601110006, '', 0),
-(701060004, '6', 7, 'Tentudía', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601110006, '', 0),
-(701060005, '6', 7, 'Vegas Altas del Guadiana', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601110006, '', 0),
-(701060006, '6', 7, 'Tierra de Mérida - Vegas Bajas', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601110006, '', 0),
-(701060007, '6', 7, 'Zafra - Río Bodión', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601110006, '', 0),
-(701060008, '6', 7, 'Tierra de Barros', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601110006, '', 0),
-(701060009, '6', 7, 'Tierra de Badajoz', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601110006, '', 0),
-(701060010, '6', 7, 'LLanos de Olivenza', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601110006, '', 0),
-(701060011, '6', 7, 'Sierra Suroeste', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601110006, '', 0),
-(701070001, '7', 7, 'Menorca', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601040007, '', 0),
-(701070002, '7', 7, 'Mallorca', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601040007, '', 0),
-(701070003, '7', 7, 'Ibiza', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601040007, '', 0),
-(701070004, '7', 7, 'Formentera', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601040007, '', 0),
-(701080001, '8', 7, 'Berguedá', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090008, '', 0),
-(701080002, '8', 7, 'Bages', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090008, '', 0),
-(701080003, '8', 7, 'Garraf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090008, '', 0),
-(701080004, '8', 7, 'Osona', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090008, '', 0),
-(701080005, '8', 7, 'Barcelones', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090008, '', 0),
-(701080006, '8', 7, 'Maresme', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090008, '', 0),
-(701080007, '8', 7, 'Vallés Occidental', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090008, '', 0),
-(701080008, '8', 7, 'Baix Llobregat nord', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090008, '', 0),
-(701080009, '8', 7, 'Baix Llobregat sud', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090008, '', 0),
-(701080010, '8', 7, 'Vallés Occidental', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090008, '', 0),
-(701080011, '8', 7, 'Vallés Oriental', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090008, '', 0),
-(701080012, '8', 7, 'Anoia', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090008, '', 0),
-(701080013, '8', 7, 'Alt Penedés', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090008, '', 0),
-(701090001, '9', 7, 'Las Merindades', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070009, '', 0),
-(701090002, '9', 7, 'Comarca del Ebro', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070009, '', 0),
-(701090003, '9', 7, 'La Bureba', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070009, '', 0),
-(701090004, '9', 7, 'Área de Burgos', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070009, '', 0),
-(701090005, '9', 7, 'Arlanza', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070009, '', 0),
-(701090006, '9', 7, 'Ribera del Duero', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070009, '', 0),
-(701090007, '9', 7, 'Sierra de la Demanda', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070009, '', 0),
-(701090008, '9', 7, 'Montes de Oca', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070009, '', 0),
-(701090009, '9', 7, 'Odra ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070009, '', 0),
-(701100001, '10', 7, 'Las Hurdes - Ambróz', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601110010, '', 0),
-(701100002, '10', 7, 'Alagón - Sierra de Gata', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601110010, '', 0),
-(701100003, '10', 7, 'Alcántara', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601110010, '', 0),
-(701100004, '10', 7, 'Tierra de Cáceres', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601110010, '', 0),
-(701100005, '10', 7, 'Trujillo', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601110010, '', 0),
-(701100006, '10', 7, 'Las Villuercas - Los Ibores', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601110010, '', 0),
-(701100007, '10', 7, 'Jerte - Plasencia', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601110010, '', 0),
-(701100008, '10', 7, 'La Vera', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601110010, '', 0),
-(701110001, '11', 7, 'Campo de Gibraltar', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010011, '', 0),
-(701110002, '11', 7, 'La Janda', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010011, '', 0),
-(701110003, '11', 7, 'Bahía de Cádiz', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010011, '', 0),
-(701110004, '11', 7, 'Costa noroeste', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010011, '', 0),
-(701110005, '11', 7, 'Campiña de Jerez', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010011, '', 0),
-(701110006, '11', 7, 'Sierra de Cádiz', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010011, '', 0),
-(701120001, '12', 7, 'Baix Maestrat', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601100012, '', 0),
-(701120002, '12', 7, 'Els Ports', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601100012, '', 0),
-(701120003, '12', 7, 'Alt Maestrat', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601100012, '', 0),
-(701120004, '12', 7, 'Plana Alta', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601100012, '', 0),
-(701120005, '12', 7, 'Alto Mijares', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601100012, '', 0),
-(701120006, '12', 7, 'Plana baixa', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601100012, '', 0),
-(701120007, '12', 7, 'Alto Palancia', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601100012, '', 0),
-(701130001, '13', 7, 'Montes', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080013, '', 0),
-(701130002, '13', 7, 'Alcudia', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080013, '', 0),
-(701130003, '13', 7, 'Montiel', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080013, '', 0),
-(701130004, '13', 7, 'Calatrava', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080013, '', 0),
-(701130005, '13', 7, 'Sierra Morena', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080013, '', 0),
-(701130006, '13', 7, 'La Mancha', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080013, '', 0),
-(701140001, '14', 7, 'VAlle de los Pedroches -Alto Guadiato', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010014, '', 0),
-(701140002, '14', 7, 'Vega del Guadalquivir', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010014, '', 0),
-(701140003, '14', 7, 'Córdoba', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010014, '', 0),
-(701140004, '14', 7, 'Alto Guadalquivir', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010014, '', 0),
-(701140005, '14', 7, 'Campilña Sur - Campiña Este', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010014, '', 0),
-(701140006, '14', 7, 'La subbética', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010014, '', 0),
-(701150001, '15', 7, 'Arzúa', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120015, '', 0),
-(701150002, '15', 7, 'Tierra de Melide', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120015, '', 0),
-(701150003, '15', 7, 'Eume', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120015, '', 0),
-(701150004, '15', 7, 'Ortegal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120015, '', 0),
-(701150005, '15', 7, 'Ferrol', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120015, '', 0),
-(701150006, '15', 7, 'La Coruña', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120015, '', 0),
-(701150007, '15', 7, 'Bergantiños', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120015, '', 0),
-(701150008, '15', 7, 'Santiago', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120015, '', 0),
-(701150009, '15', 7, 'O Sar', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120015, '', 0),
-(701150010, '15', 7, 'Barbanza', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120015, '', 0),
-(701150011, '15', 7, 'Anoia', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120015, '', 0),
-(701150012, '15', 7, 'Betanzos', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120015, '', 0),
-(701150013, '15', 7, 'Muros', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120015, '', 0),
-(701150014, '15', 7, 'Fisterra', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120015, '', 0),
-(701150015, '15', 7, 'Ordes', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120015, '', 0),
-(701150016, '15', 7, 'Terra de Soneira', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120015, '', 0),
-(701150017, '15', 7, 'Xallas', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120015, '', 0),
-(701150018, '15', 7, 'A Barcala', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120015, '', 0),
-(701160001, '16', 7, 'Serranía', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080016, '', 0),
-(701160002, '16', 7, 'Manchuela', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080016, '', 0),
-(701160003, '16', 7, 'Alcarria', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080016, '', 0),
-(701160004, '16', 7, 'Mancha alta', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080016, '', 0),
-(701160005, '16', 7, 'Mancha baja', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080016, '', 0),
-(701180001, '18', 7, 'El Altiplano', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010018, '', 0),
-(701180002, '18', 7, 'Guadix y el Marquesado', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010018, '', 0),
-(701180003, '18', 7, 'Poniente Granadino', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010018, '', 0),
-(701180004, '18', 7, 'Área de Granada', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010018, '', 0),
-(701180005, '18', 7, 'Valle de Lecrín - La Alpujarra', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010018, '', 0),
-(701180006, '18', 7, 'Costa Tropical', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010018, '', 0),
-(701190002, '19', 7, 'Alcarria baja', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080019, '', 0),
-(701190003, '19', 7, 'Alcarria alta', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080019, '', 0),
-(701190004, '19', 7, 'Campiña', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080019, '', 0),
-(701190001, '19', 7, 'Sierra', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080019, '', 0),
-(701190005, '19', 7, 'Molina de Aragón', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080019, '', 0),
-(701200001, '20', 7, 'Bajo Bidasoa', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601160020, '', 0),
-(701200002, '20', 7, 'Donostialdea', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601160020, '', 0),
-(701200003, '20', 7, 'Urola kosta', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601160020, '', 0),
-(701200005, '20', 7, 'Tolosaldea', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601160020, '', 0),
-(701200006, '20', 7, 'Golem', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601160020, '', 0),
-(701200007, '20', 7, 'Allto Deva', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601160020, '', 0),
-(701200004, '20', 7, 'Bajo Deva', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601160020, '', 0),
-(701210002, '21', 7, 'La Costa', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010021, '', 0),
-(701210003, '21', 7, 'El Andévalo', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010021, '', 0),
-(701210004, '21', 7, 'El condado', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010021, '', 0),
-(701210001, '21', 7, 'La Sierra', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010021, '', 0),
-(701220001, '22', 7, 'La Jacetania', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020022, '', 0),
-(701220002, '22', 7, 'Alto Gállego', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020022, '', 0),
-(701220003, '22', 7, 'Hoya de Huesca', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020022, '', 0),
-(701220004, '22', 7, 'Los Monegros', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020022, '', 0),
-(701220005, '22', 7, 'Somontano de Barbastro', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020022, '', 0),
-(701220006, '22', 7, 'Sobrarbe', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020022, '', 0),
-(701220008, '22', 7, 'Ribagorza', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020022, '', 0),
-(701220007, '22', 7, 'Cinca - La Litera', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020022, '', 0),
-(701230001, '23', 7, 'Sierra de Segura', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010023, '', 0),
-(701230002, '23', 7, 'La Loma - Las Villas', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010023, '', 0),
-(701230003, '23', 7, 'El Condado', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010023, '', 0),
-(701230004, '23', 7, 'Sierra Norte', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010023, '', 0),
-(701230005, '23', 7, 'La Campiña', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010023, '', 0),
-(701230006, '23', 7, 'Jaén', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010023, '', 0),
-(701230007, '23', 7, 'Sierra Sur', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010023, '', 0),
-(701230008, '23', 7, 'Sierra Mágina', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010023, '', 0),
-(701230009, '23', 7, 'Alto Guadalquivir', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010023, '', 0),
-(701240003, '24', 7, 'Las Montañas', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070024, '', 0),
+(701040001, '4', 7, 'Los Vélez', NULL, NULL, -2.39127, 37.4772, -1.91115, 37.9166, -2.14995, 37.7004, 601010004, '', 0),
+(701040002, '4', 7, 'Levante Almeriense', NULL, NULL, -2.19943, 36.934, -1.63012, 37.5386, -1.93667, 37.2459, 601010004, '', 0),
+(701040003, '4', 7, 'Valle Del Almanzora', NULL, NULL, -2.66751, 37.209, -1.99765, 37.5577, -2.31946, 37.38, 601010004, '', 0),
+(701040004, '4', 7, 'Los Filabres-Tabernas', NULL, NULL, -2.95001, 36.9767, -2.01548, 37.2803, -2.48467, 37.1354, 601010004, '', 0),
+(701040005, '4', 7, 'Comarca Metropolitana de Almería', NULL, NULL, -3.03749, 35.9376, -1.92515, 37.0605, -2.25891, 36.8996, 601010004, '', 0),
+(701040006, '4', 7, 'Alpujarra Almeriense', NULL, NULL, -3.07193, 36.8848, -2.53211, 37.1166, -2.78381, 37.0001, 601010004, '', 0),
+(701040007, '4', 7, 'Poniente Almeriense', NULL, NULL, -3.14019, 36.6803, -2.52519, 36.9244, -2.81224, 36.8125, 601010004, '', 0),
+(701050001, '5', 7, 'Tierra de Arévalo', NULL, NULL, -5.15299, 40.8549, -4.55245, 41.1642, -4.84976, 41.0182, 601070005, '', 0),
+(701050002, '5', 7, 'La Moraña', NULL, NULL, -5.16381, 40.7319, -4.57047, 41.0007, -4.87136, 40.8618, 601070005, '', 0),
+(701050003, '5', 7, 'Área de Ávila', NULL, NULL, -5.16743, 40.4524, -4.41919, 40.8858, -4.75357, 40.6311, 601070005, '', 0),
+(701050004, '5', 7, 'Sierra de Ávila', NULL, NULL, -5.39677, 40.5718, -4.73452, 40.8663, -5.07176, 40.7138, 601070005, '', 0),
+(701050005, '5', 7, 'Valle del Tietar', NULL, NULL, -5.36994, 40.0825, -4.45308, 40.3727, -4.97014, 40.2368, 601070005, '', 0),
+(701050006, '5', 7, 'Valle del Tormes', NULL, NULL, -5.73756, 40.1947, -5.01049, 40.644, -5.35122, 40.4029, 601070005, '', 0),
+(701050007, '5', 7, 'Valle del Alberche', NULL, NULL, -5.03948, 40.3001, -4.16023, 40.6981, -4.59534, 40.4766, 601070005, '', 0),
+(701060001, '6', 7, 'Campiña Sur', NULL, NULL, -6.32086, 37.9953, -5.46504, 38.6421, -5.86865, 38.3338, 601110006, '', 0),
+(701060002, '6', 7, 'La Serena', NULL, NULL, -5.92049, 38.4888, -4.95363, 39.0108, -5.47648, 38.7509, 601110006, '', 0),
+(701060003, '6', 7, 'La Siberia', NULL, NULL, -5.52098, 38.83, -4.64758, 39.4518, -5.0818, 39.1315, 601110006, '', 0),
+(701060004, '6', 7, 'Tentudía', NULL, NULL, -6.62246, 37.941, -5.95369, 38.3735, -6.29869, 38.1325, 601110006, '', 0),
+(701060005, '6', 7, 'Vegas Altas del Guadiana', NULL, NULL, -6.19041, 38.7234, -5.38156, 39.2159, -5.83358, 38.9764, 601110006, '', 0),
+(701060006, '6', 7, 'Tierra de Mérida - Vegas Bajas', NULL, NULL, -6.74708, 38.6273, -5.8582, 39.1992, -6.37166, 38.9284, 601110006, '', 0),
+(701060007, '6', 7, 'Zafra - Río Bodión', NULL, NULL, -6.72666, 38.1779, -6.22743, 38.6354, -6.47821, 38.4295, 601110006, '', 0),
+(701060008, '6', 7, 'Tierra de Barros', NULL, NULL, -6.71611, 38.4328, -5.90063, 38.8207, -6.30629, 38.6275, 601110006, '', 0),
+(701060009, '6', 7, 'Tierra de Badajoz', NULL, NULL, -7.24788, 38.5549, -6.55956, 39.4367, -6.89231, 39.019, 601110006, '', 0),
+(701060010, '6', 7, 'LLanos de Olivenza', NULL, NULL, -7.33596, 38.279, -6.68265, 38.7858, -7.0597, 38.5395, 601110006, '', 0),
+(701060011, '6', 7, 'Sierra Suroeste', NULL, NULL, -7.15912, 38.09, -6.42519, 38.5753, -6.79187, 38.3007, 601110006, '', 0),
+(701070001, '7', 7, 'Menorca', NULL, NULL, 3.79079, 39.7992, 4.32778, 40.0946, 4.07389, 39.9601, 601040007, '', 0),
+(701070002, '7', 7, 'Mallorca', NULL, NULL, 2.30314, 39.1207, 3.47868, 39.9625, 2.95625, 39.6118, 601040007, '', 0),
+(701070003, '7', 7, 'Ibiza', NULL, NULL, 1.15724, 38.8106, 1.65056, 39.1184, 1.41047, 38.9834, 601040007, '', 0),
+(701070004, '7', 7, 'Formentera', NULL, NULL, 1.38014, 38.6404, 1.58475, 38.8071, 1.45895, 38.692, 601040007, '', 0),
+(701080001, '8', 7, 'Berguedá', NULL, NULL, 1.64425, 41.8974, 2.07024, 42.3233, 1.85539, 42.114, 601090008, '', 0),
+(701080002, '8', 7, 'Bages', NULL, NULL, 1.551, 41.5907, 2.17241, 41.9702, 1.83236, 41.7872, 601090008, '', 0),
+(701080003, '8', 7, 'Garraf', NULL, NULL, 1.57016, 41.1927, 1.94446, 41.3292, 1.74857, 41.2633, 601090008, '', 0),
+(701080004, '8', 7, 'Osona', NULL, NULL, 1.9859, 41.7264, 2.50616, 42.145, 2.24111, 41.974, 601090008, '', 0),
+(701080005, '8', 7, 'Barcelones', NULL, NULL, 2.0525, 41.32, 2.27029, 41.4929, 2.16966, 41.4144, 601090008, '', 0),
+(701080006, '8', 7, 'Maresme', NULL, NULL, 2.24695, 41.4608, 2.77777, 41.7443, 2.53712, 41.6087, 601090008, '', 0),
+(701080007, '8', 7, 'Vallés Occidental', NULL, NULL, 1.86088, 41.415, 2.22486, 41.717, 2.05133, 41.5609, 601090008, '', 0),
+(701080008, '8', 7, 'Baix Llobregat nord', NULL, NULL, 1.79434, 41.3647, 2.03276, 41.6035, 1.90965, 41.4833, 601090008, '', 0),
+(701080009, '8', 7, 'Baix Llobregat sud', NULL, NULL, 1.84673, 41.2636, 2.14752, 41.4455, 2.00498, 41.3342, 601090008, '', 0),
+(701080010, '8', 7, 'Alt Penedés', NULL, NULL, 1.47304, 41.2804, 1.95387, 41.5133, 1.70414, 41.3929, 601090008, '', 0),
+(701080011, '8', 7, 'Vallés Oriental', NULL, NULL, 2.01468, 41.4886, 2.7248, 41.8087, 2.32367, 41.6813, 601090008, '', 0),
+(701080012, '8', 7, 'Anoia', NULL, NULL, 1.35962, 41.4281, 1.85586, 41.8019, 1.57938, 41.6009, 601090008, '', 0),
+(701090001, '9', 7, 'Las Merindades', NULL, NULL, -3.99098, 42.683, -2.98119, 43.1986, -3.47692, 42.9538, 601070009, '', 0),
+(701090002, '9', 7, 'Comarca del Ebro', NULL, NULL, -3.2215, 42.5421, -2.5174, 42.7963, -2.90211, 42.6921, 601070009, '', 0),
+(701090003, '9', 7, 'La Bureba', NULL, NULL, -3.63757, 42.4023, -3.13427, 42.7938, -3.3982, 42.6186, 601070009, '', 0),
+(701090004, '9', 7, 'Área de Burgos', NULL, NULL, -3.98104, 42.1316, -3.24514, 42.6805, -3.66275, 42.3744, 601070009, '', 0),
+(701090005, '9', 7, 'Arlanza', NULL, NULL, -4.10411, 41.8022, -3.45908, 42.2295, -3.7791, 42.0411, 601070009, '', 0),
+(701090006, '9', 7, 'Ribera del Duero', NULL, NULL, -4.09081, 41.4508, -3.27538, 41.947, -3.69379, 41.7346, 601070009, '', 0),
+(701090007, '9', 7, 'Sierra de la Demanda', NULL, NULL, -3.55259, 41.793, -2.91354, 42.257, -3.22712, 42.0348, 601070009, '', 0),
+(701090008, '9', 7, 'Montes de Oca', NULL, NULL, -3.43773, 42.232, -3.046, 42.5421, -3.21659, 42.3919, 601070009, '', 0),
+(701090009, '9', 7, 'Odra ', NULL, NULL, -4.33533, 42.1009, -3.61427, 42.8752, -4.03804, 42.5179, 601070009, '', 0),
+(701100001, '10', 7, 'Las Hurdes - Ambróz', NULL, NULL, -6.48605, 40.1063, -5.94067, 40.4867, -6.20614, 40.3087, 601110010, '', 0),
+(701100002, '10', 7, 'Alagón - Sierra de Gata', NULL, NULL, -7.02887, 39.7212, -6.17882, 40.3729, -6.57942, 40.0517, 601110010, '', 0),
+(701100003, '10', 7, 'Alcántara', NULL, NULL, -7.54502, 39.2657, -6.40609, 40.0089, -6.96293, 39.5946, 601110010, '', 0),
+(701100004, '10', 7, 'Tierra de Cáceres', NULL, NULL, -6.80207, 39.1553, -5.85647, 39.9366, -6.36739, 39.5171, 601110010, '', 0),
+(701100005, '10', 7, 'Trujillo', NULL, NULL, -6.32155, 39.0316, -5.53315, 39.6672, -5.94404, 39.3729, 601110010, '', 0),
+(701100006, '10', 7, 'Las Villuercas - Los Ibores', NULL, NULL, -6.02285, 39.0808, -4.95251, 40.1004, -5.49719, 39.608, 601110010, '', 0),
+(701100007, '10', 7, 'Jerte - Plasencia', NULL, NULL, -6.30529, 39.8427, -5.61004, 40.3538, -5.98051, 40.0894, 601110010, '', 0),
+(701100008, '10', 7, 'La Vera', NULL, NULL, -5.98025, 39.9441, -5.33598, 40.2652, -5.65856, 40.0989, 601110010, '', 0),
+(701110001, '11', 7, 'Campo de Gibraltar', NULL, NULL, -5.8418, 36.0001, -5.25235, 36.5378, -5.53172, 36.2491, 601010011, '', 0),
+(701110002, '11', 7, 'La Janda', NULL, NULL, -6.16208, 36.1268, -5.55941, 36.5565, -5.83723, 36.3673, 601010011, '', 0),
+(701110003, '11', 7, 'Bahía de Cádiz', NULL, NULL, -6.32305, 36.33, -5.98013, 36.7189, -6.15142, 36.5057, 601010011, '', 0),
+(701110004, '11', 7, 'Costa noroeste', NULL, NULL, -6.47207, 36.6104, -6.12199, 36.9108, -6.31016, 36.7794, 601010011, '', 0),
+(701110005, '11', 7, 'Campiña de Jerez', NULL, NULL, -6.30612, 36.5162, -5.45579, 36.8638, -5.92573, 36.6713, 601010011, '', 0),
+(701110006, '11', 7, 'Sierra de Cádiz', NULL, NULL, -5.94604, 36.6142, -5.08677, 37.0524, -5.53749, 36.8215, 601010011, '', 0),
+(701120001, '12', 7, 'Baix Maestrat', NULL, NULL, -0.0102528, 40.2035, 0.514784, 40.7332, 0.255455, 40.4879, 601100012, '', 0),
+(701120002, '12', 7, 'Els Ports', NULL, NULL, -0.381514, 40.4137, 0.18583, 40.7886, -0.12094, 40.6114, 601100012, '', 0),
+(701120003, '12', 7, 'Alt Maestrat', NULL, NULL, -0.347355, 40.22, 0.115487, 40.5494, -0.0921689, 40.4041, 601100012, '', 0),
+(701120004, '12', 7, 'Plana Alta', NULL, NULL, -0.165908, 39.8501, 0.691227, 40.4183, 0.0243362, 40.15, 601100012, '', 0),
+(701120005, '12', 7, 'Alto Mijares', NULL, NULL, -0.629118, 39.9343, -0.281314, 40.2616, -0.450006, 40.0998, 601100012, '', 0),
+(701120006, '12', 7, 'Plana baixa', NULL, NULL, -0.400408, 39.7219, -0.00972904, 40.3757, -0.216764, 40.0809, 601100012, '', 0),
+(701120007, '12', 7, 'Alto Palancia', NULL, NULL, -0.846297, 39.7147, -0.23902, 40.0747, -0.553208, 39.8956, 601100012, '', 0),
+(701130001, '13', 7, 'Montes', NULL, NULL, -4.94217, 38.9368, -3.74424, 39.5768, -4.37065, 39.2571, 601080013, '', 0),
+(701130002, '13', 7, 'Alcudia', NULL, NULL, -5.04695, 38.4005, -4.12318, 39.0842, -4.58439, 38.7663, 601080013, '', 0),
+(701130003, '13', 7, 'Montiel', NULL, NULL, -3.454, 38.4083, -2.63789, 39.0989, -3.01612, 38.7058, 601080013, '', 0),
+(701130004, '13', 7, 'Calatrava', NULL, NULL, -4.39183, 38.5719, -3.50763, 39.1601, -3.92114, 38.871, 601080013, '', 0),
+(701130005, '13', 7, 'Sierra Morena', NULL, NULL, -4.43517, 38.3428, -3.25569, 38.7849, -3.82895, 38.5286, 601080013, '', 0),
+(701130006, '13', 7, 'La Mancha', NULL, NULL, -3.8061, 38.6699, -2.7221, 39.4961, -3.26913, 39.1367, 601080013, '', 0),
+(701140001, '14', 7, 'VAlle de los Pedroches -Alto Guadiato', NULL, NULL, -5.58512, 37.9098, -4.19388, 38.7291, -4.97503, 38.3171, 601010014, '', 0),
+(701140002, '14', 7, 'Vega del Guadalquivir', NULL, NULL, -5.58592, 37.5842, -4.86323, 38.1625, -5.22653, 37.8614, 601010014, '', 0),
+(701140003, '14', 7, 'Córdoba', NULL, NULL, -4.9986, 37.6658, -4.35143, 38.0315, -4.70176, 37.8492, 601010014, '', 0),
+(701140004, '14', 7, 'Alto Guadalquivir', NULL, NULL, -4.68891, 37.7631, -4.16118, 38.2535, -4.42904, 38.0451, 601010014, '', 0),
+(701140005, '14', 7, 'Campilña Sur - Campiña Este', NULL, NULL, -4.98474, 37.3236, -4.16437, 37.8201, -4.60576, 37.5933, 601010014, '', 0),
+(701140006, '14', 7, 'La subbética', NULL, NULL, -4.68407, 37.1843, -4.00082, 37.6272, -4.36201, 37.4083, 601010014, '', 0),
+(701150001, '15', 7, 'Arzúa', NULL, NULL, -8.41956, 42.8018, -8.02656, 43.0572, -8.24272, 42.9273, 601120015, '', 0),
+(701150002, '15', 7, 'Tierra de Melide', NULL, NULL, -8.1753, 42.8315, -7.90531, 43.1332, -8.01277, 42.9697, 601120015, '', 0),
+(701150003, '15', 7, 'Eume', NULL, NULL, -8.22494, 43.2759, -7.74354, 43.5705, -7.96108, 43.4196, 601120015, '', 0),
+(701150004, '15', 7, 'Ortegal', NULL, NULL, -8.04707, 43.5488, -7.66172, 43.7924, -7.83577, 43.6555, 601120015, '', 0),
+(701150005, '15', 7, 'Ferrol', NULL, NULL, -8.34806, 43.4173, -7.85117, 43.7349, -8.09277, 43.552, 601120015, '', 0),
+(701150006, '15', 7, 'La Coruña', NULL, NULL, -8.60383, 43.1369, -8.20476, 43.4071, -8.37157, 43.2818, 601120015, '', 0),
+(701150007, '15', 7, 'Bergantiños', NULL, NULL, -9.07905, 43.0856, -8.43589, 43.3643, -8.75375, 43.2155, 601120015, '', 0),
+(701150008, '15', 7, 'Santiago', NULL, NULL, -8.83103, 42.743, -8.33138, 43.0953, -8.56737, 42.8874, 601120015, '', 0),
+(701150009, '15', 7, 'O Sar', NULL, NULL, -8.79703, 42.6884, -8.57058, 42.8431, -8.69853, 42.7665, 601120015, '', 0),
+(701150010, '15', 7, 'Barbanza', NULL, NULL, -9.09506, 42.459, -8.72518, 42.7457, -8.90602, 42.6446, 601120015, '', 0),
+(701150011, '15', 7, 'Anoia', NULL, NULL, -9.06507, 42.5948, -8.7655, 42.9101, -8.91065, 42.7729, 601120015, '', 0),
+(701150012, '15', 7, 'Betanzos', NULL, NULL, -8.30142, 43.0324, -7.92185, 43.4009, -8.10684, 43.2115, 601120015, '', 0),
+(701150013, '15', 7, 'Muros', NULL, NULL, -9.18827, 42.7325, -8.95796, 42.9153, -9.06798, 42.8247, 601120015, '', 0),
+(701150014, '15', 7, 'Fisterra', NULL, NULL, -9.30152, 42.8799, -8.99879, 43.1299, -9.16408, 43.0047, 601120015, '', 0),
+(701150015, '15', 7, 'Ordes', NULL, NULL, -8.69764, 42.9429, -8.158, 43.2265, -8.4192, 43.0786, 601120015, '', 0),
+(701150016, '15', 7, 'Terra de Soneira', NULL, NULL, -9.21637, 42.9862, -8.83801, 43.2007, -9.01257, 43.1031, 601120015, '', 0),
+(701150017, '15', 7, 'Xallas', NULL, NULL, -9.108, 42.8437, -8.6832, 43.1188, -8.89527, 42.9902, 601120015, '', 0),
+(701150018, '15', 7, 'A Barcala', NULL, NULL, -8.92023, 42.8495, -8.65624, 43.0072, -8.78814, 42.9339, 601120015, '', 0),
+(701160001, '16', 7, 'Serranía', NULL, NULL, -2.44865, 39.5438, -1.1424, 40.6587, -1.84871, 40.0541, 601080016, '', 0),
+(701160002, '16', 7, 'Manchuela', NULL, NULL, -2.37928, 39.2267, -1.49632, 39.768, -1.97384, 39.483, 601080016, '', 0),
+(701160003, '16', 7, 'Alcarria', NULL, NULL, -3.09775, 39.8811, -2.22378, 40.6138, -2.56168, 40.2792, 601080016, '', 0),
+(701160004, '16', 7, 'Mancha alta', NULL, NULL, -3.17023, 39.4899, -2.17143, 40.1173, -2.63784, 39.8566, 601080016, '', 0),
+(701160005, '16', 7, 'Mancha baja', NULL, NULL, -3.0209, 39.2328, -2.27541, 39.8075, -2.67661, 39.5185, 601080016, '', 0),
+(701180001, '18', 7, 'El Altiplano', NULL, NULL, -3.01425, 37.2115, -2.20767, 38.0841, -2.62064, 37.6822, 601010018, '', 0),
+(701180002, '18', 7, 'Guadix y el Marquesado', NULL, NULL, -3.67197, 37.0904, -2.83037, 37.6445, -3.21398, 37.3798, 601010018, '', 0),
+(701180003, '18', 7, 'Poniente Granadino', NULL, NULL, -4.32762, 36.8468, -3.62233, 37.5183, -3.97916, 37.1652, 601010018, '', 0),
+(701180004, '18', 7, 'Área de Granada', NULL, NULL, -3.92798, 36.984, -3.24983, 37.4005, -3.56657, 37.1848, 601010018, '', 0),
+(701180005, '18', 7, 'Valle de Lecrín - La Alpujarra', NULL, NULL, -3.77006, 36.7905, -2.97619, 37.1147, -3.35014, 36.9579, 601010018, '', 0),
+(701180006, '18', 7, 'Costa Tropical', NULL, NULL, -3.81564, 36.6935, -3.02901, 36.8981, -3.48202, 36.7952, 601010018, '', 0),
+(701190001, '19', 7, 'Sierra', NULL, NULL, -3.5411, 40.8413, -2.46856, 41.3276, -3.03587, 41.0996, 601080019, '', 0),
+(701190002, '19', 7, 'Alcarria baja', NULL, NULL, -2.94078, 40.3951, -1.96386, 40.8461, -2.49371, 40.6231, 601080019, '', 0),
+(701190003, '19', 7, 'Alcarria alta', NULL, NULL, -3.1431, 40.6177, -2.15901, 41.0865, -2.63874, 40.8538, 601080019, '', 0),
+(701190004, '19', 7, 'Campiña', NULL, NULL, -3.51157, 40.1525, -2.77426, 40.9847, -3.09578, 40.5559, 601080019, '', 0),
+(701190005, '19', 7, 'Molina de Aragón', NULL, NULL, -2.32928, 40.3982, -1.53564, 41.1725, -1.87984, 40.8288, 601080019, '', 0),
+(701200001, '20', 7, 'Bajo Bidasoa', NULL, NULL, -1.87108, 43.2864, -1.72934, 43.3959, -1.80151, 43.3366, 601160020, '', 0),
+(701200002, '20', 7, 'Donostialdea', NULL, NULL, -2.09603, 43.1726, -1.78321, 43.368, -1.94169, 43.2679, 601160020, '', 0),
+(701200003, '20', 7, 'Urola kosta', NULL, NULL, -2.36739, 43.098, -2.08199, 43.3117, -2.22866, 43.2073, 601160020, '', 0),
+(701200004, '20', 7, 'Bajo Deva', NULL, NULL, -2.50001, 43.1618, -2.26626, 43.3243, -2.38568, 43.2394, 601160020, '', 0),
+(701200005, '20', 7, 'Tolosaldea', NULL, NULL, -2.19922, 42.9709, -1.90195, 43.2459, -2.05751, 43.1198, 601160020, '', 0),
+(701200006, '20', 7, 'Golem', NULL, NULL, -2.37812, 42.8952, -2.09524, 43.1321, -2.24371, 43.0173, 601160020, '', 0),
+(701200007, '20', 7, 'Allto Deva', NULL, NULL, -2.60268, 42.9468, -2.33784, 43.1767, -2.45181, 43.0535, 601160020, '', 0),
+(701210001, '21', 7, 'La Sierra', NULL, NULL, -7.28652, 37.6746, -6.12156, 38.2083, -6.70366, 37.9156, 601010021, '', 0),
+(701210002, '21', 7, 'La Costa', NULL, NULL, -7.44532, 36.795, -6.33101, 37.4105, -6.85404, 37.1943, 601010021, '', 0),
+(701210003, '21', 7, 'El Andévalo', NULL, NULL, -7.52288, 37.3558, -6.42782, 37.8655, -7.05163, 37.6176, 601010021, '', 0),
+(701210004, '21', 7, 'El condado', NULL, NULL, -7.1453, 36.9347, -6.30554, 37.6218, -6.66498, 37.368, 601010021, '', 0),
+(701220001, '22', 7, 'La Jacetania', NULL, NULL, -0.934168, 42.415, -0.399124, 42.9245, -0.67783, 42.6511, 601020022, '', 0),
+(701220002, '22', 7, 'Alto Gállego', NULL, NULL, -0.675974, 42.2938, -0.0658615, 42.8494, -0.327807, 42.5373, 601020022, '', 0),
+(701220003, '22', 7, 'Hoya de Huesca', NULL, NULL, -0.918968, 41.9453, -0.0722781, 42.5071, -0.494734, 42.1794, 601020022, '', 0),
+(701220004, '22', 7, 'Los Monegros', NULL, NULL, -0.652153, 41.3478, 0.0417553, 42.0563, -0.256661, 41.7719, 601020022, '', 0),
+(701220005, '22', 7, 'Somontano de Barbastro', NULL, NULL, -0.163805, 41.8162, 0.322244, 42.3606, 0.0426494, 42.0929, 601020022, '', 0),
+(701220006, '22', 7, 'Sobrarbe', NULL, NULL, -0.246189, 42.2164, 0.40787, 42.798, 0.0829682, 42.505, 601020022, '', 0),
+(701220007, '22', 7, 'Cinca - La Litera', NULL, NULL, -0.0588688, 41.35, 0.608222, 42.0696, 0.241558, 41.7222, 601020022, '', 0),
+(701220008, '22', 7, 'Ribagorza', NULL, NULL, 0.223449, 41.955, 0.771307, 42.7243, 0.512786, 42.3489, 601020022, '', 0),
+(701230001, '23', 7, 'Sierra de Segura', NULL, NULL, -3.01735, 37.9193, -2.43539, 38.533, -2.705, 38.2448, 601010023, '', 0),
+(701230002, '23', 7, 'La Loma - Las Villas', NULL, NULL, -3.74954, 37.8196, -2.79129, 38.2577, -3.25192, 38.0487, 601010023, '', 0),
+(701230003, '23', 7, 'El Condado', NULL, NULL, -3.58007, 38.0852, -2.88149, 38.4821, -3.23556, 38.2921, 601010023, '', 0),
+(701230004, '23', 7, 'Sierra Norte', NULL, NULL, -3.90213, 37.9771, -3.28179, 38.4731, -3.66299, 38.2385, 601010023, '', 0),
+(701230005, '23', 7, 'La Campiña', NULL, NULL, -4.28445, 37.8559, -3.82112, 38.4018, -4.04614, 38.1361, 601010023, '', 0),
+(701230006, '23', 7, 'Jaén', NULL, NULL, -4.28764, 37.5762, -3.56853, 38.013, -3.90579, 37.7953, 601010023, '', 0),
+(701230007, '23', 7, 'Sierra Sur', NULL, NULL, -4.2281, 37.3783, -3.69175, 37.7059, -3.94481, 37.5386, 601010023, '', 0),
+(701230008, '23', 7, 'Sierra Mágina', NULL, NULL, -3.77976, 37.4765, -3.14783, 37.9321, -3.44496, 37.7133, 601010023, '', 0),
+(701230009, '23', 7, 'Alto Guadalquivir', NULL, NULL, -3.25788, 37.5955, -2.77362, 38.0464, -3.02093, 37.841, 601010023, '', 0),
+(701240001, '24', 7, 'Babia - Laciana - Omaña', NULL, NULL, -6.47896, 42.6555, -5.77751, 43.0757, -6.07195, 42.8829, 601070024, '', 0),
+(701240002, '24', 7, 'Tierra de Léón', NULL, NULL, -5.84498, 42.3139, -5.1018, 42.806, -5.49693, 42.6018, 601070024, '', 0),
+(701240003, '24', 7, 'Las Montañas', NULL, NULL, -5.83814, 42.6867, -4.73422, 43.2386, -5.25607, 42.9362, 601070024, '', 0),
+(701240004, '24', 7, 'Tierra de Campos', NULL, NULL, -5.53388, 42.0292, -4.87167, 42.8063, -5.18027, 42.4219, 601070024, '', 0),
 (701240005, '24', 7, 'El Páramo', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070024, '', 0),
 (701240006, '24', 7, 'Maragatería - Cabrera', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070024, '', 0),
 (701240007, '24', 7, 'El Bierzo - Ancares', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070024, '', 0),
-(701240004, '24', 7, 'Tierra de Campos', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070024, '', 0),
-(701240002, '24', 7, 'Tierra de Léón', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070024, '', 0),
-(701240001, '24', 7, 'Babia - Laciana - Omaña', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070024, '', 0),
-(701250001, '25', 7, 'Alta Ribagorça', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090025, '', 0),
-(701250002, '25', 7, 'Pallars Sobirà', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090025, '', 0),
+(701250001, '25', 7, 'Alta Ribagorça', NULL, NULL, 0.690486, 42.2989, 0.972476, 42.6325, 0.823698, 42.487, 601090025, '', 0),
+(701250002, '25', 7, 'Pallars Sobirà', NULL, NULL, 0.915709, 42.259, 1.44495, 42.7883, 1.14708, 42.5261, 601090025, '', 0),
 (701250003, '25', 7, 'Pallars Jussà', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090025, '', 0),
 (701250004, '25', 7, 'Baixa Cerdanya', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090025, '', 0),
 (701250005, '25', 7, 'Alt Urgell', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090025, '', 0),
@@ -3794,14 +3814,14 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (701250010, '25', 7, 'Garrigues', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090025, '', 0),
 (701250011, '25', 7, 'Segrià', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090025, '', 0),
 (701250012, '25', 7, 'Pla d''Urgell', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090025, '', 0),
-(701260002, '26', 7, 'Rioja Media', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601170026, '', 0),
-(701260003, '26', 7, 'Rioja Baja', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601170026, '', 0),
-(701260001, '26', 7, 'Rioja Alta', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601170026, '', 0),
-(701270001, '27', 7, 'A Mariña', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120027, '', 0),
-(701270002, '27', 7, 'Chá - Meira - Fonsagrada', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120027, '', 0),
-(701270003, '27', 7, 'Ancares - Sarria - Quiroga', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120027, '', 0),
-(701270004, '27', 7, 'Área de Lugo', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120027, '', 0),
-(701270005, '27', 7, 'Lemos - Ulloa - Chantada', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120027, '', 0),
+(701260001, '26', 7, 'Rioja Alta', NULL, NULL, -3.13427, 42.0095, -2.6074, 42.6443, -2.88711, 42.3525, 601170026, '', 0),
+(701260002, '26', 7, 'Rioja Media', NULL, NULL, -2.76836, 41.9963, -2.07864, 42.5261, -2.47411, 42.2809, 601170026, '', 0),
+(701260003, '26', 7, 'Rioja Baja', NULL, NULL, -2.40193, 41.919, -1.6787, 42.3693, -2.03515, 42.1555, 601170026, '', 0),
+(701270001, '27', 7, 'A Mariña', NULL, NULL, -7.75273, 43.2556, -7.03016, 43.7616, -7.39233, 43.5282, 601120027, '', 0),
+(701270002, '27', 7, 'Chá - Meira - Fonsagrada', NULL, NULL, -7.96139, 42.9386, -6.82155, 43.5569, -7.45975, 43.2201, 601120027, '', 0),
+(701270003, '27', 7, 'Ancares - Sarria - Quiroga', NULL, NULL, -7.65749, 42.3257, -6.81489, 43.0621, -7.20699, 42.746, 601120027, '', 0),
+(701270004, '27', 7, 'Área de Lugo', NULL, NULL, -7.94299, 42.7557, -7.31424, 43.1352, -7.64136, 42.9669, 601120027, '', 0),
+(701270005, '27', 7, 'Lemos - Ulloa - Chantada', NULL, NULL, -7.99973, 42.3834, -7.26357, 42.9801, -7.6748, 42.6352, 601120027, '', 0),
 (701280001, '28', 7, 'Sierra Norte', NULL, NULL, -3.97996, 40.7346, -3.39445, 41.1658, -3.65165, 40.9407, 601130028, '', 1),
 (701280002, '28', 7, 'Corredor del Henares', NULL, NULL, -3.58507, 40.2484, -3.19881, 40.6175, -3.41938, 40.4442, 601130028, '', 1),
 (701280003, '28', 7, 'Madrid Sur', NULL, NULL, -4.08791, 39.8847, -3.48268, 40.403, -3.75407, 40.206, 601130028, '', 1),
@@ -3810,128 +3830,129 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (701280006, '28', 7, 'Madrid Noroccidental', NULL, NULL, -3.97968, 40.5012, -3.31386, 40.849, -3.67317, 40.6796, 601130028, '', 1),
 (701280007, '28', 7, 'Madrid Suroeste', NULL, NULL, -4.57908, 40.1993, -3.77084, 40.5745, -4.16204, 40.3635, 601130028, '', 1),
 (701280008, '28', 7, 'Madrid', '28079', '28079', -3.88896, 40.3121, -3.51823, 40.6433, -3.68557, 40.443, 601130028, '', 1),
-(701290002, '29', 7, 'Área de Antequera', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010029, '', 0),
-(701290003, '29', 7, 'Comarca de Málaga', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010029, '', 0),
-(701290004, '29', 7, 'Valle de Guadalhorce', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010029, '', 0),
-(701290005, '29', 7, 'Costa del Sol Occidental - Área de Marbella', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010029, '', 0),
-(701290006, '29', 7, 'Serranía de Ronda', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010029, '', 0),
-(701290001, '29', 7, 'La Axarquía', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010029, '', 0),
-(701300001, '30', 7, 'Río Mula', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601140030, '', 0),
-(701300003, '30', 7, 'Noroeste', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601140030, '', 0),
-(701300004, '30', 7, 'Vega alta', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601140030, '', 0),
-(701300005, '30', 7, 'Valle de Ricote', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601140030, '', 0),
-(701300006, '30', 7, 'Vega media', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601140030, '', 0),
-(701300007, '30', 7, 'Área de Murcia', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601140030, '', 0),
-(701300008, '30', 7, 'Bajo de Guadalentín', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601140030, '', 0),
-(701300010, '30', 7, 'Alto Guadalentín', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601140030, '', 0),
-(701300011, '30', 7, 'Campo de Cartagena', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601140030, '', 0),
-(701300009, '30', 7, 'Mar Menor', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601140030, '', 0),
-(701300002, '30', 7, 'Oriental', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601140030, '', 0),
-(701310001, '31', 7, 'Pamplona', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601150031, '', 0),
-(701310002, '31', 7, 'Norte', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601150031, '', 0),
-(701310003, '31', 7, 'Sangüesa', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601150031, '', 0),
-(701310004, '31', 7, 'Puete de la Reina - Tafalla', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601150031, '', 0),
+(701290001, '29', 7, 'La Axarquía', NULL, NULL, -4.37873, 36.7101, -3.76597, 37.023, -4.10857, 36.8398, 601010029, '', 0),
+(701290002, '29', 7, 'Área de Antequera', NULL, NULL, -5.14244, 36.8423, -4.27004, 37.2824, -4.66538, 37.0496, 601010029, '', 0),
+(701290003, '29', 7, 'Comarca de Málaga', NULL, NULL, -4.6407, 36.6118, -4.26049, 36.9167, -4.4719, 36.7833, 601010029, '', 0),
+(701290004, '29', 7, 'Valle de Guadalhorce', NULL, NULL, -5.03071, 36.5844, -4.56898, 36.9279, -4.77662, 36.7401, 601010029, '', 0),
+(701290005, '29', 7, 'Costa del Sol Occidental - Área de Marbella', NULL, NULL, -5.35805, 36.3103, -4.47537, 36.6605, -4.97591, 36.518, 601010029, '', 0),
+(701290006, '29', 7, 'Serranía de Ronda', NULL, NULL, -5.61178, 36.4338, -4.88052, 36.921, -5.19779, 36.686, 601010029, '', 0),
+(701300001, '30', 7, 'Río Mula', NULL, NULL, -1.73308, 37.8602, -1.30078, 38.19, -1.52319, 38.0093, 601140030, '', 0),
+(701300002, '30', 7, 'Oriental', NULL, NULL, -1.49873, 38.1135, -0.967677, 38.7551, -1.21645, 38.4658, 601140030, '', 0),
+(701300003, '30', 7, 'Noroeste', NULL, NULL, -2.34441, 37.8682, -1.579, 38.3813, -1.93609, 38.1118, 601140030, '', 0),
+(701300004, '30', 7, 'Vega alta', NULL, NULL, -1.59503, 38.1601, -1.19729, 38.3764, -1.41356, 38.2603, 601140030, '', 0),
+(701300005, '30', 7, 'Valle de Ricote', NULL, NULL, -1.5165, 38.0601, -1.23672, 38.2001, -1.37108, 38.1365, 601140030, '', 0),
+(701300006, '30', 7, 'Vega media', NULL, NULL, -1.32832, 37.9956, -1.1315, 38.2717, -1.22283, 38.0987, 601140030, '', 0),
+(701300007, '30', 7, 'Área de Murcia', NULL, NULL, -1.38483, 37.716, -0.85089, 38.1241, -1.10789, 37.9318, 601140030, '', 0),
+(701300008, '30', 7, 'Bajo de Guadalentín', NULL, NULL, -1.67139, 37.5176, -1.20861, 37.9423, -1.42453, 37.7504, 601140030, '', 0),
+(701300009, '30', 7, 'Mar Menor', NULL, NULL, -1.07575, 37.6683, -0.697608, 37.8817, -0.915604, 37.7872, 601140030, '', 0),
+(701300010, '30', 7, 'Alto Guadalentín', NULL, NULL, -2.01265, 37.3738, -1.39647, 37.9702, -1.73888, 37.6604, 601140030, '', 0),
+(701300011, '30', 7, 'Campo de Cartagena', NULL, NULL, -1.3412, 37.534, -0.647983, 37.8483, -1.05792, 37.6678, 601140030, '', 0),
+(701310001, '31', 7, 'Pamplona', NULL, NULL, -1.83918, 42.6854, -1.49207, 42.9438, -1.66349, 42.8046, 601150031, '', 0),
+(701310002, '31', 7, 'Norte', NULL, NULL, -2.25307, 42.851, -1.37779, 43.3148, -1.75519, 43.0698, 601150031, '', 0),
+(701310003, '31', 7, 'Sangüesa', NULL, NULL, -1.59761, 42.3815, -0.72395, 43.1188, -1.24619, 42.7977, 601150031, '', 0),
+(701310004, '31', 7, 'Puete de la Reina - Tafalla', NULL, NULL, -1.93462, 42.3716, -1.48525, 42.8209, -1.74104, 42.5812, 601150031, '', 0),
 (701310005, '31', 7, 'Área de Estella - Área de Urbasa', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601150031, '', 0),
 (701310006, '31', 7, 'Área de Peralta - Olite', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601150031, '', 0),
 (701310007, '31', 7, 'Área de Tudela', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601150031, '', 0),
-(701320001, '32', 7, 'Allariz - Maceda', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120032, '', 0),
-(701320002, '32', 7, 'Área de Ourense', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120032, '', 0),
-(701320003, '32', 7, 'Ribeiro - Carballino', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120032, '', 0),
-(701320004, '32', 7, 'Terra de Celanova', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120032, '', 0),
-(701320005, '32', 7, 'Linia', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120032, '', 0),
-(701320006, '32', 7, 'Viana - Verín', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120032, '', 0),
-(701320007, '32', 7, 'Terra de Caldelas - Trive', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120032, '', 0),
-(701320008, '32', 7, 'Valdeorras', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120032, '', 0),
-(701330002, '33', 7, 'Eo-Navia', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601030033, '', 0),
-(701330003, '33', 7, 'Narcea', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601030033, '', 0),
-(701330004, '33', 7, 'Avilés', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601030033, '', 0),
-(701330005, '33', 7, 'Oviedo', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601030033, '', 0),
-(701330006, '33', 7, 'Gijón', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601030033, '', 0),
-(701330007, '33', 7, 'Caudal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601030033, '', 0),
-(701330008, '33', 7, 'Nalón', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601030033, '', 0),
-(701330001, '33', 7, 'Oriente', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601030033, '', 0),
-(701340001, '34', 7, 'Montaña Palentina', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070034, '', 0),
-(701340003, '34', 7, 'Tierra de Campos', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070034, '', 0),
-(701340004, '34', 7, 'Páramos - Valles', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070034, '', 0),
-(701340002, '34', 7, 'Cerrato', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070034, '', 0),
-(701350001, '35', 7, 'Lanzarote - Fuerteventura', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601050035, '', 0),
-(701350002, '35', 7, 'Las Palmas de Gran Canaria', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601050035, '', 0),
-(701360001, '36', 7, 'Baixo Miño', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120036, '', 0),
-(701360002, '36', 7, 'Condado - Paradanta', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120036, '', 0),
-(701360003, '36', 7, 'Área de Vigo', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120036, '', 0),
-(701360004, '36', 7, 'Morrazo', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120036, '', 0),
-(701360005, '36', 7, 'Área de Pontevedra', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120036, '', 0),
-(701360006, '36', 7, 'Salnés', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120036, '', 0),
-(701360007, '36', 7, 'Caldas - Deza - Terra Montes', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601120036, '', 0),
-(701370001, '37', 7, 'Campo de Salamanca', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070037, '', 0),
-(701370002, '37', 7, 'Peñaranda', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070037, '', 0),
-(701370003, '37', 7, 'Vitigudino - Ledesma', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070037, '', 0),
-(701370004, '37', 7, 'Ciudad Rodrigo', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070037, '', 0),
-(701370005, '37', 7, 'Sierra de Bejar - Sierra de Frania - Alto Tormes', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070037, '', 0),
-(701380001, '38', 7, 'Tenerife', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601050038, '', 0),
-(701380002, '38', 7, 'La Gomera', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601050038, '', 0),
-(701380003, '38', 7, 'La Palma', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601050038, '', 0),
-(701380004, '38', 7, 'El Hierro', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601050038, '', 0),
-(701390001, '39', 7, 'Campoo-Los Valles', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601060039, '', 0),
-(701390002, '39', 7, 'Liébana', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601060039, '', 0),
-(701390003, '39', 7, 'Saja-Nansa', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601060039, '', 0),
-(701390004, '39', 7, 'Costa Occidental', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601060039, '', 0),
-(701390005, '39', 7, 'Besaya', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601060039, '', 0),
-(701390006, '39', 7, 'Valles Pasiegos', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601060039, '', 0),
-(701390007, '39', 7, 'Santander', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601060039, '', 0),
-(701390008, '39', 7, 'Trasmiera', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601060039, '', 0),
-(701390009, '39', 7, 'Asón-Agüera', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601060039, '', 0),
-(701390010, '39', 7, 'Costa Oriental', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601060039, '', 0),
-(701400001, '40', 7, 'Área de Segovia', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070040, '', 0),
-(701400003, '40', 7, 'Área de Cuéllar', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070040, '', 0),
-(701400002, '40', 7, 'Área de Cantalejo - Riaza', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070040, '', 0),
-(701410001, '41', 7, 'Área Metropolitana', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010041, '', 0),
-(701410002, '41', 7, 'La Marisma', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010041, '', 0),
+(701320001, '32', 7, 'Allariz - Maceda', NULL, NULL, -7.87381, 42.1218, -7.49967, 42.3633, -7.69573, 42.2311, 601120032, '', 0),
+(701320002, '32', 7, 'Área de Ourense', NULL, NULL, -8.02332, 42.2136, -7.61654, 42.5116, -7.83469, 42.3666, 601120032, '', 0),
+(701320003, '32', 7, 'Ribeiro - Carballino', NULL, NULL, -8.36634, 42.2329, -7.88852, 42.5786, -8.13499, 42.4255, 601120032, '', 0),
+(701320004, '32', 7, 'Terra de Celanova', NULL, NULL, -8.19904, 42.0533, -7.84927, 42.3279, -8.02951, 42.1778, 601120032, '', 0),
+(701320005, '32', 7, 'Linia', NULL, NULL, -8.21717, 41.8087, -7.4621, 42.2273, -7.84956, 42.0048, 601120032, '', 0),
+(701320006, '32', 7, 'Viana - Verín', NULL, NULL, -7.70411, 41.8075, -6.94102, 42.2459, -7.30489, 42.0336, 601120032, '', 0),
+(701320007, '32', 7, 'Terra de Caldelas - Trive', NULL, NULL, -7.63353, 42.1726, -7.13106, 42.4356, -7.38168, 42.3072, 601120032, '', 0),
+(701320008, '32', 7, 'Valdeorras', NULL, NULL, -7.19806, 42.1723, -6.73395, 42.5205, -6.96644, 42.3485, 601120032, '', 0),
+(701330001, '33', 7, 'Oriente', NULL, NULL, -5.48339, 43.0902, -4.51059, 43.5357, -5.02639, 43.3252, 601030033, '', 0),
+(701330002, '33', 7, 'Eo-Navia', NULL, NULL, -7.18249, 43.1318, -6.25919, 43.5779, -6.79997, 43.4143, 601030033, '', 0),
+(701330003, '33', 7, 'Narcea', NULL, NULL, -6.99717, 42.8825, -6.29908, 43.46, -6.6021, 43.1626, 601030033, '', 0),
+(701330004, '33', 7, 'Avilés', NULL, NULL, -6.35258, 43.4169, -5.76516, 43.6665, -6.04544, 43.5387, 601030033, '', 0),
+(701330005, '33', 7, 'Oviedo', NULL, NULL, -6.37732, 43.0089, -5.36615, 43.5206, -6.0014, 43.2895, 601030033, '', 0),
+(701330006, '33', 7, 'Gijón', NULL, NULL, -5.86301, 43.4069, -5.31086, 43.6007, -5.57938, 43.4985, 601030033, '', 0),
+(701330007, '33', 7, 'Caudal', NULL, NULL, -5.9611, 42.9626, -5.3831, 43.2891, -5.70828, 43.1172, 601030033, '', 0),
+(701330008, '33', 7, 'Nalón', NULL, NULL, -5.77397, 43.0774, -5.18819, 43.346, -5.4607, 43.2061, 601030033, '', 0),
+(701340001, '34', 7, 'Montaña Palentina', NULL, NULL, -4.93636, 42.6881, -3.99594, 43.061, -4.50985, 42.8699, 601070034, '', 0),
+(701340002, '34', 7, 'Cerrato', NULL, NULL, -4.66088, 41.7582, -3.88962, 42.2785, -4.27723, 41.9671, 601070034, '', 0),
+(701340003, '34', 7, 'Tierra de Campos', NULL, NULL, -5.03189, 41.818, -4.24629, 42.519, -4.64979, 42.1817, 601070034, '', 0),
+(701340004, '34', 7, 'Páramos - Valles', NULL, NULL, -4.92399, 42.3109, -4.24259, 42.8131, -4.61981, 42.5825, 601070034, '', 0),
+(701350001, '35', 7, 'Lanzarote - Fuerteventura', NULL, NULL, -14.5102, 28.0442, -13.3336, 29.4165, -13.9009, 28.6194, 601050035, '', 0),
+(701350002, '35', 7, 'Las Palmas de Gran Canaria', NULL, NULL, -15.8347, 27.7346, -15.3584, 28.1811, -15.5936, 27.9547, 601050035, '', 0),
+(701360001, '36', 7, 'Baixo Miño', NULL, NULL, -8.90089, 41.8651, -8.55301, 42.1132, -8.77403, 42.0065, 601120036, '', 0),
+(701360002, '36', 7, 'Condado - Paradanta', NULL, NULL, -8.58818, 42.0529, -8.16117, 42.3542, -8.38609, 42.1958, 601120036, '', 0),
+(701360003, '36', 7, 'Área de Vigo', NULL, NULL, -8.91925, 42.0487, -8.31746, 42.3725, -8.63975, 42.2034, 601120036, '', 0),
+(701360004, '36', 7, 'Morrazo', NULL, NULL, -8.94945, 42.241, -8.65894, 42.4148, -8.75959, 42.3158, 601120036, '', 0),
+(701360005, '36', 7, 'Área de Pontevedra', NULL, NULL, -8.76001, 42.2915, -8.3147, 42.5893, -8.53348, 42.4445, 601120036, '', 0),
+(701360006, '36', 7, 'Salnés', NULL, NULL, -8.94543, 42.3843, -8.66973, 42.6434, -8.78252, 42.504, 601120036, '', 0),
+(701360007, '36', 7, 'Caldas - Deza - Terra Montes', NULL, NULL, -8.74739, 42.4723, -7.86143, 42.8602, -8.27977, 42.6692, 601120036, '', 0),
+(701370001, '37', 7, 'Campo de Salamanca', NULL, NULL, -6.29331, 40.6147, -5.47527, 41.0558, -5.90105, 40.832, 601070037, '', 0),
+(701370002, '37', 7, 'Peñaranda', NULL, NULL, -5.80877, 40.5774, -5.08984, 41.2458, -5.43332, 40.9406, 601070037, '', 0),
+(701370003, '37', 7, 'Vitigudino - Ledesma', NULL, NULL, -6.93136, 40.7293, -5.71741, 41.2943, -6.36008, 41.042, 601070037, '', 0),
+(701370004, '37', 7, 'Ciudad Rodrigo', NULL, NULL, -6.86509, 40.2389, -6.09596, 40.8607, -6.53583, 40.5724, 601070037, '', 0),
+(701370005, '37', 7, 'Sierra de Bejar - Sierra de Frania - Alto Tormes', NULL, NULL, -6.26777, 40.2777, -5.42556, 40.7561, -5.84135, 40.5112, 601070037, '', 0),
+(701380001, '38', 7, 'Tenerife', NULL, NULL, -16.926, 27.9979, -16.1185, 28.6053, -16.554, 28.2935, 601050038, '', 0),
+(701380002, '38', 7, 'La Gomera', NULL, NULL, -17.3491, 28.0199, -17.0985, 28.2187, -17.2326, 28.1174, 601050038, '', 0),
+(701380003, '38', 7, 'La Palma', NULL, NULL, -18.0081, 28.4527, -17.7242, 28.8576, -17.8577, 28.6896, 601050038, '', 0),
+(701380004, '38', 7, 'El Hierro', NULL, NULL, -18.1613, 27.6378, -17.883, 27.8501, -18.0065, 27.7464, 601050038, '', 0),
+(701390001, '39', 7, 'Campoo-Los Valles', NULL, NULL, -4.40398, 42.758, -3.81579, 43.1158, -4.08271, 42.9447, 601060039, '', 0),
+(701390002, '39', 7, 'Liébana', NULL, NULL, -4.85178, 43.0167, -4.46246, 43.2689, -4.64744, 43.1309, 601060039, '', 0),
+(701390003, '39', 7, 'Saja-Nansa', NULL, NULL, -4.64006, 43.0381, -4.07656, 43.3796, -4.34395, 43.2048, 601060039, '', 0),
+(701390004, '39', 7, 'Costa Occidental', NULL, NULL, -4.53946, 43.2682, -4.04411, 43.4265, -4.31285, 43.354, 601060039, '', 0),
+(701390005, '39', 7, 'Besaya', NULL, NULL, -4.18714, 43.0892, -3.94425, 43.4452, -4.06316, 43.2296, 601060039, '', 0),
+(701390006, '39', 7, 'Valles Pasiegos', NULL, NULL, -4.0135, 43.0391, -3.65452, 43.3422, -3.85195, 43.199, 601060039, '', 0),
+(701390007, '39', 7, 'Santander', NULL, NULL, -4.03642, 43.296, -3.75361, 43.4949, -3.89408, 43.3998, 601060039, '', 0),
+(701390008, '39', 7, 'Trasmiera', NULL, NULL, -3.81531, 43.2547, -3.42542, 43.5137, -3.62507, 43.3914, 601060039, '', 0),
+(701390009, '39', 7, 'Asón-Agüera', NULL, NULL, -3.71203, 43.1315, -3.21763, 43.401, -3.48835, 43.2591, 601060039, '', 0),
+(701390010, '39', 7, 'Costa Oriental', NULL, NULL, -3.46548, 43.2835, -3.14963, 43.4361, -3.28425, 43.366, 601060039, '', 0),
+(701400001, '40', 7, 'Área de Segovia', NULL, NULL, -4.48156, 40.633, -3.44935, 41.2672, -4.0455, 40.9645, 601070040, '', 0),
+(701400002, '40', 7, 'Área de Cantalejo - Riaza', NULL, NULL, -4.12486, 41.1979, -3.20693, 41.5861, -3.70116, 41.3792, 601070040, '', 0),
+(701400003, '40', 7, 'Área de Cuéllar', NULL, NULL, -4.72465, 40.7999, -3.9107, 41.4821, -4.35634, 41.1748, 601070040, '', 0),
+(701410001, '41', 7, 'Área Metropolitana', NULL, NULL, -6.06202, 37.0784, -5.64955, 37.453, -5.89093, 37.2814, 601010041, '', 0),
+(701410002, '41', 7, 'La Marisma', NULL, NULL, -6.38639, 36.8422, -5.80777, 37.3277, -6.14186, 37.0554, 601010041, '', 0),
 (701410003, '41', 7, 'Aljarafe', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010041, '', 0),
 (701410004, '41', 7, 'La Vega', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010041, '', 0),
 (701410005, '41', 7, 'La Campiña', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010041, '', 0),
 (701410006, '41', 7, 'Área de Estepa', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010041, '', 0),
 (701410007, '41', 7, 'Sierra Norte', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601010041, '', 0),
-(701420001, '42', 7, 'Medinaceli', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070042, '', 0),
-(701420002, '42', 7, 'Campo de Gómara', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070042, '', 0),
-(701420003, '42', 7, 'Moncayo', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070042, '', 0),
-(701420004, '42', 7, 'Tierras Altas', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070042, '', 0),
-(701420005, '42', 7, 'Pinares', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070042, '', 0),
-(701420006, '42', 7, 'Soria', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070042, '', 0),
-(701420007, '42', 7, 'Tierras del Burgo', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070042, '', 0),
-(701420008, '42', 7, 'Almazán', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070042, '', 0),
-(701430001, '43', 7, 'Montsià', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090043, '', 0),
-(701430002, '43', 7, 'Baix Ebre', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090043, '', 0),
-(701430003, '43', 7, 'Terra Alta', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090043, '', 0),
-(701430004, '43', 7, 'Priorat', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090043, '', 0),
-(701430005, '43', 7, 'Priorat', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090043, '', 0),
-(701430007, '43', 7, 'Tarragonès', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090043, '', 0),
-(701430008, '43', 7, 'Alt Camp', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090043, '', 0),
-(701430009, '43', 7, 'Baix Camp', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090043, '', 0),
-(701430010, '43', 7, 'Baix Camp', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601090043, '', 0),
-(701440001, '44', 7, 'Albarracín', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020044, '', 0),
-(701440002, '44', 7, 'Área de Teruel', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020044, '', 0),
-(701440003, '44', 7, 'Jiloca', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020044, '', 0),
-(701440004, '44', 7, 'Cuencas Mineras- Andorra - Bajo Martín', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020044, '', 0),
-(701440005, '44', 7, 'Bajo Aragón - Matarraña - Maestrazgo', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020044, '', 0),
-(701440006, '44', 7, 'Gúdar-Javalambre', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020044, '', 0),
-(701440007, '44', 7, 'Albarracín', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020044, '', 0),
-(701450001, '45', 7, 'Toledo', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080045, '', 0),
-(701450002, '45', 7, 'La Mesa de Ocaña', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080045, '', 0),
-(701450003, '45', 7, 'Los Montes de Toledo', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080045, '', 0),
-(701450004, '45', 7, 'Torrijos', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080045, '', 0),
-(701450005, '45', 7, 'La Sagra', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080045, '', 0),
-(701450006, '45', 7, 'La Jara', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080045, '', 0),
-(701450007, '45', 7, 'La Mancha', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080045, '', 0),
-(701450008, '45', 7, 'Talavera', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080045, '', 0),
-(701450009, '45', 7, 'La Campana de Oropesa', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080045, '', 0),
-(701450010, '45', 7, 'Sierra de San Vicente', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601080045, '', 0),
-(701460001, '46', 7, 'Hoya de Buñol', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601100046, '', 0),
-(701460002, '46', 7, 'Los Serranos', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601100046, '', 0),
-(701460003, '46', 7, 'Valle de Ayora', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601100046, '', 0),
-(701460005, '46', 7, 'La Canal de Navarrés', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601100046, '', 0),
-(701460006, '46', 7, 'Ribera Alta', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601100046, '', 0),
-(701460007, '46', 7, 'L´Horta Oest', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601100046, '', 0),
+(701420001, '42', 7, 'Medinaceli', NULL, NULL, -2.76285, 41.0565, -2.04818, 41.4079, -2.42177, 41.2194, 601070042, '', 0),
+(701420002, '42', 7, 'Campo de Gómara', NULL, NULL, -2.58643, 41.1312, -1.93652, 41.9021, -2.21626, 41.6017, 601070042, '', 0),
+(701420003, '42', 7, 'Moncayo', NULL, NULL, -2.07045, 41.5983, -1.77537, 41.9664, -1.92727, 41.7657, 601070042, '', 0),
+(701420004, '42', 7, 'Tierras Altas', NULL, NULL, -2.74835, 41.791, -1.96103, 42.1467, -2.35443, 41.9723, 601070042, '', 0),
+(701420005, '42', 7, 'Pinares', NULL, NULL, -3.13695, 41.663, -2.69699, 42.1253, -2.8879, 41.8735, 601070042, '', 0),
+(701420006, '42', 7, 'Soria', NULL, NULL, -3.02973, 41.4419, -1.91334, 41.9329, -2.68782, 41.684, 601070042, '', 0),
+(701420007, '42', 7, 'Tierras del Burgo', NULL, NULL, -3.55044, 41.2734, -2.89418, 41.8838, -3.18367, 41.5504, 601070042, '', 0),
+(701420008, '42', 7, 'Almazán', NULL, NULL, -2.97759, 41.2501, -2.23302, 41.5852, -2.61473, 41.4407, 601070042, '', 0),
+(701430001, '43', 7, 'Montsià', NULL, NULL, 0.159181, 40.523, 0.794051, 40.7825, 0.470368, 40.6643, 601090043, '', 0),
+(701430002, '43', 7, 'Baix Ebre', NULL, NULL, 0.23281, 40.6943, 0.880323, 41.0145, 0.538183, 40.8395, 601090043, '', 0),
+(701430003, '43', 7, 'Terra Alta', NULL, NULL, 0.200859, 40.8158, 0.503004, 41.1685, 0.331022, 41.0133, 601090043, '', 0),
+(701430004, '43', 7, 'Priorat', NULL, NULL, 0.300501, 40.9307, 0.873038, 41.3267, 0.585122, 41.1097, 601090043, '', 0),
+(701430005, '43', 7, 'Priorat', NULL, NULL, 0.658371, 41.0659, 0.976124, 41.3623, 0.806808, 41.2243, 601090043, '', 0),
+(701430007, '43', 7, 'Tarragonès', NULL, NULL, 1.09396, 41.0546, 1.49555, 41.2547, 1.28475, 41.1644, 601090043, '', 0),
+(701430008, '43', 7, 'Alt Camp', NULL, NULL, 1.04282, 41.1999, 1.57879, 41.4795, 1.33516, 41.3202, 601090043, '', 0),
+(701430009, '43', 7, 'Baix Camp', NULL, NULL, 0.826849, 40.9915, 1.19135, 41.3528, 1.00009, 41.159, 601090043, '', 0),
+(701430010, '43', 7, 'Baix Camp', NULL, NULL, 0.904933, 41.3054, 1.47617, 41.5826, 1.22211, 41.4402, 601090043, '', 0),
+(701440001, '44', 7, 'Albarracín', NULL, NULL, -1.70189, 40.4784, -1.38302, 40.6597, -1.54914, 40.5585, 601020044, '', 0),
+(701440002, '44', 7, 'Área de Teruel', NULL, NULL, -1.47272, 40.0885, -0.661657, 40.855, -1.08644, 40.486, 601020044, '', 0),
+(701440003, '44', 7, 'Jiloca', NULL, NULL, -1.62597, 40.6159, -0.957139, 41.1677, -1.28837, 40.8918, 601020044, '', 0),
+(701440004, '44', 7, 'Cuencas Mineras- Andorra - Bajo Martín', NULL, NULL, -1.05624, 40.5519, -0.216535, 41.3544, -0.655334, 40.9754, 601020044, '', 0),
+(701440005, '44', 7, 'Bajo Aragón - Matarraña - Maestrazgo', NULL, NULL, -0.787348, 40.4209, 0.293501, 41.192, -0.214416, 40.8223, 601020044, '', 0),
+(701440006, '44', 7, 'Gúdar-Javalambre', NULL, NULL, -1.16519, 39.8468, -0.279832, 40.4758, -0.75139, 40.2167, 601020044, '', 0),
+(701440007, '44', 7, 'Albarracín', NULL, NULL, -1.70189, 40.4784, -1.38302, 40.6597, -1.54914, 40.5585, 601020044, '', 0),
+(701450001, '45', 7, 'Toledo', NULL, NULL, -4.17906, 39.812, -3.81489, 39.9254, -4.01508, 39.87, 601080045, '', 0),
+(701450002, '45', 7, 'La Mesa de Ocaña', NULL, NULL, -3.81812, 39.6306, -3.09483, 40.0922, -3.43548, 39.8868, 601080045, '', 0),
+(701450003, '45', 7, 'Los Montes de Toledo', NULL, NULL, -4.61859, 39.2584, -3.65458, 39.8874, -4.09049, 39.5967, 601080045, '', 0),
+(701450004, '45', 7, 'Torrijos', NULL, NULL, -4.6702, 39.7255, -4.08689, 40.3183, -4.37984, 40.0238, 601080045, '', 0),
+(701450005, '45', 7, 'La Sagra', NULL, NULL, -4.18608, 39.8869, -3.60373, 40.2669, -3.93311, 40.0679, 601080045, '', 0),
+(701450006, '45', 7, 'La Jara', NULL, NULL, -5.20662, 39.3931, -4.49256, 39.9753, -4.83322, 39.6792, 601080045, '', 0),
+(701450007, '45', 7, 'La Mancha', NULL, NULL, -3.84428, 39.299, -2.90823, 39.8761, -3.38136, 39.5925, 601080045, '', 0),
+(701450008, '45', 7, 'Talavera', NULL, NULL, -5.06003, 39.8854, -4.64317, 40.0188, -4.84916, 39.9537, 601080045, '', 0),
+(701450009, '45', 7, 'La Campana de Oropesa', NULL, NULL, -5.40618, 39.715, -4.89217, 40.1591, -5.15071, 39.9477, 601080045, '', 0),
+(701450010, '45', 7, 'Sierra de San Vicente', NULL, NULL, -4.95934, 39.9712, -4.55009, 40.2822, -4.76495, 40.1145, 601080045, '', 0),
+(701460001, '46', 7, 'Hoya de Buñol', NULL, NULL, -0.984887, 39.2232, -0.534542, 39.5563, -0.802057, 39.4197, 601100046, '', 0),
+(701460002, '46', 7, 'Los Serranos', NULL, NULL, -1.21088, 39.5381, -0.644708, 39.9818, -0.952201, 39.7693, 601100046, '', 0),
+(701460003, '46', 7, 'Valle de Ayora', NULL, NULL, -1.26675, 38.9276, -0.807539, 39.3404, -1.04533, 39.1264, 601100046, '', 0),
+(701460004, '46', 7, 'La Costera', NULL, NULL, -0.59086, 38.995, -0.542591, 39.0276, -0.563491, 39.0115, 601100046, '', 0),
+(701460005, '46', 7, 'La Canal de Navarrés', NULL, NULL, -1.52894, 38.8918, -0.618424, 39.8333, -1.09761, 39.3788, 601100046, '', 0),
+(701460006, '46', 7, 'Ribera Alta', NULL, NULL, -0.745199, 39.0119, -0.303263, 39.4137, -0.556106, 39.2068, 601100046, '', 0),
+(701460007, '46', 7, 'L´Horta Oest', NULL, NULL, -0.617264, 39.3868, -0.410281, 39.5654, -0.494062, 39.4609, 601100046, '', 0),
 (701460008, '46', 7, 'Camp de Tùria', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601100046, '', 0),
 (701460009, '46', 7, 'El Rincón de Ademuz', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601100046, '', 0),
 (701460010, '46', 7, 'La Costera', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601100046, '', 0),
@@ -3941,46 +3962,46 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (701460014, '46', 7, 'Valencia', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601100046, '', 0),
 (701460015, '46', 7, 'Camp de Morvedre', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601100046, '', 0),
 (701460016, '46', 7, 'Ribera Alta', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601100046, '', 0),
-(701460004, '46', 7, 'La Costera', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601100046, '', 0),
-(701470001, '47', 7, 'Área Metropolitana', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070047, '', 0),
-(701470002, '47', 7, 'Tierra de Pinares', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070047, '', 0),
-(701470003, '47', 7, 'Tierra de Medina', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070047, '', 0),
-(701470004, '47', 7, 'Tordesillas', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070047, '', 0),
-(701470005, '47', 7, 'Tierra de Campos', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070047, '', 0),
-(701480001, '48', 7, 'Encartaciones', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601160048, '', 0),
-(701480002, '48', 7, 'Gran Bilbao', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601160048, '', 0),
-(701480003, '48', 7, 'Arratia-Nervión', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601160048, '', 0),
-(701480004, '48', 7, 'Duranguesado', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601160048, '', 0),
-(701480005, '48', 7, 'Lea-Artibai', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601160048, '', 0),
-(701480006, '48', 7, 'Busturialdea', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601160048, '', 0),
-(701480007, '48', 7, 'Uribe', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601160048, '', 0),
-(701490002, '49', 7, 'Alfoz de Toro', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070049, '', 0),
-(701490003, '49', 7, 'La Guareña', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070049, '', 0),
-(701490004, '49', 7, 'Tierra del Vino', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070049, '', 0),
-(701490005, '49', 7, 'Sayago', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070049, '', 0),
-(701490006, '49', 7, 'Aliste', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070049, '', 0),
-(701490007, '49', 7, 'Tábara', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070049, '', 0),
-(701490008, '49', 7, 'Tierra de Alba', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070049, '', 0),
-(701490009, '49', 7, 'Tierra de Campos', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070049, '', 0),
-(701490010, '49', 7, 'Benavente y Los Valles', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070049, '', 0),
-(701490011, '49', 7, 'La Carballeda', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070049, '', 0),
-(701490012, '49', 7, 'Sanabria', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070049, '', 0),
-(701490001, '49', 7, 'Tierra del Pan', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601070049, '', 0),
-(701500001, '50', 7, 'Zaragoza', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020050, '', 0),
-(701500002, '50', 7, 'Campo de Belchite', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020050, '', 0),
-(701500003, '50', 7, 'Campo de Cariñena', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020050, '', 0),
-(701500004, '50', 7, 'Campo de Daroca', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020050, '', 0),
-(701500005, '50', 7, 'Ribera Alta del Ebro', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020050, '', 0),
-(701500006, '50', 7, 'Ribera Baja del Ebro', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020050, '', 0),
-(701500007, '50', 7, 'Valdejalón', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020050, '', 0),
-(701500008, '50', 7, 'Bajo Aragón-Caspe', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020050, '', 0),
-(701500009, '50', 7, 'Cinco Villas', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020050, '', 0),
-(701500010, '50', 7, 'Comunidad de Calatayud', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020050, '', 0),
-(701500011, '50', 7, 'Tarazona y el Moncayo', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020050, '', 0),
-(701500012, '50', 7, 'Aranda', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020050, '', 0),
-(701500013, '50', 7, 'Campo de Borja', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020050, '', 0),
-(701500014, '50', 7, 'Los Monegros', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020050, '', 0),
-(701500015, '50', 7, 'La Jacetania', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 601020050, '', 0),
+(701470001, '47', 7, 'Área Metropolitana', NULL, NULL, -4.92818, 41.4435, -4.51255, 41.8263, -4.73668, 41.6309, 601070047, '', 0),
+(701470002, '47', 7, 'Tierra de Pinares', NULL, NULL, -4.75842, 41.4088, -3.98044, 41.9005, -4.3403, 41.6335, 601070047, '', 0),
+(701470003, '47', 7, 'Tierra de Medina', NULL, NULL, -5.3403, 41.094, -4.46779, 41.4958, -4.93624, 41.3114, 601070047, '', 0),
+(701470004, '47', 7, 'Tordesillas', NULL, NULL, -5.39138, 41.4285, -4.85842, 41.8174, -5.10491, 41.6251, 601070047, '', 0),
+(701470005, '47', 7, 'Tierra de Campos', NULL, NULL, -5.52089, 41.7291, -4.78893, 42.3118, -5.13651, 42.007, 601070047, '', 0),
+(701480001, '48', 7, 'Encartaciones', NULL, NULL, -3.45015, 43.1333, -2.98141, 43.3072, -3.22006, 43.223, 601160048, '', 0);
+INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
+(701480002, '48', 7, 'Gran Bilbao', NULL, NULL, -3.15436, 43.1688, -2.74099, 43.384, -2.94892, 43.2792, 601160048, '', 0),
+(701480003, '48', 7, 'Arratia-Nervión', NULL, NULL, -3.09046, 42.9819, -2.63059, 43.2126, -2.82758, 43.1014, 601160048, '', 0),
+(701480004, '48', 7, 'Duranguesado', NULL, NULL, -2.85087, 43.0658, -2.48411, 43.2754, -2.63544, 43.1705, 601160048, '', 0),
+(701480005, '48', 7, 'Lea-Artibai', NULL, NULL, -2.62906, 43.212, -2.4126, 43.3774, -2.51959, 43.2901, 601160048, '', 0),
+(701480006, '48', 7, 'Busturialdea', NULL, NULL, -2.79357, 43.2037, -2.54974, 43.4572, -2.67962, 43.3337, 601160048, '', 0),
+(701480007, '48', 7, 'Uribe', NULL, NULL, -3.00894, 43.2842, -2.73328, 43.4483, -2.86545, 43.3725, 601160048, '', 0),
+(701490001, '49', 7, 'Tierra del Pan', NULL, NULL, -6.08582, 41.4312, -5.54127, 41.795, -5.79026, 41.5983, 601070049, '', 0),
+(701490002, '49', 7, 'Alfoz de Toro', NULL, NULL, -5.65403, 41.3246, -5.22887, 41.7294, -5.44449, 41.5375, 601070049, '', 0),
+(701490003, '49', 7, 'La Guareña', NULL, NULL, -5.66825, 41.1172, -5.28796, 41.4034, -5.45042, 41.2662, 601070049, '', 0),
+(701490004, '49', 7, 'Tierra del Vino', NULL, NULL, -5.83962, 41.2237, -5.52927, 41.5266, -5.68399, 41.3874, 601070049, '', 0),
+(701490005, '49', 7, 'Sayago', NULL, NULL, -6.47971, 41.1401, -5.75488, 41.5817, -6.08048, 41.3492, 601070049, '', 0),
+(701490006, '49', 7, 'Aliste', NULL, NULL, -6.57119, 41.4757, -5.97758, 41.9554, -6.2959, 41.7504, 601070049, '', 0),
+(701490007, '49', 7, 'Tábara', NULL, NULL, -6.25337, 41.7315, -5.76735, 41.965, -5.9981, 41.8417, 601070049, '', 0),
+(701490008, '49', 7, 'Tierra de Alba', NULL, NULL, -6.13544, 41.5888, -5.79819, 41.7791, -5.97432, 41.6937, 601070049, '', 0),
+(701490009, '49', 7, 'Tierra de Campos', NULL, NULL, -5.81017, 41.6676, -5.2544, 42.1421, -5.49507, 41.8623, 601070049, '', 0),
+(701490010, '49', 7, 'Benavente y Los Valles', NULL, NULL, -6.21484, 41.8286, -5.50767, 42.1658, -5.87208, 42.0124, 601070049, '', 0),
+(701490011, '49', 7, 'La Carballeda', NULL, NULL, -6.57758, 41.8883, -6.10238, 42.2066, -6.33133, 42.039, 601070049, '', 0),
+(701490012, '49', 7, 'Sanabria', NULL, NULL, -7.03404, 41.9333, -6.42577, 42.2542, -6.72198, 42.0837, 601070049, '', 0),
+(701500001, '50', 7, 'Zaragoza', NULL, NULL, -1.17373, 41.3855, -0.508868, 42.0151, -0.838937, 41.6754, 601020050, '', 0),
+(701500002, '50', 7, 'Campo de Belchite', NULL, NULL, -1.00058, 41.0753, -0.444303, 41.4928, -0.798301, 41.2768, 601020050, '', 0),
+(701500003, '50', 7, 'Campo de Cariñena', NULL, NULL, -1.35802, 41.1853, -0.945604, 41.525, -1.15494, 41.3628, 601020050, '', 0),
+(701500004, '50', 7, 'Campo de Daroca', NULL, NULL, -1.7594, 40.9362, -0.95441, 41.2715, -1.39564, 41.1198, 601020050, '', 0),
+(701500005, '50', 7, 'Ribera Alta del Ebro', NULL, NULL, -1.36085, 41.6897, -0.997051, 41.9134, -1.20279, 41.7951, 601020050, '', 0),
+(701500006, '50', 7, 'Ribera Baja del Ebro', NULL, NULL, -0.603857, 41.1889, -0.130254, 41.6246, -0.35857, 41.4055, 601020050, '', 0),
+(701500007, '50', 7, 'Valdejalón', NULL, NULL, -1.53196, 41.3394, -1.03204, 41.737, -1.30717, 41.5606, 601020050, '', 0),
+(701500008, '50', 7, 'Bajo Aragón-Caspe', NULL, NULL, -0.216535, 41.0466, 0.385664, 41.4288, 0.0995406, 41.2487, 601020050, '', 0),
+(701500009, '50', 7, 'Cinco Villas', NULL, NULL, -1.41753, 41.8217, -0.728865, 42.6171, -1.09586, 42.2258, 601020050, '', 0),
+(701500010, '50', 7, 'Comunidad de Calatayud', NULL, NULL, -2.17367, 41.0551, -1.29054, 41.6216, -1.76801, 41.3288, 601020050, '', 0),
+(701500011, '50', 7, 'Tarazona y el Moncayo', NULL, NULL, -1.86519, 41.7183, -1.57493, 42.008, -1.73868, 41.8702, 601020050, '', 0),
+(701500012, '50', 7, 'Aranda', NULL, NULL, -1.90792, 41.4412, -1.4747, 41.7254, -1.68019, 41.6035, 601020050, '', 0),
+(701500013, '50', 7, 'Campo de Borja', NULL, NULL, -1.72737, 41.6209, -1.31737, 41.9515, -1.50375, 41.7906, 601020050, '', 0),
+(701500014, '50', 7, 'Los Monegros', NULL, NULL, -0.728427, 41.3692, -0.0722367, 41.9586, -0.433927, 41.6558, 601020050, '', 0),
+(701500015, '50', 7, 'La Jacetania', NULL, NULL, -1.15765, 42.567, -0.879954, 42.7441, -0.992993, 42.6426, 601020050, '', 0),
 (801010001, '1', 8, 'Alegría-Dulantzi', '01001', '01001', -2.5493, 42.7853, -2.47117, 42.8614, -2.51024, 42.8234, 701010003, '', 0),
 (801010002, '1', 8, 'Amurrio', '01002', '01002', -3.04489, 42.9366, -2.88605, 43.0955, -2.96547, 43.016, 701010001, '', 0),
 (801010003, '1', 8, 'Aramaio', '01003', '01003', -2.66167, 42.9822, -2.52485, 43.088, -2.59372, 43.0461, 701010002, '', 0),
@@ -4005,8 +4026,7 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801010022, '1', 8, 'Lagrán', '01030', '01030', -2.68438, 42.5924, -2.53825, 42.6516, -2.60838, 42.6212, 701010004, '', 0),
 (801010023, '1', 8, 'Laguardia', '01031', '01031', -2.66876, 42.4723, -2.47707, 42.6168, -2.57291, 42.5445, 701010005, '', 0),
 (801010024, '1', 8, 'Lanciego/Lantziego', '01032', '01032', -2.52652, 42.4998, -2.47471, 42.5904, -2.49991, 42.5442, 701010005, '', 0),
-(801010025, '1', 8, 'Lapuebla de Labarca', '01033', '01033', -2.59253, 42.4826, -2.54456, 42.5075, -2.5703, 42.4948, 701010005, '', 0);
-INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
+(801010025, '1', 8, 'Lapuebla de Labarca', '01033', '01033', -2.59253, 42.4826, -2.54456, 42.5075, -2.5703, 42.4948, 701010005, '', 0),
 (801010026, '1', 8, 'Leza', '01034', '01034', -2.65544, 42.5511, -2.61615, 42.5961, -2.63746, 42.5712, 701010005, '', 0),
 (801010027, '1', 8, 'Laudio/Llodio', '01036', '01036', -3.0241, 43.0995, -2.93573, 43.1863, -2.97781, 43.1386, 701010001, '', 0),
 (801010028, '1', 8, 'Arraia-Maeztu', '01037', '01037', -2.52742, 42.6749, -2.35778, 42.8064, -2.44525, 42.7491, 701010004, '', 0),
@@ -4339,7 +4359,8 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801040080, '4', 8, 'Sierro', '04084', '04084', -2.42171, 37.2499, -2.36498, 37.3392, -2.39392, 37.2941, 701040003, '', 0),
 (801040081, '4', 8, 'Somontín', '04085', '04085', -2.40199, 37.3671, -2.37753, 37.4819, -2.3904, 37.4171, 701040003, '', 0),
 (801040082, '4', 8, 'Sorbas', '04086', '04086', -2.19943, 36.9798, -1.98914, 37.2172, -2.08955, 37.1001, 701040002, '', 0),
-(801040083, '4', 8, 'Suflí', '04087', '04087', -2.41408, 37.2803, -2.35868, 37.3478, -2.38079, 37.3175, 701040003, '', 0),
+(801040083, '4', 8, 'Suflí', '04087', '04087', -2.41408, 37.2803, -2.35868, 37.3478, -2.38079, 37.3175, 701040003, '', 0);
+INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
 (801040084, '4', 8, 'Tabernas', '04088', '04088', -2.48896, 36.9856, -2.22585, 37.154, -2.36298, 37.0711, 701040004, '', 0),
 (801040085, '4', 8, 'Taberno', '04089', '04089', -2.10218, 37.429, -2.01498, 37.5333, -2.06243, 37.4802, 701040003, '', 0),
 (801040086, '4', 8, 'Tahal', '04090', '04090', -2.36301, 37.1085, -2.20969, 37.2764, -2.28341, 37.1893, 701040004, '', 0),
@@ -4397,8 +4418,7 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801050036, '5', 8, 'Cabizuela', '05045', '05045', -4.84424, 40.8705, -4.78165, 40.9258, -4.80779, 40.902, 701050002, '', 0),
 (801050037, '5', 8, 'Canales', '05046', '05046', -4.93243, 40.9818, -4.87913, 41.0084, -4.90537, 40.9965, 701050001, '', 0),
 (801050038, '5', 8, 'Candeleda', '05047', '05047', -5.36994, 40.0825, -5.17957, 40.2641, -5.27887, 40.1759, 701050005, '', 0),
-(801050039, '5', 8, 'Cantiveros', '05048', '05048', -4.99949, 40.9323, -4.90964, 40.9771, -4.96014, 40.9558, 701050002, '', 0);
-INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
+(801050039, '5', 8, 'Cantiveros', '05048', '05048', -4.99949, 40.9323, -4.90964, 40.9771, -4.96014, 40.9558, 701050002, '', 0),
 (801050040, '5', 8, 'Cardeñosa', '05049', '05049', -4.78975, 40.7003, -4.68842, 40.7725, -4.73199, 40.7367, 701050003, '', 0),
 (801050041, '5', 8, 'La Carrera', '05051', '05051', -5.5839, 40.3247, -5.53454, 40.3801, -5.56072, 40.3543, 701050006, '', 0),
 (801050042, '5', 8, 'Casas del Puerto', '05052', '05052', -5.23794, 40.5027, -5.10673, 40.5526, -5.17904, 40.5255, 701050006, '', 0),
@@ -4726,7 +4746,8 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801060116, '6', 8, 'Salvaleón', '06116', '06116', -6.84843, 38.4557, -6.71837, 38.5753, -6.77354, 38.5127, 701060011, '', 0),
 (801060117, '6', 8, 'Salvatierra de los Barros', '06117', '06117', -6.74127, 38.4488, -6.59254, 38.5565, -6.67922, 38.49, 701060011, '', 0),
 (801060118, '6', 8, 'Sancti-Spíritus', '06118', '06118', -5.21612, 38.8875, -5.12783, 38.9614, -5.17627, 38.9202, 701060003, '', 0),
-(801060119, '6', 8, 'San Pedro de Mérida', '06119', '06119', -6.2168, 38.9287, -6.15177, 38.9903, -6.18341, 38.96, 701060006, '', 0),
+(801060119, '6', 8, 'San Pedro de Mérida', '06119', '06119', -6.2168, 38.9287, -6.15177, 38.9903, -6.18341, 38.96, 701060006, '', 0);
+INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
 (801060120, '6', 8, 'Santa Amalia', '06120', '06120', -6.1421, 38.9519, -5.924, 39.1021, -6.03504, 39.0243, 701060005, '', 0),
 (801060121, '6', 8, 'Santa Marta', '06121', '06121', -6.71135, 38.5846, -6.58108, 38.7148, -6.64154, 38.6471, 701060008, '', 0),
 (801060122, '6', 8, 'Los Santos de Maimona', '06122', '06122', -6.43005, 38.4187, -6.22743, 38.5194, -6.33396, 38.4671, 701060007, '', 0),
@@ -4783,8 +4804,7 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801070008, '7', 8, 'Binissalem', '07008', '07008', 2.81173, 39.6545, 2.90524, 39.7153, 2.85682, 39.6845, 701070002, '', 0),
 (801070009, '7', 8, 'Búger', '07009', '07009', 2.95972, 39.7381, 3.01341, 39.7834, 2.98505, 39.7581, 701070002, '', 0),
 (801070010, '7', 8, 'Bunyola', '07010', '07010', 2.64772, 39.6488, 2.80238, 39.7775, 2.71248, 39.7076, 701070002, '', 0),
-(801070011, '7', 8, 'Calvià', '07011', '07011', 2.42198, 39.4566, 2.60043, 39.6414, 2.5112, 39.549, 701070002, '', 0);
-INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
+(801070011, '7', 8, 'Calvià', '07011', '07011', 2.42198, 39.4566, 2.60043, 39.6414, 2.5112, 39.549, 701070002, '', 0),
 (801070012, '7', 8, 'Campanet', '07012', '07012', 2.92698, 39.756, 3.00881, 39.834, 2.96651, 39.7974, 701070002, '', 0),
 (801070013, '7', 8, 'Campos', '07013', '07013', 2.93093, 39.3251, 3.10096, 39.4764, 3.01594, 39.4007, 701070002, '', 0),
 (801070014, '7', 8, 'Capdepera', '07014', '07014', 3.38111, 39.6345, 3.47868, 39.7519, 3.4299, 39.6932, 701070002, '', 0),
@@ -4852,7 +4872,7 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801080009, '8', 8, 'Artés', '08010', '08010', 1.90369, 41.7739, 2.01871, 41.8153, 1.95668, 41.7961, 701080002, '', 0),
 (801080010, '8', 8, 'Avià', '08011', '08011', 1.77906, 42.0397, 1.87334, 42.0908, 1.83063, 42.0657, 701080001, '', 0),
 (801080011, '8', 8, 'Avinyó', '08012', '08012', 1.91081, 41.8016, 2.03824, 41.9283, 1.97658, 41.8603, 701080002, '', 0),
-(801080012, '8', 8, 'Avinyonet del Penedès', '08013', '08013', 1.72961, 41.3158, 1.84774, 41.396, 1.78304, 41.3523, 701080013, '', 0),
+(801080012, '8', 8, 'Avinyonet del Penedès', '08013', '08013', 1.72961, 41.3158, 1.84774, 41.396, 1.78304, 41.3523, 701080010, '', 0),
 (801080013, '8', 8, 'Aiguafreda', '08014', '08014', 2.24509, 41.7626, 2.28923, 41.8044, 2.26451, 41.7813, 701080011, '', 0),
 (801080014, '8', 8, 'Badalona', '08015', '08015', 2.21132, 41.4258, 2.27029, 41.4929, 2.23656, 41.4619, 701080005, '', 0),
 (801080015, '8', 8, 'Bagà', '08016', '08016', 1.67031, 42.2337, 1.94324, 42.3233, 1.80677, 42.2785, 701080001, '', 0),
@@ -4866,7 +4886,7 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801080023, '8', 8, 'Borredà', '08024', '08024', 1.94972, 42.0774, 2.07024, 42.1714, 2.00998, 42.1244, 701080001, '', 0),
 (801080024, '8', 8, 'El Bruc', '08025', '08025', 1.70488, 41.5648, 1.81283, 41.6549, 1.76343, 41.61, 701080012, '', 0),
 (801080025, '8', 8, 'El Brull', '08026', '08026', 2.24102, 41.7629, 2.38268, 41.838, 2.31662, 41.8039, 701080004, '', 0),
-(801080026, '8', 8, 'Les Cabanyes', '08027', '08027', 1.67946, 41.3643, 1.69783, 41.3792, 1.68977, 41.3717, 701080013, '', 0),
+(801080026, '8', 8, 'Les Cabanyes', '08027', '08027', 1.67946, 41.3643, 1.69783, 41.3792, 1.68977, 41.3717, 701080010, '', 0),
 (801080027, '8', 8, 'Cabrera de Mar', '08029', '08029', 2.37501, 41.506, 2.42415, 41.5413, 2.40081, 41.5258, 701080006, '', 0),
 (801080028, '8', 8, 'Cabrils', '08030', '08030', 2.34288, 41.5124, 2.39168, 41.5438, 2.36753, 41.5296, 701080006, '', 0),
 (801080029, '8', 8, 'Calaf', '08031', '08031', 1.45253, 41.7077, 1.54125, 41.7375, 1.50619, 41.7216, 701080012, '', 0),
@@ -4888,9 +4908,9 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801080045, '8', 8, 'Carme', '08048', '08048', 1.58546, 41.513, 1.6525, 41.55, 1.62444, 41.5339, 701080012, '', 0),
 (801080046, '8', 8, 'Casserres', '08049', '08049', 1.80009, 41.9748, 1.88796, 42.0504, 1.84105, 42.0175, 701080001, '', 0),
 (801080047, '8', 8, 'Castellar del Riu', '08050', '08050', 1.69831, 42.1006, 1.8239, 42.1542, 1.7584, 42.1237, 701080001, '', 0),
-(801080048, '8', 8, 'Castellar del Vallès', '08051', '08051', 2.02507, 41.5804, 2.1187, 41.6668, 2.07427, 41.6226, 701080010, '', 0),
+(801080048, '8', 8, 'Castellar del Vallès', '08051', '08051', 2.02507, 41.5804, 2.1187, 41.6668, 2.07427, 41.6226, 701080007, '', 0),
 (801080049, '8', 8, 'Castellbell i el Vilar', '08053', '08053', 1.80066, 41.6125, 1.89645, 41.6679, 1.85328, 41.6387, 701080002, '', 0),
-(801080050, '8', 8, 'Castellbisbal', '08054', '08054', 1.92154, 41.4356, 2.00588, 41.5232, 1.96819, 41.4828, 701080010, '', 0),
+(801080050, '8', 8, 'Castellbisbal', '08054', '08054', 1.92154, 41.4356, 2.00588, 41.5232, 1.96819, 41.4828, 701080007, '', 0),
 (801080051, '8', 8, 'Castellcir', '08055', '08055', 2.04118, 41.7331, 2.1892, 41.8013, 2.11519, 41.7672, 701080011, '', 0),
 (801080052, '8', 8, 'Castelldefels', '08056', '08056', 1.93725, 41.2636, 2.003, 41.2966, 1.97053, 41.2766, 701080009, '', 0),
 (801080053, '8', 8, 'Castellet i la Gornal', '08058', '08058', 1.57016, 41.2229, 1.69374, 41.3145, 1.63376, 41.2676, 701080003, '', 0),
@@ -4900,7 +4920,7 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801080057, '8', 8, 'Castellnou de Bages', '08062', '08062', 1.78121, 41.7971, 1.85767, 41.8756, 1.81792, 41.8328, 701080002, '', 0),
 (801080058, '8', 8, 'Castellolí', '08063', '08063', 1.67077, 41.5656, 1.74593, 41.6244, 1.70391, 41.5963, 701080012, '', 0),
 (801080059, '8', 8, 'Castellterçol', '08064', '08064', 2.04364, 41.7126, 2.14248, 41.7845, 2.10284, 41.7517, 701080011, '', 0),
-(801080060, '8', 8, 'Castellví de la Marca', '08065', '08065', 1.55866, 41.3093, 1.6479, 41.3633, 1.6037, 41.3343, 701080013, '', 0),
+(801080060, '8', 8, 'Castellví de la Marca', '08065', '08065', 1.55866, 41.3093, 1.6479, 41.3633, 1.6037, 41.3343, 701080010, '', 0),
 (801080061, '8', 8, 'Castellví de Rosanes', '08066', '08066', 1.87701, 41.4284, 1.95247, 41.4662, 1.91693, 41.4481, 701080008, '', 0),
 (801080062, '8', 8, 'Centelles', '08067', '08067', 2.18589, 41.758, 2.2499, 41.8094, 2.22186, 41.7854, 701080004, '', 0),
 (801080063, '8', 8, 'Cervelló', '08068', '08068', 1.87472, 41.3647, 1.9955, 41.4151, 1.94195, 41.3928, 701080008, '', 0),
@@ -4918,16 +4938,16 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801080075, '8', 8, 'Fogars de la Selva', '08082', '08082', 2.58791, 41.6835, 2.7248, 41.7483, 2.64256, 41.7202, 701080011, '', 0),
 (801080076, '8', 8, 'Folgueroles', '08083', '08083', 2.28201, 41.9228, 2.35941, 41.961, 2.31472, 41.9407, 701080004, '', 0),
 (801080077, '8', 8, 'Fonollosa', '08084', '08084', 1.62928, 41.7341, 1.78955, 41.8035, 1.71251, 41.7649, 701080002, '', 0),
-(801080078, '8', 8, 'Font-rubí', '08085', '08085', 1.57211, 41.3829, 1.70783, 41.4545, 1.6439, 41.422, 701080013, '', 0),
+(801080078, '8', 8, 'Font-rubí', '08085', '08085', 1.57211, 41.3829, 1.70783, 41.4545, 1.6439, 41.422, 701080010, '', 0),
 (801080079, '8', 8, 'Les Franqueses del Vallès', '08086', '08086', 2.27423, 41.6075, 2.34951, 41.687, 2.31267, 41.6492, 701080011, '', 0),
 (801080080, '8', 8, 'Gallifa', '08087', '08087', 2.08411, 41.6667, 2.13968, 41.7172, 2.11419, 41.6942, 701080011, '', 0),
 (801080081, '8', 8, 'La Garriga', '08088', '08088', 2.25227, 41.6571, 2.31031, 41.7188, 2.28169, 41.6902, 701080011, '', 0),
 (801080082, '8', 8, 'Gavà', '08089', '08089', 1.91487, 41.2644, 2.04657, 41.3233, 1.98357, 41.2945, 701080009, '', 0),
 (801080083, '8', 8, 'Gaià', '08090', '08090', 1.88002, 41.8985, 1.97525, 41.9673, 1.92826, 41.9282, 701080002, '', 0),
-(801080084, '8', 8, 'Gelida', '08091', '08091', 1.81519, 41.3989, 1.89703, 41.4653, 1.85896, 41.4349, 701080013, '', 0),
+(801080084, '8', 8, 'Gelida', '08091', '08091', 1.81519, 41.3989, 1.89703, 41.4653, 1.85896, 41.4349, 701080010, '', 0),
 (801080085, '8', 8, 'Gironella', '08092', '08092', 1.86678, 42.0022, 1.90225, 42.0454, 1.88463, 42.0266, 701080001, '', 0),
 (801080086, '8', 8, 'Gisclareny', '08093', '08093', 1.71834, 42.2287, 1.84481, 42.2938, 1.78646, 42.2653, 701080001, '', 0),
-(801080087, '8', 8, 'La Granada', '08094', '08094', 1.69409, 41.364, 1.75639, 41.3927, 1.72524, 41.3783, 701080013, '', 0),
+(801080087, '8', 8, 'La Granada', '08094', '08094', 1.69409, 41.364, 1.75639, 41.3927, 1.72524, 41.3783, 701080010, '', 0),
 (801080088, '8', 8, 'Granera', '08095', '08095', 2.01468, 41.7075, 2.1116, 41.7493, 2.06323, 41.7271, 701080011, '', 0),
 (801080089, '8', 8, 'Granollers', '08096', '08096', 2.25644, 41.5643, 2.30401, 41.6226, 2.27892, 41.5936, 701080011, '', 0),
 (801080090, '8', 8, 'Gualba', '08097', '08097', 2.47188, 41.7054, 2.5407, 41.7715, 2.50427, 41.7374, 701080011, '', 0),
@@ -4937,7 +4957,7 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801080094, '8', 8, 'Igualada', '08102', '08102', 1.57742, 41.5724, 1.64043, 41.6003, 1.61444, 41.586, 701080012, '', 0),
 (801080095, '8', 8, 'Jorba', '08103', '08103', 1.46238, 41.5782, 1.58924, 41.6332, 1.52899, 41.6047, 701080012, '', 0),
 (801080096, '8', 8, 'La Llacuna', '08104', '08104', 1.46848, 41.4281, 1.61053, 41.5133, 1.53867, 41.4693, 701080012, '', 0),
-(801080097, '8', 8, 'La Llagosta', '08105', '08105', 2.18904, 41.5009, 2.21546, 41.5281, 2.20313, 41.5144, 701080010, '', 0),
+(801080097, '8', 8, 'La Llagosta', '08105', '08105', 2.18904, 41.5009, 2.21546, 41.5281, 2.20313, 41.5144, 701080007, '', 0),
 (801080098, '8', 8, 'Llinars del Vallès', '08106', '08106', 2.36086, 41.597, 2.45635, 41.6765, 2.40795, 41.6356, 701080011, '', 0),
 (801080099, '8', 8, 'Lliçà de Vall', '08108', '08108', 2.20233, 41.5685, 2.26188, 41.6067, 2.23094, 41.588, 701080011, '', 0),
 (801080100, '8', 8, 'Lluçà', '08109', '08109', 1.99597, 42.0126, 2.11274, 42.1219, 2.05114, 42.0695, 701080004, '', 0),
@@ -4951,12 +4971,12 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801080108, '8', 8, 'Les Masies de Voltregà', '08117', '08117', 2.18812, 41.982, 2.25835, 42.0545, 2.22323, 42.0182, 701080004, '', 0),
 (801080109, '8', 8, 'El Masnou', '08118', '08118', 2.29548, 41.4723, 2.34659, 41.4902, 2.31863, 41.4827, 701080006, '', 0),
 (801080110, '8', 8, 'Masquefa', '08119', '08119', 1.77811, 41.4729, 1.84402, 41.5287, 1.80674, 41.5001, 701080012, '', 0),
-(801080111, '8', 8, 'Matadepera', '08120', '08120', 1.97933, 41.5936, 2.04633, 41.6585, 2.01219, 41.6287, 701080010, '', 0),
+(801080111, '8', 8, 'Matadepera', '08120', '08120', 1.97933, 41.5936, 2.04633, 41.6585, 2.01219, 41.6287, 701080007, '', 0),
 (801080112, '8', 8, 'Mataró', '08121', '08121', 2.41522, 41.5193, 2.48735, 41.5805, 2.44666, 41.5542, 701080006, '', 0),
-(801080113, '8', 8, 'Mediona', '08122', '08122', 1.57032, 41.4438, 1.70238, 41.5133, 1.63206, 41.481, 701080013, '', 0),
+(801080113, '8', 8, 'Mediona', '08122', '08122', 1.57032, 41.4438, 1.70238, 41.5133, 1.63206, 41.481, 701080010, '', 0),
 (801080114, '8', 8, 'Molins de Rei', '08123', '08123', 2.00586, 41.3895, 2.06421, 41.4455, 2.03433, 41.4206, 701080009, '', 0),
 (801080115, '8', 8, 'Mollet del Vallès', '08124', '08124', 2.18748, 41.5239, 2.23371, 41.5758, 2.20992, 41.549, 701080011, '', 0),
-(801080116, '8', 8, 'Montcada i Reixac', '08125', '08125', 2.15269, 41.4499, 2.22486, 41.575, 2.18878, 41.5124, 701080010, '', 0),
+(801080116, '8', 8, 'Montcada i Reixac', '08125', '08125', 2.15269, 41.4499, 2.22486, 41.575, 2.18878, 41.5124, 701080007, '', 0),
 (801080117, '8', 8, 'Montgat', '08126', '08126', 2.26132, 41.4608, 2.29638, 41.4825, 2.27993, 41.471, 701080006, '', 0),
 (801080118, '8', 8, 'Monistrol de Montserrat', '08127', '08127', 1.81158, 41.5907, 1.86457, 41.6575, 1.83808, 41.6241, 701080002, '', 0),
 (801080119, '8', 8, 'Monistrol de Calders', '08128', '08128', 1.97926, 41.7245, 2.05347, 41.7903, 2.02048, 41.7574, 701080002, '', 0),
@@ -4976,8 +4996,8 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801080133, '8', 8, 'La Nou de Berguedà', '08142', '08142', 1.86483, 42.1349, 1.92577, 42.2096, 1.89112, 42.1773, 701080001, '', 0),
 (801080134, '8', 8, 'Òdena', '08143', '08143', 1.57206, 41.5725, 1.68106, 41.6632, 1.63153, 41.6188, 701080012, '', 0),
 (801080135, '8', 8, 'Olvan', '08144', '08144', 1.86826, 41.9983, 1.95758, 42.0968, 1.90774, 42.0629, 701080001, '', 0),
-(801080136, '8', 8, 'Olèrdola', '08145', '08145', 1.68155, 41.2804, 1.7681, 41.3621, 1.72442, 41.3192, 701080013, '', 0),
-(801080137, '8', 8, 'Olesa de Bonesvalls', '08146', '08146', 1.80305, 41.3191, 1.8979, 41.388, 1.85232, 41.3534, 701080013, '', 0),
+(801080136, '8', 8, 'Olèrdola', '08145', '08145', 1.68155, 41.2804, 1.7681, 41.3621, 1.72442, 41.3192, 701080010, '', 0),
+(801080137, '8', 8, 'Olesa de Bonesvalls', '08146', '08146', 1.80305, 41.3191, 1.8979, 41.388, 1.85232, 41.3534, 701080010, '', 0),
 (801080138, '8', 8, 'Olesa de Montserrat', '08147', '08147', 1.87273, 41.5327, 1.93325, 41.579, 1.90148, 41.5537, 701080008, '', 0),
 (801080139, '8', 8, 'Olivella', '08148', '08148', 1.74328, 41.2682, 1.87289, 41.3292, 1.81171, 41.2994, 701080003, '', 0),
 (801080140, '8', 8, 'Olost', '08149', '08149', 2.0341, 41.9777, 2.14694, 42.0262, 2.09479, 42.001, 701080004, '', 0),
@@ -4985,9 +5005,9 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801080142, '8', 8, 'Oristà', '08151', '08151', 1.9859, 41.8976, 2.13905, 41.996, 2.06248, 41.9468, 701080004, '', 0),
 (801080143, '8', 8, 'Orpí', '08152', '08152', 1.53849, 41.5073, 1.61508, 41.5416, 1.57773, 41.5242, 701080012, '', 0),
 (801080144, '8', 8, 'Òrrius', '08153', '08153', 2.33398, 41.541, 2.36902, 41.5737, 2.35108, 41.5551, 701080011, '', 0),
-(801080145, '8', 8, 'Pacs del Penedès', '08154', '08154', 1.64629, 41.3457, 1.6878, 41.3715, 1.66614, 41.3603, 701080013, '', 0),
+(801080145, '8', 8, 'Pacs del Penedès', '08154', '08154', 1.64629, 41.3457, 1.6878, 41.3715, 1.66614, 41.3603, 701080010, '', 0),
 (801080146, '8', 8, 'Palafolls', '08155', '08155', 2.69385, 41.6517, 2.76529, 41.6929, 2.73008, 41.6714, 701080006, '', 0),
-(801080147, '8', 8, 'Palau-solità i Plegamans', '08156', '08156', 2.14914, 41.555, 2.2028, 41.6062, 2.17502, 41.5804, 701080010, '', 0),
+(801080147, '8', 8, 'Palau-solità i Plegamans', '08156', '08156', 2.14914, 41.555, 2.2028, 41.6062, 2.17502, 41.5804, 701080007, '', 0),
 (801080148, '8', 8, 'Pallejà', '08157', '08157', 1.94464, 41.4058, 2.00939, 41.4396, 1.98575, 41.4216, 701080008, '', 0),
 (801080149, '8', 8, 'El Papiol', '08158', '08158', 1.99408, 41.4214, 2.03276, 41.4602, 2.01185, 41.4421, 701080008, '', 0),
 (801080150, '8', 8, 'Parets del Vallès', '08159', '08159', 2.20063, 41.5447, 2.25842, 41.5845, 2.22953, 41.5646, 701080011, '', 0),
@@ -4995,28 +5015,28 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801080152, '8', 8, 'Piera', '08161', '08161', 1.70281, 41.4456, 1.79821, 41.5817, 1.74995, 41.5111, 701080012, '', 0),
 (801080153, '8', 8, 'Els Hostalets de Pierola', '08162', '08162', 1.74262, 41.5066, 1.85586, 41.5768, 1.79538, 41.5425, 701080012, '', 0),
 (801080154, '8', 8, 'Pineda de Mar', '08163', '08163', 2.62714, 41.6147, 2.70304, 41.6495, 2.67248, 41.6324, 701080006, '', 0),
-(801080155, '8', 8, 'El Pla del Penedès', '08164', '08164', 1.69682, 41.3943, 1.74831, 41.436, 1.72113, 41.4147, 701080013, '', 0),
+(801080155, '8', 8, 'El Pla del Penedès', '08164', '08164', 1.69682, 41.3943, 1.74831, 41.436, 1.72113, 41.4147, 701080010, '', 0),
 (801080156, '8', 8, 'La Pobla de Claramunt', '08165', '08165', 1.6363, 41.5387, 1.72194, 41.585, 1.68117, 41.5583, 701080012, '', 0),
 (801080157, '8', 8, 'La Pobla de Lillet', '08166', '08166', 1.91431, 42.1936, 2.03005, 42.2596, 1.97537, 42.2295, 701080001, '', 0),
-(801080158, '8', 8, 'Polinyà', '08167', '08167', 2.12634, 41.5367, 2.17413, 41.5761, 2.15212, 41.5579, 701080010, '', 0),
-(801080159, '8', 8, 'Pontons', '08168', '08168', 1.47304, 41.3808, 1.54626, 41.4401, 1.51206, 41.4129, 701080013, '', 0),
+(801080158, '8', 8, 'Polinyà', '08167', '08167', 2.12634, 41.5367, 2.17413, 41.5761, 2.15212, 41.5579, 701080007, '', 0),
+(801080159, '8', 8, 'Pontons', '08168', '08168', 1.47304, 41.3808, 1.54626, 41.4401, 1.51206, 41.4129, 701080010, '', 0),
 (801080160, '8', 8, 'El Prat de Llobregat', '08169', '08169', 2.05741, 41.2764, 2.14752, 41.3484, 2.09536, 41.3102, 701080009, '', 0),
 (801080161, '8', 8, 'Els Prats de Rei', '08170', '08170', 1.44961, 41.6806, 1.60851, 41.7323, 1.55162, 41.7064, 701080012, '', 0),
 (801080162, '8', 8, 'Prats de Lluçanès', '08171', '08171', 1.99433, 41.9736, 2.05328, 42.0226, 2.02315, 41.998, 701080004, '', 0),
 (801080163, '8', 8, 'Premià de Mar', '08172', '08172', 2.344, 41.485, 2.37619, 41.4988, 2.35818, 41.4922, 701080006, '', 0),
-(801080164, '8', 8, 'Puigdàlber', '08174', '08174', 1.69268, 41.4003, 1.70265, 41.4086, 1.69705, 41.4051, 701080013, '', 0),
+(801080164, '8', 8, 'Puigdàlber', '08174', '08174', 1.69268, 41.4003, 1.70265, 41.4086, 1.69705, 41.4051, 701080010, '', 0),
 (801080165, '8', 8, 'Puig-reig', '08175', '08175', 1.82013, 41.9061, 1.92575, 42.0081, 1.8689, 41.9654, 701080001, '', 0),
 (801080166, '8', 8, 'Pujalt', '08176', '08176', 1.38192, 41.6698, 1.48834, 41.738, 1.43493, 41.7069, 701080012, '', 0),
 (801080167, '8', 8, 'La Quar', '08177', '08177', 1.90844, 42.0614, 2.00975, 42.1301, 1.96533, 42.0969, 701080001, '', 0),
 (801080168, '8', 8, 'Rajadell', '08178', '08178', 1.64955, 41.6877, 1.77712, 41.7544, 1.71279, 41.721, 701080002, '', 0),
 (801080169, '8', 8, 'Rellinars', '08179', '08179', 1.88658, 41.6193, 1.9585, 41.6661, 1.91867, 41.6434, 701080007, '', 0),
-(801080170, '8', 8, 'Ripollet', '08180', '08180', 2.13461, 41.488, 2.17317, 41.5114, 2.15423, 41.4996, 701080010, '', 0),
+(801080170, '8', 8, 'Ripollet', '08180', '08180', 2.13461, 41.488, 2.17317, 41.5114, 2.15423, 41.4996, 701080007, '', 0),
 (801080171, '8', 8, 'La Roca del Vallès', '08181', '08181', 2.29145, 41.5604, 2.3827, 41.6363, 2.33482, 41.5962, 701080011, '', 0),
 (801080172, '8', 8, 'El Pont de Vilomara i Rocafort', '08182', '08182', 1.86745, 41.6773, 1.94944, 41.7326, 1.90724, 41.7041, 701080002, '', 0),
 (801080173, '8', 8, 'Roda de Ter', '08183', '08183', 2.29858, 41.9671, 2.31947, 41.9914, 2.30915, 41.9805, 701080004, '', 0),
-(801080174, '8', 8, 'Rubí', '08184', '08184', 1.97866, 41.4615, 2.05588, 41.5434, 2.01469, 41.5016, 701080010, '', 0),
+(801080174, '8', 8, 'Rubí', '08184', '08184', 1.97866, 41.4615, 2.05588, 41.5434, 2.01469, 41.5016, 701080007, '', 0),
 (801080175, '8', 8, 'Rubió', '08185', '08185', 1.52569, 41.6134, 1.63465, 41.6963, 1.57479, 41.6571, 701080012, '', 0),
-(801080176, '8', 8, 'Sabadell', '08187', '08187', 2.04689, 41.5067, 2.15016, 41.5905, 2.10164, 41.5552, 701080010, '', 0),
+(801080176, '8', 8, 'Sabadell', '08187', '08187', 2.04689, 41.5067, 2.15016, 41.5905, 2.10164, 41.5552, 701080007, '', 0),
 (801080177, '8', 8, 'Sagàs', '08188', '08188', 1.89107, 41.9769, 2.00897, 42.0736, 1.94397, 42.029, 701080001, '', 0),
 (801080178, '8', 8, 'Sant Pere Sallavinera', '08189', '08189', 1.52369, 41.7265, 1.59583, 41.7822, 1.56298, 41.7514, 701080012, '', 0),
 (801080179, '8', 8, 'Saldes', '08190', '08190', 1.68035, 42.1792, 1.80005, 42.2806, 1.73512, 42.229, 701080001, '', 0),
@@ -5034,8 +5054,8 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801080191, '8', 8, 'Sant Celoni', '08202', '08202', 2.46297, 41.6485, 2.6088, 41.7305, 2.54022, 41.6889, 701080011, '', 0),
 (801080192, '8', 8, 'Sant Cebrià de Vallalta', '08203', '08203', 2.57891, 41.5997, 2.62906, 41.6591, 2.60391, 41.6295, 701080006, '', 0),
 (801080193, '8', 8, 'Sant Climent de Llobregat', '08204', '08204', 1.95506, 41.3136, 2.01107, 41.3564, 1.98559, 41.3333, 701080009, '', 0),
-(801080194, '8', 8, 'Sant Cugat del Vallès', '08205', '08205', 1.99973, 41.415, 2.12986, 41.5199, 2.07299, 41.462, 701080010, '', 0),
-(801080195, '8', 8, 'Sant Cugat Sesgarrigues', '08206', '08206', 1.73231, 41.3395, 1.7722, 41.3713, 1.75331, 41.3561, 701080013, '', 0),
+(801080194, '8', 8, 'Sant Cugat del Vallès', '08205', '08205', 1.99973, 41.415, 2.12986, 41.5199, 2.07299, 41.462, 701080007, '', 0),
+(801080195, '8', 8, 'Sant Cugat Sesgarrigues', '08206', '08206', 1.73231, 41.3395, 1.7722, 41.3713, 1.75331, 41.3561, 701080010, '', 0),
 (801080196, '8', 8, 'Sant Esteve de Palautordera', '08207', '08207', 2.39593, 41.6945, 2.44786, 41.7352, 2.42129, 41.7141, 701080011, '', 0),
 (801080197, '8', 8, 'Sant Esteve Sesrovires', '08208', '08208', 1.83786, 41.4549, 1.91123, 41.5086, 1.87633, 41.4866, 701080008, '', 0),
 (801080198, '8', 8, 'Sant Fost de Campsentelles', '08209', '08209', 2.20395, 41.4886, 2.26318, 41.5312, 2.23345, 41.5077, 701080011, '', 0),
@@ -5051,21 +5071,21 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801080208, '8', 8, 'Vilassar de Mar', '08219', '08219', 2.36562, 41.4939, 2.40285, 41.5162, 2.38387, 41.5054, 701080006, '', 0),
 (801080209, '8', 8, 'Sant Julià de Vilatorta', '08220', '08220', 2.29664, 41.8754, 2.36288, 41.9344, 2.32561, 41.9072, 701080004, '', 0),
 (801080210, '8', 8, 'Sant Just Desvern', '08221', '08221', 2.05211, 41.3728, 2.10374, 41.4097, 2.07915, 41.3926, 701080009, '', 0),
-(801080211, '8', 8, 'Sant Llorenç Savall', '08223', '08223', 2.00458, 41.6529, 2.11292, 41.717, 2.05397, 41.6829, 701080010, '', 0),
+(801080211, '8', 8, 'Sant Llorenç Savall', '08223', '08223', 2.00458, 41.6529, 2.11292, 41.717, 2.05397, 41.6829, 701080007, '', 0),
 (801080212, '8', 8, 'Sant Martí de Centelles', '08224', '08224', 2.18477, 41.7264, 2.26305, 41.7819, 2.21822, 41.7506, 701080004, '', 0),
 (801080213, '8', 8, 'Sant Martí de Tous', '08226', '08226', 1.44672, 41.5192, 1.55052, 41.5864, 1.50122, 41.5523, 701080012, '', 0),
-(801080214, '8', 8, 'Sant Martí Sarroca', '08227', '08227', 1.56297, 41.3336, 1.6621, 41.4122, 1.61989, 41.3745, 701080013, '', 0),
+(801080214, '8', 8, 'Sant Martí Sarroca', '08227', '08227', 1.56297, 41.3336, 1.6621, 41.4122, 1.61989, 41.3745, 701080010, '', 0),
 (801080215, '8', 8, 'Sant Martí Sesgueioles', '08228', '08228', 1.48518, 41.6956, 1.518, 41.7132, 1.50319, 41.7035, 701080012, '', 0),
 (801080216, '8', 8, 'Sant Mateu de Bages', '08229', '08229', 1.58129, 41.7646, 1.7721, 41.8716, 1.66981, 41.8159, 701080002, '', 0),
 (801080217, '8', 8, 'Premià de Dalt', '08230', '08230', 2.32276, 41.4882, 2.37302, 41.5249, 2.34396, 41.5058, 701080006, '', 0),
 (801080218, '8', 8, 'Sant Pere de Ribes', '08231', '08231', 1.72247, 41.2187, 1.83624, 41.2946, 1.77607, 41.2621, 701080003, '', 0),
-(801080219, '8', 8, 'Sant Pere de Riudebitlles', '08232', '08232', 1.6767, 41.4443, 1.71226, 41.4742, 1.69738, 41.4584, 701080013, '', 0),
+(801080219, '8', 8, 'Sant Pere de Riudebitlles', '08232', '08232', 1.6767, 41.4443, 1.71226, 41.4742, 1.69738, 41.4584, 701080010, '', 0),
 (801080220, '8', 8, 'Sant Pere de Torelló', '08233', '08233', 2.26267, 42.0479, 2.40022, 42.1213, 2.32994, 42.0865, 701080004, '', 0),
 (801080221, '8', 8, 'Sant Pere de Vilamajor', '08234', '08234', 2.35219, 41.6696, 2.43179, 41.7602, 2.38617, 41.7114, 701080011, '', 0),
 (801080222, '8', 8, 'Sant Pol de Mar', '08235', '08235', 2.58825, 41.5905, 2.63926, 41.6294, 2.61573, 41.6074, 701080006, '', 0),
-(801080223, '8', 8, 'Sant Quintí de Mediona', '08236', '08236', 1.63748, 41.4305, 1.69553, 41.4739, 1.66545, 41.4527, 701080013, '', 0),
+(801080223, '8', 8, 'Sant Quintí de Mediona', '08236', '08236', 1.63748, 41.4305, 1.69553, 41.4739, 1.66545, 41.4527, 701080010, '', 0),
 (801080224, '8', 8, 'Sant Quirze de Besora', '08237', '08237', 2.20251, 42.0892, 2.27391, 42.1276, 2.23021, 42.1029, 701080004, '', 0),
-(801080225, '8', 8, 'Sant Quirze del Vallès', '08238', '08238', 2.03149, 41.5067, 2.10169, 41.5433, 2.07003, 41.525, 701080010, '', 0),
+(801080225, '8', 8, 'Sant Quirze del Vallès', '08238', '08238', 2.03149, 41.5067, 2.10169, 41.5433, 2.07003, 41.525, 701080007, '', 0),
 (801080226, '8', 8, 'Sant Quirze Safaja', '08239', '08239', 2.12605, 41.7043, 2.24375, 41.761, 2.18485, 41.7262, 701080011, '', 0),
 (801080227, '8', 8, 'Marganell', '08242', '08242', 1.77789, 41.6007, 1.83093, 41.6592, 1.80262, 41.629, 701080002, '', 0),
 (801080228, '8', 8, 'Santa Cecília de Voltregà', '08243', '08243', 2.18433, 41.9805, 2.23815, 42.0153, 2.21073, 41.9979, 701080004, '', 0),
@@ -5074,36 +5094,36 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801080231, '8', 8, 'Santa Eugènia de Berga', '08246', '08246', 2.25999, 41.8952, 2.30426, 41.9259, 2.2813, 41.9099, 701080004, '', 0),
 (801080232, '8', 8, 'Santa Eulàlia de Riuprimer', '08247', '08247', 2.13807, 41.8935, 2.21975, 41.9325, 2.17891, 41.913, 701080004, '', 0),
 (801080233, '8', 8, 'Santa Eulàlia de Ronçana', '08248', '08248', 2.18699, 41.6286, 2.25392, 41.6665, 2.22179, 41.6469, 701080011, '', 0),
-(801080234, '8', 8, 'Santa Fe del Penedès', '08249', '08249', 1.70086, 41.38, 1.74277, 41.3961, 1.7201, 41.3886, 701080013, '', 0),
+(801080234, '8', 8, 'Santa Fe del Penedès', '08249', '08249', 1.70086, 41.38, 1.74277, 41.3961, 1.7201, 41.3886, 701080010, '', 0),
 (801080235, '8', 8, 'Santa Margarida de Montbui', '08250', '08250', 1.53519, 41.5288, 1.63354, 41.5869, 1.57655, 41.5607, 701080012, '', 0),
-(801080236, '8', 8, 'Santa Margarida i els Monjos', '08251', '08251', 1.63807, 41.2848, 1.69245, 41.3459, 1.66404, 41.3116, 701080013, '', 0),
-(801080237, '8', 8, 'Barberà del Vallès', '08252', '08252', 2.10967, 41.5057, 2.16266, 41.5339, 2.13535, 41.5182, 701080010, '', 0),
+(801080236, '8', 8, 'Santa Margarida i els Monjos', '08251', '08251', 1.63807, 41.2848, 1.69245, 41.3459, 1.66404, 41.3116, 701080010, '', 0),
+(801080237, '8', 8, 'Barberà del Vallès', '08252', '08252', 2.10967, 41.5057, 2.16266, 41.5339, 2.13535, 41.5182, 701080007, '', 0),
 (801080238, '8', 8, 'Santa Maria de Besora', '08253', '08253', 2.20527, 42.0988, 2.30341, 42.145, 2.25997, 42.1221, 701080004, '', 0),
 (801080239, '8', 8, 'Santa Maria de Corcó', '08254', '08254', 2.29421, 41.9925, 2.42948, 42.0868, 2.36023, 42.0393, 701080004, '', 0),
 (801080240, '8', 8, 'Santa Maria de Merlès', '08255', '08255', 1.90115, 41.9191, 2.02174, 42.0536, 1.96825, 41.9889, 701080001, '', 0),
 (801080241, '8', 8, 'Santa Maria de Martorelles', '08256', '08256', 2.24254, 41.5041, 2.28189, 41.5317, 2.26153, 41.5178, 701080011, '', 0),
 (801080242, '8', 8, 'Santa Maria de Miralles', '08257', '08257', 1.47392, 41.4719, 1.5594, 41.5419, 1.51592, 41.5055, 701080012, '', 0),
 (801080243, '8', 8, 'Santa Maria de Palautordera', '08259', '08259', 2.41606, 41.6541, 2.48796, 41.7117, 2.45359, 41.6843, 701080011, '', 0),
-(801080244, '8', 8, 'Santa Perpètua de Mogoda', '08260', '08260', 2.13785, 41.515, 2.20791, 41.5573, 2.17652, 41.5332, 701080010, '', 0),
+(801080244, '8', 8, 'Santa Perpètua de Mogoda', '08260', '08260', 2.13785, 41.515, 2.20791, 41.5573, 2.17652, 41.5332, 701080007, '', 0),
 (801080245, '8', 8, 'Santa Susanna', '08261', '08261', 2.65836, 41.6245, 2.72762, 41.6724, 2.69582, 41.6499, 701080006, '', 0),
 (801080246, '8', 8, 'Sant Vicenç de Castellet', '08262', '08262', 1.80953, 41.6552, 1.93266, 41.6903, 1.87691, 41.6691, 701080002, '', 0),
 (801080247, '8', 8, 'Sant Vicenç dels Horts', '08263', '08263', 1.97879, 41.3717, 2.02677, 41.4109, 2.00278, 41.3905, 701080009, '', 0),
 (801080248, '8', 8, 'Sant Vicenç de Montalt', '08264', '08264', 2.49406, 41.5598, 2.5253, 41.6057, 2.50816, 41.5813, 701080006, '', 0),
 (801080249, '8', 8, 'Sant Vicenç de Torelló', '08265', '08265', 2.23715, 42.0485, 2.29022, 42.082, 2.26515, 42.0649, 701080004, '', 0),
-(801080250, '8', 8, 'Cerdanyola del Vallès', '08266', '08266', 2.07436, 41.4431, 2.16005, 41.5111, 2.12272, 41.4806, 701080010, '', 0),
-(801080251, '8', 8, 'Sentmenat', '08267', '08267', 2.09087, 41.5741, 2.16426, 41.6596, 2.13051, 41.6132, 701080010, '', 0),
+(801080250, '8', 8, 'Cerdanyola del Vallès', '08266', '08266', 2.07436, 41.4431, 2.16005, 41.5111, 2.12272, 41.4806, 701080007, '', 0),
+(801080251, '8', 8, 'Sentmenat', '08267', '08267', 2.09087, 41.5741, 2.16426, 41.6596, 2.13051, 41.6132, 701080007, '', 0),
 (801080252, '8', 8, 'Cercs', '08268', '08268', 1.77634, 42.0862, 1.92068, 42.1953, 1.85017, 42.1394, 701080001, '', 0),
 (801080253, '8', 8, 'Seva', '08269', '08269', 2.23235, 41.7815, 2.34733, 41.8642, 2.28984, 41.8229, 701080004, '', 0),
 (801080254, '8', 8, 'Sitges', '08270', '08270', 1.7562, 41.2186, 1.94446, 41.291, 1.86006, 41.256, 701080003, '', 0),
 (801080255, '8', 8, 'Sobremunt', '08271', '08271', 2.13629, 42.0028, 2.20018, 42.0415, 2.17031, 42.0215, 701080004, '', 0),
 (801080256, '8', 8, 'Sora', '08272', '08272', 2.12585, 42.0728, 2.21846, 42.1353, 2.17058, 42.1056, 701080004, '', 0),
-(801080257, '8', 8, 'Subirats', '08273', '08273', 1.71153, 41.3513, 1.87643, 41.4389, 1.80421, 41.3981, 701080013, '', 0),
+(801080257, '8', 8, 'Subirats', '08273', '08273', 1.71153, 41.3513, 1.87643, 41.4389, 1.80421, 41.3981, 701080010, '', 0),
 (801080258, '8', 8, 'Súria', '08274', '08274', 1.73334, 41.803, 1.79711, 41.8639, 1.76387, 41.8348, 701080002, '', 0),
 (801080259, '8', 8, 'Tavèrnoles', '08275', '08275', 2.29001, 41.9333, 2.38345, 41.9825, 2.34475, 41.9561, 701080004, '', 0),
 (801080260, '8', 8, 'Tagamanent', '08276', '08276', 2.24909, 41.7197, 2.35219, 41.7986, 2.30113, 41.7561, 701080011, '', 0),
 (801080261, '8', 8, 'Talamanca', '08277', '08277', 1.87078, 41.7086, 2.00537, 41.753, 1.95198, 41.7319, 701080002, '', 0),
 (801080262, '8', 8, 'Taradell', '08278', '08278', 2.24154, 41.8494, 2.33245, 41.9039, 2.2863, 41.875, 701080004, '', 0),
-(801080263, '8', 8, 'Terrassa', '08279', '08279', 1.94358, 41.5168, 2.06882, 41.6488, 2.00804, 41.5753, 701080010, '', 0),
+(801080263, '8', 8, 'Terrassa', '08279', '08279', 1.94358, 41.5168, 2.06882, 41.6488, 2.00804, 41.5753, 701080007, '', 0),
 (801080264, '8', 8, 'Tavertet', '08280', '08280', 2.3426, 41.9767, 2.45464, 42.0364, 2.40366, 42.0051, 701080004, '', 0),
 (801080265, '8', 8, 'Teià', '08281', '08281', 2.30666, 41.4843, 2.344, 41.5175, 2.32168, 41.5005, 701080006, '', 0),
 (801080266, '8', 8, 'Tiana', '08282', '08282', 2.24695, 41.4706, 2.29193, 41.5047, 2.26821, 41.4858, 701080006, '', 0),
@@ -5111,24 +5131,25 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801080268, '8', 8, 'Tordera', '08284', '08284', 2.59366, 41.6423, 2.7775, 41.7443, 2.68611, 41.6929, 701080006, '', 0),
 (801080269, '8', 8, 'Torelló', '08285', '08285', 2.23577, 42.0123, 2.29501, 42.0634, 2.26642, 42.0385, 701080004, '', 0),
 (801080270, '8', 8, 'La Torre de Claramunt', '08286', '08286', 1.61461, 41.5067, 1.70225, 41.5451, 1.65909, 41.5237, 701080012, '', 0),
-(801080271, '8', 8, 'Torrelavit', '08287', '08287', 1.67654, 41.417, 1.76908, 41.4677, 1.72283, 41.4407, 701080013, '', 0),
-(801080272, '8', 8, 'Torrelles de Foix', '08288', '08288', 1.53297, 41.3679, 1.64095, 41.4511, 1.57007, 41.4094, 701080013, '', 0),
+(801080271, '8', 8, 'Torrelavit', '08287', '08287', 1.67654, 41.417, 1.76908, 41.4677, 1.72283, 41.4407, 701080010, '', 0),
+(801080272, '8', 8, 'Torrelles de Foix', '08288', '08288', 1.53297, 41.3679, 1.64095, 41.4511, 1.57007, 41.4094, 701080010, '', 0),
 (801080273, '8', 8, 'Torrelles de Llobregat', '08289', '08289', 1.94351, 41.3334, 2.00319, 41.376, 1.97109, 41.3545, 701080009, '', 0),
-(801080274, '8', 8, 'Ullastrell', '08290', '08290', 1.93611, 41.5067, 1.98621, 41.5393, 1.96332, 41.5253, 701080010, '', 0),
-(801080275, '8', 8, 'Vacarisses', '08291', '08291', 1.86088, 41.5707, 1.97609, 41.6488, 1.91754, 41.6039, 701080010, '', 0),
+(801080274, '8', 8, 'Ullastrell', '08290', '08290', 1.93611, 41.5067, 1.98621, 41.5393, 1.96332, 41.5253, 701080007, '', 0),
+(801080275, '8', 8, 'Vacarisses', '08291', '08291', 1.86088, 41.5707, 1.97609, 41.6488, 1.91754, 41.6039, 701080007, '', 0),
 (801080276, '8', 8, 'Vallcebre', '08293', '08293', 1.76838, 42.1795, 1.85322, 42.241, 1.81217, 42.2061, 701080001, '', 0),
 (801080277, '8', 8, 'Vallgorguina', '08294', '08294', 2.44521, 41.624, 2.54111, 41.6716, 2.49677, 41.6466, 701080011, '', 0),
-(801080278, '8', 8, 'Vallirana', '08295', '08295', 1.8694, 41.35, 1.95387, 41.3987, 1.91697, 41.3736, 701080013, '', 0),
+(801080278, '8', 8, 'Vallirana', '08295', '08295', 1.8694, 41.35, 1.95387, 41.3987, 1.91697, 41.3736, 701080010, '', 0),
 (801080279, '8', 8, 'Vallromanes', '08296', '08296', 2.26948, 41.5131, 2.33106, 41.5447, 2.29884, 41.5268, 701080011, '', 0),
 (801080280, '8', 8, 'Veciana', '08297', '08297', 1.41504, 41.626, 1.53503, 41.6958, 1.47504, 41.6609, 701080012, '', 0),
-(801080281, '8', 8, 'Vic', '08298', '08298', 2.16597, 41.8817, 2.28654, 41.9597, 2.23642, 41.9224, 701080004, '', 0),
+(801080281, '8', 8, 'Vic', '08298', '08298', 2.16597, 41.8817, 2.28654, 41.9597, 2.23642, 41.9224, 701080004, '', 0);
+INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
 (801080282, '8', 8, 'Vilada', '08299', '08299', 1.88098, 42.1108, 1.96622, 42.1712, 1.92322, 42.1368, 701080001, '', 0),
-(801080283, '8', 8, 'Viladecavalls', '08300', '08300', 1.91857, 41.5281, 1.98782, 41.5809, 1.9515, 41.5578, 701080010, '', 0),
+(801080283, '8', 8, 'Viladecavalls', '08300', '08300', 1.91857, 41.5281, 1.98782, 41.5809, 1.9515, 41.5578, 701080007, '', 0),
 (801080284, '8', 8, 'Viladecans', '08301', '08301', 1.98811, 41.2703, 2.07454, 41.3378, 2.03193, 41.303, 701080009, '', 0),
 (801080285, '8', 8, 'Vilanova del Camí', '08302', '08302', 1.58513, 41.5403, 1.67194, 41.5837, 1.63416, 41.5614, 701080012, '', 0),
 (801080286, '8', 8, 'Vilanova de Sau', '08303', '08303', 2.3648, 41.8875, 2.48118, 41.9946, 2.42214, 41.9431, 701080004, '', 0),
-(801080287, '8', 8, 'Vilobí del Penedès', '08304', '08304', 1.63775, 41.3687, 1.6993, 41.4072, 1.66594, 41.3858, 701080013, '', 0),
-(801080288, '8', 8, 'Vilafranca del Penedès', '08305', '08305', 1.66377, 41.3235, 1.73803, 41.372, 1.70058, 41.3475, 701080013, '', 0),
+(801080287, '8', 8, 'Vilobí del Penedès', '08304', '08304', 1.63775, 41.3687, 1.6993, 41.4072, 1.66594, 41.3858, 701080010, '', 0),
+(801080288, '8', 8, 'Vilafranca del Penedès', '08305', '08305', 1.66377, 41.3235, 1.73803, 41.372, 1.70058, 41.3475, 701080010, '', 0),
 (801080289, '8', 8, 'Vilalba Sasserra', '08306', '08306', 2.43496, 41.6283, 2.48905, 41.6586, 2.46297, 41.6403, 701080011, '', 0),
 (801080290, '8', 8, 'Vilanova i la Geltrú', '08307', '08307', 1.66864, 41.2018, 1.75168, 41.2718, 1.7048, 41.2371, 701080003, '', 0),
 (801080291, '8', 8, 'Viver i Serrateix', '08308', '08308', 1.71739, 41.8974, 1.86388, 42.0017, 1.79353, 41.9478, 701080001, '', 0),
@@ -5178,8 +5199,7 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801090039, '9', 8, 'Belorado', '09048', '09048', -3.28487, 42.336, -3.06329, 42.5178, -3.19466, 42.4228, 701090008, '', 0),
 (801090040, '9', 8, 'Berberana', '09050', '09050', -3.13909, 42.8487, -2.98119, 42.955, -3.06014, 42.9019, 701090001, '', 0),
 (801090041, '9', 8, 'Berlangas de Roa', '09051', '09051', -3.89758, 41.6674, -3.80867, 41.7077, -3.85933, 41.6837, 701090006, '', 0),
-(801090042, '9', 8, 'Berzosa de Bureba', '09052', '09052', -3.29978, 42.6096, -3.24966, 42.6389, -3.26998, 42.6245, 701090003, '', 0);
-INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
+(801090042, '9', 8, 'Berzosa de Bureba', '09052', '09052', -3.29978, 42.6096, -3.24966, 42.6389, -3.26998, 42.6245, 701090003, '', 0),
 (801090043, '9', 8, 'Bozoó', '09054', '09054', -3.14091, 42.7102, -3.0492, 42.7673, -3.09679, 42.7393, 701090002, '', 0),
 (801090044, '9', 8, 'Brazacorta', '09055', '09055', -3.42972, 41.6562, -3.35246, 41.7338, -3.39228, 41.6982, 701090006, '', 0),
 (801090045, '9', 8, 'Briviesca', '09056', '09056', -3.42664, 42.4804, -3.22168, 42.6133, -3.32416, 42.5469, 701090003, '', 0),
@@ -5503,7 +5523,8 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801090363, '9', 8, 'Zuñeda', '09485', '09485', -3.25073, 42.5836, -3.19042, 42.62, -3.22386, 42.6036, 701090003, '', 0),
 (801090364, '9', 8, 'Quintanilla del Agua y Tordueles', '09901', '09901', -3.69175, 42.0044, -3.59058, 42.0819, -3.64117, 42.0432, 701090005, '', 0),
 (801090365, '9', 8, 'Valle de Santibáñez', '09902', '09902', -3.90992, 42.428, -3.73655, 42.5384, -3.81792, 42.4801, 701090004, '', 0),
-(801090366, '9', 8, 'Villarcayo de Merindad de Castilla la Vieja', '09903', '09903', -3.67174, 42.8596, -3.48732, 43.008, -3.57428, 42.9384, 701090001, '', 0),
+(801090366, '9', 8, 'Villarcayo de Merindad de Castilla la Vieja', '09903', '09903', -3.67174, 42.8596, -3.48732, 43.008, -3.57428, 42.9384, 701090001, '', 0);
+INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
 (801090367, '9', 8, 'Valle de las Navas', '09904', '09904', -3.66388, 42.4097, -3.51764, 42.5554, -3.58337, 42.4727, 701090004, '', 0),
 (801090368, '9', 8, 'Valle de Sedano', '09905', '09905', -3.8671, 42.6062, -3.61427, 42.8752, -3.74407, 42.7314, 701090009, '', 0),
 (801090369, '9', 8, 'Merindad de Río Ubierna', '09906', '09906', -3.75512, 42.422, -3.5637, 42.6805, -3.65941, 42.5512, 701090004, '', 0),
@@ -5548,8 +5569,7 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801095340, '9', 8, 'Comunidad de Tinieblas de la Sierra y San Millán de Lara', '53041', '09340;09381', -3.38186, 42.1546, -3.34683, 42.1678, -3.36502, 42.1618, 701090004, '', 0),
 (801095341, '9', 8, 'Comunidad de Vilviestre del Pinar y Palacios de la Sierra', '53042', '09246;09425', -3.10293, 41.8811, -3.07545, 41.913, -3.09234, 41.8942, 701090007, '', 0),
 (801095342, '9', 8, 'Comunidad de Villoruebo y Torrelara', '53043', '09388;09476', -3.48876, 42.1977, -3.47524, 42.2113, -3.48263, 42.2042, 701090004, '', 0),
-(801095343, '9', 8, 'Comunidad de Vizcaínos y Jaramillo de la Fuente', '53044', '09183;09478', -3.30478, 42.099, -3.27573, 42.1296, -3.29009, 42.1142, 701090007, '', 0);
-INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
+(801095343, '9', 8, 'Comunidad de Vizcaínos y Jaramillo de la Fuente', '53044', '09183;09478', -3.30478, 42.099, -3.27573, 42.1296, -3.29009, 42.1142, 701090007, '', 0),
 (801095344, '9', 8, 'Comunidad de Quintanilla del Agua y Tordueles y Puentedura', '53045', '09277;09901', -3.62529, 42.0313, -3.60079, 42.0692, -3.61329, 42.0483, 701090005, '', 0),
 (801095345, '9', 8, 'Comunidad de Merindad de Río Ubierna, Quintanilla Vivar y Sotragero', '53046', '09301;09372;09906', -3.70261, 42.4217, -3.69041, 42.4306, -3.69691, 42.427, 701090004, '', 0),
 (801095346, '9', 8, 'Monte de la Mata', '53073', '09228;40014', -3.84219, 41.4919, -3.79683, 41.5275, -3.81878, 41.5119, 701090006, '', 0),
@@ -5875,7 +5895,8 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801120053, '12', 8, 'Figueroles', '12060', '12060', -0.255826, 40.106, -0.185571, 40.1449, -0.222378, 40.1264, 701120006, '', 0),
 (801120054, '12', 8, 'Forcall', '12061', '12061', -0.266933, 40.6144, -0.151396, 40.6979, -0.212336, 40.6572, 701120002, '', 0),
 (801120055, '12', 8, 'Fuente la Reina', '12063', '12063', -0.629118, 40.0372, -0.578287, 40.0762, -0.609226, 40.0572, 701120005, '', 0),
-(801120056, '12', 8, 'Fuentes de Ayódar', '12064', '12064', -0.449491, 39.9991, -0.402271, 40.0389, -0.425613, 40.0207, 701120005, '', 0),
+(801120056, '12', 8, 'Fuentes de Ayódar', '12064', '12064', -0.449491, 39.9991, -0.402271, 40.0389, -0.425613, 40.0207, 701120005, '', 0);
+INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
 (801120057, '12', 8, 'Gaibiel', '12065', '12065', -0.525267, 39.897, -0.469409, 39.9583, -0.499402, 39.9297, 701120007, '', 0),
 (801120058, '12', 8, 'Geldo', '12067', '12067', -0.470244, 39.8308, -0.46017, 39.843, -0.465577, 39.836, 701120007, '', 0),
 (801120059, '12', 8, 'Herbés', '12068', '12068', -0.0691573, 40.6776, 0.0283661, 40.7312, -0.0148546, 40.7088, 701120002, '', 0),
@@ -5931,8 +5952,7 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801120109, '12', 8, 'Traiguera', '12121', '12121', 0.252852, 40.4895, 0.417597, 40.6042, 0.31818, 40.549, 701120001, '', 0),
 (801120110, '12', 8, 'Useras/Les Useres', '12122', '12122', -0.210121, 40.1294, -0.0761466, 40.2404, -0.133782, 40.1783, 701120006, '', 0),
 (801120111, '12', 8, 'Vallat', '12123', '12123', -0.346051, 40.0213, -0.322296, 40.0537, -0.333783, 40.037, 701120005, '', 0),
-(801120112, '12', 8, 'Vall de Almonacid', '12125', '12125', -0.502415, 39.8787, -0.409533, 39.9237, -0.458215, 39.8979, 701120007, '', 0);
-INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
+(801120112, '12', 8, 'Vall de Almonacid', '12125', '12125', -0.502415, 39.8787, -0.409533, 39.9237, -0.458215, 39.8979, 701120007, '', 0),
 (801120113, '12', 8, 'Vallibona', '12127', '12127', 0.00290318, 40.5682, 0.18583, 40.6503, 0.0886094, 40.608, 701120002, '', 0),
 (801120114, '12', 8, 'Vilafamés', '12128', '12128', -0.148128, 40.0761, 0.018539, 40.1655, -0.0709807, 40.1219, 701120004, '', 0),
 (801120115, '12', 8, 'Villafranca del Cid/Vilafranca', '12129', '12129', -0.347355, 40.367, -0.162854, 40.4789, -0.263831, 40.4317, 701120003, '', 0),
@@ -6262,7 +6282,8 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801160040, '16', 8, 'Campillos-Paravientos', '16043', '16043', -1.59057, 39.9273, -1.48707, 40.0086, -1.54006, 39.9674, 701160001, '', 0),
 (801160041, '16', 8, 'Campillos-Sierra', '16044', '16044', -1.73295, 40.0538, -1.62835, 40.1252, -1.68655, 40.0923, 701160001, '', 0),
 (801160042, '16', 8, 'Canalejas del Arroyo', '16045', '16045', -2.53269, 40.3354, -2.40753, 40.4396, -2.46881, 40.3868, 701160003, '', 0),
-(801160043, '16', 8, 'Cañada del Hoyo', '16046', '16046', -1.98083, 39.9275, -1.82439, 40.0256, -1.90222, 39.9779, 701160001, '', 0),
+(801160043, '16', 8, 'Cañada del Hoyo', '16046', '16046', -1.98083, 39.9275, -1.82439, 40.0256, -1.90222, 39.9779, 701160001, '', 0);
+INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
 (801160044, '16', 8, 'Cañada Juncosa', '16047', '16047', -2.32647, 39.5027, -2.12305, 39.5863, -2.2293, 39.5561, 701160002, '', 0),
 (801160045, '16', 8, 'Cañamares', '16048', '16048', -2.27809, 40.3959, -2.19324, 40.4879, -2.24065, 40.4411, 701160001, '', 0),
 (801160046, '16', 8, 'El Cañavate', '16049', '16049', -2.36773, 39.5081, -2.28653, 39.5743, -2.3271, 39.5417, 701160002, '', 0),
@@ -6318,8 +6339,7 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801160096, '16', 8, 'Huelves', '16108', '16108', -2.95504, 40.012, -2.86492, 40.0845, -2.90474, 40.0459, 701160004, '', 0),
 (801160097, '16', 8, 'Huérguina', '16109', '16109', -1.63093, 40.0028, -1.56793, 40.0825, -1.5976, 40.0383, 701160001, '', 0),
 (801160098, '16', 8, 'Huerta de la Obispalía', '16110', '16110', -2.52585, 39.9359, -2.4264, 40.0117, -2.48017, 39.9773, 701160004, '', 0),
-(801160099, '16', 8, 'Huerta del Marquesado', '16111', '16111', -1.76527, 40.1158, -1.65383, 40.1909, -1.70647, 40.1505, 701160001, '', 0);
-INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
+(801160099, '16', 8, 'Huerta del Marquesado', '16111', '16111', -1.76527, 40.1158, -1.65383, 40.1909, -1.70647, 40.1505, 701160001, '', 0),
 (801160100, '16', 8, 'Huete', '16112', '16112', -2.76745, 39.8811, -2.45927, 40.304, -2.61336, 40.0926, 701160003, '', 0),
 (801160101, '16', 8, 'Iniesta', '16113', '16113', -1.85041, 39.3534, -1.49632, 39.5745, -1.67336, 39.464, 701160002, '', 0),
 (801160102, '16', 8, 'Laguna del Marquesado', '16115', '16115', -1.71284, 40.1493, -1.62376, 40.2393, -1.67317, 40.1919, 701160001, '', 0),
@@ -6667,7 +6687,8 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801170206, '17', 8, 'Sant Julià del Llor i Bonmatí', '17903', '17903', 2.62717, 41.9609, 2.67315, 41.9953, 2.65021, 41.9757, 0, '', 0),
 (801180001, '18', 8, 'Agrón', '18001', '18001', -3.87369, 36.9882, -3.76557, 37.0421, -3.82064, 37.0136, 701180004, '', 0),
 (801180002, '18', 8, 'Alamedilla', '18002', '18002', -3.31193, 37.5212, -3.15396, 37.6403, -3.24259, 37.5881, 701180002, '', 0),
-(801180003, '18', 8, 'Albolote', '18003', '18003', -3.707, 37.21, -3.6196, 37.4005, -3.65899, 37.3051, 701180004, '', 0),
+(801180003, '18', 8, 'Albolote', '18003', '18003', -3.707, 37.21, -3.6196, 37.4005, -3.65899, 37.3051, 701180004, '', 0);
+INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
 (801180004, '18', 8, 'Albondón', '18004', '18004', -3.24234, 36.8105, -3.16959, 36.8783, -3.20728, 36.8429, 701180005, '', 0),
 (801180005, '18', 8, 'Albuñán', '18005', '18005', -3.15464, 37.2064, -3.11953, 37.2609, -3.1406, 37.2332, 701180002, '', 0),
 (801180006, '18', 8, 'Albuñol', '18006', '18006', -3.24236, 36.7439, -3.12868, 36.835, -3.18786, 36.7806, 701180006, '', 0),
@@ -6724,8 +6745,7 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801180057, '18', 8, 'Dílar', '18068', '18068', -3.65067, 37.0395, -3.36568, 37.0887, -3.51867, 37.0621, 701180004, '', 0),
 (801180058, '18', 8, 'Dólar', '18069', '18069', -3.02092, 37.095, -2.83037, 37.3129, -2.92564, 37.2039, 701180002, '', 0),
 (801180059, '18', 8, 'Dúdar', '18070', '18070', -3.5113, 37.1689, -3.47065, 37.2062, -3.4902, 37.1859, 701180004, '', 0),
-(801180060, '18', 8, 'Dúrcal', '18071', '18071', -3.60323, 36.965, -3.40517, 37.0559, -3.51332, 37.0221, 701180005, '', 0);
-INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
+(801180060, '18', 8, 'Dúrcal', '18071', '18071', -3.60323, 36.965, -3.40517, 37.0559, -3.51332, 37.0221, 701180005, '', 0),
 (801180061, '18', 8, 'Escúzar', '18072', '18072', -3.82929, 37.0152, -3.72672, 37.0918, -3.77641, 37.0512, 701180004, '', 0),
 (801180062, '18', 8, 'Ferreira', '18074', '18074', -3.05452, 37.1017, -2.9765, 37.2718, -3.01551, 37.1868, 701180002, '', 0),
 (801180063, '18', 8, 'Fonelas', '18076', '18076', -3.23501, 37.3615, -3.10369, 37.4903, -3.16778, 37.4221, 701180002, '', 0),
@@ -7059,7 +7079,8 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801190223, '19', 8, 'El Sotillo', '19260', '19260', -2.66023, 40.8244, -2.60641, 40.92, -2.63141, 40.876, 701190003, '', 0),
 (801190224, '19', 8, 'Sotodosos', '19261', '19261', -2.43804, 40.8839, -2.36044, 40.9466, -2.39527, 40.913, 701190003, '', 0),
 (801190225, '19', 8, 'Tamajón', '19262', '19262', -3.30254, 40.9439, -3.17412, 41.1103, -3.23007, 41.0306, 701190001, '', 0),
-(801190226, '19', 8, 'Taragudo', '19263', '19263', -3.10156, 40.8076, -3.07014, 40.8521, -3.08585, 40.8298, 701190003, '', 0),
+(801190226, '19', 8, 'Taragudo', '19263', '19263', -3.10156, 40.8076, -3.07014, 40.8521, -3.08585, 40.8298, 701190003, '', 0);
+INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
 (801190227, '19', 8, 'Taravilla', '19264', '19264', -2.05001, 40.6225, -1.91752, 40.7131, -1.97731, 40.6739, 701190005, '', 0),
 (801190228, '19', 8, 'Tartanedo', '19265', '19265', -2.02582, 40.9482, -1.82357, 41.0979, -1.93864, 41.026, 701190005, '', 0),
 (801190229, '19', 8, 'Tendilla', '19266', '19266', -2.99319, 40.5225, -2.91322, 40.5754, -2.95058, 40.5463, 701190004, '', 0),
@@ -7115,8 +7136,7 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801190279, '19', 8, 'Yebes', '19326', '19326', -3.12784, 40.5025, -3.0579, 40.5976, -3.09287, 40.55, 701190004, '', 0),
 (801190280, '19', 8, 'Yebra', '19327', '19327', -3.03083, 40.2948, -2.88781, 40.3934, -2.95709, 40.3513, 701190004, '', 0),
 (801190281, '19', 8, 'Yélamos de Abajo', '19329', '19329', -2.88558, 40.5967, -2.82729, 40.6386, -2.85494, 40.6186, 701190002, '', 0),
-(801190282, '19', 8, 'Yélamos de Arriba', '19330', '19330', -2.87659, 40.6085, -2.8076, 40.671, -2.84319, 40.6486, 701190002, '', 0);
-INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
+(801190282, '19', 8, 'Yélamos de Arriba', '19330', '19330', -2.87659, 40.6085, -2.8076, 40.671, -2.84319, 40.6486, 701190002, '', 0),
 (801190283, '19', 8, 'Yunquera de Henares', '19331', '19331', -3.22458, 40.7235, -3.13242, 40.7857, -3.17537, 40.7592, 701190004, '', 0),
 (801190284, '19', 8, 'La Yunta', '19332', '19332', -1.71721, 40.8794, -1.6079, 40.9783, -1.66142, 40.9292, 701190005, '', 0),
 (801190285, '19', 8, 'Zaorejas', '19333', '19333', -2.32873, 40.676, -2.07095, 40.8461, -2.18693, 40.7596, 701190002, '', 0),
@@ -7448,7 +7468,8 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801220153, '22', 8, 'San Esteban de Litera', '22205', '22205', 0.27358, 41.8323, 0.409185, 41.9486, 0.341382, 41.8904, 701220007, '', 0),
 (801220154, '22', 8, 'Sangarrén', '22206', '22206', -0.506281, 41.9832, -0.406826, 42.0376, -0.454593, 42.0116, 701220004, '', 0),
 (801220155, '22', 8, 'San Juan de Plan', '22207', '22207', 0.33922, 42.5612, 0.436409, 42.6807, 0.386291, 42.6232, 701220008, '', 0),
-(801220156, '22', 8, 'Santa Cilia', '22208', '22208', -0.766845, 42.5218, -0.671711, 42.6078, -0.71562, 42.5632, 701220001, '', 0),
+(801220156, '22', 8, 'Santa Cilia', '22208', '22208', -0.766845, 42.5218, -0.671711, 42.6078, -0.71562, 42.5632, 701220001, '', 0);
+INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
 (801220157, '22', 8, 'Santa Cruz de la Serós', '22209', '22209', -0.719225, 42.5066, -0.644036, 42.5638, -0.682443, 42.5331, 701220001, '', 0),
 (801220158, '22', 8, 'Santaliestra y San Quílez', '22212', '22212', 0.320982, 42.2857, 0.395904, 42.3506, 0.359569, 42.3175, 701220008, '', 0),
 (801220159, '22', 8, 'Sariñena', '22213', '22213', -0.308108, 41.6506, -0.0304256, 41.8863, -0.177655, 41.7694, 701220004, '', 0),
@@ -7504,8 +7525,7 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801230007, '23', 8, 'Arjonilla', '23007', '23007', -4.1726, 37.9435, -4.06512, 38.0215, -4.12206, 37.9834, 701230005, '', 0),
 (801230008, '23', 8, 'Arquillos', '23008', '23008', -3.47158, 38.1442, -3.35878, 38.2846, -3.416, 38.206, 701230003, '', 0),
 (801230009, '23', 8, 'Baeza', '23009', '23009', -3.59253, 37.8533, -3.39856, 38.0543, -3.49076, 37.9453, 701230002, '', 0),
-(801230010, '23', 8, 'Bailén', '23010', '23010', -3.86786, 38.0315, -3.70639, 38.1538, -3.77889, 38.0927, 701230004, '', 0);
-INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
+(801230010, '23', 8, 'Bailén', '23010', '23010', -3.86786, 38.0315, -3.70639, 38.1538, -3.77889, 38.0927, 701230004, '', 0),
 (801230011, '23', 8, 'Baños de la Encina', '23011', '23011', -3.86717, 38.1453, -3.65166, 38.4253, -3.76986, 38.285, 701230004, '', 0),
 (801230012, '23', 8, 'Beas de Segura', '23012', '23012', -3.01735, 38.207, -2.7505, 38.3069, -2.86677, 38.2536, 701230001, '', 0),
 (801230013, '23', 8, 'Begíjar', '23014', '23014', -3.63972, 37.9472, -3.50821, 38.0032, -3.57032, 37.9734, 701230002, '', 0),
@@ -7831,7 +7851,8 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801250020, '25', 8, 'Alpicat', '25023', '25023', 0.524914, 41.6452, 0.586338, 41.6952, 0.554984, 41.6704, 701250011, '', 0),
 (801250021, '25', 8, 'Alt Àneu', '25024', '25024', 0.958803, 42.5928, 1.17052, 42.7883, 1.0606, 42.6828, 701250002, '', 0),
 (801250022, '25', 8, 'Naut Aran', '25025', '25025', 0.790537, 42.5892, 1.03706, 42.8148, 0.924304, 42.7012, 701250003, '', 0),
-(801250023, '25', 8, 'Anglesola', '25027', '25027', 1.02505, 41.6342, 1.10967, 41.6951, 1.05894, 41.6628, 701250009, '', 0),
+(801250023, '25', 8, 'Anglesola', '25027', '25027', 1.02505, 41.6342, 1.10967, 41.6951, 1.05894, 41.6628, 701250009, '', 0);
+INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
 (801250024, '25', 8, 'Arbeca', '25029', '25029', 0.887376, 41.4779, 0.988097, 41.5892, 0.9367, 41.5446, 701250010, '', 0),
 (801250025, '25', 8, 'El Pont de Bar', '25030', '25030', 1.55968, 42.3346, 1.66069, 42.4246, 1.61409, 42.3796, 701250005, '', 0),
 (801250026, '25', 8, 'Arres', '25031', '25031', 0.662778, 42.7371, 0.751985, 42.7784, 0.707751, 42.7606, 701250003, '', 0),
@@ -7889,8 +7910,7 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801250078, '25', 8, 'Fulleda', '25097', '25097', 0.991163, 41.4407, 1.0755, 41.482, 1.03416, 41.4611, 701250010, '', 0),
 (801250079, '25', 8, 'Gavet de la Conca', '25098', '25098', 0.894349, 42.0201, 1.0844, 42.1391, 0.98966, 42.0727, 701250003, '', 0),
 (801250080, '25', 8, 'Golmés', '25099', '25099', 0.89498, 41.6002, 0.960705, 41.6453, 0.92672, 41.6248, 701250012, '', 0),
-(801250081, '25', 8, 'Gósol', '25100', '25100', 1.61019, 42.1611, 1.73858, 42.2564, 1.66883, 42.2086, 701250006, '', 0);
-INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
+(801250081, '25', 8, 'Gósol', '25100', '25100', 1.61019, 42.1611, 1.73858, 42.2564, 1.66883, 42.2086, 701250006, '', 0),
 (801250082, '25', 8, 'La Granadella', '25101', '25101', 0.580777, 41.3072, 0.734173, 41.42, 0.653369, 41.3656, 701250010, '', 0),
 (801250083, '25', 8, 'Granyanella', '25103', '25103', 1.18464, 41.62, 1.24502, 41.6875, 1.21417, 41.6554, 701250008, '', 0),
 (801250084, '25', 8, 'Granyena de Segarra', '25104', '25104', 1.16545, 41.6046, 1.26041, 41.6386, 1.22018, 41.62, 701250008, '', 0),
@@ -8223,7 +8243,8 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801270021, '27', 8, 'Xermade', '27021', '27021', -7.89893, 43.2821, -7.67636, 43.4461, -7.7956, 43.3738, 701270002, '', 0),
 (801270022, '27', 8, 'Guitiriz', '27022', '27022', -7.96139, 43.0924, -7.68938, 43.3363, -7.85616, 43.2065, 701270002, '', 0),
 (801270023, '27', 8, 'Guntín', '27023', '27023', -7.78933, 42.823, -7.51876, 42.9785, -7.65797, 42.9016, 701270004, '', 0),
-(801270024, '27', 8, 'O Incio', '27024', '27024', -7.51232, 42.6081, -7.26889, 42.725, -7.36905, 42.6716, 701270003, '', 0),
+(801270024, '27', 8, 'O Incio', '27024', '27024', -7.51232, 42.6081, -7.26889, 42.725, -7.36905, 42.6716, 701270003, '', 0);
+INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
 (801270025, '27', 8, 'Xove', '27025', '27025', -7.57378, 43.5861, -7.4591, 43.7368, -7.51644, 43.6614, 701270001, '', 0),
 (801270026, '27', 8, 'Láncara', '27026', '27026', -7.4533, 42.7759, -7.21938, 42.9254, -7.33569, 42.8454, 701270003, '', 0),
 (801270027, '27', 8, 'Lourenzá', '27027', '27027', -7.33054, 43.3945, -7.23527, 43.5253, -7.28349, 43.4544, 701270001, '', 0),
@@ -8281,8 +8302,7 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801280012, '28', 8, 'Anchuelo', '28012', '28012', -3.32144, 40.4381, -3.23432, 40.4951, -3.2768, 40.4664, 701280002, '', 0),
 (801280013, '28', 8, 'Aranjuez', '28013', '28013', -3.87569, 39.8847, -3.51354, 40.1306, -3.67887, 39.9949, 701280003, '', 0),
 (801280014, '28', 8, 'Arganda del Rey', '28014', '28014', -3.5198, 40.2484, -3.36975, 40.3523, -3.44524, 40.2892, 701280002, '', 0),
-(801280015, '28', 8, 'Arroyomolinos', '28015', '28015', -3.94894, 40.2563, -3.87607, 40.3048, -3.91581, 40.2801, 701280003, '', 0);
-INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
+(801280015, '28', 8, 'Arroyomolinos', '28015', '28015', -3.94894, 40.2563, -3.87607, 40.3048, -3.91581, 40.2801, 701280003, '', 0),
 (801280016, '28', 8, 'El Atazar', '28016', '28016', -3.50337, 40.9084, -3.42158, 40.9673, -3.4667, 40.9396, 701280001, '', 0),
 (801280017, '28', 8, 'Batres', '28017', '28017', -3.9563, 40.1962, -3.89391, 40.2513, -3.92603, 40.2228, 701280003, '', 0),
 (801280018, '28', 8, 'Becerril de la Sierra', '28018', '28018', -4.00486, 40.6457, -3.83005, 40.7671, -3.91745, 40.7064, 701280005, '', 0),
@@ -8611,7 +8631,8 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801310014, '31', 8, 'Ancín/Antzin', '31014', '31014', -2.21924, 42.6468, -2.16048, 42.6867, -2.18724, 42.6648, 701310005, '', 0),
 (801310015, '31', 8, 'Andosilla', '31015', '31015', -2.03206, 42.3476, -1.88091, 42.4332, -1.94636, 42.3839, 701310005, '', 0),
 (801310016, '31', 8, 'Ansoáin/Antsoain', '31016', '31016', -1.65261, 42.8298, -1.63221, 42.8467, -1.64407, 42.8374, 701310001, '', 0),
-(801310017, '31', 8, 'Anue', '31017', '31017', -1.65036, 42.9106, -1.54976, 43.0434, -1.58878, 42.9712, 701310002, '', 0),
+(801310017, '31', 8, 'Anue', '31017', '31017', -1.65036, 42.9106, -1.54976, 43.0434, -1.58878, 42.9712, 701310002, '', 0);
+INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
 (801310018, '31', 8, 'Añorbe', '31018', '31018', -1.77364, 42.6109, -1.68592, 42.6674, -1.72743, 42.6373, 701310004, '', 0),
 (801310019, '31', 8, 'Aoiz/Agoitz', '31019', '31019', -1.38785, 42.7617, -1.31816, 42.8034, -1.3572, 42.7878, 0, '', 0),
 (801310020, '31', 8, 'Araitz', '31020', '31020', -2.04149, 42.9898, -1.9608, 43.0795, -2.00138, 43.0341, 701310002, '', 0),
@@ -8669,8 +8690,7 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801310072, '31', 8, 'Cintruénigo', '31072', '31072', -1.83733, 42.029, -1.74355, 42.1007, -1.7942, 42.0659, 701310007, '', 0),
 (801310073, '31', 8, 'Ziordia', '31073', '31073', -2.25307, 42.851, -2.20638, 42.9266, -2.22921, 42.8837, 701310002, '', 0),
 (801310074, '31', 8, 'Cirauqui/Zirauki', '31074', '31074', -1.9392, 42.6089, -1.85867, 42.71, -1.89922, 42.6602, 701310005, '', 0),
-(801310075, '31', 8, 'Ciriza/Ziritza', '31075', '31075', -1.84824, 42.7828, -1.8027, 42.7989, -1.82513, 42.7917, 701310004, '', 0);
-INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
+(801310075, '31', 8, 'Ciriza/Ziritza', '31075', '31075', -1.84824, 42.7828, -1.8027, 42.7989, -1.82513, 42.7917, 701310004, '', 0),
 (801310076, '31', 8, 'Cizur', '31076', '31076', -1.79252, 42.7061, -1.66078, 42.8013, -1.72665, 42.7537, 701310001, '', 0),
 (801310077, '31', 8, 'Corella', '31077', '31077', -1.89733, 42.0723, -1.69914, 42.1536, -1.79231, 42.113, 701310007, '', 0),
 (801310078, '31', 8, 'Cortes', '31078', '31078', -1.51771, 41.9131, -1.38009, 41.9632, -1.44452, 41.9385, 701310007, '', 0),
@@ -9003,7 +9023,8 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801330025, '33', 8, 'Gozón', '33025', '33025', -5.94803, 43.5521, -5.76516, 43.6665, -5.85659, 43.6093, 701330004, '', 0),
 (801330026, '33', 8, 'Grado', '33026', '33026', -6.20189, 43.1836, -5.96943, 43.4123, -6.0967, 43.3205, 701330005, '', 0),
 (801330027, '33', 8, 'Grandas de Salime', '33027', '33027', -6.99315, 43.1318, -6.78832, 43.2445, -6.90148, 43.1959, 701330002, '', 0),
-(801330028, '33', 8, 'Ibias', '33028', '33028', -6.99717, 42.8825, -6.63878, 43.118, -6.81277, 43.0045, 701330003, '', 0),
+(801330028, '33', 8, 'Ibias', '33028', '33028', -6.99717, 42.8825, -6.63878, 43.118, -6.81277, 43.0045, 701330003, '', 0);
+INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
 (801330029, '33', 8, 'Illano', '33029', '33029', -6.941, 43.2765, -6.75649, 43.399, -6.85005, 43.3406, 701330002, '', 0),
 (801330030, '33', 8, 'Illas', '33030', '33030', -6.01709, 43.4712, -5.91652, 43.5206, -5.96617, 43.4973, 701330005, '', 0),
 (801330031, '33', 8, 'Langreo', '33031', '33031', -5.77397, 43.2287, -5.61521, 43.346, -5.69419, 43.2974, 701330008, '', 0),
@@ -9060,8 +9081,7 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801340004, '34', 8, 'Alar del Rey', '34005', '34005', -4.35498, 42.606, -4.26387, 42.7396, -4.30396, 42.6728, 701340004, '', 0),
 (801340005, '34', 8, 'Alba de Cerrato', '34006', '34006', -4.41981, 41.7634, -4.30679, 41.8391, -4.36852, 41.8006, 701340002, '', 0),
 (801340006, '34', 8, 'Amayuelas de Arriba', '34009', '34009', -4.5153, 42.2028, -4.46289, 42.2419, -4.48626, 42.2218, 701340003, '', 0),
-(801340007, '34', 8, 'Ampudia', '34010', '34010', -4.85791, 41.818, -4.67791, 41.9559, -4.76742, 41.8974, 701340003, '', 0);
-INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
+(801340007, '34', 8, 'Ampudia', '34010', '34010', -4.85791, 41.818, -4.67791, 41.9559, -4.76742, 41.8974, 701340003, '', 0),
 (801340008, '34', 8, 'Amusco', '34011', '34011', -4.51487, 42.0886, -4.36508, 42.2161, -4.44316, 42.1487, 701340003, '', 0),
 (801340009, '34', 8, 'Antigüedad', '34012', '34012', -4.15488, 41.8728, -4.03321, 41.9788, -4.08866, 41.9304, 701340002, '', 0),
 (801340010, '34', 8, 'Arconada', '34015', '34015', -4.51731, 42.3147, -4.44805, 42.3629, -4.48696, 42.3395, 701340003, '', 0),
@@ -9388,7 +9408,8 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801370044, '37', 8, 'La Bastida', '37045', '37045', -6.10176, 40.5515, -6.00078, 40.614, -6.04583, 40.585, 701370005, '', 0),
 (801370045, '37', 8, 'Béjar', '37046', '37046', -5.83897, 40.3377, -5.69007, 40.4254, -5.76951, 40.3899, 701370005, '', 0),
 (801370046, '37', 8, 'Beleña', '37047', '37047', -5.69953, 40.7101, -5.60294, 40.7747, -5.64596, 40.7416, 701370002, '', 0),
-(801370047, '37', 8, 'Bermellar', '37049', '37049', -6.70724, 40.9695, -6.61402, 41.0289, -6.66571, 40.9969, 701370003, '', 0),
+(801370047, '37', 8, 'Bermellar', '37049', '37049', -6.70724, 40.9695, -6.61402, 41.0289, -6.66571, 40.9969, 701370003, '', 0);
+INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
 (801370048, '37', 8, 'Berrocal de Huebra', '37050', '37050', -6.06281, 40.6765, -5.95593, 40.7381, -6.00575, 40.7083, 701370001, '', 0),
 (801370049, '37', 8, 'Berrocal de Salvatierra', '37051', '37051', -5.73674, 40.6061, -5.65874, 40.6743, -5.70123, 40.6382, 701370005, '', 0),
 (801370050, '37', 8, 'Boada', '37052', '37052', -6.3872, 40.7918, -6.27757, 40.8595, -6.33159, 40.8257, 701370004, '', 0),
@@ -9443,8 +9464,7 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801370099, '37', 8, 'Cristóbal', '37112', '37112', -5.9386, 40.4446, -5.85229, 40.4958, -5.89172, 40.4693, 701370005, '', 0),
 (801370100, '37', 8, 'El Cubo de Don Sancho', '37113', '37113', -6.38068, 40.8196, -6.2263, 40.9481, -6.30704, 40.8883, 701370003, '', 0),
 (801370101, '37', 8, 'Chagarcía Medianero', '37114', '37114', -5.41498, 40.6307, -5.36589, 40.704, -5.38788, 40.6703, 701370002, '', 0),
-(801370102, '37', 8, 'Dios le Guarde', '37115', '37115', -6.34835, 40.6159, -6.28549, 40.6592, -6.31613, 40.6401, 701370004, '', 0);
-INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
+(801370102, '37', 8, 'Dios le Guarde', '37115', '37115', -6.34835, 40.6159, -6.28549, 40.6592, -6.31613, 40.6401, 701370004, '', 0),
 (801370103, '37', 8, 'Doñinos de Ledesma', '37116', '37116', -6.08589, 40.9558, -5.98862, 41.0761, -6.03726, 41.016, 701370003, '', 0),
 (801370104, '37', 8, 'Doñinos de Salamanca', '37117', '37117', -5.79162, 40.9019, -5.71635, 40.992, -5.75398, 40.9469, 701370001, '', 0),
 (801370105, '37', 8, 'Ejeme', '37118', '37118', -5.55367, 40.7398, -5.50049, 40.7982, -5.52531, 40.7688, 701370002, '', 0),
@@ -9770,7 +9790,8 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801390008, '39', 8, 'El Astillero', '39008', '39008', -3.86107, 43.3858, -3.80966, 43.4132, -3.8369, 43.3992, 701390007, '', 0),
 (801390009, '39', 8, 'Bárcena de Cicero', '39009', '39009', -3.56538, 43.3719, -3.46038, 43.4314, -3.5078, 43.4041, 701390008, '', 0),
 (801390010, '39', 8, 'Bárcena de Pie de Concha', '39010', '39010', -4.13438, 43.0892, -4.00882, 43.1412, -4.07646, 43.1144, 701390005, '', 0),
-(801390011, '39', 8, 'Bareyo', '39011', '39011', -3.65559, 43.4326, -3.57799, 43.5137, -3.61679, 43.4732, 701390008, '', 0),
+(801390011, '39', 8, 'Bareyo', '39011', '39011', -3.65559, 43.4326, -3.57799, 43.5137, -3.61679, 43.4732, 701390008, '', 0);
+INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
 (801390012, '39', 8, 'Cabezón de la Sal', '39012', '39012', -4.28463, 43.2748, -4.1685, 43.3504, -4.2314, 43.3114, 701390003, '', 0),
 (801390013, '39', 8, 'Cabezón de Liébana', '39013', '39013', -4.61308, 43.0806, -4.46436, 43.1723, -4.5404, 43.1295, 701390002, '', 0),
 (801390014, '39', 8, 'Cabuérniga', '39014', '39014', -4.38168, 43.1385, -4.19335, 43.2745, -4.30435, 43.2117, 701390003, '', 0),
@@ -9827,8 +9848,7 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801390065, '39', 8, 'Las Rozas de Valdearroyo', '39065', '39065', -4.0884, 42.9243, -3.94546, 43.0086, -4.02129, 42.9676, 701390001, '', 0),
 (801390066, '39', 8, 'Ruente', '39066', '39066', -4.32396, 43.1911, -4.17698, 43.279, -4.23893, 43.2375, 701390003, '', 0),
 (801390067, '39', 8, 'Ruesga', '39067', '39067', -3.71203, 43.2332, -3.47352, 43.3437, -3.59277, 43.2885, 701390009, '', 0),
-(801390068, '39', 8, 'Ruiloba', '39068', '39068', -4.28115, 43.3609, -4.22128, 43.4006, -4.25076, 43.3809, 701390004, '', 0);
-INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
+(801390068, '39', 8, 'Ruiloba', '39068', '39068', -4.28115, 43.3609, -4.22128, 43.4006, -4.25076, 43.3809, 701390004, '', 0),
 (801390069, '39', 8, 'San Felices de Buelna', '39069', '39069', -4.0768, 43.2271, -3.99609, 43.305, -4.03103, 43.2713, 701390005, '', 0),
 (801390070, '39', 8, 'San Miguel de Aguayo', '39070', '39070', -4.0561, 43.0388, -3.95834, 43.1022, -4.01048, 43.0716, 701390001, '', 0),
 (801390071, '39', 8, 'San Pedro del Romeral', '39071', '39071', -3.8798, 43.0781, -3.75589, 43.1727, -3.82878, 43.1174, 701390006, '', 0),
@@ -10154,7 +10174,8 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801410078, '41', 8, 'La Puebla de los Infantes', '41078', '41078', -5.51471, 37.7512, -5.32945, 37.8695, -5.42874, 37.8067, 701410007, '', 0),
 (801410079, '41', 8, 'La Puebla del Río', '41079', '41079', -6.28992, 36.8937, -6.02652, 37.3033, -6.14436, 37.106, 701410002, '', 0),
 (801410080, '41', 8, 'El Real de la Jara', '41080', '41080', -6.18412, 37.9032, -5.93249, 38, -6.05036, 37.9505, 701410007, '', 0),
-(801410081, '41', 8, 'La Rinconada', '41081', '41081', -6.01019, 37.3954, -5.81759, 37.5437, -5.89689, 37.4704, 701410004, '', 0),
+(801410081, '41', 8, 'La Rinconada', '41081', '41081', -6.01019, 37.3954, -5.81759, 37.5437, -5.89689, 37.4704, 701410004, '', 0);
+INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
 (801410082, '41', 8, 'La Roda de Andalucía', '41082', '41082', -4.86086, 37.1535, -4.70861, 37.2691, -4.7753, 37.2103, 701410006, '', 0),
 (801410083, '41', 8, 'El Ronquillo', '41083', '41083', -6.23481, 37.6708, -6.12099, 37.8099, -6.17856, 37.7485, 701410007, '', 0),
 (801410084, '41', 8, 'El Rubio', '41084', '41084', -5.03784, 37.3117, -4.97974, 37.3702, -5.01058, 37.3453, 701410005, '', 0),
@@ -10209,8 +10230,7 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801420028, '42', 8, 'Barca', '42030', '42030', -2.69657, 41.3922, -2.59453, 41.4857, -2.64116, 41.4391, 701420008, '', 0),
 (801420029, '42', 8, 'Barcones', '42031', '42031', -2.87304, 41.2501, -2.75837, 41.3237, -2.81131, 41.2895, 701420008, '', 0),
 (801420030, '42', 8, 'Bayubas de Abajo', '42032', '42032', -2.95525, 41.4419, -2.86947, 41.5558, -2.90894, 41.5105, 701420006, '', 0),
-(801420031, '42', 8, 'Bayubas de Arriba', '42033', '42033', -2.9339, 41.5404, -2.84768, 41.5865, -2.88809, 41.5627, 701420006, '', 0);
-INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
+(801420031, '42', 8, 'Bayubas de Arriba', '42033', '42033', -2.9339, 41.5404, -2.84768, 41.5865, -2.88809, 41.5627, 701420006, '', 0),
 (801420032, '42', 8, 'Beratón', '42034', '42034', -1.8787, 41.6865, -1.77537, 41.7661, -1.82707, 41.7227, 701420003, '', 0),
 (801420033, '42', 8, 'Berlanga de Duero', '42035', '42035', -2.97759, 41.3248, -2.74043, 41.5383, -2.87387, 41.4358, 701420008, '', 0),
 (801420034, '42', 8, 'Blacos', '42036', '42036', -2.92946, 41.6626, -2.83492, 41.7184, -2.87905, 41.6921, 701420006, '', 0),
@@ -10545,7 +10565,8 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801440012, '44', 8, 'Alcalá de la Selva', '44012', '44012', -0.791197, 40.3083, -0.634185, 40.4149, -0.713486, 40.3642, 701440006, '', 0),
 (801440013, '44', 8, 'Alcañiz', '44013', '44013', -0.376249, 40.9755, 0.0369192, 41.192, -0.16963, 41.0736, 701440005, '', 0),
 (801440014, '44', 8, 'Alcorisa', '44014', '44014', -0.470326, 40.8611, -0.290007, 41.0058, -0.369675, 40.9198, 701440005, '', 0),
-(801440015, '44', 8, 'Alfambra', '44016', '44016', -1.13599, 40.4735, -0.9706, 40.6279, -1.06067, 40.5505, 701440002, '', 0),
+(801440015, '44', 8, 'Alfambra', '44016', '44016', -1.13599, 40.4735, -0.9706, 40.6279, -1.06067, 40.5505, 701440002, '', 0);
+INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
 (801440016, '44', 8, 'Aliaga', '44017', '44017', -0.77675, 40.5519, -0.587206, 40.7705, -0.678978, 40.682, 701440004, '', 0),
 (801440017, '44', 8, 'Almohaja', '44018', '44018', -1.47272, 40.5797, -1.40026, 40.6401, -1.43508, 40.6072, 701440002, '', 0),
 (801440018, '44', 8, 'Alobras', '44019', '44019', -1.4427, 40.1595, -1.34757, 40.213, -1.40161, 40.183, 701440002, '', 0),
@@ -10601,8 +10622,7 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801440068, '44', 8, 'Celadas', '44075', '44075', -1.21311, 40.4269, -1.09967, 40.569, -1.15779, 40.4956, 701440002, '', 0),
 (801440069, '44', 8, 'Cella', '44076', '44076', -1.37613, 40.3509, -1.20666, 40.5215, -1.29493, 40.4584, 701440002, '', 0),
 (801440070, '44', 8, 'La Cerollera', '44077', '44077', -0.132367, 40.7918, -0.0255689, 40.8553, -0.0815932, 40.8245, 701440005, '', 0),
-(801440071, '44', 8, 'La Codoñera', '44080', '44080', -0.0983201, 40.9049, -0.0171983, 40.9487, -0.0589105, 40.9284, 701440005, '', 0);
-INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
+(801440071, '44', 8, 'La Codoñera', '44080', '44080', -0.0983201, 40.9049, -0.0171983, 40.9487, -0.0589105, 40.9284, 701440005, '', 0),
 (801440072, '44', 8, 'Corbalán', '44082', '44082', -1.04026, 40.3508, -0.89573, 40.4504, -0.96131, 40.4035, 701440002, '', 0),
 (801440073, '44', 8, 'Cortes de Aragón', '44084', '44084', -0.864024, 40.9488, -0.783294, 41.0158, -0.820513, 40.9775, 701440004, '', 0),
 (801440074, '44', 8, 'Cosa', '44085', '44085', -1.17315, 40.7485, -1.07132, 40.8625, -1.1268, 40.8023, 701440003, '', 0),
@@ -10930,7 +10950,8 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801450158, '45', 8, 'Sartajada', '45159', '45159', -4.83541, 40.1911, -4.76803, 40.2318, -4.80331, 40.2103, 701450010, '', 0),
 (801450159, '45', 8, 'Segurilla', '45160', '45160', -4.91665, 39.998, -4.83411, 40.0671, -4.87294, 40.0368, 701450010, '', 0),
 (801450160, '45', 8, 'Seseña', '45161', '45161', -3.7336, 40.0287, -3.60373, 40.1433, -3.66607, 40.0922, 701450005, '', 0),
-(801450161, '45', 8, 'Sevilleja de la Jara', '45162', '45162', -5.03944, 39.3931, -4.86312, 39.6736, -4.9555, 39.5297, 701450006, '', 0),
+(801450161, '45', 8, 'Sevilleja de la Jara', '45162', '45162', -5.03944, 39.3931, -4.86312, 39.6736, -4.9555, 39.5297, 701450006, '', 0);
+INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
 (801450162, '45', 8, 'Sonseca', '45163', '45163', -4.0489, 39.5913, -3.94778, 39.6954, -3.99518, 39.6414, 701450003, '', 0),
 (801450163, '45', 8, 'Sotillo de las Palomas', '45164', '45164', -4.88327, 40.0703, -4.80917, 40.1146, -4.84787, 40.0932, 701450010, '', 0),
 (801450164, '45', 8, 'Talavera de la Reina', '45165', '45165', -5.06003, 39.8854, -4.64317, 40.0188, -4.84916, 39.9537, 701450008, '', 0),
@@ -10985,8 +11006,7 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801460009, '46', 8, 'Albalat dels Tarongers', '46010', '46010', -0.392968, 39.6243, -0.311132, 39.718, -0.357516, 39.6769, 701460015, '', 0),
 (801460010, '46', 8, 'Alberic', '46011', '46011', -0.585017, 39.0858, -0.492127, 39.1451, -0.537332, 39.1182, 701460006, '', 0),
 (801460011, '46', 8, 'Alborache', '46012', '46012', -0.797145, 39.3213, -0.727898, 39.4208, -0.755449, 39.3776, 701460001, '', 0),
-(801460012, '46', 8, 'Alboraya', '46013', '46013', -0.360046, 39.4844, -0.317611, 39.5182, -0.337149, 39.5005, 701460015, '', 0);
-INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
+(801460012, '46', 8, 'Alboraya', '46013', '46013', -0.360046, 39.4844, -0.317611, 39.5182, -0.337149, 39.5005, 701460015, '', 0),
 (801460013, '46', 8, 'Albuixech', '46014', '46014', -0.334588, 39.5305, -0.299508, 39.5543, -0.317895, 39.543, 701460015, '', 0),
 (801460014, '46', 8, 'Alcàsser', '46015', '46015', -0.4659, 39.3635, -0.4251, 39.4028, -0.447158, 39.3811, 701460013, '', 0),
 (801460015, '46', 8, 'Alcàntera de Xúquer', '46016', '46016', -0.566126, 39.0445, -0.544932, 39.0904, -0.55791, 39.0658, 701460006, '', 0),
@@ -11314,7 +11334,8 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801470081, '47', 8, 'Matapozuelos', '47082', '47082', -4.81998, 41.3552, -4.72311, 41.4537, -4.77352, 41.4105, 701470003, '', 0),
 (801470082, '47', 8, 'Matilla de los Caños', '47083', '47083', -4.98515, 41.5258, -4.91853, 41.5679, -4.95457, 41.5433, 701470004, '', 0),
 (801470083, '47', 8, 'Mayorga', '47084', '47084', -5.38925, 42.0578, -5.20075, 42.2741, -5.295, 42.166, 701470005, '', 0),
-(801470084, '47', 8, 'Medina del Campo', '47085', '47085', -4.99094, 41.2294, -4.81446, 41.439, -4.90436, 41.3197, 701470003, '', 0),
+(801470084, '47', 8, 'Medina del Campo', '47085', '47085', -4.99094, 41.2294, -4.81446, 41.439, -4.90436, 41.3197, 701470003, '', 0);
+INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
 (801470085, '47', 8, 'Medina de Rioseco', '47086', '47086', -5.11702, 41.7291, -4.88492, 41.9395, -5.00097, 41.8343, 701470005, '', 0),
 (801470086, '47', 8, 'Megeces', '47087', '47087', -4.62111, 41.3786, -4.55489, 41.4276, -4.58494, 41.4047, 701470003, '', 0),
 (801470087, '47', 8, 'Melgar de Abajo', '47088', '47088', -5.18348, 42.2163, -5.11109, 42.2816, -5.14729, 42.2482, 701470005, '', 0),
@@ -11369,8 +11390,7 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801470136, '47', 8, 'Salvador de Zapardiel', '47141', '47141', -4.90902, 41.094, -4.81879, 41.1784, -4.8639, 41.1362, 701470003, '', 0),
 (801470137, '47', 8, 'San Cebrián de Mazote', '47142', '47142', -5.19625, 41.6481, -5.09343, 41.7118, -5.14852, 41.6807, 701470004, '', 0),
 (801470138, '47', 8, 'San Llorente', '47143', '47143', -4.1129, 41.657, -4.0391, 41.7267, -4.076, 41.6918, 701470002, '', 0),
-(801470139, '47', 8, 'San Martín de Valvení', '47144', '47144', -4.61382, 41.7195, -4.45424, 41.7823, -4.5343, 41.7516, 701470002, '', 0);
-INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
+(801470139, '47', 8, 'San Martín de Valvení', '47144', '47144', -4.61382, 41.7195, -4.45424, 41.7823, -4.5343, 41.7516, 701470002, '', 0),
 (801470140, '47', 8, 'San Miguel del Arroyo', '47145', '47145', -4.55029, 41.4088, -4.39712, 41.477, -4.47496, 41.4429, 701470002, '', 0),
 (801470141, '47', 8, 'San Miguel del Pino', '47146', '47146', -4.93344, 41.5021, -4.88658, 41.5302, -4.91105, 41.515, 701470004, '', 0),
 (801470142, '47', 8, 'San Pablo de la Moraleja', '47147', '47147', -4.82714, 41.1294, -4.72134, 41.1829, -4.77974, 41.1567, 701470003, '', 0),
@@ -11699,7 +11719,8 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801490128, '49', 8, 'Otero de Bodas', '49139', '49139', -6.24873, 41.9077, -6.10238, 41.9865, -6.17117, 41.9485, 701490011, '', 0),
 (801490129, '49', 8, 'Pajares de la Lampreana', '49141', '49141', -5.73912, 41.6702, -5.64611, 41.7361, -5.69522, 41.7094, 701490001, '', 0),
 (801490130, '49', 8, 'Palacios del Pan', '49142', '49142', -5.92862, 41.564, -5.85437, 41.6516, -5.88936, 41.6119, 701490001, '', 0),
-(801490131, '49', 8, 'Palacios de Sanabria', '49143', '49143', -6.59666, 42.0063, -6.50446, 42.0864, -6.54495, 42.046, 701490012, '', 0),
+(801490131, '49', 8, 'Palacios de Sanabria', '49143', '49143', -6.59666, 42.0063, -6.50446, 42.0864, -6.54495, 42.046, 701490012, '', 0);
+INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
 (801490132, '49', 8, 'Pedralba de la Pradería', '49145', '49145', -6.7687, 41.9333, -6.58847, 42.0528, -6.68814, 41.9815, 701490012, '', 0),
 (801490133, '49', 8, 'El Pego', '49146', '49146', -5.51091, 41.2997, -5.42471, 41.3866, -5.47336, 41.3424, 701490003, '', 0),
 (801490134, '49', 8, 'Peleagonzalo', '49147', '49147', -5.51761, 41.4676, -5.42403, 41.5093, -5.46983, 41.4887, 0, '', 0),
@@ -11753,8 +11774,7 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801490182, '49', 8, 'Santa Cristina de la Polvorosa', '49200', '49200', -5.78681, 41.9387, -5.69149, 42.0271, -5.74133, 41.9902, 701490010, '', 0),
 (801490183, '49', 8, 'Santa Croya de Tera', '49201', '49201', -6.00434, 41.9436, -5.93923, 41.9945, -5.96821, 41.9699, 701490010, '', 0),
 (801490184, '49', 8, 'Santa Eufemia del Barco', '49202', '49202', -5.97185, 41.645, -5.83653, 41.7239, -5.90404, 41.6885, 701490008, '', 0),
-(801490185, '49', 8, 'Santa María de la Vega', '49203', '49203', -5.85246, 42.0504, -5.78163, 42.1025, -5.81654, 42.079, 701490010, '', 0);
-INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
+(801490185, '49', 8, 'Santa María de la Vega', '49203', '49203', -5.85246, 42.0504, -5.78163, 42.1025, -5.81654, 42.079, 701490010, '', 0),
 (801490186, '49', 8, 'Santa María de Valverde', '49204', '49204', -5.94887, 41.9089, -5.91329, 41.9614, -5.93186, 41.9362, 701490010, '', 0),
 (801490187, '49', 8, 'Santibáñez de Tera', '49205', '49205', -5.95949, 41.9568, -5.85834, 42.0163, -5.91807, 41.9937, 701490010, '', 0),
 (801490188, '49', 8, 'Santibáñez de Vidriales', '49206', '49206', -6.08125, 42.0165, -5.90034, 42.1242, -5.98472, 42.0716, 701490010, '', 0),
@@ -12087,7 +12107,8 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (801500267, '50', 8, 'Valmadrid', '50275', '50275', -0.924906, 41.3973, -0.825196, 41.4928, -0.885008, 41.4492, 701500002, '', 0),
 (801500268, '50', 8, 'Valpalmas', '50276', '50276', -0.89317, 42.1151, -0.813905, 42.1947, -0.850983, 42.1566, 701500009, '', 0),
 (801500269, '50', 8, 'Valtorres', '50277', '50277', -1.7575, 41.284, -1.73219, 41.3106, -1.74527, 41.2986, 701500010, '', 0),
-(801500270, '50', 8, 'Velilla de Ebro', '50278', '50278', -0.459547, 41.3327, -0.296923, 41.4288, -0.386259, 41.3887, 701500006, '', 0),
+(801500270, '50', 8, 'Velilla de Ebro', '50278', '50278', -0.459547, 41.3327, -0.296923, 41.4288, -0.386259, 41.3887, 701500006, '', 0);
+INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
 (801500271, '50', 8, 'Velilla de Jiloca', '50279', '50279', -1.61631, 41.2448, -1.56082, 41.2917, -1.59241, 41.2719, 701500010, '', 0),
 (801500272, '50', 8, 'Vera de Moncayo', '50280', '50280', -1.74304, 41.7926, -1.62883, 41.8624, -1.68076, 41.8313, 701500011, '', 0),
 (801500273, '50', 8, 'Vierlas', '50281', '50281', -1.69526, 41.92, -1.67109, 41.9414, -1.68397, 41.9305, 701500011, '', 0),
@@ -12147,8 +12168,7 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 (901280032, '28', 9, '', '', '', -3.95188, 40.3769, -3.83848, 40.4566, -3.89271, 40.4202, 801280022, '', 0),
 (901280033, '28', 9, '', '', '', -3.96694, 40.6488, -3.83318, 40.7693, -3.92189, 40.7092, 801280023, '', 0),
 (901280034, '28', 9, '', '', '', -3.70568, 41.0286, -3.62339, 41.0869, -3.65983, 41.0595, 801280024, '', 0),
-(901280035, '28', 9, '', '', '', -3.17331, 40.2001, -3.07954, 40.2854, -3.12117, 40.2403, 801280025, '', 0);
-INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `idPadre`, `nombreCorto`, `activo`) VALUES
+(901280035, '28', 9, '', '', '', -3.17331, 40.2001, -3.07954, 40.2854, -3.12117, 40.2403, 801280025, '', 0),
 (901280036, '28', 9, '', '', '', -4.04603, 40.3586, -3.9448, 40.4365, -3.99491, 40.3971, 801280026, '', 0),
 (901280037, '28', 9, '', '', '', -3.66832, 40.9535, -3.58072, 41.0248, -3.62718, 40.9884, 801280027, '', 0),
 (901280038, '28', 9, '', '', '', -3.78901, 40.7941, -3.67161, 40.8807, -3.72837, 40.8415, 801280028, '', 0),
@@ -12368,12 +12388,13 @@ INSERT INTO `lugares_shp` (`id`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdi
 --
 
 DROP TABLE IF EXISTS `preregister`;
-CREATE TABLE `preregister` (
-`idPreregister` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `preregister` (
+  `idPreregister` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `idCiudad` int(11) NOT NULL,
-  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idPreregister`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
 
 --
 -- Volcado de datos para la tabla `preregister`
@@ -12393,10 +12414,12 @@ INSERT INTO `preregister` (`idPreregister`, `email`, `idCiudad`, `fecha`) VALUES
 --
 
 DROP TABLE IF EXISTS `tematicas`;
-CREATE TABLE `tematicas` (
-`idTematica` int(11) NOT NULL,
-  `tematica` varchar(255) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE IF NOT EXISTS `tematicas` (
+  `idTematica` int(11) NOT NULL AUTO_INCREMENT,
+  `tematica` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`idTematica`),
+  KEY `tematica` (`tematica`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=31 ;
 
 --
 -- Volcado de datos para la tabla `tematicas`
@@ -12441,14 +12464,17 @@ INSERT INTO `tematicas` (`idTematica`, `tematica`) VALUES
 --
 
 DROP TABLE IF EXISTS `users`;
-CREATE TABLE `users` (
-`idUser` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `users` (
+  `idUser` int(11) NOT NULL AUTO_INCREMENT,
   `user` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `hash` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `verified` tinyint(1) NOT NULL,
-  `verificationToken` varchar(255) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `verificationToken` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`idUser`),
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `user` (`user`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=25 ;
 
 --
 -- Volcado de datos para la tabla `users`
@@ -12458,125 +12484,6 @@ INSERT INTO `users` (`idUser`, `user`, `email`, `hash`, `verified`, `verificatio
 (23, 'Kike', 'correo@kike.es', 'sha256:1000:jpZSJq4aVoO+/FeYU+oAFomlWZnkuzq7:l5pyA+N92s7CCiKui98nVYgZdDcPiuEE', 1, ''),
 (24, 'Pedro Prieto', 'correo+pedro@kike.es', 'sha256:1000:JQgoVaIuccBSFGVXlyOvwK9lKn6iOxtZ:j0yb6cI9rhCS+cZ/5k7RU+Qe4o5DJVQc', 0, '7qmQDkCBkHlfx91xgOYKuXYGaxOITA3g');
 
---
--- Índices para tablas volcadas
---
-
---
--- Indices de la tabla `avisoslistados`
---
-ALTER TABLE `avisoslistados`
- ADD PRIMARY KEY (`idAvisoListado`), ADD UNIQUE KEY `idUser` (`idUser`,`query`,`clase`);
-
---
--- Indices de la tabla `direcciones`
---
-ALTER TABLE `direcciones`
- ADD PRIMARY KEY (`idDireccion`), ADD KEY `idCiudad` (`idCiudad`), ADD KEY `idPadre` (`idPadre`);
-
---
--- Indices de la tabla `entidades`
---
-ALTER TABLE `entidades`
- ADD PRIMARY KEY (`idEntidad`), ADD KEY `entidad` (`entidad`), ADD KEY `idDireccion` (`idDireccion`);
-
---
--- Indices de la tabla `entidades_tematicas`
---
-ALTER TABLE `entidades_tematicas`
- ADD PRIMARY KEY (`idEntidadTematica`), ADD KEY `idEntidad` (`idEntidad`), ADD KEY `idTematica` (`idTematica`);
-
---
--- Indices de la tabla `eventos`
---
-ALTER TABLE `eventos`
- ADD PRIMARY KEY (`idEvento`), ADD KEY `titulo` (`titulo`), ADD KEY `idDistritoPadre` (`idDistritoPadre`);
-
---
--- Indices de la tabla `eventos_tematicas`
---
-ALTER TABLE `eventos_tematicas`
- ADD PRIMARY KEY (`idEventoTematica`), ADD KEY `idEntidad` (`idEvento`), ADD KEY `idTematica` (`idTematica`);
-
---
--- Indices de la tabla `lugares_mapit`
---
-ALTER TABLE `lugares_mapit`
- ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `lugares_shp`
---
-ALTER TABLE `lugares_shp`
- ADD PRIMARY KEY (`id`), ADD KEY `nivel` (`nivel`);
-
---
--- Indices de la tabla `preregister`
---
-ALTER TABLE `preregister`
- ADD PRIMARY KEY (`idPreregister`);
-
---
--- Indices de la tabla `tematicas`
---
-ALTER TABLE `tematicas`
- ADD PRIMARY KEY (`idTematica`), ADD KEY `tematica` (`tematica`);
-
---
--- Indices de la tabla `users`
---
-ALTER TABLE `users`
- ADD PRIMARY KEY (`idUser`), ADD UNIQUE KEY `email` (`email`), ADD UNIQUE KEY `user` (`user`);
-
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `avisoslistados`
---
-ALTER TABLE `avisoslistados`
-MODIFY `idAvisoListado` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=40;
---
--- AUTO_INCREMENT de la tabla `direcciones`
---
-ALTER TABLE `direcciones`
-MODIFY `idDireccion` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1411;
---
--- AUTO_INCREMENT de la tabla `entidades`
---
-ALTER TABLE `entidades`
-MODIFY `idEntidad` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=554;
---
--- AUTO_INCREMENT de la tabla `entidades_tematicas`
---
-ALTER TABLE `entidades_tematicas`
-MODIFY `idEntidadTematica` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1687;
---
--- AUTO_INCREMENT de la tabla `eventos`
---
-ALTER TABLE `eventos`
-MODIFY `idEvento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1850;
---
--- AUTO_INCREMENT de la tabla `eventos_tematicas`
---
-ALTER TABLE `eventos_tematicas`
-MODIFY `idEventoTematica` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=164;
---
--- AUTO_INCREMENT de la tabla `preregister`
---
-ALTER TABLE `preregister`
-MODIFY `idPreregister` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
---
--- AUTO_INCREMENT de la tabla `tematicas`
---
-ALTER TABLE `tematicas`
-MODIFY `idTematica` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=31;
---
--- AUTO_INCREMENT de la tabla `users`
---
-ALTER TABLE `users`
-MODIFY `idUser` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=25;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
