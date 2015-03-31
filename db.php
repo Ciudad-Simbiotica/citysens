@@ -610,6 +610,7 @@ function getAllChildren($lugares)
         while($fila=mysqli_fetch_assoc($result))
             array_push($lugares,$fila['id']);
     }
+    
     return(array_unique($lugares));
 
 }
@@ -626,18 +627,18 @@ function getAllAncestors($idLugar)
         $idPadre=$lugar["idPadre"];
     }
     
-    /*
+  /* 
     //Simulando Comunidad de Madrid
     $lugares[4]["nombre"]="Comunidad de Madrid";
     $lugares[4]["nombreCorto"]="CM";
     $lugares[4]["id"]="444000028";
-    */
-
+    
+ 
     //Simulando España
     $lugares[2]["nombre"]="España";
     $lugares[2]["nombreCorto"]="ES";
-    $lugares[2]["id"]="222000034";
-
+    $lugares[2]["id"]="201000034";
+*/
     return $lugares;
 }
 

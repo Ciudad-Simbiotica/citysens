@@ -15,26 +15,26 @@ if($_POST["regionIDs"]!="")
     $idregionmax=701009999+10000*$provincia;
 	$sql='SELECT MAX(id)+1 AS nextID FROM lugares_shp WHERE id>='.$idregionmin.' AND id<'.$idregionmax;
 	$link=connect();
-    mysql_query('SET CHARACTER SET utf8',$link);
-	$result=mysql_query($sql,$link);
-	$fila=mysql_fetch_assoc($result);
+    mysqli_query($link, 'SET CHARACTER SET utf8');
+	$result=mysqli_query($link, $sql);
+	$fila=mysqli_fetch_assoc($result);
     $nextID=$fila["nextID"];
 	if ($nextID==null)
       $nextID=701000001+10000*$provincia;
     
     
     $sql="SELECT id as ccaaID from lugares_shp where nivel=6 and provincia=$provincia";	
-	mysql_query($sql,$link);
-    $result=mysql_query($sql,$link);
-    $fila=mysql_fetch_assoc($result);
+	mysqli_query($link, $sql);
+    $result=mysqli_query($link, $sql);
+    $fila=mysqli_fetch_assoc($result);
     $ccaaID=$fila["ccaaID"];
     
 	$sql="INSERT INTO lugares_shp (id,nombre,provincia,nivel,idPadre) VALUES ('$nextID','{$_POST["nombre"]}','$provincia','7','$ccaaID')";	
-	mysql_query($sql,$link);
+	mysqli_query($link, $sql);
 	foreach($ids as $id)
 	{
 		$sql="UPDATE lugares_shp SET idPadre='$nextID' WHERE id='$id'";
-		mysql_query($sql,$link);
+		mysqli_query($link, $sql);
 	}
 }
 */
@@ -65,7 +65,7 @@ if($_POST["regionIDs"]!="")
   <form method=POST id=formulario>
 	Región: <input type=text name=nombre id=nombre size=80><input type=submit value=Guardar>
 	<input type=hidden name=regionIDs id=regionIDs>
-<input type=hidden name=provincia id=provincia value=52>
+<input type=hidden name=provincia id=provincia value=46>
   </form>
 	 <ul id='sitios'>
 	 </ul>              
