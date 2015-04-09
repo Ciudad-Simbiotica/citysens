@@ -16,7 +16,7 @@ function loadOverlayNoDisponible(url,idCiudad,ciudad)
 
 }
 
-function addPolygonToMap(idLugar,url,texto,color,activo)
+function addPolygonToMap(idLugar,url,texto,color,activo,style)
 {
 
 $.ajax({
@@ -25,7 +25,16 @@ $.ajax({
     dataType: 'json',
     success: function (response) 
     {
-      geojsonLayer = L.geoJson(response,{fillColor: color, weight: 1}).addTo(map);
+function style(feature) {
+    return {
+        fillColor: color,
+        weight: 1,       
+        //color: 'white', //color de la linea
+        dashArray: '',
+        fillOpacity: 0.3,
+    };
+}        
+      geojsonLayer = L.geoJson(response,{fillColor: color, weight: 1, style: style}).addTo(map);
 
       if(activo>=0) //Sólo hacen click y hover si es >0, si es <0 no es clicable
       {
@@ -46,11 +55,20 @@ $.ajax({
         geojsonLayer.on('mouseover', function(e) 
         {
           $(".map-footer").html("Ir a "+texto);
+          var layer = e.target;
+            layer.setStyle({
+            weight: 1,              
+            fillColor: '#98FB98',            
+             });
+     
+
         });
         
         geojsonLayer.on('mouseout', function(e) 
         {
-          $(".map-footer").html("&nbsp;");
+          $(".map-footer").html("&nbsp;");  
+          var layer = e.target;
+        layer.resetStyle(e.target);  //layer.resetStyle(); 
         });
       }
 
@@ -161,6 +179,7 @@ function cargarMapa(idLugar)
   })
   .done(function (response) 
   {
+    idTerritorioMostrado=response.id;
     //Area a mostrar con padding
     padding=0.025;  //2.5% por cada lado
     paddingX=padding*(parseFloat(response.xmax)-parseFloat(response.xmin));
@@ -211,18 +230,26 @@ function cargarMapa(idLugar)
     $("#map").css("-webkit-transform","scale("+zoom+")");
     //Breadcrumbs
     var breadcrumbs="";
-    var first=true;
-    $.each(response.breadcrumbs, function(i,lugar)
+    var lastAncestor=""; //Debe guardar el último ancestro para el botón de ir a nivel superior
+    var last= response.breadcrumbs.length-1;
+    $.each(response.breadcrumbs, function(i,lugar)   
     {
-      if(!first)
-        breadcrumbs+=" > ";
-      breadcrumbs+='<A HREF=\'?idLugar='+lugar[0]+'\'>'+lugar[1]+'</A>';
-      first=false;
+      if (i) // not first
+          breadcrumbs+=" > ";
+
+      if (i<last) { //not last
+          breadcrumbs+='<A HREF=\'?idLugar='+lugar[0]+'\' > '+lugar[1]+'</A>';
+          lastAncestor=lugar[0];
+      }
+      else{
+          breadcrumbs+= '<strong>'+lugar[1]+'</strong>';
+         }
+      
     });
     
     $(".map-breadcrumbs").html(breadcrumbs);
     window.ciudad=response.nombre;
-    window.idLugar=idLugar;
+    window.idLugar=idLugar;  //Is it used?
     
     var nivelHijos=parseInt(response.nivel,10)+1;
 
@@ -231,7 +258,7 @@ function cargarMapa(idLugar)
     {
         dataType: 'json',
         nivel:nivelHijos,
-        lugarOriginal:idLugar,
+        lugarOriginal:idTerritorioMostrado,
     })
     .done(function(data) 
     {
@@ -278,8 +305,9 @@ function cargarMapa(idLugar)
     
     
     //Aquí cargamos los colindantes
-    var nivelColindantes=parseInt(response.nivel,10);
-    if(nivelColindantes==9)
+    var nivelColindantes=parseInt(response.nivelColindantes,10);
+    var nivelMostrado=parseInt(response.nivel,10)
+    if(nivelMostrado==9)
     {
       //Apaño para distritos
       addPolygonToMap(idLugar,"shp/geoJSON/9/"+idLugar+".geojson","ABCDE",'#ff33aa',-1);
@@ -292,11 +320,10 @@ function cargarMapa(idLugar)
         icon: new L.NumberedDivIcon({number: cantidad})
       }).addTo(map);
 
-      nivelColindantes=9;
       $.getJSON("getLugaresColindantes.php", 
       {
           dataType: 'json',
-          tipo:nivelColindantes,
+          tipo:nivelMostrado,
           xmin:fittedXMin,
           xmax:fittedXMax,
           ymin:fittedYMin,
@@ -307,12 +334,13 @@ function cargarMapa(idLugar)
       {
         $.each(data, function(i,datos)
         {
-          if(datos.id!=response.idPadre)  //No mostramos el padre
+          if(datos.id!=response.idPadre)  //No mostramos el padre --- ¿Necesario? ¿Devuelve el padre? O sólo hermanos y primos?
             if(datos.idPadre==response.idPadre) //Sólo mostramos a los hijos de su padre (es decir, a los hermanos)
               addPolygonToMap(datos.id,"shp/geoJSON/9/"+datos.id+".geojson",datos.nombre,'#ffaaaa',datos.activo);
         });
       });
-      nivelColindantes=8; //Limitamos a nivel 8
+      if(nivelColindantes==9)
+          nivelColindantes=8; //Limitamos a nivel 8
     }
 
     //Todos los colindantes

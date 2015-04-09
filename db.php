@@ -610,33 +610,55 @@ function getAllChildren($lugares)
         while($fila=mysqli_fetch_assoc($result))
             array_push($lugares,$fila['id']);
     }
+    
     return(array_unique($lugares));
 
 }
 
+//Devuelve array con los datos de los territorios ancestros de idLugar.
 function getAllAncestors($idLugar)
 {
-    $lugar=getDatosLugar($idLugar);
+    $lugar=getDatosLugar($idLugar); 
     $lugares[$lugar["nivel"]]=$lugar;
     $idPadre=$lugar["idPadre"];
-    while($idPadre!=0)
+    
+    while($idLugar!=0)
     {
-        $lugar=getDatosLugar($idPadre);
-        $lugares[$lugar["nivel"]]=$lugar;
-        $idPadre=$lugar["idPadre"];
+            $lugar=getDatosLugar($idPadre);
+            $lugares[$lugar["nivel"]]=$lugar;
+            $idPadre=$lugar["idPadre"];
     }
     
-    /*
+  /* 
     //Simulando Comunidad de Madrid
     $lugares[4]["nombre"]="Comunidad de Madrid";
     $lugares[4]["nombreCorto"]="CM";
     $lugares[4]["id"]="444000028";
-    */
-
+    
+ 
     //Simulando España
     $lugares[2]["nombre"]="España";
     $lugares[2]["nombreCorto"]="ES";
-    $lugares[2]["id"]="222000034";
+    $lugares[2]["id"]="201000034";
+*/
+    return $lugares;
+}
+
+//Devuelve array con los datos de los territorios ancestros fértiles (más de un hijo) de idLugar. IdLugar should be the base territory (fertile)
+function getFertileAncestors($idLugar)
+{
+    $lugar=getDatosLugar($idLugar);
+    $lugares[$lugar["nivel"]] = $lugar;    
+    $idPadre = $lugar["idPadre"];
+    while($idPadre!=0)
+    {
+            $lugar=getDatosLugar($idPadre);
+            if (!isset($lugar["idDescendiente"])){
+                $lugares[$lugar["nivel"]]=$lugar;
+            }
+            $idPadre=$lugar["idPadre"];
+
+    }
 
     return $lugares;
 }
@@ -656,6 +678,46 @@ function getDatosLugar($idLugar)
     return $fila;
 }
 
+// Returns "Nivel" (level) of the territory with id "idLugar" 
+function getNivelTerritorio($idLugar)
+{
+    //Sanitize input
+    $link=connect();
+    $idLugar=safe($link, $idLugar);  
+    
+    $sql="SELECT nivel 
+            FROM  lugares_shp 
+            WHERE id='$idLugar'";
+
+    $result=mysqli_query($link, $sql);
+    $fila=mysqli_fetch_assoc($result);
+    return $fila["nivel"];
+}
+
+
+// Returns data from the "base" territory for idLugar, ie: the first descendent with multiple offspring or no child. 
+function getDatosLugarBase($idLugar)
+{
+        //Sanitize input
+    $link=connect();
+    $idLugar=safe($link, $idLugar);  
+    
+    $sql="SELECT * 
+            FROM  lugares_shp 
+            WHERE id='$idLugar'";
+    mysqli_query($link, 'SET CHARACTER SET utf8');
+    $result=mysqli_query($link, $sql);
+    $fila=mysqli_fetch_assoc($result);
+    $descendiente=$fila["idDescendiente"];
+    if (isset($descendiente) && $descendiente!=0)
+        //it has just one child
+        return getDatosLugarBase($descendiente);
+    else
+        // it has many or cero children
+        return $fila;
+    
+}
+
 function getChildAreas($lugarOriginal,$nivel)
 {
     //Quizás no haría falta hacer el Join con eventos, ya que queremos todos
@@ -671,13 +733,14 @@ function getChildAreas($lugarOriginal,$nivel)
 
     mysqli_query($link, 'SET CHARACTER SET utf8');
     $result=mysqli_query($link, $sql);
-    $returnData=array();
+    $returnData=array();    
     while($fila=mysqli_fetch_assoc($result))
     {
-        array_push($returnData,$fila);
+        array_push($returnData,$fila);     
     }
-    return $returnData;
+    return $returnData;   
 }
+
 //function is used?
 function getLugares($cadena,$lugarOriginal,$type,$cantidad=3,$inSet=array())
 {

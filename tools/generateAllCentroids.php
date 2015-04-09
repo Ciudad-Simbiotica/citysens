@@ -4,14 +4,14 @@ include_once('../vendor/phayes/geophp/geoPHP.inc');
 include_once "../db.php";
 
 // Script is unactive unless it is required
-// exit();
+ exit();
 
 $link=connect();
 
-$sql="SELECT * FROM lugares_shp WHERE nivel=6 AND xcentroid=0";       
-$result=mysql_query($sql,$link);
+$sql="SELECT * FROM lugares_shp WHERE id >='601150031' AND id <='601190052' and (xcentroid =0 OR xcentroid is NULL)";       
+$result=mysqli_query($link, $sql);
 $data=array();
-while($fila=mysql_fetch_assoc($result))
+while($fila=mysqli_fetch_assoc($result))
     array_push($data,$fila["id"]);
 
 
@@ -33,7 +33,7 @@ foreach($data as $idRegion)
 	  xmin='{$bounds["minx"]}',ymin='{$bounds["miny"]}',xmax='{$bounds["maxx"]}',ymax='{$bounds["maxy"]}'
 	  WHERE id='$idRegion'";
 	 //echo $sql;
-	 mysql_query($sql,$link);
+	 mysqli_query($link, $sql);
 } 
 
 
