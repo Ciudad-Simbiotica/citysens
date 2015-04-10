@@ -653,15 +653,46 @@ function getFertileAncestors($idLugar)
     while($idPadre!=0)
     {
             $lugar=getDatosLugar($idPadre);
-            if (!isset($lugar["idDescendiente"])){
+          //  if (!isset($lugar["idDescendiente"])){
+            if (!isset($lugar["idDescendiente"])||$lugar["idDescendiente"]==0){
                 $lugares[$lugar["nivel"]]=$lugar;
-            }
-            $idPadre=$lugar["idPadre"];
-
     }
+            $idPadre=$lugar["idPadre"];
+    }
+    
+            // idDescendiente es 0 si no tiene hijos, id del hijo si sólo tiene un hijo, o "2" si tiene múltiples hijos.
+            // NULL corresponde a un estado indeterminado.
+           
+           
 
     return $lugares;
 }
+
+
+
+function getFertility($idLugar)
+{
+        $link=connect();
+        $idLugar=safe($link,$idLugar);
+    $sql="SELECT id
+            FROM lugares_shp 
+            WHERE idPadre='$idLugar'";
+ 
+    $result=mysqli_query($link, $sql);
+    $numberSons = mysqli_num_rows($result);
+    if ($numberSons == 0)
+        $fertility=0;
+    elseif($numberSons == 1){
+        $fila=mysqli_fetch_assoc($result);
+        $fertility=$fila['id'];
+    }
+    else
+        $fertility=2;
+
+    return $fertility; 
+}
+
+
 
 function getDatosLugar($idLugar)
 {
