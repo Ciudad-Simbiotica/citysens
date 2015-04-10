@@ -6,14 +6,16 @@ include_once('../vendor/phayes/geophp/geoPHP.inc');
 include_once('../db.php');
 error_reporting(E_ERROR);
 set_time_limit(0);
-//$comarca=701010004;introducir numero comarca para crear polígono
+
+//$comarca='701440001';//introducir numero comarca para crear polígono
 $link = connect();
-mysql_query('SET CHARACTER SET utf8', $link);
-$sql = "SELECT id FROM lugares_shp WHERE id like '70101%'"; //list of id regions
+mysqli_query($link,'SET CHARACTER SET utf8');
+$sql = "SELECT id FROM lugares_shp WHERE id like '701440%'"; //list of id regions
 //$sql = "SELECT id FROM lugares_shp WHERE id='701030001'"; //SPECIFIC REGION 701030001
 $result_comarcas = array();
 
-$result_comarcas = mysql_query($sql, $link);
+$result_comarcas = mysqli_query($link,$sql);
+
 echo $result_comarcas;
 $regiones = array();
 
@@ -31,8 +33,8 @@ while ($comarca = mysql_fetch_assoc($result_comarcas)) {
         echo "La zona $nombre_fichero no existe, se procede a  crearlo";
         $prueba = 1;
         $sql = "SELECT id FROM lugares_shp WHERE idPadre=$comarca_id";
-        $result = mysql_query($sql, $link);
-        while ($fila = mysql_fetch_assoc($result)) {
+        $result = mysqli_query($sql, $link);
+        while ($fila = mysqli_fetch_assoc($result)) {
             array_push($regiones, $fila["id"]);
         }
         print_r($regiones);

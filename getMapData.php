@@ -1,35 +1,44 @@
 <?php
 	error_reporting(0);
 	include_once "db.php";
-	$respuesta=getDatosLugar($_GET["idLugar"]);
+	
+       $respuesta=getDatosLugarBase($_GET["idLugar"]);//
+//        $respuesta=getDatosLugar($_GET["idLugar"]);
+        $nivelColindantes=getNivelTerritorio($_GET["idLugar"]);
+	$respuesta["nivelColindantes"]=$nivelColindantes;
 
-	//Breadcrumbs
+        //Breadcrumbs
 
-	$lugares=getAllAncestors($_GET["idLugar"]);
-	$primera=true;
+	$lugares=  getFertileAncestors($respuesta["id"]);
+//	$primera=true;
 	$cantidad=0;
 	$breadcrumbs=array();
-	$cantidad=0;
 	for($i=1;$i<=10;$i++)
 	{
 		if(isset($lugares[$i]))
 		{
-			if($lugares[$i]["nombreCorto"]!="")
+                        $cantidad++;
+                        if($cantidad<count($lugares))	//Todos menos el último
+                        {
+                            if($lugares[$i]["nombreCorto"]!="")
 				$nombre=$lugares[$i]["nombreCorto"];
-			else
+                            else
 				$nombre=$lugares[$i]["nombre"];
 
-			if($cantidad<count($lugares)-2)	//Todos menos el último
-				if(strlen($nombre)>7)		//Si es de más de 7 caracteres lo acortamos a 7
-					$nombre=substr($lugares[$i]["nombre"],0,4)."...";					
-			
+				if(strlen($nombre)>9)		//Si es de más de 9 caracteres lo acortamos a 6 y puntos suspensivos
+					$nombre=mb_substr($lugares[$i]["nombre"],0,6)."...";					
+                        }
+                        else {
+                             if($lugares[$i]["nombre"]!="")
+				$nombre=$lugares[$i]["nombre"];
+                            else
+				$nombre=$lugares[$i]["nombreCorto"];
+                        
+                        }
 			array_push($breadcrumbs,array($lugares[$i]["id"],$nombre));
-			$cantidad++;
 		}
 	}
 	$respuesta["breadcrumbs"]=$breadcrumbs;
-
-
 
 	echo json_encode($respuesta);
 ?>
