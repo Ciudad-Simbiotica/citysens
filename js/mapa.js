@@ -306,7 +306,7 @@ function cargarMapa(idLugar)
     
     //Aquí cargamos los colindantes
     var nivelColindantes=parseInt(response.nivelColindantes,10);
-    var nivelMostrado=parseInt(response.nivel,10)
+    var nivelMostrado=parseInt(response.nivel,10);
     if(nivelMostrado==9)
     {
       //Apaño para distritos

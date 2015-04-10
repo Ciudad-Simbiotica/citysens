@@ -25,3 +25,30 @@
 {
 	background: transparent;	
 }
+leaflet-irAPadre-icon{
+        fillColor: #ffaaaa;
+        opacity: 1;
+        weight: 1;
+        z-index: 100;
+}
+.leaflet-polygon{
+    fillColor: #ffaaaa;
+    opacity: 1;
+    weight: 1;
+}
+
+.leaflet-polygon .uncle{
+    fillColor: #e9967a; //darksalmon
+}
+
+.leaflet-polygon .brother{
+    fillColor: #ffff00; //yellow
+}
+
+.leaflet-polygon .child{}
+
+.leaflet-polygon:hover{
+    color: #9acd32;  //yellowgreen
+    dashArray: '';
+    fillOpacity: 0.5;
+}

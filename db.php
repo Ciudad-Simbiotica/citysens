@@ -1,6 +1,7 @@
 <?php
 include "settings.php";
 include_once "passwordHashing.php";
+mb_internal_encoding("UTF-8");
 
 function connect()
 {
@@ -644,7 +645,9 @@ function getAllAncestors($idLugar)
     return $lugares;
 }
 
-//Devuelve array con los datos de los territorios ancestros fértiles (más de un hijo) de idLugar. IdLugar should be the base territory (fertile)
+//Devuelve array con los datos de los territorios ancestros fértiles (más de un hijo) de idLugar. 
+//IdLugar should be the base territory (fertile)
+//Usado para generar el breadcrumb de un territorio
 function getFertileAncestors($idLugar)
 {
     $lugar=getDatosLugar($idLugar);
@@ -653,8 +656,11 @@ function getFertileAncestors($idLugar)
     while($idPadre!=0)
     {
             $lugar=getDatosLugar($idPadre);
-          //  if (!isset($lugar["idDescendiente"])){
-            if (!isset($lugar["idDescendiente"])||$lugar["idDescendiente"]==0){
+
+            // idDescendiente es 0 si no tiene hijos, id del hijo si sólo tiene un hijo, o "2" si tiene múltiples hijos.
+            // NULL corresponde a un estado indeterminado.
+            if (!isset($lugar["idDescendiente"])||$lugar["idDescendiente"]==2)
+            {
                 $lugares[$lugar["nivel"]]=$lugar;
     }
             $idPadre=$lugar["idPadre"];
@@ -667,7 +673,6 @@ function getFertileAncestors($idLugar)
 
     return $lugares;
 }
-
 
 
 function getFertility($idLugar)
@@ -691,8 +696,6 @@ function getFertility($idLugar)
 
     return $fertility; 
 }
-
-
 
 function getDatosLugar($idLugar)
 {
@@ -740,7 +743,7 @@ function getDatosLugarBase($idLugar)
     $result=mysqli_query($link, $sql);
     $fila=mysqli_fetch_assoc($result);
     $descendiente=$fila["idDescendiente"];
-    if (isset($descendiente) && $descendiente!=0)
+    if (!isset($descendiente) && $descendiente!=0 && $descendiente!=2)
         //it has just one child
         return getDatosLugarBase($descendiente);
     else
@@ -964,7 +967,7 @@ function crearNuevaDireccion($nombreLugar,$direccion,$lat,$lng,$idPadre)
     $sql="INSERT INTO direcciones (idPadre,nombre,direccion,lat,lng,zoom,direccionActiva)
                            VALUES ('$idDistritoPadre','$nombreLugar','$direccion','$lat','$lng','15','0')";
     mysqli_query($link, $sql);
-    $returnData["idLugar"]=mysql_insert_id();
+    $returnData["idLugar"]=mysqli_insert_id();
     $returnData["idDistritoPadre"]=$idDistritoPadre;
     return $returnData;
 }
