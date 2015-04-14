@@ -2,15 +2,14 @@
 	error_reporting(0);
 	include_once "db.php";
 	
-       $respuesta=getDatosLugarBase($_GET["idLugar"]);//
-//        $respuesta=getDatosLugar($_GET["idLugar"]);
-        $nivelColindantes=getNivelTerritorio($_GET["idLugar"]);
+    $respuesta=getDatosLugarBase($_GET["idLugar"]); //
+//  $respuesta=getDatosLugar($_GET["idLugar"]);
+    $nivelColindantes=getNivelTerritorio($_GET["idLugar"]);
 	$respuesta["nivelColindantes"]=$nivelColindantes;
 
         //Breadcrumbs
 
 	$lugares=  getFertileAncestors($respuesta["id"]);
-//	$primera=true;
 	$cantidad=0;
 	$breadcrumbs=array();
 	for($i=1;$i<=10;$i++)

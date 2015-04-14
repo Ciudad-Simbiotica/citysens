@@ -179,7 +179,6 @@ function cargarMapa(idLugar)
   })
   .done(function (response) 
   {
-    idTerritorioMostrado=response.id;
     //Area a mostrar con padding
     padding=0.025;  //2.5% por cada lado
     paddingX=padding*(parseFloat(response.xmax)-parseFloat(response.xmin));
@@ -258,118 +257,111 @@ function cargarMapa(idLugar)
       window.ciudad=response.nombre;
     window.idLugar=idLugar;  //Is it used?
     
-    var nivelHijos=parseInt(response.nivel,10)+1;
-
-    //Cargamos los polígonos hijos
-    $.getJSON("getChildAreas.php", 
-    {
-        dataType: 'json',
-        nivel:nivelHijos,
-        lugarOriginal:idTerritorioMostrado,
-    })
-    .done(function(data) 
-    {
-      window.poligonos = [];
-      $.each(data, function(i,datos)
-      {
-        window.poligonos[datos.id]=datos.nombre;
-
-        addPolygonToMap(datos.id,"shp/geoJSON/"+nivelHijos+"/"+datos.id+".geojson",datos.nombre,'#ffaaaa',datos.activo);
-        if(response.nivel>7)
-        {
-          if(typeof window.cantidadPorLugar[datos.id] === 'undefined')
-            cantidad='0';
-          else
-            cantidad=window.cantidadPorLugar[datos.id];
-          new L.Marker([datos.ycentroid,datos.xcentroid], 
-          {
-            icon: new L.NumberedDivIcon({number: cantidad})
-          }).addTo(map);
-        }
-      });
-      
-      //Cargamos los eventos
-      window.markers = [];
-      $.each(window.listado.grupos, function(nombreSuperGrupo,datosSuperGrupo)
-      {
-        $.each(datosSuperGrupo, function(grupo,filas)
-        {
-          $.each(filas.filas,function(i,datos)
-          {
-            var marker=new L.Marker([datos.y,datos.x], 
-            {
-              icon: new L.TargetIcon()
-            }).setOpacity(0).setZIndexOffset(100).addTo(map);
-            marker.dragging.disable();
-            
-
-            markers[datos.id]=marker;
-          });
-        });
-      });
-
-    });
-    
-    
-    //Aquí cargamos los colindantes
-    var nivelColindantes=parseInt(response.nivelColindantes,10);
+    idTerritorioMostrado=response.id;
     var nivelMostrado=parseInt(response.nivel,10);
-    if(nivelMostrado==9)
-    {
-      //Apaño para distritos
-      addPolygonToMap(idLugar,"shp/geoJSON/9/"+idLugar+".geojson","ABCDE",'#ff33aa',-1);
-      if(typeof window.cantidadPorLugar[idLugar] === 'undefined')
-        cantidad='0';
-      else
-        cantidad=window.cantidadPorLugar[idLugar];
-      new L.Marker([response.ycentroid,response.xcentroid], 
-      {
-        icon: new L.NumberedDivIcon({number: cantidad})
-      }).addTo(map);
-
-      $.getJSON("getLugaresColindantes.php", 
-      {
-          dataType: 'json',
-          tipo:nivelMostrado,
-          xmin:fittedXMin,
-          xmax:fittedXMax,
-          ymin:fittedYMin,
-          ymax:fittedYMax,
-          lugarOriginal:idLugar,
-      })
-      .done(function(data) 
-      {
-        $.each(data, function(i,datos)
-        {
-          if(datos.id!=response.idPadre)  //No mostramos el padre --- ¿Necesario? ¿Devuelve el padre? O sólo hermanos y primos?
-            if(datos.idPadre==response.idPadre) //Sólo mostramos a los hijos de su padre (es decir, a los hermanos)
-              addPolygonToMap(datos.id,"shp/geoJSON/9/"+datos.id+".geojson",datos.nombre,'#ffaaaa',datos.activo);
-        });
-      });
-      if(nivelColindantes==9)
-          nivelColindantes=8; //Limitamos a nivel 8
-    }
-
-    //Todos los colindantes
-    $.getJSON("getLugaresColindantes.php", 
-    {
-        dataType: 'json',
-        tipo:nivelColindantes,
-        xmin:fittedXMin,
-        xmax:fittedXMax,
-        ymin:fittedYMin,
-        ymax:fittedYMax,
-        lugarOriginal:idLugar,
-    })
-    .done(function(data) 
-    {
-      $.each(data, function(i,datos)
-      {
-        if(datos.id!=response.idPadre)  //No mostramos el padre
-          addPolygonToMap(datos.id,"shp/geoJSON/"+nivelColindantes+"/"+datos.id+".geojson",datos.nombre,'#aaaaff',datos.activo);
-      });
-    });
+    nivelHijos=nivelMostrado+1;
+    nivelTios=nivelMostrado-1; // It could be adjusted if there is some level that is not considered significant (like districts, regions, etc.)
     
+    // If the territory has no child, the territory is shown
+    if (response.idDescendiente==0) {
+        addPolygonToMap(idTerritorioMostrado,"shp/geoJSON/"+response.nivel+"/"+idTerritorioMostrado+".geojson","ABCDE",'#ffaaaa',-1);
+        if  (nivelMostrado>7) // If the territory is of level city or lower, counter is included
+            if (typeof window.cantidadPorLugar[idLugar] === 'undefined')
+                cantidad = '0';
+            else
+                cantidad = window.cantidadPorLugar[idLugar];
+        new L.Marker([response.ycentroid, response.xcentroid],
+            {
+            icon: new L.NumberedDivIcon({number: cantidad})
+            }).addTo(map);
+        }
+        else { //Cargamos los polígonos hijos
+            $.getJSON("getChildAreas.php", 
+                {
+                dataType: 'json',
+                nivel:nivelHijos,
+                lugarOriginal:idTerritorioMostrado,
+                })
+            .done(function(data) 
+                {
+                window.poligonos = [];
+                $.each(data, function(i,datos)
+                    {
+                    window.poligonos[datos.id]=datos.nombre;
+
+                    addPolygonToMap(datos.id,"shp/geoJSON/"+nivelHijos+"/"+datos.id+".geojson",datos.nombre,'#ffaaaa',datos.activo);
+                    if(response.nivel>7) {
+                        if(typeof window.cantidadPorLugar[datos.id] === 'undefined')
+                            cantidad='0';
+                        else
+                            cantidad=window.cantidadPorLugar[datos.id];
+                    new L.Marker([datos.ycentroid,datos.xcentroid], 
+                        {
+                        icon: new L.NumberedDivIcon({number: cantidad})
+                        }).addTo(map);
+                    }
+                    });
+                });
+        }
+        
+        // Show the brothers 
+        $.getJSON("getLugaresColindantes.php",
+            {
+            dataType: 'json',
+            tipo:nivelMostrado,
+            xmin:fittedXMin,
+            xmax:fittedXMax,
+            ymin:fittedYMin,
+            ymax:fittedYMax,
+            lugarOriginal:idTerritorioMostrado,
+            })
+            .done(function(data) 
+                {
+                $.each(data, function(i,datos)
+                    {
+                    if(datos.idPadre==response.idPadre) //Sólo mostramos a los hijos de su padre (es decir, a los hermanos)
+                        addPolygonToMap(datos.id,"shp/geoJSON/"+nivelMostrado+"/"+datos.id+".geojson",datos.nombre,'#aaaaff',datos.activo);
+                    });
+                });
+
+            //Show the "uncles"
+            $.getJSON("getLugaresColindantes.php", 
+                {
+                dataType: 'json',
+                tipo:nivelTios,
+                xmin:fittedXMin,
+                xmax:fittedXMax,
+                ymin:fittedYMin,
+                ymax:fittedYMax,
+                lugarOriginal:response.idPadre,
+                })
+                .done(function(data) 
+                    {
+                    $.each(data, function(i,datos)
+                        {
+                        if(datos.id!=response.idPadre)  //No mostramos el padre
+                            addPolygonToMap(datos.id,"shp/geoJSON/"+nivelTios+"/"+datos.id+".geojson",datos.nombre,'#5353cf',datos.activo);
+                        });
+                    });
+        
+        //Cargamos los eventos
+        window.markers = [];
+        $.each(window.listado.grupos, function(nombreSuperGrupo,datosSuperGrupo)
+            {
+            $.each(datosSuperGrupo, function(grupo,filas)
+                {
+                $.each(filas.filas,function(i,datos)
+                    {
+                    var marker=new L.Marker([datos.y,datos.x], 
+                        {
+                        icon: new L.TargetIcon()
+                        }).setOpacity(0).setZIndexOffset(100).addTo(map);
+                    marker.dragging.disable();
+                    markers[datos.id]=marker;
+                    });
+                });
+            });
+       
   });
 
   

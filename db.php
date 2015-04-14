@@ -743,7 +743,7 @@ function getDatosLugarBase($idLugar)
     $result=mysqli_query($link, $sql);
     $fila=mysqli_fetch_assoc($result);
     $descendiente=$fila["idDescendiente"];
-    if (!isset($descendiente) && $descendiente!=0 && $descendiente!=2)
+    if (!isset($descendiente) || ($descendiente!=0 && $descendiente!=2))
         //it has just one child
         return getDatosLugarBase($descendiente);
     else
@@ -754,16 +754,22 @@ function getDatosLugarBase($idLugar)
 
 function getChildAreas($lugarOriginal,$nivel)
 {
-    //Quizás no haría falta hacer el Join con eventos, ya que queremos todos
     $link=connect();
-    $sql="SELECT lugares_shp.*,count(eventos.idDistritoPadre) as cantidad
+    
+//Quizás no haría falta hacer el Join con eventos, ya que queremos todos        
+ /*   $sql="SELECT lugares_shp.*,count(eventos.idDistritoPadre) as cantidad
             FROM lugares_shp LEFT OUTER JOIN eventos 
             ON lugares_shp.id=eventos.idDistritoPadre 
             WHERE nivel='$nivel'
             AND idPadre='$lugarOriginal'
             GROUP BY lugares_shp.id";
+  * 
+  */
 
-
+  $sql="SELECT lugares_shp.*
+            FROM lugares_shp 
+            WHERE nivel='$nivel'
+            AND idPadre='$lugarOriginal'";
 
     mysqli_query($link, 'SET CHARACTER SET utf8');
     $result=mysqli_query($link, $sql);
@@ -1001,7 +1007,6 @@ function validarEvento($idEvento,$status)
 }
 
 // Gets the areas of level $type that are contained within the limits, excluding the central $lugarOriginal
-// Seems to use old areas IDs (5chars)
 
 function getColindantes($lugarOriginal,$type,$xmin,$xmax,$ymin,$ymax)
 {
@@ -1026,6 +1031,7 @@ function getColindantes($lugarOriginal,$type,$xmin,$xmax,$ymin,$ymax)
     $result=mysqli_query($link, $sql);
     $returnData=array();
     while($fila=mysqli_fetch_assoc($result))
+        // the original territory is excluded
         if($fila["id"]!=$lugarOriginal)
         {
             array_push($returnData,$fila);
