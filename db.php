@@ -848,7 +848,7 @@ function getIrA($cadena,$lugarOriginal)
     $cadena=safe($link, $cadena);
     $lugarOriginal=safe($link, $lugarOriginal);
 
-   $sql="SELECT * FROM lugares_shp)";
+   $sql="SELECT * FROM lugares_shp WHERE nombre LIKE '%$cadena%'";
    /* $sql="SELECT * FROM lugares_shp WHERE
             nombre LIKE '$cadena%' AND (
             (nivel='8' AND ((idPadre BETWEEN 777000001 AND 777000007) OR (idPadre='666000028'))) OR

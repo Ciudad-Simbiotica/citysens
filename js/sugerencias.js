@@ -190,7 +190,7 @@ function suggestBusqueda(texto)
         {
           if(value.activo==1)
           {
-            window.location = "/?idLugar="+value.id;
+            window.location = "?idLugar="+value.id;
           }
           else
           {

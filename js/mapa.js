@@ -250,11 +250,11 @@ function cargarMapa(idLugar)
       
     });
     $(".map-breadcrumbs").html(breadcrumbs);
-     
-    var htmlUpButton ='<A HREF=\'?idLugar='+lastAncestor+'\' ><span class="fa-stack fa-lg"><i class="fa fa-circle-thin fa-stack-2x"style="color:black;opacity:0.8"></i><i class="fa fa-circle fa-stack-2x"style="color:white;opacity:0.5"></i><i class="fa fa-arrow-up fa-stack-1x fa-inverse"style="color:black"></i></span></A>';
-    $("#upbutton").html(htmlUpButton);
-   // $("#upbutton").attr("src","/css/icons/arrow-up30.png"");
-      window.ciudad=response.nombre;
+    if (lastAncestor!=""){
+        var htmlUpButton ='<A HREF=\'?idLugar='+lastAncestor+'\' ><span class="fa-stack fa-lg"><i class="fa fa-circle-thin fa-stack-2x"style="color:black;opacity:0.8"></i><i class="fa fa-circle fa-stack-2x"style="color:white;opacity:0.5"></i><i class="fa fa-arrow-up fa-stack-1x fa-inverse"style="color:black"></i></span></A>';
+        $("#upbutton").html(htmlUpButton);
+    }
+    window.ciudad=response.nombre;
     window.idLugar=idLugar;  //Is it used?
     
     idTerritorioMostrado=response.id;
