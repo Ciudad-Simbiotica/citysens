@@ -478,3 +478,10 @@ html,body
 	background-image: url("icons/follow_eye20x20.png");		
 	background-repeat: no-repeat;
 }
+
+#upbutton{
+  top:28px;
+  right: 10px;
+  z-index:1000;
+  position:absolute;
+}

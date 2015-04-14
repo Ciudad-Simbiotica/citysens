@@ -29,7 +29,7 @@ include "preload.php";
  <link rel="stylesheet" href="css/leafletCustom.css" />
  <link rel="stylesheet" type="text/css" href="css/jNotify.jquery.css" media="screen" />
  <link rel="stylesheet" type="text/css" href="js/datetimepicker/jquery.datetimepicker.css"/ >
-
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
@@ -43,7 +43,6 @@ include "preload.php";
  <script src="js/wysihtml5/dist/wysihtml5-0.3.0.min.js"></script>
  <script type="text/javascript" src="js/jNotify.jquery.js"></script>
  <script src="js/datetimepicker/jquery.datetimepicker.js"></script>
-
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5405f16570d4251b"></script>
 
 </head>
