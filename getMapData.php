@@ -18,24 +18,24 @@
 		if(isset($lugares[$i]))
 		{
                         $cantidad++;
-                        if($cantidad<count($lugares))	//Todos menos el último
+                        if($cantidad<count($lugares))	//Todos menos el último                         
                         {
                             if($lugares[$i]["nombreCorto"]!="")
-				$nombre=$lugares[$i]["nombreCorto"];
+				$nombreBreadcrumb=$lugares[$i]["nombreCorto"];
                             else
-				$nombre=$lugares[$i]["nombre"];
+				$nombreBreadcrumb=$lugares[$i]["nombre"];
 
-				if(strlen($nombre)>9)		//Si es de más de 9 caracteres lo acortamos a 6 y puntos suspensivos
-					$nombre=mb_substr($lugares[$i]["nombre"],0,6)."...";					
+				if(strlen($nombreBreadcrumb)>9)		//Si es de más de 9 caracteres lo acortamos a 6 y puntos suspensivos
+					$nombreBreadcrumb=mb_substr($lugares[$i]["nombre"],0,6)."...";					
                         }
                         else {
                              if($lugares[$i]["nombre"]!="")
-				$nombre=$lugares[$i]["nombre"];
+				$nombreBreadcrumb=$lugares[$i]["nombre"];
                             else
-				$nombre=$lugares[$i]["nombreCorto"];
+				$nombreBreadcrumb=$lugares[$i]["nombreCorto"];
                         
                         }
-			array_push($breadcrumbs,array($lugares[$i]["id"],$nombre));
+			array_push($breadcrumbs,array($lugares[$i]["id"],$nombreBreadcrumb,$lugares[$i]["nombre"]));
 		}
 	}
 	$respuesta["breadcrumbs"]=$breadcrumbs;
