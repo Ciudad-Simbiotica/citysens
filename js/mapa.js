@@ -244,7 +244,7 @@ function cargarMapa(idLugar)
           lastAncestorName=lugar[2];
       }
       else{
-          breadcrumbs+='<span id=\'hijos\'><strong>'+lugar[1]+'</strong><ul id=\'listabreadcrumbs\'></ul></span>'; //pendiente sacar childrens
+          breadcrumbs+='<div id=\'hijos\'><strong>'+lugar[1]+'</strong><ul id=\'listabreadcrumbs\'></ul></div>'; //pendiente sacar childrens
           //breadcrumbs+='<span class="breadcrumb-title icon-arrow-dropdown-up-after">'+lugar[1]+'</span><div class="breadcrumb-subitems";"><ul id=\'listabreadcrumbs\'></ul></div>'; 
          }      
           
@@ -256,10 +256,10 @@ function cargarMapa(idLugar)
     $(document).ready(function(){
               
                 $("#hijos").hover(function() {
-			$('#listabreadcrumbs').show(); //muestro mediante id	
+			$('#listabreadcrumbs').fadeIn(); //muestro mediante id	
 		 },
 		function(){
-			$('#listabreadcrumbs').hide(); //oculto mediante id		
+			$('#listabreadcrumbs').fadeOut(); //oculto mediante id		
 		});
 	});
     if (lastAncestor!=""){
