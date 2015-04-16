@@ -20,7 +20,7 @@ function createUser($user,$email,$pass)
     
     mysqli_query($link, 'SET CHARACTER SET utf8');
     $sql="SELECT * FROM users WHERE email='$email' OR user='$user'";
-    $result=mysqli_query($sql,$link);
+    $result=mysqli_query($link,$sql);
     if($fila=mysqli_fetch_assoc($result))
         return false;
 
@@ -794,7 +794,7 @@ function getLugares($cadena,$lugarOriginal,$type,$cantidad=3,$inSet=array())
             nivel='$type' AND
             provincia=28 AND
             nombre LIKE '%$cadena%' AND
-            id<>'$lugarOriginal'";
+            id<>'$lugarOriginal' ORDER BY nombre";
     if(count($inSet)>0)
         $sql.="";
     $sql.="LIMIT 0,$cantidad";
@@ -848,14 +848,8 @@ function getIrA($cadena,$lugarOriginal)
     $cadena=safe($link, $cadena);
     $lugarOriginal=safe($link, $lugarOriginal);
 
-   $sql="SELECT * FROM lugares_shp)";
-   /* $sql="SELECT * FROM lugares_shp WHERE
-            nombre LIKE '$cadena%' AND (
-            (nivel='8' AND ((idPadre BETWEEN 777000001 AND 777000007) OR (idPadre='666000028'))) OR
-            (nivel='6' OR nivel='7')
-            )";*/
-
-    //Por ahora forzado a niveles 6/7 de Madrid (no tenemos de otras provincias) Y nivel 8 de Madrid
+   $sql="SELECT id, nombre FROM lugares_shp WHERE nombre LIKE '$cadena%' AND nivel<9 ORDER BY nombre, id DESC";
+   // Order by, so the lower level appear before higher levels with the same name. Guadalajara (city), Guadalajara (province)
 
 
     mysqli_query($link, 'SET CHARACTER SET utf8');

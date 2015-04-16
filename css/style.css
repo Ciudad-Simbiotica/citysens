@@ -227,7 +227,7 @@ html,body
 .map-breadcrumbs
 {
 	margin-top: 5px;
-	margin-left: 5px;
+	margin-left: 5px;     
 }
 
 .map-map
@@ -476,12 +476,72 @@ html,body
 	line-height: 21px;
 	cursor:hand;cursor:pointer;
 	background-image: url("icons/follow_eye20x20.png");		
-	background-repeat: no-repeat;
+	background-repeat: no-repeat;       
 }
 
 #upbutton{
   top:28px;
   right: 10px;
-  z-index:1000;
+  z-index:90;
   position:absolute;
+}
+
+#flechaarriba{
+    color:black;
+}
+
+#circulo{
+    color:white;
+    opacity:0.4;
+    
+}
+#aro{
+    color:black;
+    opacity:0.7;
+}
+
+#circulo:hover{
+    color:lightgreen;
+}
+div.map-breadcrumbs.ulli{
+    display: inline;
+    list-style: outside none none;
+    float: none; 
+    border-top: 1px solid #6b727c;
+    border-bottom: 1px solid #575f6a;
+    position: relative;
+    
+    
+}
+#listabreadcrumbs{ 
+    width: inherit;
+    display:none;
+    background: #fff;
+    position: absolute;
+    align-self: flex-start; 
+    z-index:100;
+    max-height: 241px;
+    text-align:left;
+    cursor: default;
+    clear:both; 
+    overflow-y: auto; 
+    text-align: -webkit-match-parent;
+    border-radius: 0em 0em 1em 0em;
+    box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.2);
+    border: 1px solid #e7e7e4;
+    padding-left: 0.6em;
+    
+}
+
+ul#listabreadcrumbs{
+    display:none;
+    list-style: outside none none;
+    left:3em;
+    margin-top:0;
+    padding-top:0;
+}
+
+#hijos{
+    z-index:10;
+    display:inline-block;
 }

@@ -33,7 +33,7 @@ while ($comarca = mysql_fetch_assoc($result_comarcas)) {
         echo "La zona $nombre_fichero no existe, se procede a  crearlo";
         $prueba = 1;
         $sql = "SELECT id FROM lugares_shp WHERE idPadre=$comarca_id";
-        $result = mysqli_query($sql, $link);
+        $result = mysqli_query($link,$sql);
         while ($fila = mysqli_fetch_assoc($result)) {
             array_push($regiones, $fila["id"]);
         }
