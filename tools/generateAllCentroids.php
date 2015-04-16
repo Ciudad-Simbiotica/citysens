@@ -4,7 +4,8 @@ include_once('../vendor/phayes/geophp/geoPHP.inc');
 include_once "../db.php";
 
 // Script is unactive unless it is required
- exit();
+// For use  select id an direcotories targeted.
+exit();
 
 $link=connect();
 
