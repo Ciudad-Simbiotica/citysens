@@ -3,6 +3,7 @@ $.urlParam = function(name){
     return results[1] || 0;
 }
 
+
 function loadOverlayNoDisponible(url,idCiudad,ciudad)
 {
   $("#overlay").addClass("overlayPeque");
@@ -229,7 +230,7 @@ function cargarMapa(idLugar)
     $("#map").css("-webkit-transform","scale("+zoom+")");
     //Breadcrumbs
     var breadcrumbs="";
-    var lastAncestor=""; //Debe guardar el último ancestro para el botón de ir a nivel superior
+    var lastAncestor="", lastAncestorName=""; //Debe guardar el último ancestro para el botón de ir a nivel superior
     var last= response.breadcrumbs.length-1;
     $.each(response.breadcrumbs, function(i,lugar)   
     {
@@ -240,19 +241,38 @@ function cargarMapa(idLugar)
         //  breadcrumbs+='<A HREF=\'?idLugar='+lugar[0]+'\' > '+lugar[1]+'</A>';
           breadcrumbs+='<A HREF=\'?idLugar='+lugar[0]+'\'><abbr title=\''+lugar[2]+'\'>'+lugar[1]+'</abbr></A>';
           lastAncestor=lugar[0];
+          lastAncestorName=lugar[2];
       }
       else{
-          breadcrumbs+= '<strong>'+lugar[1]+'</strong>';
-         }
-      
+          breadcrumbs+='<span id=\'hijos\'><strong>'+lugar[1]+'</strong><ul id=\'listabreadcrumbs\'></ul></span>'; //pendiente sacar childrens
+          //breadcrumbs+='<span class="breadcrumb-title icon-arrow-dropdown-up-after">'+lugar[1]+'</span><div class="breadcrumb-subitems";"><ul id=\'listabreadcrumbs\'></ul></div>'; 
+         }      
+          
     
      
       
     });
     $(".map-breadcrumbs").html(breadcrumbs);
+    $(document).ready(function(){
+              
+                $("#hijos").hover(function() {
+			$('#listabreadcrumbs').show(); //muestro mediante id	
+		 },
+		function(){
+			$('#listabreadcrumbs').hide(); //oculto mediante id		
+		});
+	});
     if (lastAncestor!=""){
-        var htmlUpButton ='<A HREF=\'?idLugar='+lastAncestor+'\' ><span class="fa-stack fa-lg"><i class="fa fa-circle-thin fa-stack-2x"style="color:black;opacity:0.8"></i><i class="fa fa-circle fa-stack-2x"style="color:white;opacity:0.5"></i><i class="fa fa-arrow-up fa-stack-1x fa-inverse"style="color:black"></i></span></A>';
+        var htmlUpButton ='<A HREF=\'?idLugar='+lastAncestor+'\' > <span class="fa-stack fa-2x id="upButton"><i class="fa fa-arrow-up fa-stack-1x fa-inverse" id="flechaarriba"></i><i class="fa fa-circle-thin fa-stack-2x" id="aro"></i><i class="fa fa-circle fa-stack-2x" id="circulo"></i></span></A>';
         $("#upbutton").html(htmlUpButton);
+        $("#upbutton").on( "mouseover", function(e) 
+        {
+          $(".map-footer").html("Subir a "+lastAncestorName);     
+        });
+        $("#upbutton").on('mouseout', function(e) 
+        {
+          $(".map-footer").html("&nbsp;");
+        });
     }
     window.ciudad=response.nombre;
     window.idLugar=idLugar;  //Is it used?
@@ -285,25 +305,27 @@ function cargarMapa(idLugar)
             .done(function(data) 
                 {
                 window.poligonos = [];
+                breadcrumbs_dropdown="";
                 $.each(data, function(i,datos)
                     {
                     window.poligonos[datos.id]=datos.nombre;
-
+               
                     addPolygonToMap(datos.id,"shp/geoJSON/"+nivelHijos+"/"+datos.id+".geojson",datos.nombre,'#ffaaaa',datos.activo);
                     if(response.nivel>7) {
                         if(typeof window.cantidadPorLugar[datos.id] === 'undefined')
                             cantidad='0';
                         else
                             cantidad=window.cantidadPorLugar[datos.id];
-                    new L.Marker([datos.ycentroid,datos.xcentroid], 
-                        {
-                        icon: new L.NumberedDivIcon({number: cantidad})
-                        }).addTo(map);
+                        new L.Marker([datos.ycentroid,datos.xcentroid], 
+                            {
+                            icon: new L.NumberedDivIcon({number: cantidad})
+                            }).addTo(map);
                     }
+                    breadcrumbs_dropdown+='<li><A HREF=\'?idLugar='+datos.id+'\'>'+datos.nombre+'</A></li>';
                     });
+                    $("#listabreadcrumbs").html(breadcrumbs_dropdown);
                 });
         }
-        
         // Show the brothers 
         $.getJSON("getLugaresColindantes.php",
             {
