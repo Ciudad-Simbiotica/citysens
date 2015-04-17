@@ -67,7 +67,7 @@ function style(feature) {
         
         geojsonLayer.on('mouseout', function(e) 
         {
-          $(".map-footer").html("&nbsp;");  
+          $(".map-footer").html(window.nombre);  
           var layer = e.target;
         layer.resetStyle(e.target);  //layer.resetStyle(); 
         });
@@ -244,14 +244,11 @@ function cargarMapa(idLugar)
           lastAncestorName=lugar[2];
       }
       else{
-          breadcrumbs+='<div id=\'hijos\'><strong>'+lugar[1]+'</strong><ul id=\'listabreadcrumbs\'></ul></div>'; //pendiente sacar childrens
-          //breadcrumbs+='<span class="breadcrumb-title icon-arrow-dropdown-up-after">'+lugar[1]+'</span><div class="breadcrumb-subitems";"><ul id=\'listabreadcrumbs\'></ul></div>'; 
+          breadcrumbs+='<div id=\'hijos\'><strong>'+lugar[1]+'</strong><ul id=\'listabreadcrumbs\'></ul></div>';         
+          $(".map-footer").html(lugar[1]);
          }      
-          
-    
-     
-      
     });
+
     $(".map-breadcrumbs").html(breadcrumbs);
     $(document).ready(function(){
               
@@ -274,8 +271,8 @@ function cargarMapa(idLugar)
           $(".map-footer").html("&nbsp;");
         });
     }
-    window.ciudad=response.nombre;
-    window.idLugar=idLugar;  //Is it used?
+    window.nombre=response.nombre;
+    window.idTerritorio=idLugar;
     
     idTerritorioMostrado=response.id;
     var nivelMostrado=parseInt(response.nivel,10);
