@@ -294,10 +294,10 @@ function cargarContenido(id)
 
     $(".informacion-cabecera").click(function()
     {
-      window.location="?idEvento="+data.idEvento+"&idOrigen="+window.idLugar;
+      window.location="?idEvento="+data.idEvento+"&idOrigen="+window.idTerritorio;
     });
 
-    url="http://www.citysens.net/?idEvento="+data.idEvento+"%26idOrigen="+window.idLugar;
+    url="http://www.citysens.net/?idEvento="+data.idEvento+"%26idOrigen="+window.idTerritorio;
     mensaje="¡¡¡Este evento te puede interesar!!!";
     
     var tbx = document.getElementById("toolbox");
@@ -428,10 +428,10 @@ function cargarContenidoEntidad(id)
 
     $(".informacion-cabecera").click(function()
     {
-      window.location="/?idEntidad="+data.idEntidad+"&idOrigen="+window.idLugar;
+      window.location="/?idEntidad="+data.idEntidad+"&idOrigen="+window.idTerritorio;
     });
 
-    url="http://www.citysens.net/?idEntidad="+data.idEntidad+"%26idOrigen="+window.idLugar;
+    url="http://www.citysens.net/?idEntidad="+data.idEntidad+"%26idOrigen="+window.idTerritorio;
     mensaje="¡¡¡Esta asociación te puede interesar!!!";
     
     var tbx = document.getElementById("toolbox");
