@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+                                                                                
+"features": [
+{ "type": "Feature", "properties": { "Name": "Barrio Ciudadela", "Descriptio": null }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -3.3775234, 40.4964886, 0.0 ], [ -3.3718586, 40.4964886, 0.0 ], [ -3.369569, 40.495868, 0.0 ], [ -3.368943, 40.495634, 0.0 ], [ -3.3745408, 40.4922786, 0.0 ], [ -3.375458, 40.493641, 0.0 ], [ -3.377408, 40.492867, 0.0 ], [ -3.377666, 40.49312, 0.0 ], [ -3.3775234, 40.4964886, 0.0 ] ] ] } }
+]
+}
