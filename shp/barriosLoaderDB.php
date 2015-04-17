@@ -97,7 +97,7 @@ while ($record = $shp->getNext())
 // not needed	$deleted=trim(utf8_encode($datos["deleted"]));
     $nombre = trim(utf8_encode($datos["Name"]));
 //    $codine = trim(utf8_encode($datos["CODINE"]));
-    $idPadre = '901280009';//trim(utf8_encode($datos["COD_CCAA"]));
+    //trim(utf8_encode($datos["COD_CCAA"]));
 
     $coordenadas=$record->getShpData();   
 
@@ -123,7 +123,7 @@ while ($record = $shp->getNext())
     $xmax=$coordenadas["xmax"];
     $ymax=$coordenadas["ymax"];
        
-    $geoJSON="";
+    /*$geoJSON="";
     $firstPart=true;
     if($coordenadas["numparts"]==1)
         $geoJSON='{"type":"Polygon","coordinates":[[';
@@ -144,6 +144,7 @@ while ($record = $shp->getNext())
             ////print_r($latlong);
             //exit();
             */
+    /*
             $x=$point["x"];
             $y=$point["y"];
             $coordenada="[$x,$y]";
@@ -158,7 +159,7 @@ while ($record = $shp->getNext())
 			$geoJSON.=']]}';
 		else
 			$geoJSON.=']]]}';
-
+*/
 		// id codes are going to be:
         // CCAA: level(1)+country(2)+CCAA(6)    CORRECTO
         //           401000009
@@ -171,13 +172,13 @@ while ($record = $shp->getNext())
         // District: level(1)+country(2)+Province(2)+DistrictNumber(4)(in province) CORRECTO
         //           901280009
 		//$id=999000000+$i;
-        $id=1001280033+$i;
+        $id=10012800+$i;
 		//echo $id.PHP_EOL;
 //		file_put_contents("geoJSON/10/$id.geojson", $geoJSON);
 		$sql=utf8_decode("INSERT INTO lugares_shp 
 				(id,nombre,provincia,idPadre,idDescendiente, 
 					xmin,ymin,xmax,ymax,nivel,activo)
-				VALUES ('$id','$nombre','28','$idPadre','idDescenciente',
+				VALUES ('$id','$nombre','28','901280009','0',
 					'$xmin','$ymin','$xmax','$ymax','10','1')");	
 		//echo $sql;
 		

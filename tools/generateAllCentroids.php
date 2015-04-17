@@ -5,11 +5,11 @@ include_once "../db.php";
 
 // Script is unactive unless it is required
 // For use  select id an direcotories targeted.
-exit();
+//exit();
 
 $link=connect();
 
-$sql="SELECT * FROM lugares_shp WHERE id >='601150031' AND id <='601190052' and (xcentroid =0 OR xcentroid is NULL)";       
+$sql="SELECT * FROM lugares_shp WHERE id like '1001%' and (xcentroid =0 OR xcentroid is NULL)";       
 $result=mysqli_query($link, $sql);
 $data=array();
 while($fila=mysqli_fetch_assoc($result))
@@ -21,7 +21,7 @@ foreach($data as $idRegion)
 {
 	 //$idFichero=str_pad($fila[4],5,0,STR_PAD_LEFT);
      // This failed for Islas Baleares 601040007 and Santa Cruz de Tenerife 38 Girona 17 A coruña 15
-	 $polygon = geoPHP::load(file_get_contents("../shp/geoJSON/6/$idRegion.geojson"),'json');
+	 $polygon = geoPHP::load(file_get_contents("../shp/geoJSON/10/$idRegion.geojson"),'json');
 	 $area = $polygon->getArea();
 	 $centroid = $polygon->getCentroid();
 	 $centX = $centroid->getX();
