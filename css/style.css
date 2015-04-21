@@ -478,22 +478,33 @@ html,body
 	background-image: url("icons/follow_eye20x20.png");		
 	background-repeat: no-repeat;       
 }
-
+.controles{
+    position:absolute;  
+    Padding:5px 10px 3px 3px;
+    align: center;
+  	height: inherit;
+  	width: inherit;
+  	z-index:1000;
+  	display:block;
+  	float:right;
+}
 #upbutton{
-  top:28px;
-  right: 10px;
-  z-index:90;
-  position:absolute;
+	position:absolute;
+	
+ 	bottom:9%;
+ 	right:2%;	
+ 	z-index:90;
+ 	display:block;
+	
 }
 #circle-button{
-     right: 10px;
-     z-index:1000;
-     position:absolute;
-     top: 245px;
-     title:"contador";
-}
-#circle-button:active{
-    style:'fa-toogle-off'
+	top:10%;
+	position:absolute;
+	right:2%;
+    z-index:90;
+    float:right; 
+    clear:both;
+    align: inherit;
 }
 
 #flechaarriba{
