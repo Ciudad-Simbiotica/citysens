@@ -154,9 +154,10 @@
 	 	<div class='map-breadcrumbs'>
 	 		&nbsp;
 	 	</div>             
-	 	<div class='map-map'>
-                <div id="upbutton"></div>                
-		 <div id="map"></div>                 
+	 	<div class='map-map'>  
+                 <div id="upbutton"></div>
+                 <div id="circle-button"></div>
+		 <div id="map"></div>                                               
 		</div>
 	 	<div class='map-footer'>
 		 	&nbsp;

@@ -485,6 +485,16 @@ html,body
   z-index:90;
   position:absolute;
 }
+#circle-button{
+     right: 10px;
+     z-index:1000;
+     position:absolute;
+     top: 245px;
+     title:"contador";
+}
+#circle-button:active{
+    style:'fa-toogle-off'
+}
 
 #flechaarriba{
     color:black;

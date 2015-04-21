@@ -270,7 +270,15 @@ function cargarMapa(idLugar)
         {
           $(".map-footer").html("&nbsp;");
         });
-    }
+    };
+    
+    var htmlshowpointers ='<button><i class="fa fa-toggle-on"></i></button>';
+   // var htmlhidepointers ='<button i class="fa fa-toggle-off fa fa-toggle-on"></button>'; 
+     $("#circle-button").html(htmlshowpointers);   
+     $("#circle-button button").click(function(){
+     $(this).find('i').toggleClass('fa-toggle-on fa-toggle-off');
+     $(".leaflet-div-icon").fadeToggle( "slow", "linear" );                        
+ });
     window.nombre=response.nombre;
     window.idTerritorio=idLugar;
     
@@ -392,3 +400,4 @@ function irACoordenadas(coordinates,zoom)
 }
 
 
+//Localstorage
