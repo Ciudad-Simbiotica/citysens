@@ -728,6 +728,20 @@ function getNivelTerritorio($idLugar)
     return $fila["nivel"];
 }
 
+// Returns data from the "base" territory for idLugar, ie: the first descendent with multiple offspring or no child. 
+function getCoordenadasInteriores($idLugar)
+{
+        //Sanitize input
+    $link=connect();
+    $idLugar=safe($link, $idLugar);  
+    
+    $sql="SELECT min(xmin) as xmin, max(xmax) as xmax, min(ymin) as ymin, max(ymax) as ymax "
+        . "FROM lugares_shp "
+        . "WHERE idPadre='$idLugar'";
+    $result=mysqli_query($link, $sql);
+    $fila=mysqli_fetch_assoc($result);
+    return $fila;
+}
 
 // Returns data from the "base" territory for idLugar, ie: the first descendent with multiple offspring or no child. 
 function getDatosLugarBase($idLugar)

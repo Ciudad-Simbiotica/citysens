@@ -4,8 +4,15 @@
 	
     $respuesta=getDatosLugarBase($_GET["idLugar"]); //
 //  $respuesta=getDatosLugar($_GET["idLugar"]);
-    $nivelColindantes=getNivelTerritorio($_GET["idLugar"]);
-	$respuesta["nivelColindantes"]=$nivelColindantes;
+
+    
+    if ($respuesta["nivel"]==9) {
+      $coordenadasInteriores=getCoordenadasInteriores($respuesta["id"]);
+      $respuesta["xmax"]=$coordenadasInteriores["xmax"];
+      $respuesta["ymax"]=$coordenadasInteriores["ymax"];
+      $respuesta["xmin"]=$coordenadasInteriores["xmin"];
+      $respuesta["ymin"]=$coordenadasInteriores["ymin"];      
+    }
 
         //Breadcrumbs
 

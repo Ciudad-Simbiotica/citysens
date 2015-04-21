@@ -300,37 +300,33 @@ function cargarMapa(idLugar)
             icon: new L.NumberedDivIcon({number: cantidad})
             }).addTo(map);
         }
-        else { //Cargamos los polígonos hijos
-            $.getJSON("getChildAreas.php", 
+    else { //Cargamos los polígonos hijos
+        $.getJSON("getChildAreas.php", 
+            {
+            dataType: 'json',
+            nivel:nivelHijos,
+            lugarOriginal:idTerritorioMostrado,
+            })
+        .done(function(data) 
+            {
+            window.poligonos = [];
+            breadcrumbs_dropdown="";
+            $.each(data, function(i,datos)
                 {
-                dataType: 'json',
-                nivel:nivelHijos,
-                lugarOriginal:idTerritorioMostrado,
-                })
-            .done(function(data) 
-                {
-                window.poligonos = [];
-                breadcrumbs_dropdown="";
-                $.each(data, function(i,datos)
-                    {
-                    window.poligonos[datos.id]=datos.nombre;
-               
-                    addPolygonToMap(datos.id,"shp/geoJSON/"+nivelHijos+"/"+datos.id+".geojson",datos.nombre,'#ffaaaa',datos.activo);
+                window.poligonos[datos.id]=datos.nombre;
+
+                addPolygonToMap(datos.id,"shp/geoJSON/"+nivelHijos+"/"+datos.id+".geojson",datos.nombre,'#ffaaaa',datos.activo);
                     if(response.nivel>7) {
-                        if(typeof window.cantidadPorLugar[datos.id] === 'undefined')
-                            cantidad='0';
-                        else
-                            cantidad=window.cantidadPorLugar[datos.id];
-                        new L.Marker([datos.ycentroid,datos.xcentroid], 
-                            {
-                            icon: new L.NumberedDivIcon({number: cantidad})
-                            }).addTo(map);
+                    if(typeof window.cantidadPorLugar[datos.id] === 'undefined')
+                        cantidad='0';
+                    else
+                        cantidad=window.cantidadPorLugar[datos.id];
                     }
-                    breadcrumbs_dropdown+='<li><A HREF=\'?idLugar='+datos.id+'\'>'+datos.nombre+'</A></li>';
-                    });
-                    $("#listabreadcrumbs").html(breadcrumbs_dropdown);
+                breadcrumbs_dropdown+='<li><A HREF=\'?idLugar='+datos.id+'\'>'+datos.nombre+'</A></li>';
                 });
-        }
+                $("#listabreadcrumbs").html(breadcrumbs_dropdown);
+            });
+    }
         // Show the brothers 
         $.getJSON("getLugaresColindantes.php",
             {
