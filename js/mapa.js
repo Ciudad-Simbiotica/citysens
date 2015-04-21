@@ -396,4 +396,3 @@ function irACoordenadas(coordinates,zoom)
 }
 
 
-//Localstorage
