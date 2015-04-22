@@ -490,17 +490,17 @@ html,body
 }
 #upbutton{
 	position:absolute;
-	
- 	bottom:9%;
- 	right:2%;	
+ 	top:14%;	
+	right:2%;	
  	z-index:90;
  	display:block;
 	
 }
 #circle-button{
-	top:10%;
+	bottom:9%;
+ 	right:2%;
+	
 	position:absolute;
-	right:2%;
     z-index:90;
     float:right; 
     clear:both;
