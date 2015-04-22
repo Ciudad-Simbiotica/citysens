@@ -321,6 +321,11 @@ function cargarMapa(idLugar)
                         cantidad='0';
                     else
                         cantidad=window.cantidadPorLugar[datos.id];
+                    new L.Marker([datos.ycentroid,datos.xcentroid], 
+                        {
+                        icon: new L.NumberedDivIcon({number: cantidad})
+                        }).addTo(map);
+
                     }
                 breadcrumbs_dropdown+='<li><A HREF=\'?idLugar='+datos.id+'\'>'+datos.nombre+'</A></li>';
                 });
