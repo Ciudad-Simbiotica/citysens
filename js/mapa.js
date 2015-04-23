@@ -370,6 +370,7 @@ function cargarMapa(idLugar)
                         if(datos.id!=response.idPadre)  //No mostramos el padre
                             addPolygonToMap(datos.id,"shp/geoJSON/"+nivelTios+"/"+datos.id+".geojson",datos.nombre,'#5353cf',datos.activo);
                         });
+                         $(".agenda").fadeIn(5000);  
                     });
         
         //Cargamos los eventos
@@ -389,10 +390,10 @@ function cargarMapa(idLugar)
                     });
                 });
             });
-       
-  });
 
-  
+    });
+
+    
 }
 
 function irACoordenadas(coordinates,zoom)
