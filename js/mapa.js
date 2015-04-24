@@ -352,7 +352,9 @@ function cargarMapa(idLugar)
                 $("#listabreadcrumbs").html(breadcrumbs_dropdown);
             });
     }
-        // Show the brothers 
+    if(nivelMostrado!=10)
+    {
+      // Show the brothers 
         $.getJSON("getLugaresColindantes.php",
             {
             dataType: 'json',
@@ -367,7 +369,7 @@ function cargarMapa(idLugar)
                 {
                 $.each(data, function(i,datos)
                     {
-                    if(datos.idPadre==response.idPadre) //Sólo mostramos a los hijos de su padre (es decir, a los hermanos)
+                    if (datos.idPadre==response.idPadre) //Sólo mostramos a los hijos de su padre (es decir, a los hermanos)
                         addPolygonToMap(datos.id,"shp/geoJSON/"+nivelMostrado+"/"+datos.id+".geojson",datos.nombre,'#aaaaff',datos.activo);
                     });
                 });
@@ -390,8 +392,30 @@ function cargarMapa(idLugar)
                         if(datos.id!=response.idPadre)  //No mostramos el padre
                             addPolygonToMap(datos.id,"shp/geoJSON/"+nivelTios+"/"+datos.id+".geojson",datos.nombre,'#5353cf',datos.activo);
                         });
-                         $(".agenda").fadeIn(5000);  
+                    // Now that the map is loaded, the main agenda div can be shown.     
+                    $(".agenda").fadeIn(500);  
                     });
+    }
+    else {
+        // For level 10, neighbourhood, we show all, brothers, cousins, etc.
+        $.getJSON("getLugaresColindantes.php",
+            {
+            dataType: 'json',
+            tipo:nivelMostrado,
+            xmin:fittedXMin,
+            xmax:fittedXMax,
+            ymin:fittedYMin,
+            ymax:fittedYMax,
+            lugarOriginal:idTerritorioMostrado,
+            })
+            .done(function(data) 
+                {
+                $.each(data, function(i,datos)
+                    {
+                        addPolygonToMap(datos.id,"shp/geoJSON/"+nivelMostrado+"/"+datos.id+".geojson",datos.nombre,'#aaaaff',datos.activo);
+                    });
+                });
+    }
         
         //Cargamos los eventos
         window.markers = [];

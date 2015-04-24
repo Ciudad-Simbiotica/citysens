@@ -728,7 +728,7 @@ function getNivelTerritorio($idLugar)
     return $fila["nivel"];
 }
 
-// Returns data from the "base" territory for idLugar, ie: the first descendent with multiple offspring or no child. 
+// Returns max min coordinates from the "base" territory for idLugar, ie: the first descendent with multiple offspring or no child. 
 function getCoordenadasInteriores($idLugar)
 {
         //Sanitize input
@@ -742,6 +742,54 @@ function getCoordenadasInteriores($idLugar)
     $fila=mysqli_fetch_assoc($result);
     return $fila;
 }
+
+// Returns max min coordinates from the surrounding territories of an idLugar. 
+function getCoordenadasColindantes($type,$xmin,$xmax,$ymin,$ymax)
+{
+    $link=connect();
+    //sanitize inputs
+    $type=safe($link, $type);
+    $xmin=safe($link, $xmin);
+    $xmax=safe($link, $xmax);
+    $ymin=safe($link, $ymin);
+    $ymax=safe($link, $ymax);
+
+    $sql="SELECT min(xmin) as xmin, max(xmax) as xmax, min(ymin) as ymin, max(ymax) as ymax FROM lugares_shp WHERE
+            nivel='$type'
+            AND NOT(xmin > $xmax
+            OR $xmin >  xmax
+            OR  ymax < $ymin
+            OR $ymax < ymin)";
+
+    $result=mysqli_query($link, $sql);
+    $fila=mysqli_fetch_assoc($result);
+    return $fila;
+}
+
+// Returns max min coordinates of the centroids of the surrounding territories of an idLugar. 
+function getCoordenadasCentroidesColindantes($type,$xmin,$xmax,$ymin,$ymax)
+{
+    $link=connect();
+    //sanitize inputs
+    $type=safe($link, $type);
+    $xmin=safe($link, $xmin);
+    $xmax=safe($link, $xmax);
+    $ymin=safe($link, $ymin);
+    $ymax=safe($link, $ymax);
+
+    $sql="SELECT min(xcentroid) as xmin, max(xcentroid) as xmax, min(ycentroid) as ymin, max(ycentroid) as ymax 
+            FROM lugares_shp WHERE
+            nivel='$type'
+            AND NOT(xmin > $xmax
+            OR $xmin >  xmax
+            OR  ymax < $ymin
+            OR $ymax < ymin)";
+
+    $result=mysqli_query($link, $sql);
+    $fila=mysqli_fetch_assoc($result);
+    return $fila;
+}
+
 
 // Returns data from the "base" territory for idLugar, ie: the first descendent with multiple offspring or no child. 
 function getDatosLugarBase($idLugar)
@@ -1015,7 +1063,6 @@ function validarEvento($idEvento,$status)
 }
 
 // Gets the areas of level $type that are contained within the limits, excluding the central $lugarOriginal
-
 function getColindantes($lugarOriginal,$type,$xmin,$xmax,$ymin,$ymax)
 {
     $link=connect();
