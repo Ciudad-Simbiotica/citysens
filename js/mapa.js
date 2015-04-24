@@ -280,8 +280,8 @@ function cargarMapa(idLugar)
     nivelHijos=nivelMostrado+1;
     nivelTios=nivelMostrado-1; // It could be adjusted if there is some level that is not considered significant (like districts, regions, etc.)
    
-    if (nivelMostrado > 7) // If the territory is of level city or lower, there are counters
-    {
+   // if (nivelMostrado > 7) // If the territory is of level city or lower, there are counters
+   // {
         if (window.listado.grupos) 
         {
             var htmlshowpointers = '<button><i class="fa fa-toggle-off"></i></button>';
@@ -300,7 +300,7 @@ function cargarMapa(idLugar)
                 $(".map-footer").html("&nbsp;");
             });
         }
-    }
+  //  }
        
       
     
