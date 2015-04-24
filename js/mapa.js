@@ -264,42 +264,63 @@ function cargarMapa(idLugar)
         $("#upbutton").html(htmlUpButton);
         $("#upbutton").on( "mouseover", function(e) 
         {
-          $(".map-footer").html("Subir a "+lastAncestorName);     
+          $(".map-footer").html("Subir a "+lastAncestorName);           
         });
         $("#upbutton").on('mouseout', function(e) 
         {
           $(".map-footer").html("&nbsp;");
         });
     };
-    
-    var htmlshowpointers ='<button><i class="fa fa-toggle-on"></i></button>';
-   // var htmlhidepointers ='<button i class="fa fa-toggle-off fa fa-toggle-on"></button>'; 
-     $("#circle-button").html(htmlshowpointers);   
-     $("#circle-button button").click(function(){
-     $(this).find('i').toggleClass('fa-toggle-on fa-toggle-off');
-     $(".leaflet-div-icon").fadeToggle( "slow", "linear" );                        
- });
-    window.nombre=response.nombre;
+
+          window.nombre=response.nombre;
     window.idTerritorio=idLugar;
     
     idTerritorioMostrado=response.id;
     var nivelMostrado=parseInt(response.nivel,10);
     nivelHijos=nivelMostrado+1;
     nivelTios=nivelMostrado-1; // It could be adjusted if there is some level that is not considered significant (like districts, regions, etc.)
+   
+   // if (nivelMostrado > 7) // If the territory is of level city or lower, there are counters
+   // {
+        if (window.listado.grupos) 
+        {
+            var htmlshowpointers = '<button><i class="fa fa-toggle-off"></i></button>';
+            $("#circle-button").html(htmlshowpointers);
+
+            $("#circle-button button").click(function () {
+                $(this).find('i').toggleClass('fa-toggle-on fa-toggle-off');
+                $(".leaflet-div-icon").fadeToggle("slow", "linear");
+            });
+            $("#circle-button").on("mouseover", function (e)
+            {
+                $(".map-footer").html("Palanca de eventos");
+            });
+            $("#circle-button").on('mouseout', function (e)
+            {
+                $(".map-footer").html("&nbsp;");
+            });
+        }
+  //  }
+       
+      
+    
+
     
     // If the territory has no child, the territory is shown
     if (response.idDescendiente==0) {
         addPolygonToMap(idTerritorioMostrado,"shp/geoJSON/"+response.nivel+"/"+idTerritorioMostrado+".geojson","ABCDE",'#ffaaaa',-1);
         if  (nivelMostrado>7) // If the territory is of level city or lower, counter is included
+        {
             if (typeof window.cantidadPorLugar[idLugar] === 'undefined')
                 cantidad = '0';
             else
                 cantidad = window.cantidadPorLugar[idLugar];
-        new L.Marker([response.ycentroid, response.xcentroid],
-            {
-            icon: new L.NumberedDivIcon({number: cantidad})
-            }).addTo(map);
+            new L.Marker([response.ycentroid, response.xcentroid],
+                {
+                icon: new L.NumberedDivIcon({number: cantidad})
+                }).addTo(map);
         }
+    }
     else { //Cargamos los polígonos hijos
         $.getJSON("getChildAreas.php", 
             {
@@ -325,7 +346,6 @@ function cargarMapa(idLugar)
                         {
                         icon: new L.NumberedDivIcon({number: cantidad})
                         }).addTo(map);
-
                     }
                 breadcrumbs_dropdown+='<li><A HREF=\'?idLugar='+datos.id+'\'>'+datos.nombre+'</A></li>';
                 });
@@ -387,8 +407,9 @@ function cargarMapa(idLugar)
                         }).setOpacity(0).setZIndexOffset(100).addTo(map);
                     marker.dragging.disable();
                     markers[datos.id]=marker;
-                    });
-                });
+                    
+                    });                  
+                });                          
             });
 
     });
