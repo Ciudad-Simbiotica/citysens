@@ -5,7 +5,7 @@ include_once "../db.php";
 
 // Script is unactive unless it is required
 // For use  select id an direcotories targeted.
-//exit();
+exit();
 
 $link=connect();
 
