@@ -35,6 +35,8 @@ include "preload.php";
  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
  <script src="js/datepicker-es.js"></script>
  <script src="js/jquery.custom-animations.js"></script>
+ <script src="js/spin.min.js"></script>
+ <script src="js/jquery.spin.js"></script>
  <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
  <script src="http://maps.google.com/maps/api/js?v=3&sensor=false"></script>
  <script src="js/leaflet-plugins-master/layer/Leaflet.ContinuousZoom.js"></script>
