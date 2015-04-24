@@ -2,8 +2,10 @@
 	background: #6666ff;
 	border-color: #ddd;
 	border-width: 2px;
-    border-radius: 50%;
-    box-shadow:4px 4px 7px #aaa;
+        border-radius: 50%;
+        box-shadow:4px 4px 7px #aaa;
+        display:none;
+    
 }
 
 .leaflet-marker-icon

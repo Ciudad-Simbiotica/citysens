@@ -478,7 +478,8 @@ html,body
 	background-image: url("icons/follow_eye20x20.png");		
 	background-repeat: no-repeat;       
 }
-.controles{
+.controles
+{
     position:absolute;  
     Padding:5px 10px 3px 3px;
     align: center;
@@ -488,7 +489,8 @@ html,body
   	display:block;
   	float:right;
 }
-#upbutton{
+#upbutton
+{
 	position:absolute;
  	top:14%;	
 	right:2%;	
@@ -496,7 +498,8 @@ html,body
  	display:block;
 	
 }
-#circle-button{
+#circle-button
+{
 	bottom:9%;
  	right:2%;
 	
@@ -507,7 +510,8 @@ html,body
     align: inherit;
 }
 
-#flechaarriba{
+#flechaarriba
+{
     color:black;
 }
 
@@ -521,10 +525,12 @@ html,body
     opacity:0.7;
 }
 
-#circulo:hover{
+#circulo:hover
+{
     color:lightgreen;
 }
-div.map-breadcrumbs.ulli{
+div.map-breadcrumbs.ulli
+{
     display: inline;
     list-style: outside none none;
     float: none; 
@@ -534,7 +540,8 @@ div.map-breadcrumbs.ulli{
     
     
 }
-#listabreadcrumbs{ 
+#listabreadcrumbs
+{ 
     width: inherit;
     display:none;
     background: #fff;
@@ -565,4 +572,15 @@ ul#listabreadcrumbs{
 #hijos{
     z-index:10;
     display:inline-block;
+}
+
+.loading{
+    visibility: visible !important;
+    display: -webkit-flex;
+    align-items: center;
+    height: 200%;
+    width:200%;
+    position:absolute;
+    top:20%;
+    left:50%;
 }
