@@ -17,10 +17,10 @@
     if ($respuesta["nivel"]==10 && $respuesta["idDescendiente"]==0) {
       //$coordenadasColindantes=getCoordenadasColindantes($respuesta["nivel"],$respuesta["xmin"],$respuesta["xmax"],$respuesta["ymin"],$respuesta["ymax"]); 
       $coordenadasColindantes=getCoordenadasCentroidesColindantes($respuesta["nivel"],$respuesta["xmin"],$respuesta["xmax"],$respuesta["ymin"],$respuesta["ymax"]);       
-      $respuesta["xmax"]=$coordenadasColindantes["xmax"];
-      $respuesta["ymax"]=$coordenadasColindantes["ymax"];
-      $respuesta["xmin"]=$coordenadasColindantes["xmin"];
-      $respuesta["ymin"]=$coordenadasColindantes["ymin"];     
+      $respuesta["xmax"]=($respuesta["xmax"]>$coordenadasColindantes["xmax"]?$respuesta["xmax"]:$coordenadasColindantes["xmax"]);
+      $respuesta["ymax"]=($respuesta["ymax"]>$coordenadasColindantes["ymax"]?$respuesta["ymax"]:$coordenadasColindantes["ymax"]);
+      $respuesta["xmin"]=($respuesta["xmin"]<$coordenadasColindantes["xmin"]?$respuesta["xmin"]:$coordenadasColindantes["xmin"]);
+      $respuesta["ymin"]=($respuesta["ymin"]<$coordenadasColindantes["ymin"]?$respuesta["ymin"]:$coordenadasColindantes["ymin"]);
     }
         //Breadcrumbs
 
