@@ -83,7 +83,7 @@ function cargarMapa(idLugar)
 {
   //Creamos el mapa
   window.polygons = [];
-  //$('.map-map').html('<div id="map"></div>');
+  $('.map-map').html('<div id="circle-button"></div><div id="upbutton"></div><div id="map"></div>'); //Borramos mapa previo si existía
   var map = L.map('map',
   {
     zoomControl: false,
