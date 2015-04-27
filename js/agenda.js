@@ -613,7 +613,6 @@ function cargarDatos(clase, orden)
         $("#boton-avisos").val("Recibir avisos");        
         window.isFollowing=false;
       }
-    $(".agenda").hide();
     $(".supergrupo").fadeIn(500);
     // Show sort-by and register only in case ther was results
     if (!jQuery.isEmptyObject(data.grupos))
