@@ -831,7 +831,7 @@ function getChildAreas($lugarOriginal,$nivel)
   $sql="SELECT lugares_shp.*
             FROM lugares_shp 
             WHERE nivel='$nivel'
-            AND idPadre='$lugarOriginal'";
+            AND idPadre='$lugarOriginal' ORDER BY nombre";
 
     mysqli_query($link, 'SET CHARACTER SET utf8');
     $result=mysqli_query($link, $sql);
