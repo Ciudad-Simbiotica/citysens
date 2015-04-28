@@ -1,7 +1,7 @@
 //Para sacar los parámetros de GET
 $.urlParam = function(name){
     var results = new RegExp('[\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.href);
-    return results[1] || 0;
+    return results?results[1]:null;
 }
 
 /* 
@@ -1136,9 +1136,10 @@ else if(notificacion==="resetError")
 
 
 //Clicar la categoría que corresponda
-try
-{
-  var categoria=$.urlParam('category'); //Lanza un error si no hay tipo
+// Comment: this was an odd piece of code which seemed not to be used and additionally was based on catching an error. 
+// urlParam was modified to return a null value in case the parameter does not exist (instead of exception)
+// TODO: review when improving change of categories
+  var categoria=$.urlParam('category'); 
   if(categoria==="ent")
   {
     $(".cabecera-pestania-dch").click();
@@ -1147,11 +1148,8 @@ try
   {
     $(".cabecera-pestania-izq").click();
   }
-}
-catch(err)
-{
-    $(".cabecera-pestania-izq").click();  
-}
+  else 
+    $(".cabecera-pestania-izq").click();
 
 if(isLogged())
 {
