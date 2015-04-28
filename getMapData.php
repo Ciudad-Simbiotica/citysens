@@ -2,28 +2,48 @@
 	error_reporting(0);
 	include_once "db.php";
 	
-    $respuesta=getDatosLugarBase($_GET["idLugar"]);
-//  $respuesta=getDatosLugar($_GET["idLugar"]);
-
+    if($_GET["navType"]==1)
+      $respuesta=getDatosLugar($_GET["idLugar"]);
+    else
+      $respuesta=getDatosLugarBase($_GET["idLugar"]);
+    
 // For the case of districts, whose surface normally is only partially covered by the neighbourhoods within, zoom is adjusted 
 // to the surface covered by the neighbourhood polygons 
-    if ($respuesta["nivel"]==9 && $respuesta["idDescendiente"]!=0) {
+    if ($respuesta["nivel"]==9 && $respuesta["idDescendiente"]!=0) 
+    {
       $coordenadasInteriores=getCoordenadasInteriores($respuesta["id"]);
       $respuesta["xmax"]=$coordenadasInteriores["xmax"];
       $respuesta["ymax"]=$coordenadasInteriores["ymax"];
       $respuesta["xmin"]=$coordenadasInteriores["xmin"];
       $respuesta["ymin"]=$coordenadasInteriores["ymin"];      
     }
-    if ($respuesta["nivel"]==10 && $respuesta["idDescendiente"]==0) {
+// For the case of neighborhoods and city surroundings, we want a special navigation with no uncles
+    if ($_GET["navType"]==1 && ($respuesta["nivel"]==10 || $respuesta["nivel"]==8)) 
+    {
       //$coordenadasColindantes=getCoordenadasColindantes($respuesta["nivel"],$respuesta["xmin"],$respuesta["xmax"],$respuesta["ymin"],$respuesta["ymax"]); 
-      $coordenadasColindantes=getCoordenadasCentroidesColindantes($respuesta["nivel"],$respuesta["xmin"],$respuesta["xmax"],$respuesta["ymin"],$respuesta["ymax"]);       
+      $coordenadasColindantes=getCoordenadasCentroidesColindantes($respuesta["nivel"],$respuesta["xmin"],$respuesta["xmax"],$respuesta["ymin"],$respuesta["ymax"]);
+      
+      // In case of cities having a very big neighbour, coordinates are too wide and territory loses central position. Check for it and correct, using a 0,05 margin 
+      if ($respuesta["nivel"]==8)
+      {
+        if ($coordenadasColindantes["xmax"]>$respuesta["xmax"]+0.05)
+          $coordenadasColindantes["xmax"]=$respuesta["xmax"]+0.05;
+        if ($coordenadasColindantes["ymax"]>$respuesta["ymax"]+0.05)
+          $coordenadasColindantes["ymax"]=$respuesta["ymax"]+0.05;
+        if ($coordenadasColindantes["xmin"]<$respuesta["xmin"]-0.05)
+          $coordenadasColindantes["xmin"]=$respuesta["xmin"]-0.05;
+        if ($coordenadasColindantes["ymin"]<$respuesta["ymin"]-0.05)
+          $coordenadasColindantes["ymin"]=$respuesta["ymin"]-0.05;  
+      }
+      
+      // Coordinates of centroids are not satisfactory for a peripheric territory, as they get cut. Check for it and correct.
       $respuesta["xmax"]=($respuesta["xmax"]>$coordenadasColindantes["xmax"]?$respuesta["xmax"]:$coordenadasColindantes["xmax"]);
       $respuesta["ymax"]=($respuesta["ymax"]>$coordenadasColindantes["ymax"]?$respuesta["ymax"]:$coordenadasColindantes["ymax"]);
       $respuesta["xmin"]=($respuesta["xmin"]<$coordenadasColindantes["xmin"]?$respuesta["xmin"]:$coordenadasColindantes["xmin"]);
       $respuesta["ymin"]=($respuesta["ymin"]<$coordenadasColindantes["ymin"]?$respuesta["ymin"]:$coordenadasColindantes["ymin"]);
     }
-        //Breadcrumbs
-
+    
+    //Data for the Breadcrumbs
 	$lugares=  getFertileAncestors($respuesta["id"]);
 	$cantidad=0;
 	$breadcrumbs=array();
