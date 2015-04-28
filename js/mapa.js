@@ -80,8 +80,8 @@ function cargarMapa(idLugar)
 {
   //Creamos el mapa
   window.polygons = [];
-  $('.map-map').html('<div id="circle-button"></div><div id="upbutton"></div><div id="map"></div>');
-  var map = L.map('map',    
+  $('.map-map').html('<div id="circle-button"></div><div id="upbutton"></div><div id="map"></div>'); //Borramos mapa previo si existía
+  var map = L.map('map',
   {
     zoomControl: false,
     attributionControl: false,
@@ -407,6 +407,7 @@ function cargarMapa(idLugar)
                     {
                     $.each(data, function(i,datos)
                         {
+
                             addPolygonToMap(datos.id,0,"shp/geoJSON/"+nivelTios+"/"+datos.id+".geojson",datos.nombre,'#5353cf',datos.activo);
                         }); 
                     });
