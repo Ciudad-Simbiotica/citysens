@@ -311,19 +311,19 @@ function getEntidadesQuery($params,$cantidad=10)
 
 
     $lugares=getAllChildren($lugares);
-    foreach($lugares as $idLugar)
+    foreach($lugares as $idTerritorio)
     {
         if($lugar!="")
             $lugar.=" OR ";
-        $lugar.="direcciones.idPadre='$idLugar'";
+        $lugar.="direcciones.idPadre='$idTerritorio'";
     }
 
 
-    $sql="SELECT entidades.*,entidades_tematicas.*,tematicas.*,direcciones.*, lugares_shp.nombre as nombreLugar FROM entidades 
+    $sql="SELECT entidades.*,entidades_tematicas.*,tematicas.*,direcciones.*, territorios.nombre as nombreLugar FROM entidades 
             JOIN entidades_tematicas ON entidades.idEntidad=entidades_tematicas.idEntidad 
             JOIN tematicas ON entidades_tematicas.idTematica=tematicas.idTematica 
             JOIN direcciones ON entidades.idDireccion=direcciones.idDireccion
-            JOIN lugares_shp ON direcciones.idPadre=lugares_shp.id
+            JOIN territorios ON direcciones.idPadre=territorios.id
             WHERE ";
     if($busqueda!="")
         $sql.="($busqueda) AND ";
@@ -532,11 +532,11 @@ function getEventos($params,$cantidad=50,$orden="fecha")
 
 
     $lugares=getAllChildren($lugares);
-    foreach($lugares as $idLugar)
+    foreach($lugares as $idTerritorio)
     {
         if($lugar!="")
             $lugar.=" OR ";
-        $lugar.="idDistritoPadre='$idLugar'";
+        $lugar.="idDistritoPadre='$idTerritorio'";
     }
 
 
@@ -574,7 +574,7 @@ function getEventosPorValidar()
     $link=connect();
 
     $sql="SELECT eventos.*,
-                 lugares_shp.nombre as nombreLugar,
+                 territorios.nombre as nombreLugar,
                  entidades.entidad as entidad,
                  direcciones.nombre as nombreDireccion,
                  direcciones.direccion as direccion,
@@ -583,10 +583,10 @@ function getEventosPorValidar()
                  FROM eventos_tematicas, tematicas
                  WHERE eventos_tematicas.idTematica=tematicas.idTematica 
                  AND eventos_tematicas.idEvento = eventos.idEvento) AS tematicas
-            FROM eventos, direcciones, lugares_shp, entidades
+            FROM eventos, direcciones, territorios, entidades
             WHERE eventoActivo=0
             AND eventos.idDireccion=direcciones.idDireccion 
-            AND direcciones.idPadre=lugares_shp.id 
+            AND direcciones.idPadre=territorios.id 
             AND eventos.idEntidad=entidades.idEntidad
             GROUP BY eventos.idEvento 
             ORDER BY idEvento ASC";    
@@ -606,7 +606,7 @@ function getAllChildren($lugares)
     for($nivel=6;$nivel<=10;$nivel++)
     {
         $ids=implode(",",$lugares);
-        $sql="SELECT id FROM lugares_shp WHERE nivel='$nivel' AND idPadre IN ($ids)";
+        $sql="SELECT id FROM territorios WHERE nivel='$nivel' AND idPadre IN ($ids)";
         $result=mysqli_query($link, $sql);
         while($fila=mysqli_fetch_assoc($result))
             array_push($lugares,$fila['id']);
@@ -617,13 +617,13 @@ function getAllChildren($lugares)
 }
 
 //Devuelve array con los datos de los territorios ancestros de idLugar.
-function getAllAncestors($idLugar)
+function getAllAncestors($idTerritorio)
 {
-    $lugar=getDatosLugar($idLugar); 
+    $lugar=getDatosLugar($idTerritorio); 
     $lugares[$lugar["nivel"]]=$lugar;
     $idPadre=$lugar["idPadre"];
     
-    while($idLugar!=0)
+    while($idTerritorio!=0)
     {
             $lugar=getDatosLugar($idPadre);
             $lugares[$lugar["nivel"]]=$lugar;
@@ -648,9 +648,9 @@ function getAllAncestors($idLugar)
 //Devuelve array con los datos de los territorios ancestros fértiles (más de un hijo) de idLugar. 
 //IdLugar should be the base territory (fertile)
 //Usado para generar el breadcrumb de un territorio
-function getFertileAncestors($idLugar)
+function getFertileAncestors($idTerritorio)
 {
-    $lugar=getDatosLugar($idLugar);
+    $lugar=getDatosLugar($idTerritorio);
     $lugares[$lugar["nivel"]] = $lugar;    
     $idPadre = $lugar["idPadre"];
     while($idPadre!=0)
@@ -675,13 +675,13 @@ function getFertileAncestors($idLugar)
 }
 
 
-function getFertility($idLugar)
+function getFertility($idTerritorio)
 {
         $link=connect();
-        $idLugar=safe($link,$idLugar);
+        $idTerritorio=safe($link,$idTerritorio);
     $sql="SELECT id
-            FROM lugares_shp 
-            WHERE idPadre='$idLugar'";
+            FROM territorios 
+            WHERE idPadre='$idTerritorio'";
  
     $result=mysqli_query($link, $sql);
     $numberSons = mysqli_num_rows($result);
@@ -697,15 +697,15 @@ function getFertility($idLugar)
     return $fertility; 
 }
 
-function getDatosLugar($idLugar)
+function getDatosLugar($idTerritorio)
 {
     //Sanitize input
     $link=connect();
-    $idLugar=safe($link, $idLugar);  
+    $idTerritorio=safe($link, $idTerritorio);  
     
     $sql="SELECT * 
-            FROM  lugares_shp 
-            WHERE id='$idLugar'";
+            FROM  territorios 
+            WHERE id='$idTerritorio'";
     mysqli_query($link, 'SET CHARACTER SET utf8');
     $result=mysqli_query($link, $sql);
     $fila=mysqli_fetch_assoc($result);
@@ -713,15 +713,15 @@ function getDatosLugar($idLugar)
 }
 
 // Returns "Nivel" (level) of the territory with id "idLugar" 
-function getNivelTerritorio($idLugar)
+function getNivelTerritorio($idTerritorio)
 {
     //Sanitize input
     $link=connect();
-    $idLugar=safe($link, $idLugar);  
+    $idTerritorio=safe($link, $idTerritorio);  
     
     $sql="SELECT nivel 
-            FROM  lugares_shp 
-            WHERE id='$idLugar'";
+            FROM  territorios 
+            WHERE id='$idTerritorio'";
 
     $result=mysqli_query($link, $sql);
     $fila=mysqli_fetch_assoc($result);
@@ -729,15 +729,15 @@ function getNivelTerritorio($idLugar)
 }
 
 // Returns max min coordinates from the "base" territory for idLugar, ie: the first descendent with multiple offspring or no child. 
-function getCoordenadasInteriores($idLugar)
+function getCoordenadasInteriores($idTerritorio)
 {
         //Sanitize input
     $link=connect();
-    $idLugar=safe($link, $idLugar);  
+    $idTerritorio=safe($link, $idTerritorio);  
     
     $sql="SELECT min(xmin) as xmin, max(xmax) as xmax, min(ymin) as ymin, max(ymax) as ymax "
-        . "FROM lugares_shp "
-        . "WHERE idPadre='$idLugar'";
+        . "FROM territorios "
+        . "WHERE idPadre='$idTerritorio'";
     $result=mysqli_query($link, $sql);
     $fila=mysqli_fetch_assoc($result);
     return $fila;
@@ -754,7 +754,7 @@ function getCoordenadasColindantes($type,$xmin,$xmax,$ymin,$ymax)
     $ymin=safe($link, $ymin);
     $ymax=safe($link, $ymax);
 
-    $sql="SELECT min(xmin) as xmin, max(xmax) as xmax, min(ymin) as ymin, max(ymax) as ymax FROM lugares_shp WHERE
+    $sql="SELECT min(xmin) as xmin, max(xmax) as xmax, min(ymin) as ymin, max(ymax) as ymax FROM territorios WHERE
             nivel='$type'
             AND NOT(xmin > $xmax
             OR $xmin >  xmax
@@ -778,7 +778,7 @@ function getCoordenadasCentroidesColindantes($type,$xmin,$xmax,$ymin,$ymax)
     $ymax=safe($link, $ymax);
 
     $sql="SELECT min(xcentroid) as xmin, max(xcentroid) as xmax, min(ycentroid) as ymin, max(ycentroid) as ymax 
-            FROM lugares_shp WHERE
+            FROM territorios WHERE
             nivel='$type'
             AND NOT(xmin > $xmax
             OR $xmin >  xmax
@@ -792,15 +792,15 @@ function getCoordenadasCentroidesColindantes($type,$xmin,$xmax,$ymin,$ymax)
 
 
 // Returns data from the "base" territory for idLugar, ie: the first descendent with multiple offspring or no child. 
-function getDatosLugarBase($idLugar)
+function getDatosLugarBase($idTerritorio)
 {
         //Sanitize input
     $link=connect();
-    $idLugar=safe($link, $idLugar);  
+    $idTerritorio=safe($link, $idTerritorio);  
     
     $sql="SELECT * 
-            FROM  lugares_shp 
-            WHERE id='$idLugar'";
+            FROM  territorios 
+            WHERE id='$idTerritorio'";
     mysqli_query($link, 'SET CHARACTER SET utf8');
     $result=mysqli_query($link, $sql);
     $fila=mysqli_fetch_assoc($result);
@@ -819,17 +819,17 @@ function getChildAreas($lugarOriginal,$nivel)
     $link=connect();
     
 //Quizás no haría falta hacer el Join con eventos, ya que queremos todos        
- /*   $sql="SELECT lugares_shp.*,count(eventos.idDistritoPadre) as cantidad
-            FROM lugares_shp LEFT OUTER JOIN eventos 
-            ON lugares_shp.id=eventos.idDistritoPadre 
+ /*   $sql="SELECT territorios.*,count(eventos.idDistritoPadre) as cantidad
+            FROM territorios LEFT OUTER JOIN eventos 
+            ON territorios.id=eventos.idDistritoPadre 
             WHERE nivel='$nivel'
             AND idPadre='$lugarOriginal'
-            GROUP BY lugares_shp.id";
+            GROUP BY territorios.id";
   * 
   */
 
-  $sql="SELECT lugares_shp.*
-            FROM lugares_shp 
+  $sql="SELECT territorios.*
+            FROM territorios 
             WHERE nivel='$nivel'
             AND idPadre='$lugarOriginal' ORDER BY nombre";
 
@@ -852,7 +852,7 @@ function getLugares($cadena,$lugarOriginal,$type,$cantidad=3,$inSet=array())
     $lugarOriginal=safe($link, $lugarOriginal);
     $type=safe($link, $type);
     $cantidad=safe($link, filter_var($cantidad, FILTER_SANITIZE_NUMBER_INT));
-    $sql="SELECT * FROM lugares_shp WHERE
+    $sql="SELECT * FROM territorios WHERE
             nivel='$type' AND
             provincia=28 AND
             nombre LIKE '%$cadena%' AND
@@ -886,7 +886,7 @@ function getLugaresSuggestions($cadena,$lugarOriginal,$cantidad=4)
     unset($inSet[0]);   //Quitamos el original
     
     mysqli_query($link, 'SET CHARACTER SET utf8');
-    $sql="SELECT * FROM lugares_shp WHERE
+    $sql="SELECT * FROM territorios WHERE
             nombre LIKE '%$cadena%' AND
             id IN (".implode(",",$inSet).")
             $whereNiveles
@@ -910,7 +910,7 @@ function getIrA($cadena,$lugarOriginal)
     $cadena=safe($link, $cadena);
     $lugarOriginal=safe($link, $lugarOriginal);
 
-   $sql="SELECT id, nombre FROM lugares_shp WHERE nombre LIKE '$cadena%' AND nivel<9 ORDER BY nombre, id DESC";
+   $sql="SELECT id, nombre FROM territorios WHERE nombre LIKE '$cadena%' AND nivel<9 ORDER BY nombre, id DESC";
    // Order by, so the lower level appear before higher levels with the same name. Guadalajara (city), Guadalajara (province)
 
 
@@ -1006,7 +1006,7 @@ function crearNuevaDireccion($nombreLugar,$direccion,$lat,$lng,$idPadre)
     mysqli_query($link, 'SET CHARACTER SET utf8');
 
     //Buscar el padre según las coordenadas
-    $sql="SELECT * FROM lugares_shp WHERE
+    $sql="SELECT * FROM territorios WHERE
                     xmin<'$lng' AND
                     ymin<'$lat' AND
                     xmax>'$lng' AND
@@ -1029,7 +1029,7 @@ function crearNuevaDireccion($nombreLugar,$direccion,$lat,$lng,$idPadre)
     $sql="INSERT INTO direcciones (idPadre,nombre,direccion,lat,lng,zoom,direccionActiva)
                            VALUES ('$idDistritoPadre','$nombreLugar','$direccion','$lat','$lng','15','0')";
     mysqli_query($link, $sql);
-    $returnData["idLugar"]=mysqli_insert_id();
+    $returnData["idTerritorio"]=mysqli_insert_id();
     $returnData["idDistritoPadre"]=$idDistritoPadre;
     return $returnData;
 }
@@ -1075,7 +1075,7 @@ function getColindantes($lugarOriginal,$type,$xmin,$xmax,$ymin,$ymax)
     $ymax=safe($link, $ymax);
 
 
-    $sql="SELECT * FROM lugares_shp WHERE
+    $sql="SELECT * FROM territorios WHERE
             nivel='$type' AND
             NOT(xmin > $xmax
             OR $xmin >  xmax
@@ -1104,8 +1104,8 @@ function getEventosCoordenadas($xmin,$xmax,$ymin,$ymax)
     $ymax=safe($link, $ymax);
 
     
-    $sql="SELECT * FROM eventos,lugares_shp WHERE 
-            x>$xmin AND x<$xmax AND y>$ymin AND y<$ymax AND eventos.idDistritoPadre=lugares_shp.id AND eventos.eventoActivo='1' ";
+    $sql="SELECT * FROM eventos,territorios WHERE 
+            x>$xmin AND x<$xmax AND y>$ymin AND y<$ymax AND eventos.idDistritoPadre=territorios.id AND eventos.eventoActivo='1' ";
 
     mysqli_query($link, 'SET CHARACTER SET utf8');
     $result=mysqli_query($link, $sql);
@@ -1124,7 +1124,7 @@ function getLevels($provincia,$type)
     $type=safe($link, $type);
 
     
-    $sql="SELECT * FROM lugares_shp WHERE
+    $sql="SELECT * FROM territorios WHERE
             nivel='$type' AND
             provincia='$provincia'";
 

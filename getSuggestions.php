@@ -52,7 +52,7 @@ array_push($sugestions,$sugestion);
 */
 
 
-$lugares=getLugaresSuggestions($_GET["query"],$_GET["idLugar"]);
+$lugares=getLugaresSuggestions($_GET["query"],$_GET["idTerritorio"]);
 foreach($lugares as $lugar)
 {
 	//print_r($lugar);
@@ -66,7 +66,7 @@ foreach($lugares as $lugar)
 
 if($_GET["entidades"]=="")	//Sólo las mostramos si NO estamos buscando entidades
 {
-	$entidades=getEntidadesZonaConEventos($_GET["query"],4,$_GET["idLugar"]);
+	$entidades=getEntidadesZonaConEventos($_GET["query"],4,$_GET["idTerritorio"]);
 	foreach($entidades as $entidad)
 	{
 		//print_r($entidad);
@@ -79,7 +79,7 @@ if($_GET["entidades"]=="")	//Sólo las mostramos si NO estamos buscando entidade
 }
 
 
-$lugaresIrA=getIrA($_GET["query"],$_GET["idLugar"]);
+$lugaresIrA=getIrA($_GET["query"],$_GET["idTerritorio"]);
 if($lugaresIrA)
 {
 	//print_r($lugaresIrA);

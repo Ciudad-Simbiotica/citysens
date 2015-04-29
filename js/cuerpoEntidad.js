@@ -113,7 +113,7 @@ $.getJSON('getDatosEntidad.php',
     $(".detalle-mapa-pie-nombre").text(data.direccion.nombre);
     $(".detalle-mapa-pie-direccion").text(data.direccion.direccion);
     $(".detalle-mapa-cabecera-volver").click(function(){
-        window.location="/?idLugar="+$.urlParam('idOrigen');
+        window.location="/?idTerritorio="+$.urlParam('idOrigen');
     });
     
     /*
@@ -195,13 +195,13 @@ $("#contacto").click(function ()
 
 $(".cabecera-pestania-izq").click(function()
 {
-    window.location="/?idLugar="+$.urlParam('idOrigen');
+    window.location="/?idTerritorio="+$.urlParam('idOrigen');
 });
 
 
 $(".cabecera-pestania-dch").click(function()
 {
-    window.location="/?idLugar="+$.urlParam('idOrigen')+'&category=ent';
+    window.location="/?idTerritorio="+$.urlParam('idOrigen')+'&category=ent';
 });
 
 $('#input-busqueda').attr('placeholder','Buscar en la entidad...');

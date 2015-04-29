@@ -139,7 +139,7 @@ function suggestBusqueda(texto)
   $.getJSON(getAgenda, 
   {
     query: texto,
-    idLugar: $.urlParam('idLugar'),
+    idTerritorior: $.urlParam('idTerritorio'),
     date: "any",
     format: "json",
     entidades: entidades
@@ -190,7 +190,7 @@ function suggestBusqueda(texto)
         {
           if(value.activo==1)
           {
-            window.location = "?idLugar="+value.id;
+            window.location = "?idTerritorio="+value.id;
           }
           else
           {

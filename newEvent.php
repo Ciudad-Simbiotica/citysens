@@ -22,16 +22,16 @@ foreach($data["tematicas"] as $tematica)
 }
 $cadenaEtiquetas=join(",",$etiquetas);
 
-if($data["idLugar"]==0)
+if($data["idTerritorio"]==0)
 {
 	//Es una direccion nueva
 	$datosNuevoLugar=crearNuevaDireccion($data["nombreLugar"],$data["lugar"],$data["coordenadas"]["lat"],$data["coordenadas"]["lng"],$data["idCiudad"]);;
-	$data["idLugar"]=$datosNuevoLugar["idLugar"];
+	$data["idTerritorio"]=$datosNuevoLugar["idTerritorio"];
 	$data["idDistritoPadre"]=$datosNuevoLugar["idDistritoPadre"];
 }
 else
 {
-	$data["idDistritoPadre"]=getDistritoPadreDireccion($data["idLugar"]);
+	$data["idDistritoPadre"]=getDistritoPadreDireccion($data["idTerritorio"]);
 }
 
 //print_r($data);
@@ -54,7 +54,7 @@ $datosNuevoEvento["idDistritoPadre"]=$data["idDistritoPadre"];
 $datosNuevoEvento["idEntidad"]=158;	//Forzado de CLUB DARDOS TREBOL
 $datosNuevoEvento["temperatura"]=1;
 $datosNuevoEvento["tematicas"]=$tematicas;
-$datosNuevoEvento["idDireccion"]=$data["idLugar"];
+$datosNuevoEvento["idDireccion"]=$data["idTerritorio"];
 $datosNuevoEvento["url"]=$data["webEvento"];
 $datosNuevoEvento["email"]=$data["email"];
 $datosNuevoEvento["etiquetas"]=$cadenaEtiquetas;

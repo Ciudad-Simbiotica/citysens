@@ -41,8 +41,8 @@ function addPolygonToMap(idLugar,navType,url,texto,color,activo,style)
             {
                 if(activo>0)
                 {
-                    //history.pushState(null, null, "http://localhost:8888/?idLugar="+idLugar);
-                    target="?idLugar="+idLugar;
+                    //history.pushState(null, null, "http://localhost:8888/?idTerritorio="+idTerritorio);
+                    target="?idTerritorio="+idTerritorio;
                     if (navType==1)
                         target+="&navType=1"
                     window.location=target;
@@ -50,7 +50,7 @@ function addPolygonToMap(idLugar,navType,url,texto,color,activo,style)
                 else
                 {
                     //No hay todavía para esta ciudad
-                    loadOverlayNoDisponible("cityNotReadyYet.html",idLugar,texto);
+                    loadOverlayNoDisponible("cityNotReadyYet.html",idTerritorio,texto);
                 }
             });
         
@@ -71,12 +71,12 @@ function addPolygonToMap(idLugar,navType,url,texto,color,activo,style)
             layer.resetStyle(e.target);  //layer.resetStyle(); 
             });
         }
-        polygons[idLugar]=geojsonLayer;
+        polygons[idTerritorio]=geojsonLayer;
     }
 });  
 }
 
-function cargarMapa(idLugar)
+function cargarMapa(idTerritorio)
 {
   //Creamos el mapa
   window.polygons = [];
@@ -173,7 +173,7 @@ function cargarMapa(idLugar)
   $.getJSON("getMapData.php", 
   {
     dataType: 'json',
-    idLugar: idLugar,
+    idTerritorio: idTerritorio,
     navType: navType,
   })
   .done(function (response) 
@@ -236,8 +236,8 @@ function cargarMapa(idLugar)
           breadcrumbs+=" > ";
 
       if (i<last) { //not last
-        //  breadcrumbs+='<A HREF=\'?idLugar='+lugar[0]+'\' > '+lugar[1]+'</A>';
-          breadcrumbs+='<A HREF=\'?idLugar='+lugar[0]+'\'><abbr title=\''+lugar[2]+'\'>'+lugar[1]+'</abbr></A>';
+        //  breadcrumbs+='<A HREF=\'?idTerritorio='+lugar[0]+'\' > '+lugar[1]+'</A>';
+          breadcrumbs+='<A HREF=\'?idTerritorio='+lugar[0]+'\'><abbr title=\''+lugar[2]+'\'>'+lugar[1]+'</abbr></A>';
           lastAncestor=lugar[0];
           lastAncestorName=lugar[2];
       }
@@ -252,7 +252,7 @@ function cargarMapa(idLugar)
     // in case it is not the top level, UP arrow displayed  
     if (lastAncestor!="")
     {
-        var htmlUpButton ='<A HREF=\'?idLugar='+lastAncestor+'\' > <span class="fa-stack fa-2x id="upButton"><i class="fa fa-arrow-up fa-stack-1x fa-inverse" id="flechaarriba"></i><i class="fa fa-circle-thin fa-stack-2x" id="aro"></i><i class="fa fa-circle fa-stack-2x" id="circulo"></i></span></A>';
+        var htmlUpButton ='<A HREF=\'?idTerritorio='+lastAncestor+'\' > <span class="fa-stack fa-2x id="upButton"><i class="fa fa-arrow-up fa-stack-1x fa-inverse" id="flechaarriba"></i><i class="fa fa-circle-thin fa-stack-2x" id="aro"></i><i class="fa fa-circle fa-stack-2x" id="circulo"></i></span></A>';
         $("#upbutton").html(htmlUpButton);
         $("#upbutton").on( "mouseover", function(e) 
         {
@@ -265,7 +265,7 @@ function cargarMapa(idLugar)
     };
 
     window.nombre=response.nombre;
-    window.idTerritorio=idLugar;
+    window.idTerritorio=idTerritorio;
     
     idTerritorioMostrado=response.id;
     var nivelMostrado=parseInt(response.nivel,10);
@@ -301,10 +301,10 @@ function cargarMapa(idLugar)
 
         if  (nivelMostrado>7) // If the territory is of level city or lower, counter is included
         {
-            if (typeof window.cantidadPorLugar[idLugar] === 'undefined')
+            if (typeof window.cantidadPorLugar[idTerritorio] === 'undefined')
                 cantidad = '0';
             else
-                cantidad = window.cantidadPorLugar[idLugar];
+                cantidad = window.cantidadPorLugar[idTerritorio];
             new L.Marker([response.ycentroid, response.xcentroid],
                 {
                 icon: new L.NumberedDivIcon({number: cantidad})
@@ -317,10 +317,10 @@ function cargarMapa(idLugar)
 
         if  (nivelMostrado>7) // If the territory is of level city or lower, counter is included
         {
-            if (typeof window.cantidadPorLugar[idLugar] === 'undefined')
+            if (typeof window.cantidadPorLugar[idTerritorio] === 'undefined')
                 cantidad = '0';
             else
-                cantidad = window.cantidadPorLugar[idLugar];
+                cantidad = window.cantidadPorLugar[idTerritorio];
             new L.Marker([response.ycentroid, response.xcentroid],
                 {
                 icon: new L.NumberedDivIcon({number: cantidad})
@@ -357,7 +357,7 @@ function cargarMapa(idLugar)
                         icon: new L.NumberedDivIcon({number: cantidad})
                         }).addTo(map);
                     }
-                breadcrumbs_dropdown+='<li><A HREF=\'?idLugar='+datos.id+'\'>'+datos.nombre+'</A></li>';
+                breadcrumbs_dropdown+='<li><A HREF=\'?idTerritorio='+datos.id+'\'>'+datos.nombre+'</A></li>';
                 });
                 $("#listabreadcrumbs").html(breadcrumbs_dropdown);
                 $("#hijos").hover(function() {
