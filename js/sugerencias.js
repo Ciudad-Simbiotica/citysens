@@ -139,7 +139,7 @@ function suggestBusqueda(texto)
   $.getJSON(getAgenda, 
   {
     query: texto,
-    idTerritorior: $.urlParam('idTerritorio'),
+    idTerritorio: $.urlParam('idTerritorio'),
     date: "any",
     format: "json",
     entidades: entidades

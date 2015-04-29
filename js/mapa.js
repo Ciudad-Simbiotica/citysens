@@ -17,7 +17,7 @@ function loadOverlayNoDisponible(url,idCiudad,ciudad)
 
 }
 
-function addPolygonToMap(idLugar,navType,url,texto,color,activo,style)
+function addPolygonToMap(idTerritorio,navType,url,texto,color,activo,style)
 {
     $.ajax({
         type: "POST",
