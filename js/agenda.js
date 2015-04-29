@@ -3,6 +3,23 @@ $.urlParam = function(name){
     var results = new RegExp('[\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.href);
     return results?results[1]:null;
 }
+//-------------------------------------------------------------------
+//Generación de información necesaria para navegación en página
+//--------------------------------------------------------------------
+//En estado de Pruebas
+//window.miBusqueda ="";
+//window.miBuqueda.idOrigen=idTerritorioorigen
+/*
+var miBusqueda = {
+    
+        idOrigen: $.urlParam('idTerritorio'),
+        Organismo:'Evento',
+    //    Filtros:typeof(window.arrayTags)!=="undefined"?window.arrayTags[0].texto:"sinfiltro"
+        //idOrigen: window.idTerritorio// actualmente esta en window.idTerritorio   
+        };
+    
+        
+        */
 
 /* 
 ---------------------------------------------------------------------------------------------
@@ -504,7 +521,7 @@ function cargarDatos(clase, orden)
     {
       "texto": "", 
       "tipo": "lugar",
-      "id": $.urlParam('idLugar'),
+      "id": $.urlParam('idTerritorio'),
     };
     arrayTagsQuery.push(sugerencia);
   }
@@ -528,7 +545,7 @@ function cargarDatos(clase, orden)
     clase: clase,
     date: "any",
     query: query,
-    idLugarOriginal: $.urlParam('idLugar'),
+    idTerritorioOriginal: $.urlParam('idTerritorio'),
     format: "json",
     orden: orden
   })
@@ -618,7 +635,7 @@ function cargarDatos(clase, orden)
     if (!jQuery.isEmptyObject(data.grupos))
         $(".agenda-segunda-linea").fadeIn(500);
     comprobarPlegadoFilas();
-    cargarMapa($.urlParam('idLugar'));
+    cargarMapa($.urlParam('idTerritorio'));
     });  
 }
 
@@ -688,7 +705,7 @@ function subscribe()
       {
         "texto": "", 
         "tipo": "lugar",
-        "id": $.urlParam('idLugar'),
+        "id": $.urlParam('idTerritorio'),
       };
       arrayTagsQuery.push(sugerencia);
     }

@@ -3,9 +3,9 @@ error_reporting(E_ERROR);
 
 include "settings.php";
 //Página por defecto
-if(($_GET["idLugar"]=="")&($_GET["idEvento"]=="")&($_GET["idEntidad"]==""))
+if(($_GET["idTerritorio"]=="")&($_GET["idEvento"]=="")&($_GET["idEntidad"]==""))
 {
-    header('Location: '.BASE_URL.'?idLugar=701280002');
+    header('Location: '.BASE_URL.'?idTerritorio=701280002');
     exit();
 }
 
@@ -113,7 +113,7 @@ include "preload.php";
  
  <div class='cuerpo'>
 	<?php
-		if($_GET["idLugar"]!="")
+		if($_GET["idTerritorio"]!="")
 			include "cuerpoLugar.php";
 		else if($_GET["idEvento"]!="")
 			include "cuerpoEvento.php";

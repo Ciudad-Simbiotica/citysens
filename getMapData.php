@@ -3,9 +3,9 @@
 	include_once "db.php";
 	
     if($_GET["navType"]==1)
-      $respuesta=getDatosLugar($_GET["idLugar"]);
+      $respuesta=getDatosLugar($_GET["idTerritorio"]);
     else
-      $respuesta=getDatosLugarBase($_GET["idLugar"]);
+      $respuesta=getDatosLugarBase($_GET["idTerritorio"]);
     
 // For the case of districts, whose surface normally is only partially covered by the neighbourhoods within, zoom is adjusted 
 // to the surface covered by the neighbourhood polygons 

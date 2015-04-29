@@ -293,7 +293,7 @@ function suggestLugar(texto)
   $.getJSON(getAgenda, 
   {
     query: texto,
-    idLugar: window.newEventCiudadID,
+    idTerritorio: window.newEventCiudadID,
   })
   .done(function(data) 
   {
@@ -588,7 +588,7 @@ $('#newEvent-propose').bind('mousedown',function(event)
     datosAEnviar["tematicas"]=arrayTematicasNuevoEvento;
     datosAEnviar["idCiudad"]=$("#newEvent-idCiudad").val();
     datosAEnviar["ciudad"]=$("#newEvent-ciudad").val();
-    datosAEnviar["idLugar"]=$("#newEvent-idLugar").val();
+    datosAEnviar["idTerritorio"]=$("#newEvent-idLugar").val();
     datosAEnviar["lugar"]=$("#newEvent-lugar").val();
     datosAEnviar["nombreLugar"]=$(".newEvent-lugarDiv-texto1").html();
     datosAEnviar["coordenadas"]=window.marker.getLatLng();
