@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 28-04-2015 a las 14:03:16
+-- Tiempo de generación: 29-04-2015 a las 17:35:04
 -- Versión del servidor: 5.5.43-0ubuntu0.14.04.1
 -- Versión de PHP: 5.5.23-1+deb.sury.org~trusty+2
 
@@ -3279,11 +3279,87 @@ INSERT INTO `eventos_tematicas` (`idEventoTematica`, `idEvento`, `idTematica`) V
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `lugares_shp`
+-- Estructura de tabla para la tabla `preregister`
 --
 
-DROP TABLE IF EXISTS `lugares_shp`;
-CREATE TABLE IF NOT EXISTS `lugares_shp` (
+DROP TABLE IF EXISTS `preregister`;
+CREATE TABLE IF NOT EXISTS `preregister` (
+  `idPreregister` int(11) NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `idCiudad` int(11) NOT NULL,
+  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idPreregister`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
+
+--
+-- Volcado de datos para la tabla `preregister`
+--
+
+INSERT INTO `preregister` (`idPreregister`, `email`, `idCiudad`, `fecha`) VALUES
+(1, 'correo@kike.es', 777000003, '2014-09-23 14:46:02'),
+(2, 'correo@kike.es', 888004420, '2014-09-23 14:46:35'),
+(3, 'correo@kike.es', 888004420, '2014-09-23 14:46:56'),
+(4, 'correo@kike.es', 888004420, '2014-09-23 14:47:12'),
+(5, 'correo@kike.es', 888004420, '2014-09-23 14:47:52');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tematicas`
+--
+
+DROP TABLE IF EXISTS `tematicas`;
+CREATE TABLE IF NOT EXISTS `tematicas` (
+  `idTematica` int(11) NOT NULL AUTO_INCREMENT,
+  `tematica` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`idTematica`),
+  KEY `tematica` (`tematica`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=31 ;
+
+--
+-- Volcado de datos para la tabla `tematicas`
+--
+
+INSERT INTO `tematicas` (`idTematica`, `tematica`) VALUES
+(1, 'Administraciones'),
+(2, 'Atención social'),
+(3, 'Ciudad y Barrios'),
+(4, 'Comunicación'),
+(5, 'Conocimiento'),
+(6, 'Consumo'),
+(7, 'Cooperación'),
+(8, 'Cultura'),
+(9, 'Democracia'),
+(10, 'Deporte'),
+(11, 'Derechos humanos'),
+(12, 'Diversidad funcional'),
+(13, 'Economía'),
+(14, 'Educación'),
+(15, 'Emergencias'),
+(21, 'Género'),
+(16, 'Infancia'),
+(17, 'Inmigración'),
+(18, 'Innovación'),
+(19, 'Mayores'),
+(20, 'Medio Ambiente'),
+(22, 'Ocio'),
+(23, 'Salud'),
+(25, 'Seguridad'),
+(24, 'Servicios Públicos'),
+(26, 'Tecnología'),
+(27, 'Trabajo'),
+(28, 'Transporte'),
+(29, 'Urbanismo'),
+(30, 'Vivienda');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `territorios`
+--
+
+DROP TABLE IF EXISTS `territorios`;
+CREATE TABLE IF NOT EXISTS `territorios` (
   `id` int(11) unsigned NOT NULL,
   `idPadre` int(11) unsigned DEFAULT NULL,
   `idDescendiente` int(11) unsigned DEFAULT NULL COMMENT 'Id of the only child , 0 if no child, NULL otherwise',
@@ -3305,10 +3381,10 @@ CREATE TABLE IF NOT EXISTS `lugares_shp` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Volcado de datos para la tabla `lugares_shp`
+-- Volcado de datos para la tabla `territorios`
 --
 
-INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
+INSERT INTO `territorios` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
 (401000034, 0, 2, '', 4, 'España', '', '', -18.1672, 27.6422, 4.33709, 43.7934, -3.65264, 40.2272, 'ES', 1),
 (501000001, 401000034, 2, '01', 5, 'Andalucía', '01', NULL, -7.52288, 35.9376, -1.63012, 38.7291, -4.57561, 37.4633, 'AN', 1),
 (501000002, 401000034, 2, '02', 5, 'Aragón', '02', NULL, -2.17367, 39.8468, 0.771307, 42.9245, -0.660474, 41.5206, 'AR', 1),
@@ -3707,7 +3783,7 @@ INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nive
 (701450007, 601080045, 2, '45', 7, 'La Mancha', NULL, NULL, -3.84428, 39.299, -2.90823, 39.8761, -3.38136, 39.5925, '', 1),
 (701450008, 601080045, 801450164, '45', 7, 'Talavera', NULL, NULL, -5.06003, 39.8854, -4.64317, 40.0188, -4.84916, 39.9537, '', 1),
 (701450009, 601080045, 2, '45', 7, 'La Campana de Oropesa', NULL, NULL, -5.40618, 39.715, -4.89217, 40.1591, -5.15071, 39.9477, '', 1);
-INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
+INSERT INTO `territorios` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
 (701450010, 601080045, 2, '45', 7, 'Sierra de San Vicente', NULL, NULL, -4.95934, 39.9712, -4.55009, 40.2822, -4.76495, 40.1145, '', 1),
 (701460001, 601100046, 2, '46', 7, 'Hoya de Buñol', NULL, NULL, -0.984887, 39.2232, -0.534542, 39.5563, -0.802057, 39.4197, '', 1),
 (701460002, 601100046, 2, '46', 7, 'Los Serranos', NULL, NULL, -1.21088, 39.5381, -0.644708, 39.9818, -0.952201, 39.7693, '', 1),
@@ -4092,7 +4168,7 @@ INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nive
 (801040041, 701040004, 0, '4', 8, 'Fiñana', '04045', '04045', -2.95001, 37.0881, -2.77474, 37.2803, -2.85674, 37.1879, '', 0),
 (801040042, 701040006, 0, '4', 8, 'Fondón', '04046', '04046', -2.93871, 36.9026, -2.81311, 37.083, -2.87591, 36.9928, '', 0),
 (801040043, 701040005, 0, '4', 8, 'Gádor', '04047', '04047', -2.57239, 36.8633, -2.4454, 37.0605, -2.50744, 36.956, '', 0);
-INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
+INSERT INTO `territorios` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
 (801040044, 701040002, 0, '4', 8, 'Los Gallardos', '04048', '04048', -2.01874, 37.1233, -1.90231, 37.2068, -1.95125, 37.1599, '', 0),
 (801040045, 701040002, 0, '4', 8, 'Garrucha', '04049', '04049', -1.84711, 37.167, -1.81532, 37.2083, -1.83121, 37.1877, '', 0),
 (801040046, 701040004, 0, '4', 8, 'Gérgal', '04050', '04050', -2.66012, 37.0406, -2.44353, 37.2515, -2.55677, 37.1499, '', 0),
@@ -4471,7 +4547,7 @@ INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nive
 (801060069, 701060008, 0, '6', 8, 'Hornachos', '06069', '06069', -6.18744, 38.4755, -5.90063, 38.658, -6.05754, 38.566, '', 0),
 (801060070, 701060011, 0, '6', 8, 'Jerez de los Caballeros', '06070', '06070', -6.98859, 38.1738, -6.60112, 38.4808, -6.79486, 38.3273, '', 0),
 (801060071, 701060007, 0, '6', 8, 'La Lapa', '06071', '06071', -6.54251, 38.4352, -6.49924, 38.4762, -6.52231, 38.4565, '', 0);
-INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
+INSERT INTO `territorios` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
 (801060072, 701060006, 0, '6', 8, 'Lobón', '06072', '06072', -6.69436, 38.7939, -6.54893, 38.8726, -6.61079, 38.839, '', 0),
 (801060073, 701060001, 0, '6', 8, 'Llera', '06073', '06073', -6.15343, 38.4119, -6.02021, 38.5149, -6.08033, 38.4616, '', 0),
 (801060074, 701060001, 0, '6', 8, 'Llerena', '06074', '06074', -6.16395, 38.1556, -5.94292, 38.3122, -6.04724, 38.2336, '', 0),
@@ -4857,7 +4933,7 @@ INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nive
 (801080222, 701080006, 0, '8', 8, 'Sant Pol de Mar', '08235', '08235', 2.58825, 41.5905, 2.63926, 41.6294, 2.61573, 41.6074, '', 0),
 (801080223, 701080010, 0, '8', 8, 'Sant Quintí de Mediona', '08236', '08236', 1.63748, 41.4305, 1.69553, 41.4739, 1.66545, 41.4527, '', 0),
 (801080224, 701080004, 0, '8', 8, 'Sant Quirze de Besora', '08237', '08237', 2.20251, 42.0892, 2.27391, 42.1276, 2.23021, 42.1029, '', 0);
-INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
+INSERT INTO `territorios` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
 (801080225, 701080007, 0, '8', 8, 'Sant Quirze del Vallès', '08238', '08238', 2.03149, 41.5067, 2.10169, 41.5433, 2.07003, 41.525, '', 0),
 (801080226, 701080011, 0, '8', 8, 'Sant Quirze Safaja', '08239', '08239', 2.12605, 41.7043, 2.24375, 41.761, 2.18485, 41.7262, '', 0),
 (801080227, 701080002, 0, '8', 8, 'Marganell', '08242', '08242', 1.77789, 41.6007, 1.83093, 41.6592, 1.80262, 41.629, '', 0),
@@ -5234,7 +5310,7 @@ INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nive
 (801090287, 701090004, 0, '9', 8, 'Tinieblas de la Sierra', '09381', '09381', -3.40701, 42.1471, -3.31304, 42.2127, -3.36455, 42.18, '', 0),
 (801090288, 701090004, 0, '9', 8, 'Tobar', '09382', '09382', -3.95813, 42.4619, -3.90777, 42.5082, -3.93846, 42.4882, '', 0),
 (801090289, 701090005, 0, '9', 8, 'Tordómar', '09384', '09384', -3.90102, 42.0219, -3.82022, 42.0814, -3.85935, 42.0496, '', 0);
-INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
+INSERT INTO `territorios` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
 (801090290, 701090005, 0, '9', 8, 'Torrecilla del Monte', '09386', '09386', -3.71142, 42.0793, -3.64551, 42.1245, -3.68369, 42.1017, '', 0),
 (801090291, 701090006, 0, '9', 8, 'Torregalindo', '09387', '09387', -3.77857, 41.5564, -3.71753, 41.5993, -3.75065, 41.5755, '', 0),
 (801090292, 701090004, 0, '9', 8, 'Torrelara', '09388', '09388', -3.53464, 42.1465, -3.48184, 42.2008, -3.50839, 42.1687, '', 0),
@@ -5597,7 +5673,7 @@ INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nive
 (801110012, 701110003, 0, '11', 8, 'Cádiz', '11012', '11012', -6.31779, 36.4415, -6.22566, 36.5432, -6.27173, 36.4923, '', 0),
 (801110013, 701110001, 0, '11', 8, 'Castellar de la Frontera', '11013', '11013', -5.58001, 36.2405, -5.35396, 36.3731, -5.4651, 36.3117, '', 0),
 (801110014, 701110002, 0, '11', 8, 'Conil de la Frontera', '11014', '11014', -6.16208, 36.2431, -5.98862, 36.3481, -6.07718, 36.3116, '', 0);
-INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
+INSERT INTO `territorios` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
 (801110015, 701110003, 0, '11', 8, 'Chiclana de la Frontera', '11015', '11015', -6.21301, 36.33, -5.9937, 36.4718, -6.10982, 36.3998, '', 0),
 (801110016, 701110004, 0, '11', 8, 'Chipiona', '11016', '11016', -6.47207, 36.69, -6.36993, 36.7625, -6.421, 36.7262, '', 0),
 (801110017, 701110006, 0, '11', 8, 'Espera', '11017', '11017', -5.89358, 36.8258, -5.7052, 36.9259, -5.80166, 36.8785, '', 0),
@@ -5974,7 +6050,7 @@ INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nive
 (801150032, 701150009, 0, '15', 8, 'Dodro', '15033', '15033', -8.77463, 42.6884, -8.65894, 42.7542, -8.72011, 42.7228, '', 0),
 (801150033, 701150014, 0, '15', 8, 'Dumbría', '15034', '15034', -9.18297, 42.9055, -8.99879, 43.0631, -9.09715, 42.9884, '', 0),
 (801150034, 701150005, 0, '15', 8, 'Fene', '15035', '15035', -8.20487, 43.4231, -8.09858, 43.4876, -8.15965, 43.4621, '', 0);
-INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
+INSERT INTO `territorios` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
 (801150035, 701150005, 0, '15', 8, 'Ferrol', '15036', '15036', -8.34806, 43.4584, -8.18613, 43.5697, -8.2671, 43.514, '', 0),
 (801150036, 701150014, 0, '15', 8, 'Fisterra', '15037', '15037', -9.29883, 42.8799, -9.22058, 42.9772, -9.2597, 42.9285, '', 0),
 (801150037, 701150015, 0, '15', 8, 'Frades', '15038', '15038', -8.35573, 43.0001, -8.1959, 43.0997, -8.27753, 43.0452, '', 0),
@@ -6355,7 +6431,7 @@ INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nive
 (801170081, 701170008, 0, '17', 8, 'Llívia', '17094', '17094', 1.95673, 42.4466, 2.01446, 42.4948, 1.98148, 42.4661, '', 0),
 (801170082, 701170006, 0, '17', 8, 'Lloret de Mar', '17095', '17095', 2.77686, 41.6863, 2.89684, 41.7622, 2.83685, 41.7242, '', 0),
 (801170083, 701170007, 0, '17', 8, 'Les Llosses', '17096', '17096', 1.96394, 42.1065, 2.21298, 42.222, 2.08846, 42.1642, '', 0);
-INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
+INSERT INTO `territorios` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
 (801170084, 701170003, 0, '17', 8, 'Madremanya', '17097', '17097', 2.91715, 41.966, 2.98738, 42.0063, 2.95273, 41.9861, '', 0),
 (801170085, 701170005, 0, '17', 8, 'Maià de Montcal', '17098', '17098', 2.71822, 42.1865, 2.77919, 42.2347, 2.74907, 42.211, '', 0),
 (801170086, 701170008, 0, '17', 8, 'Meranges', '17099', '17099', 1.72427, 42.4186, 1.81339, 42.4955, 1.76579, 42.4579, '', 0),
@@ -6742,7 +6818,7 @@ INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nive
 (801190078, 701190003, 0, '19', 8, 'Copernal', '19098', '19098', -3.07346, 40.8524, -3.02886, 40.8924, -3.05247, 40.8697, '', 0),
 (801190079, 701190005, 0, '19', 8, 'Corduente', '19099', '19099', -2.15699, 40.7358, -1.89316, 40.9634, -2.02423, 40.8425, '', 0),
 (801190080, 701190004, 0, '19', 8, 'El Cubillo de Uceda', '19102', '19102', -3.45481, 40.7828, -3.36959, 40.8504, -3.41061, 40.8136, '', 0);
-INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
+INSERT INTO `territorios` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
 (801190081, 701190005, 0, '19', 8, 'Checa', '19103', '19103', -1.88907, 40.3982, -1.73552, 40.6271, -1.80995, 40.5099, '', 0),
 (801190082, 701190005, 0, '19', 8, 'Chequilla', '19104', '19104', -1.85833, 40.5798, -1.80407, 40.6258, -1.83223, 40.6036, '', 0),
 (801190083, 701190004, 0, '19', 8, 'Chiloeches', '19105', '19105', -3.24171, 40.515, -3.14121, 40.6139, -3.19448, 40.5706, '', 0),
@@ -7123,7 +7199,7 @@ INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nive
 (801210079, 701210001, 0, '21', 8, 'Zufre', '21079', '21079', -6.48508, 37.7189, -6.2057, 37.9564, -6.36078, 37.8231, '', 0),
 (801220001, 701220005, 0, '22', 8, 'Abiego', '22001', '22001', -0.111014, 42.0906, -0.0193336, 42.1954, -0.065465, 42.1367, '', 0),
 (801220002, 701220006, 0, '22', 8, 'Abizanda', '22002', '22002', 0.139568, 42.2164, 0.230464, 42.3046, 0.190268, 42.2568, '', 0);
-INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
+INSERT INTO `territorios` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
 (801220003, 701220005, 0, '22', 8, 'Adahuesca', '22003', '22003', -0.067069, 42.111, 0.0180737, 42.265, -0.0244977, 42.188, '', 0),
 (801220004, 701220003, 0, '22', 8, 'Agüero', '22004', '22004', -0.918968, 42.2399, -0.77181, 42.395, -0.830196, 42.323, '', 0),
 (801220005, 701220001, 0, '22', 8, 'Aisa', '22006', '22006', -0.682151, 42.6197, -0.512646, 42.7988, -0.602128, 42.7082, '', 0),
@@ -7501,7 +7577,7 @@ INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nive
 (801240077, 701240007, 0, '24', 8, 'Igüeña', '24083', '24083', -6.41017, 42.6565, -6.11556, 42.8141, -6.26648, 42.7363, '', 0),
 (801240078, 701240004, 0, '24', 8, 'Izagre', '24084', '24084', -5.34576, 42.1993, -5.22599, 42.2867, -5.28438, 42.2397, '', 0),
 (801240079, 701240004, 0, '24', 8, 'Joarilla de las Matas', '24086', '24086', -5.25943, 42.2602, -5.112, 42.325, -5.18814, 42.2945, '', 0);
-INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
+INSERT INTO `territorios` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
 (801240080, 701240005, 0, '24', 8, 'Laguna Dalga', '24087', '24087', -5.80933, 42.2821, -5.69995, 42.3451, -5.75962, 42.3168, '', 0),
 (801240081, 701240005, 0, '24', 8, 'Laguna de Negrillos', '24088', '24088', -5.70679, 42.1813, -5.60185, 42.2855, -5.65462, 42.2343, '', 0),
 (801240082, 701240002, 0, '24', 8, 'León', '24089', '24089', -5.63124, 42.5469, -5.53365, 42.6403, -5.57626, 42.5886, '', 0),
@@ -7881,7 +7957,7 @@ INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nive
 (801260009, 701260001, 0, '26', 8, 'Alesanco', '26009', '26009', -2.84924, 42.3941, -2.77687, 42.4559, -2.81814, 42.4214, '', 0),
 (801260010, 701260001, 0, '26', 8, 'Alesón', '26010', '26010', -2.70185, 42.3946, -2.64307, 42.4149, -2.67455, 42.4063, '', 0),
 (801260011, 701260003, 0, '26', 8, 'Alfaro', '26011', '26011', -1.97228, 42.0591, -1.6787, 42.2295, -1.83107, 42.1636, '', 0);
-INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
+INSERT INTO `territorios` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
 (801260012, 701260002, 0, '26', 8, 'Almarza de Cameros', '26012', '26012', -2.63073, 42.1942, -2.54892, 42.2708, -2.58776, 42.2324, '', 0),
 (801260013, 701260001, 0, '26', 8, 'Anguciana', '26013', '26013', -2.91921, 42.5589, -2.88867, 42.5882, -2.90267, 42.5719, '', 0),
 (801260014, 701260001, 0, '26', 8, 'Anguiano', '26014', '26014', -2.93013, 42.1919, -2.67719, 42.3095, -2.7741, 42.2514, '', 0),
@@ -8259,7 +8335,7 @@ INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nive
 (801280144, 701280001, 2, '28', 8, 'Torrelaguna', '28151', '28151', -3.60471, 40.7875, -3.5022, 40.8631, -3.54729, 40.8227, '', 0),
 (801280145, 701280005, 0, '28', 8, 'Torrelodones', '28152', '28152', -3.95959, 40.5479, -3.88348, 40.5974, -3.92617, 40.5757, '', 0),
 (801280146, 701280001, 0, '28', 8, 'Torremocha de Jarama', '28153', '28153', -3.53654, 40.7966, -3.46975, 40.8761, -3.50026, 40.8338, '', 0);
-INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
+INSERT INTO `territorios` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
 (801280147, 701280002, 0, '28', 8, 'Torres de la Alameda', '28154', '28154', -3.42686, 40.3665, -3.31215, 40.4563, -3.36285, 40.4049, '', 1),
 (801280148, 701280004, 0, '28', 8, 'Valdaracete', '28155', '28155', -3.27069, 40.1552, -3.14913, 40.248, -3.1994, 40.1983, '', 0),
 (801280149, 701280006, 0, '28', 8, 'Valdeavero', '28156', '28156', -3.3836, 40.5966, -3.31386, 40.6552, -3.35016, 40.6227, '', 0),
@@ -8643,7 +8719,7 @@ INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nive
 (801310200, 701310005, 0, '31', 8, 'Oteiza', '31200', '31200', -1.98167, 42.5219, -1.88796, 42.6397, -1.94472, 42.58, '', 0),
 (801310201, 701310001, 0, '31', 8, 'Pamplona/Iruña', '31201', '31201', -1.69538, 42.7888, -1.60466, 42.8427, -1.65149, 42.815, '', 0),
 (801310202, 701310006, 0, '31', 8, 'Peralta/Azkoien', '31202', '31202', -1.89816, 42.3159, -1.70539, 42.3968, -1.80261, 42.3565, '', 0);
-INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
+INSERT INTO `territorios` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
 (801310203, 701310003, 0, '31', 8, 'Petilla de Aragón', '31203', '31203', -1.18797, 42.401, -1.05096, 42.486, -1.11947, 42.4435, '', 0),
 (801310204, 701310005, 0, '31', 8, 'Piedramillera', '31204', '31204', -2.23646, 42.5238, -2.1839, 42.6631, -2.21018, 42.5934, '', 0),
 (801310205, 701310006, 0, '31', 8, 'Pitillas', '31205', '31205', -1.64735, 42.3811, -1.50845, 42.4563, -1.58293, 42.425, '', 0),
@@ -9020,7 +9096,7 @@ INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nive
 (801340118, 701340003, 0, '34', 8, 'Revenga de Campos', '34152', '34152', -4.54029, 42.2349, -4.46036, 42.2911, -4.50354, 42.2632, '', 0),
 (801340119, 701340004, 0, '34', 8, 'Revilla de Collazos', '34154', '34154', -4.55586, 42.6088, -4.48453, 42.6607, -4.52233, 42.6354, '', 0),
 (801340120, 701340003, 0, '34', 8, 'Ribas de Campos', '34155', '34155', -4.54757, 42.1283, -4.48554, 42.1797, -4.52072, 42.1504, '', 0);
-INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
+INSERT INTO `territorios` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
 (801340121, 701340003, 0, '34', 8, 'Riberos de la Cueza', '34156', '34156', -4.75183, 42.2588, -4.67651, 42.3109, -4.71296, 42.2829, '', 0),
 (801340122, 701340004, 0, '34', 8, 'Saldaña', '34157', '34157', -4.78053, 42.5006, -4.59529, 42.638, -4.70342, 42.5591, '', 0),
 (801340123, 701340001, 0, '34', 8, 'Salinas de Pisuerga', '34158', '34158', -4.40123, 42.8226, -4.32814, 42.8944, -4.36931, 42.8518, '', 0),
@@ -9396,7 +9472,7 @@ INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nive
 (801370206, 701370002, 0, '37', 8, 'Negrilla de Palencia', '37222', '37222', -5.63488, 41.0745, -5.5772, 41.1464, -5.60604, 41.1105, '', 0),
 (801370207, 701370003, 0, '37', 8, 'Olmedo de Camaces', '37223', '37223', -6.68376, 40.7857, -6.46895, 40.9731, -6.57636, 40.8794, '', 0),
 (801370208, 701370002, 0, '37', 8, 'La Orbada', '37224', '37224', -5.50767, 41.0738, -5.4216, 41.1429, -5.46691, 41.1066, '', 0);
-INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
+INSERT INTO `territorios` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
 (801370209, 701370002, 0, '37', 8, 'Pajares de la Laguna', '37225', '37225', -5.52693, 41.076, -5.49231, 41.1299, -5.51099, 41.0994, '', 0),
 (801370210, 701370003, 0, '37', 8, 'Palacios del Arzobispo', '37226', '37226', -5.93719, 41.1442, -5.84451, 41.1996, -5.88316, 41.1705, '', 0),
 (801370211, 701370002, 0, '37', 8, 'Palaciosrubios', '37228', '37228', -5.24007, 41.0266, -5.14531, 41.0869, -5.18996, 41.0554, '', 0),
@@ -9771,7 +9847,7 @@ INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nive
 (801400060, 701400003, 0, '40', 8, 'Donhierro', '40069', '40069', -4.72465, 41.0876, -4.66081, 41.1357, -4.69584, 41.1138, '', 0),
 (801400061, 701400001, 0, '40', 8, 'Duruelo', '40070', '40070', -3.67288, 41.195, -3.61767, 41.2487, -3.64474, 41.2253, '', 0),
 (801400062, 701400002, 0, '40', 8, 'Encinas', '40071', '40071', -3.7089, 41.3624, -3.64551, 41.4322, -3.67928, 41.3986, '', 0);
-INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
+INSERT INTO `territorios` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
 (801400063, 701400001, 0, '40', 8, 'Encinillas', '40072', '40072', -4.17455, 41.0073, -4.1321, 41.0479, -4.15184, 41.0256, '', 0),
 (801400064, 701400003, 0, '40', 8, 'Escalona del Prado', '40073', '40073', -4.15672, 41.131, -4.07419, 41.1943, -4.11492, 41.1626, '', 0),
 (801400065, 701400001, 0, '40', 8, 'Escarabajosa de Cabezas', '40074', '40074', -4.21707, 41.0845, -4.13509, 41.124, -4.18315, 41.1059, '', 0),
@@ -10145,7 +10221,7 @@ INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nive
 (801420118, 701420004, 0, '42', 8, 'La Póveda de Soria', '42141', '42141', -2.57991, 41.9718, -2.45972, 42.0689, -2.52243, 42.0153, '', 0),
 (801420119, 701420002, 0, '42', 8, 'Pozalmuro', '42142', '42142', -2.17055, 41.7479, -2.03981, 41.8096, -2.10373, 41.7742, '', 0),
 (801420120, 701420006, 0, '42', 8, 'Quintana Redonda', '42144', '42144', -2.81211, 41.5489, -2.5412, 41.6966, -2.66028, 41.6354, '', 0);
-INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
+INSERT INTO `territorios` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
 (801420121, 701420006, 0, '42', 8, 'Quintanas de Gormaz', '42145', '42145', -2.9975, 41.481, -2.92903, 41.5481, -2.9642, 41.5131, '', 0),
 (801420122, 701420002, 0, '42', 8, 'Quiñonería', '42148', '42148', -2.09588, 41.5083, -2.01312, 41.5843, -2.05451, 41.5512, '', 0),
 (801420123, 701420006, 0, '42', 8, 'Los Rábanos', '42149', '42149', -2.57149, 41.6245, -2.35647, 41.7386, -2.46388, 41.6814, '', 0),
@@ -10529,7 +10605,7 @@ INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nive
 (801440133, 701440005, 0, '44', 8, 'Molinos', '44151', '44151', -0.557165, 40.7513, -0.396953, 40.8552, -0.473856, 40.8123, '', 0),
 (801440134, 701440003, 0, '44', 8, 'Monforte de Moyuela', '44152', '44152', -1.05085, 41.0134, -0.957139, 41.0922, -1.00193, 41.0515, '', 0),
 (801440135, 701440003, 0, '44', 8, 'Monreal del Campo', '44153', '44153', -1.4305, 40.7307, -1.27122, 40.8184, -1.35174, 40.7737, '', 0);
-INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
+INSERT INTO `territorios` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
 (801440136, 701440005, 0, '44', 8, 'Monroyo', '44154', '44154', -0.116002, 40.7224, 0.03935, 40.8335, -0.0257137, 40.7841, '', 0),
 (801440137, 701440004, 0, '44', 8, 'Montalbán', '44155', '44155', -0.871037, 40.7802, -0.733797, 40.9005, -0.79713, 40.8496, '', 0),
 (801440138, 701440002, 0, '44', 8, 'Monteagudo del Castillo', '44156', '44156', -0.847895, 40.4124, -0.736967, 40.4993, -0.797052, 40.46, '', 0),
@@ -10904,7 +10980,7 @@ INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nive
 (801460065, 701460011, 0, '46', 8, 'Benisuera', '46069', '46069', -0.49192, 38.8996, -0.470075, 38.916, -0.481414, 38.9084, '', 0),
 (801460066, 701460008, 0, '46', 8, 'Bétera', '46070', '46070', -0.519173, 39.5457, -0.395713, 39.6503, -0.463076, 39.5998, '', 0),
 (801460067, 701460005, 0, '46', 8, 'Bicorp', '46071', '46071', -0.919005, 39.0248, -0.760738, 39.1709, -0.848547, 39.1132, '', 0);
-INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
+INSERT INTO `territorios` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
 (801460068, 701460011, 0, '46', 8, 'Bocairent', '46072', '46072', -0.717193, 38.6866, -0.507019, 38.7951, -0.608867, 38.7421, '', 0),
 (801460069, 701460005, 0, '46', 8, 'Bolbaite', '46073', '46073', -0.832581, 39.0189, -0.666017, 39.0797, -0.746022, 39.0502, '', 0),
 (801460070, 701460015, 0, '46', 8, 'Bonrepòs i Mirambell', '46074', '46074', -0.373905, 39.5114, -0.361258, 39.5281, -0.367338, 39.5194, '', 0),
@@ -11279,7 +11355,7 @@ INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nive
 (801470173, 701470004, 0, '47', 8, 'Urueña', '47178', '47178', -5.24372, 41.6904, -5.12772, 41.7654, -5.1854, 41.7294, '', 0),
 (801470174, 701470002, 0, '47', 8, 'Valbuena de Duero', '47179', '47179', -4.34578, 41.6212, -4.22243, 41.7047, -4.28357, 41.6624, '', 0),
 (801470175, 701470002, 0, '47', 8, 'Valdearcos de la Vega', '47180', '47180', -4.09447, 41.6158, -4.02723, 41.6571, -4.0562, 41.6389, '', 0);
-INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
+INSERT INTO `territorios` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
 (801470176, 701470005, 0, '47', 8, 'Valdenebro de los Valles', '47181', '47181', -5.00256, 41.7992, -4.91677, 41.8931, -4.96772, 41.846, '', 0),
 (801470177, 701470001, 0, '47', 8, 'Valdestillas', '47182', '47182', -4.83174, 41.4435, -4.74573, 41.5232, -4.78952, 41.4794, '', 0),
 (801470178, 701470005, 0, '47', 8, 'Valdunquillo', '47183', '47183', -5.37663, 42.0189, -5.27204, 42.0681, -5.32639, 42.0434, '', 0),
@@ -11655,7 +11731,7 @@ INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nive
 (801490211, 701490002, 0, '49', 8, 'Vezdemarbán', '49235', '49235', -5.41973, 41.6388, -5.32236, 41.7294, -5.36908, 41.6732, '', 0),
 (801490212, 701490009, 0, '49', 8, 'Vidayanes', '49236', '49236', -5.61584, 41.8985, -5.55326, 41.9382, -5.58586, 41.9184, '', 0),
 (801490213, 701490006, 0, '49', 8, 'Videmala', '49237', '49237', -6.06557, 41.5825, -5.97758, 41.6444, -6.02565, 41.611, '', 0);
-INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
+INSERT INTO `territorios` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
 (801490214, 701490010, 0, '49', 8, 'Villabrázaro', '49238', '49238', -5.75121, 42.0394, -5.67306, 42.087, -5.70906, 42.0627, '', 0),
 (801490215, 701490003, 0, '49', 8, 'Villabuena del Puente', '49239', '49239', -5.43805, 41.3596, -5.33304, 41.4034, -5.39181, 41.3784, '', 0),
 (801490216, 701490005, 0, '49', 8, 'Villadepera', '49240', '49240', -6.18638, 41.5092, -6.1063, 41.5817, -6.14354, 41.5452, '', 0),
@@ -12044,7 +12120,7 @@ INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nive
 (901280122, 701280008, 0, '28', 9, '', '', '', -3.77119, 40.3571, -3.70474, 40.4056, -3.73709, 40.3788, '', 0),
 (901280123, 701280008, 0, '28', 9, '', '', '', -3.72069, 40.3609, -3.68199, 40.3951, -3.70297, 40.3759, '', 0),
 (901280124, 701280008, 0, '28', 9, '', '', '', -3.68954, 40.3605, -3.62202, 40.4065, -3.65986, 40.3835, '', 0);
-INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
+INSERT INTO `territorios` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nivel`, `nombre`, `ine`, `jurisdiccion`, `xmin`, `ymin`, `xmax`, `ymax`, `xcentroid`, `ycentroid`, `nombreCorto`, `activo`) VALUES
 (901280125, 701280008, 0, '28', 9, '', '', '', -3.66509, 40.3923, -3.6204, 40.4188, -3.64137, 40.4065, '', 0),
 (901280126, 701280008, 0, '28', 9, '', '', '', -3.67378, 40.4127, -3.621, 40.4844, -3.64997, 40.4392, '', 0),
 (901280127, 701280008, 0, '28', 9, '', '', '', -3.67311, 40.4483, -3.60192, 40.5133, -3.63779, 40.4819, '', 0),
@@ -12132,82 +12208,6 @@ INSERT INTO `lugares_shp` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nive
 (1001280054, 901280009, 0, '28', 10, 'Barrio Senda Perdida', NULL, NULL, -3.35825, 40.4919, -3.35025, 40.4971, -3.35378, 40.4947, '', 1),
 (1001280055, 901280009, 0, '28', 10, 'Pol. Ind. El Encín', NULL, NULL, -3.34068, 40.4983, -3.31555, 40.5113, -3.32761, 40.5047, '', 1),
 (1001280056, 901280009, 0, '28', 10, 'Pol. Ind. Ledesma', NULL, NULL, -3.35814, 40.4893, -3.33481, 40.5007, -3.34434, 40.495, '', 1);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `preregister`
---
-
-DROP TABLE IF EXISTS `preregister`;
-CREATE TABLE IF NOT EXISTS `preregister` (
-  `idPreregister` int(11) NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `idCiudad` int(11) NOT NULL,
-  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`idPreregister`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
-
---
--- Volcado de datos para la tabla `preregister`
---
-
-INSERT INTO `preregister` (`idPreregister`, `email`, `idCiudad`, `fecha`) VALUES
-(1, 'correo@kike.es', 777000003, '2014-09-23 14:46:02'),
-(2, 'correo@kike.es', 888004420, '2014-09-23 14:46:35'),
-(3, 'correo@kike.es', 888004420, '2014-09-23 14:46:56'),
-(4, 'correo@kike.es', 888004420, '2014-09-23 14:47:12'),
-(5, 'correo@kike.es', 888004420, '2014-09-23 14:47:52');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `tematicas`
---
-
-DROP TABLE IF EXISTS `tematicas`;
-CREATE TABLE IF NOT EXISTS `tematicas` (
-  `idTematica` int(11) NOT NULL AUTO_INCREMENT,
-  `tematica` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`idTematica`),
-  KEY `tematica` (`tematica`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=31 ;
-
---
--- Volcado de datos para la tabla `tematicas`
---
-
-INSERT INTO `tematicas` (`idTematica`, `tematica`) VALUES
-(1, 'Administraciones'),
-(2, 'Atención social'),
-(3, 'Ciudad y Barrios'),
-(4, 'Comunicación'),
-(5, 'Conocimiento'),
-(6, 'Consumo'),
-(7, 'Cooperación'),
-(8, 'Cultura'),
-(9, 'Democracia'),
-(10, 'Deporte'),
-(11, 'Derechos humanos'),
-(12, 'Diversidad funcional'),
-(13, 'Economía'),
-(14, 'Educación'),
-(15, 'Emergencias'),
-(21, 'Género'),
-(16, 'Infancia'),
-(17, 'Inmigración'),
-(18, 'Innovación'),
-(19, 'Mayores'),
-(20, 'Medio Ambiente'),
-(22, 'Ocio'),
-(23, 'Salud'),
-(25, 'Seguridad'),
-(24, 'Servicios Públicos'),
-(26, 'Tecnología'),
-(27, 'Trabajo'),
-(28, 'Transporte'),
-(29, 'Urbanismo'),
-(30, 'Vivienda');
 
 -- --------------------------------------------------------
 
