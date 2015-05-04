@@ -311,10 +311,10 @@ function cargarContenido(id)
 
     $(".informacion-cabecera").click(function()
     {
-      window.location="?idEvento="+data.idEvento+"&idOrigen="+window.idTerritorio;
+      window.location="?idEvento="+data.idEvento+"&idOrigen="+window.conf.idTerritorio;
     });
 
-    url="http://www.citysens.net/?idEvento="+data.idEvento+"%26idOrigen="+window.idTerritorio;
+    url="http://www.citysens.net/?idEvento="+data.idEvento+"%26idOrigen="+window.conf.idTerritorio;
     mensaje="¡¡¡Este evento te puede interesar!!!";
     
     var tbx = document.getElementById("toolbox");
@@ -445,10 +445,10 @@ function cargarContenidoEntidad(id)
 
     $(".informacion-cabecera").click(function()
     {
-      window.location="/?idEntidad="+data.idEntidad+"&idOrigen="+window.idTerritorio;
+      window.location="/?idEntidad="+data.idEntidad+"&idOrigen="+window.conf.idTerritorio;
     });
 
-    url="http://www.citysens.net/?idEntidad="+data.idEntidad+"%26idOrigen="+window.idTerritorio;
+    url="http://www.citysens.net/?idEntidad="+data.idEntidad+"%26idOrigen="+window.conf.idTerritorio;
     mensaje="¡¡¡Esta asociación te puede interesar!!!";
     
     var tbx = document.getElementById("toolbox");
@@ -915,7 +915,7 @@ $(".cabecera-pestania-dch").click(function()
 
 });
 
-
+//No habilitado 
 $(".cabecera-pestania-noticias").click(function()
 {
   console.log("Mostrando Noticias");
@@ -1119,10 +1119,9 @@ function notificarNormal(html)
 ---------------------------------------------------------------------------------------------
 */
 
-
-var arrayTags = new Array();
-
-
+//Aquí está borrando los datos?
+ conf={"arrayTags":Array()};
+ conf.arrayTags= {id:'',texto:'',tipo:''};
 //Mostrar notificaciones
 
 var notificacion=$('#notificacion').val(); //Lanza un error si no hay tipo

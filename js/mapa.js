@@ -66,7 +66,7 @@ function addPolygonToMap(idTerritorio,navType,url,texto,color,activo,style)
         
             geojsonLayer.on('mouseout', function(e) 
             {
-              $(".map-footer").html(window.nombre);  
+              $(".map-footer").html(window.conf.nombre);  
               var layer = e.target;
             layer.resetStyle(e.target);  //layer.resetStyle(); 
             });
@@ -264,10 +264,11 @@ function cargarMapa(idTerritorio)
         });
     };
 
-    window.nombre=response.nombre;
-    window.idTerritorio=idTerritorio;
+    window.conf.nombre=response.nombre;
     
-    idTerritorioMostrado=response.id;
+    window.conf.idTerritorio=idTerritorio;
+    
+    conf.idTerritorioMostrado=response.id;
     var nivelMostrado=parseInt(response.nivel,10);
     nivelHijos=nivelMostrado+1;
     nivelTios=nivelMostrado-1; // It could be adjusted if there is some level that is not considered significant (like districts, regions, etc.)
@@ -281,7 +282,7 @@ function cargarMapa(idTerritorio)
 
             $("#circle-button button").click(function () {
                 $(this).find('i').toggleClass('fa-toggle-on fa-toggle-off');
-                $(".leaflet-div-icon").fadeToggle("slow", "linear");
+                $(".leaflet-div-icon").fadeToggle("fast", "linear");
             });
             $("#circle-button").on("mouseover", function (e)
             {
@@ -297,7 +298,7 @@ function cargarMapa(idTerritorio)
     // If the territory has no child, the territory is shown
     if (response.idDescendiente==0) 
     {
-        addPolygonToMap(idTerritorioMostrado,0,"shp/geoJSON/"+response.nivel+"/"+idTerritorioMostrado+".geojson","ABCDE",'#ffaaaa',-1);
+        addPolygonToMap(conf.idTerritorioMostrado,0,"shp/geoJSON/"+response.nivel+"/"+conf.idTerritorioMostrado+".geojson","ABCDE",'#ffaaaa',-1);
 
         if  (nivelMostrado>7) // If the territory is of level city or lower, counter is included
         {
@@ -313,7 +314,7 @@ function cargarMapa(idTerritorio)
     }
     else if (navType==1) // Territory has child, but we are on special navigation. We allow to clic on it to zoom into it.
     {
-                addPolygonToMap(idTerritorioMostrado,0,"shp/geoJSON/"+response.nivel+"/"+idTerritorioMostrado+".geojson",response.nombre,'#ffaaaa',response.activo);
+                addPolygonToMap(conf.idTerritorioMostrado,0,"shp/geoJSON/"+response.nivel+"/"+conf.idTerritorioMostrado+".geojson",response.nombre,'#ffaaaa',response.activo);
 
         if  (nivelMostrado>7) // If the territory is of level city or lower, counter is included
         {
@@ -332,7 +333,7 @@ function cargarMapa(idTerritorio)
             {
             dataType: 'json',
             nivel:nivelHijos,
-            lugarOriginal:idTerritorioMostrado,
+            lugarOriginal:conf.idTerritorioMostrado,
             })
         .done(function(data) 
             {
@@ -381,7 +382,7 @@ function cargarMapa(idTerritorio)
             xmax:fittedXMax,
             ymin:fittedYMin,
             ymax:fittedYMax,
-            lugarOriginal:idTerritorioMostrado,
+            lugarOriginal:conf.idTerritorioMostrado,
             })
             .done(function(data) 
                 {
@@ -423,7 +424,7 @@ function cargarMapa(idTerritorio)
             xmax:fittedXMax,
             ymin:fittedYMin,
             ymax:fittedYMax,
-            lugarOriginal:idTerritorioMostrado,
+            lugarOriginal:conf.idTerritorioMostrado,
             })
             .done(function(data) 
                 {
