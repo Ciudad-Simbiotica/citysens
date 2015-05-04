@@ -193,12 +193,12 @@ function suggestBusqueda(texto)
             window.location = "?idTerritorio="+value.id;
           }
           else
-          {
+          {         
             $("#overlay").addClass("overlayPeque");
             $(".darkOverlay").fadeIn("fast");
             $("#overlay").load("cityNotReadyYet.html",function()
             {
-              $('#overlay').html($('#overlay').html().replace(/{CIUDAD}/g,value.texto1));
+              $('#overlay').html($('#overlay').html().replace(/{CIUDAD}/g,value.texto1)); //need rev. sometimes load after show an change text
               $('#input-email-idLugar').val(value.id);
               $('#input-email-nombreCiudad').val(value.texto1);
             });            

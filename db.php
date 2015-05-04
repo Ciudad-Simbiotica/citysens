@@ -910,7 +910,7 @@ function getIrA($cadena,$lugarOriginal)
     $cadena=safe($link, $cadena);
     $lugarOriginal=safe($link, $lugarOriginal);
 
-   $sql="SELECT id, nombre FROM territorios WHERE nombre LIKE '$cadena%' AND nivel<9 ORDER BY nombre, id DESC";
+   $sql="SELECT id, nombre, activo FROM territorios WHERE nombre LIKE '$cadena%' AND nivel<9 ORDER BY nombre, id DESC";
    // Order by, so the lower level appear before higher levels with the same name. Guadalajara (city), Guadalajara (province)
 
 
