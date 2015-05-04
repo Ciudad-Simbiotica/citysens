@@ -490,8 +490,8 @@ function removeAllTags()
   $(".tagFiltro-busqueda").remove();
   $(".tagFiltro-tematica").remove();
   $(".tagFiltro-lugar").remove();
-  $(".tagFiltro-entidad").remove();
-  arrayTags=[];
+  conf.arrayTags=[];
+
 }
 
 function cargarDatos(clase, orden)
@@ -502,10 +502,11 @@ function cargarDatos(clase, orden)
   orden = typeof orden !== 'undefined' ? orden : 'fecha';
 
   console.log(clase+" "+orden);
-  window.clase=clase;
+  //if (window.conf.clase=="undefined")
+  window.conf.clase=clase;
   //[{"texto":"Alcal&aacute; De Henares","tipo":"lugar","id":"4284"}] 
   var hayUnLugar=false;
-  var arrayTagsQuery=arrayTags.slice();
+  var arrayTagsQuery=conf.arrayTags.slice();
 
   $.each(arrayTagsQuery, function(i, object) 
   {
@@ -560,7 +561,7 @@ function cargarDatos(clase, orden)
       
       primeraLinea="";
       conFiltros=":";
-      if(arrayTags.length>0)
+      if(conf.arrayTags.length>0)
         conFiltros=" que satisfacen los siguientes filtros de búsqueda:";
       $("#cabecera-suggest").empty();
       $(".input-busqueda").val('');
@@ -689,7 +690,7 @@ function subscribe()
   if(isLogged())
   {
     var hayUnLugar=false;
-    var arrayTagsQuery=arrayTags.slice();
+    var arrayTagsQuery=conf.arrayTags.slice();
 
     $.each(arrayTagsQuery, function(i, object) 
     {
@@ -712,7 +713,7 @@ function subscribe()
     var query=JSON.stringify(arrayTagsQuery);
     if(window.isFollowing)
     {
-      $.post( "changeSubscriptionStatus.php", { query: query, clase: window.clase, action: 'unsubscribe' } )
+      $.post( "changeSubscriptionStatus.php", { query: query, clase: window.conf.clase, action: 'unsubscribe' } )
       .done(function(data){
         console.log(data);
       });
@@ -722,7 +723,7 @@ function subscribe()
     }
     else
     {
-      $.post( "changeSubscriptionStatus.php", { query: query, clase: window.clase,  action: 'subscribe' } )
+      $.post( "changeSubscriptionStatus.php", { query: query, clase: window.conf.clase,  action: 'subscribe' } )
       .done(function(data){
         console.log(data);
       });

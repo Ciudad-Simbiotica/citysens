@@ -268,7 +268,7 @@ function cargarMapa(idTerritorio)
     
     window.conf.idTerritorio=idTerritorio;
     
-    conf.idTerritorioMostrado=response.id;
+    window.conf.idTerritorioMostrado=response.id;
     var nivelMostrado=parseInt(response.nivel,10);
     nivelHijos=nivelMostrado+1;
     nivelTios=nivelMostrado-1; // It could be adjusted if there is some level that is not considered significant (like districts, regions, etc.)

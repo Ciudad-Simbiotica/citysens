@@ -17,18 +17,18 @@ function clickSuggestion(imagen,texto1,tipo,id) //Añadir id, texto buscado
   clone.find('.tagFiltro-texto').html(texto1);
   clone.find('.tagFiltro-imagen').css('background-image', "url("+imagen+")");
 
-  console.log(window.clase);
+  console.log(window.conf.clase);
 
   clone.find('.tagFiltro-x').click(function()
   {
-    //Borrado
-    arrayTags = jQuery.grep(arrayTags, function(value) 
+    //Borrado  del filtro
+    conf.arrayTags = jQuery.grep(conf.arrayTags, function(value) 
     {
       var coincide=((value.texto==texto1)&(value.tipo==tipo)&(value.id==id));
       return !coincide;
     });
 
-    cargarDatos(window.clase,$("#select_ordenar").val());
+    cargarDatos(window.conf.clase,$("#select_ordenar").val());
 
     $(this).fadeOut("fast",function(){
       $(this).parent().remove();
@@ -63,9 +63,9 @@ function clickSuggestion(imagen,texto1,tipo,id) //Añadir id, texto buscado
   };
 
 
-  arrayTags.push(sugerencia);
+  conf.arrayTags.push(sugerencia);
   $("#input-busqueda").val('');
-  cargarDatos(window.clase,$("#select_ordenar").val());
+  cargarDatos(window.conf.clase,$("#select_ordenar").val());
 
 
   /*if(!$('#input-busqueda').tagExist(texto1))
@@ -163,7 +163,7 @@ function suggestBusqueda(texto)
     window.selectedSuggestion=0;
 
     //Añadimos el tooltip
-    if(window.clase=='eventos')
+    if(window.conf.clase=='eventos')
       $("#cabecera-suggest").append("<div class='cabecera-suggest-tooltip'>Buscar eventos que tengan que ver con...</div>");
     else
       $("#cabecera-suggest").append("<div class='cabecera-suggest-tooltip'>Buscar entidades que tengan que ver con...</div>");
