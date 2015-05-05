@@ -17,18 +17,18 @@ function clickSuggestion(imagen,texto1,tipo,id) //Añadir id, texto buscado
   clone.find('.tagFiltro-texto').html(texto1);
   clone.find('.tagFiltro-imagen').css('background-image', "url("+imagen+")");
 
-  console.log(window.clase);
+  console.log(window.conf.clase);
 
   clone.find('.tagFiltro-x').click(function()
   {
-    //Borrado
-    arrayTags = jQuery.grep(arrayTags, function(value) 
+    //Borrado  del filtro
+    conf.arrayTags = jQuery.grep(conf.arrayTags, function(value) 
     {
       var coincide=((value.texto==texto1)&(value.tipo==tipo)&(value.id==id));
       return !coincide;
     });
 
-    cargarDatos(window.clase,$("#select_ordenar").val());
+    cargarDatos(window.conf.clase,$("#select_ordenar").val());
 
     $(this).fadeOut("fast",function(){
       $(this).parent().remove();
@@ -63,9 +63,9 @@ function clickSuggestion(imagen,texto1,tipo,id) //Añadir id, texto buscado
   };
 
 
-  arrayTags.push(sugerencia);
+  conf.arrayTags.push(sugerencia);
   $("#input-busqueda").val('');
-  cargarDatos(window.clase,$("#select_ordenar").val());
+  cargarDatos(window.conf.clase,$("#select_ordenar").val());
 
 
   /*if(!$('#input-busqueda').tagExist(texto1))
@@ -75,41 +75,24 @@ function clickSuggestion(imagen,texto1,tipo,id) //Añadir id, texto buscado
   //alert("Has hecho click en una sugerencia de tipo "+tipo+" con el siguiente texto: "+texto1);
 }
 
-
 function prevSuggestion()
 {
-  if((typeof window.selectedSuggestion==='undefined')|(window.selectedSuggestion==0)) //todavía no hay ninguna seleccionada
-  {
-    $("#cabecera-suggest").find(".cabecera-suggest-fila:first").addClass("cabecera-suggest-fila-selected");    
-    window.selectedSuggestion=1;
-  }
-  else
-  {
-    if(window.selectedSuggestion>1)
+    if(window.conf.selectedSuggestion>1)
     {
-      $("#cabecera-suggest").find(".cabecera-suggest-fila").eq(window.selectedSuggestion-1).removeClass("cabecera-suggest-fila-selected");    
-      $("#cabecera-suggest").find(".cabecera-suggest-fila").eq(window.selectedSuggestion-2).addClass("cabecera-suggest-fila-selected");    
-      window.selectedSuggestion--;
+      $("#cabecera-suggest").find(".cabecera-suggest-fila").eq(window.conf.selectedSuggestion-1).removeClass("cabecera-suggest-fila-selected");    
+      $("#cabecera-suggest").find(".cabecera-suggest-fila").eq(window.conf.selectedSuggestion-2).addClass("cabecera-suggest-fila-selected");    
+      window.conf.selectedSuggestion--;
     }
-  }
 }
 
 function nextSuggestion()
 {
-  if((typeof window.selectedSuggestion==='undefined')|(window.selectedSuggestion==0)) //todavía no hay ninguna seleccionada
-  {
-    $("#cabecera-suggest").find(".cabecera-suggest-fila:first").addClass("cabecera-suggest-fila-selected");    
-    window.selectedSuggestion=1;
-  }
-  else
-  {
-    if($("#cabecera-suggest").find(".cabecera-suggest-fila").length>window.selectedSuggestion)
+    if($("#cabecera-suggest").find(".cabecera-suggest-fila").length>window.conf.selectedSuggestion)
     {
-      $("#cabecera-suggest").find(".cabecera-suggest-fila").eq(window.selectedSuggestion-1).removeClass("cabecera-suggest-fila-selected");    
-      $("#cabecera-suggest").find(".cabecera-suggest-fila").eq(window.selectedSuggestion).addClass("cabecera-suggest-fila-selected");    
-      window.selectedSuggestion++;
+      $("#cabecera-suggest").find(".cabecera-suggest-fila").eq(window.conf.selectedSuggestion-1).removeClass("cabecera-suggest-fila-selected");    
+      $("#cabecera-suggest").find(".cabecera-suggest-fila").eq(window.conf.selectedSuggestion).addClass("cabecera-suggest-fila-selected");    
+      window.conf.selectedSuggestion++;
     }
-  }
 }
 
 
@@ -160,10 +143,10 @@ function suggestBusqueda(texto)
     //$(".scroll-curtain").css('height', $(".scroll-curtain-gradient").position().top-43);
     
 
-    window.selectedSuggestion=0;
+    window.conf.selectedSuggestion=0;
 
     //Añadimos el tooltip
-    if(window.clase=='eventos')
+    if(window.conf.clase=='eventos')
       $("#cabecera-suggest").append("<div class='cabecera-suggest-tooltip'>Buscar eventos que tengan que ver con...</div>");
     else
       $("#cabecera-suggest").append("<div class='cabecera-suggest-tooltip'>Buscar entidades que tengan que ver con...</div>");
@@ -193,12 +176,12 @@ function suggestBusqueda(texto)
             window.location = "?idTerritorio="+value.id;
           }
           else
-          {
+          {         
             $("#overlay").addClass("overlayPeque");
             $(".darkOverlay").fadeIn("fast");
             $("#overlay").load("cityNotReadyYet.html",function()
             {
-              $('#overlay').html($('#overlay').html().replace(/{CIUDAD}/g,value.texto1));
+              $('#overlay').html($('#overlay').html().replace(/{CIUDAD}/g,value.texto1)); //need rev. sometimes load after show an change text
               $('#input-email-idLugar').val(value.id);
               $('#input-email-nombreCiudad').val(value.texto1);
             });            
@@ -242,7 +225,10 @@ function suggestBusqueda(texto)
     
       //¿Animarlo?
       //$("#cabecera-suggest").find(".cabecera-suggest-fila").slideDown("fast");
-    });    
+    });
+    //for default select cabecera-suggest-fila:first
+            $("#cabecera-suggest").find(".cabecera-suggest-fila:first").addClass("cabecera-suggest-fila-selected");
+            window.conf.selectedSuggestion=1;
   });
 
 

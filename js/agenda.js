@@ -311,10 +311,10 @@ function cargarContenido(id)
 
     $(".informacion-cabecera").click(function()
     {
-      window.location="?idEvento="+data.idEvento+"&idOrigen="+window.idTerritorio;
+      window.location="?idEvento="+data.idEvento+"&idOrigen="+window.conf.idTerritorio;
     });
 
-    url="http://www.citysens.net/?idEvento="+data.idEvento+"%26idOrigen="+window.idTerritorio;
+    url="http://www.citysens.net/?idEvento="+data.idEvento+"%26idOrigen="+window.conf.idTerritorio;
     mensaje="¡¡¡Este evento te puede interesar!!!";
     
     var tbx = document.getElementById("toolbox");
@@ -445,10 +445,10 @@ function cargarContenidoEntidad(id)
 
     $(".informacion-cabecera").click(function()
     {
-      window.location="/?idEntidad="+data.idEntidad+"&idOrigen="+window.idTerritorio;
+      window.location="/?idEntidad="+data.idEntidad+"&idOrigen="+window.conf.idTerritorio;
     });
 
-    url="http://www.citysens.net/?idEntidad="+data.idEntidad+"%26idOrigen="+window.idTerritorio;
+    url="http://www.citysens.net/?idEntidad="+data.idEntidad+"%26idOrigen="+window.conf.idTerritorio;
     mensaje="¡¡¡Esta asociación te puede interesar!!!";
     
     var tbx = document.getElementById("toolbox");
@@ -490,8 +490,8 @@ function removeAllTags()
   $(".tagFiltro-busqueda").remove();
   $(".tagFiltro-tematica").remove();
   $(".tagFiltro-lugar").remove();
-  $(".tagFiltro-entidad").remove();
-  arrayTags=[];
+  conf.arrayTags=[];
+
 }
 
 function cargarDatos(clase, orden)
@@ -502,10 +502,10 @@ function cargarDatos(clase, orden)
   orden = typeof orden !== 'undefined' ? orden : 'fecha';
 
   console.log(clase+" "+orden);
-  window.clase=clase;
+  window.conf.clase=clase;
   //[{"texto":"Alcal&aacute; De Henares","tipo":"lugar","id":"4284"}] 
   var hayUnLugar=false;
-  var arrayTagsQuery=arrayTags.slice();
+  var arrayTagsQuery=conf.arrayTags.slice();
 
   $.each(arrayTagsQuery, function(i, object) 
   {
@@ -560,7 +560,7 @@ function cargarDatos(clase, orden)
       
       primeraLinea="";
       conFiltros=":";
-      if(arrayTags.length>0)
+      if(conf.arrayTags.length>0)
         conFiltros=" que satisfacen los siguientes filtros de búsqueda:";
       $("#cabecera-suggest").empty();
       $(".input-busqueda").val('');
@@ -623,12 +623,12 @@ function cargarDatos(clase, orden)
       if(data.isFollowing)
       {
         $("#boton-avisos").val("Dejar de recibir avisos");
-        window.isFollowing=true;
+        window.conf.isFollowing=true;
       }
       else
       {
         $("#boton-avisos").val("Recibir avisos");        
-        window.isFollowing=false;
+        window.conf.isFollowing=false;
       }
     $(".supergrupo").fadeIn(500);
     // Show sort-by and register only in case ther was results
@@ -689,7 +689,7 @@ function subscribe()
   if(isLogged())
   {
     var hayUnLugar=false;
-    var arrayTagsQuery=arrayTags.slice();
+    var arrayTagsQuery=conf.arrayTags.slice();
 
     $.each(arrayTagsQuery, function(i, object) 
     {
@@ -710,24 +710,24 @@ function subscribe()
       arrayTagsQuery.push(sugerencia);
     }
     var query=JSON.stringify(arrayTagsQuery);
-    if(window.isFollowing)
+    if(window.conf.isFollowing)
     {
-      $.post( "changeSubscriptionStatus.php", { query: query, clase: window.clase, action: 'unsubscribe' } )
+      $.post( "changeSubscriptionStatus.php", { query: query, clase: window.conf.clase, action: 'unsubscribe' } )
       .done(function(data){
         console.log(data);
       });
       $("#boton-avisos").val("Recibir avisos");
       notificarError('Ya no recibirás avisos sobre esta búsqueda.');                
-      window.isFollowing=false;
+      window.conf.isFollowing=false;
     }
     else
     {
-      $.post( "changeSubscriptionStatus.php", { query: query, clase: window.clase,  action: 'subscribe' } )
+      $.post( "changeSubscriptionStatus.php", { query: query, clase: window.conf.clase,  action: 'subscribe' } )
       .done(function(data){
         console.log(data);
       });
       $("#boton-avisos").val("Dejar de recibir avisos");
-      window.isFollowing=true;
+      window.conf.isFollowing=true;
       notificarExito('Acabas de apuntarte para recibir avisos sobre esta búsqueda.');
     }
   }
@@ -915,7 +915,7 @@ $(".cabecera-pestania-dch").click(function()
 
 });
 
-
+//No habilitado 
 $(".cabecera-pestania-noticias").click(function()
 {
   console.log("Mostrando Noticias");
@@ -969,9 +969,9 @@ $('#input-busqueda').bind('keyup',function(event)
   switch (event.which) 
   {
     case 13:  //Intro
-      if(window.selectedSuggestion==0)
-        window.selectedSuggestion=1;
-      var fila="#cabecera-suggest-fila-"+(window.selectedSuggestion-1);
+      if(window.conf.selectedSuggestion==0)
+        window.conf.selectedSuggestion=1;
+      var fila="#cabecera-suggest-fila-"+(window.conf.selectedSuggestion-1);
       $(fila).trigger("click");
       /*
       var icono=$(fila).find(".cabecera-suggest-icono").css('background-image');
@@ -984,7 +984,7 @@ $('#input-busqueda').bind('keyup',function(event)
     case 27:  //Escape
         $("#cabecera-suggest").empty();
         $(this).val("");
-        window.selectedSuggestion=0;
+        window.conf.selectedSuggestion=0;
         break;
     case 38:  //Up
         prevSuggestion();
@@ -996,14 +996,17 @@ $('#input-busqueda').bind('keyup',function(event)
         break;
     default:
         suggestBusqueda($(this).val());
+        nextSuggestion();
+        nextSuggestion();
+        
   }
 });
 
 $('.cabecera-lupa').click(function() 
 {
-  if(window.selectedSuggestion==0)
-        window.selectedSuggestion=1;
-  var fila="#cabecera-suggest-fila-"+(window.selectedSuggestion-1);
+  if(window.conf.selectedSuggestion==0)
+        window.conf.selectedSuggestion=1;
+  var fila="#cabecera-suggest-fila-"+(window.conf.selectedSuggestion-1);
   $(fila).trigger("click");  
 });
 
@@ -1119,10 +1122,9 @@ function notificarNormal(html)
 ---------------------------------------------------------------------------------------------
 */
 
-
-var arrayTags = new Array();
-
-
+//Aquí está borrando los datos?
+ conf={"arrayTags":Array()};
+ conf.arrayTags= {id:'',texto:'',tipo:''};
 //Mostrar notificaciones
 
 var notificacion=$('#notificacion').val(); //Lanza un error si no hay tipo

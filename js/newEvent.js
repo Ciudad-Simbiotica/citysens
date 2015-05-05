@@ -300,7 +300,7 @@ function suggestLugar(texto)
     $("#newEvent-lugarSuggest").empty();    
     window.arraySuggestionsDirecciones=[];
 
-    //window.selectedSuggestion=0;
+    //window.conf.selectedSuggestion=0;
 
     //Que esto lo clone de una fila por defecto      
     var i=0;
@@ -419,9 +419,9 @@ $('#newEvent-lugar').bind('keyup',function(event)
     case 13:  //Intro
       //updateMapLocationNewEvent($('#newEvent-direccion').val()+", "+$('#newEvent-ciudad').val());
       /*
-      if(window.selectedSuggestion==0)
-        window.selectedSuggestion=1;
-      var fila="#cabecera-suggest-fila-"+(window.selectedSuggestion-1);
+      if(window.conf.selectedSuggestion==0)
+        window.conf.selectedSuggestion=1;
+      var fila="#cabecera-suggest-fila-"+(window.conf.selectedSuggestion-1);
       $(fila).trigger("click");
       */
       /*
