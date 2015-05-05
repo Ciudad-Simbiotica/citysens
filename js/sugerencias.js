@@ -75,41 +75,24 @@ function clickSuggestion(imagen,texto1,tipo,id) //Añadir id, texto buscado
   //alert("Has hecho click en una sugerencia de tipo "+tipo+" con el siguiente texto: "+texto1);
 }
 
-
 function prevSuggestion()
 {
-  if((typeof window.selectedSuggestion==='undefined')|(window.selectedSuggestion==0)) //todavía no hay ninguna seleccionada
-  {
-    $("#cabecera-suggest").find(".cabecera-suggest-fila:first").addClass("cabecera-suggest-fila-selected");    
-    window.selectedSuggestion=1;
-  }
-  else
-  {
-    if(window.selectedSuggestion>1)
+    if(window.conf.selectedSuggestion>1)
     {
-      $("#cabecera-suggest").find(".cabecera-suggest-fila").eq(window.selectedSuggestion-1).removeClass("cabecera-suggest-fila-selected");    
-      $("#cabecera-suggest").find(".cabecera-suggest-fila").eq(window.selectedSuggestion-2).addClass("cabecera-suggest-fila-selected");    
-      window.selectedSuggestion--;
+      $("#cabecera-suggest").find(".cabecera-suggest-fila").eq(window.conf.selectedSuggestion-1).removeClass("cabecera-suggest-fila-selected");    
+      $("#cabecera-suggest").find(".cabecera-suggest-fila").eq(window.conf.selectedSuggestion-2).addClass("cabecera-suggest-fila-selected");    
+      window.conf.selectedSuggestion--;
     }
-  }
 }
 
 function nextSuggestion()
 {
-  if((typeof window.selectedSuggestion==='undefined')|(window.selectedSuggestion==0)) //todavía no hay ninguna seleccionada
-  {
-    $("#cabecera-suggest").find(".cabecera-suggest-fila:first").addClass("cabecera-suggest-fila-selected");    
-    window.selectedSuggestion=1;
-  }
-  else
-  {
-    if($("#cabecera-suggest").find(".cabecera-suggest-fila").length>window.selectedSuggestion)
+    if($("#cabecera-suggest").find(".cabecera-suggest-fila").length>window.conf.selectedSuggestion)
     {
-      $("#cabecera-suggest").find(".cabecera-suggest-fila").eq(window.selectedSuggestion-1).removeClass("cabecera-suggest-fila-selected");    
-      $("#cabecera-suggest").find(".cabecera-suggest-fila").eq(window.selectedSuggestion).addClass("cabecera-suggest-fila-selected");    
-      window.selectedSuggestion++;
+      $("#cabecera-suggest").find(".cabecera-suggest-fila").eq(window.conf.selectedSuggestion-1).removeClass("cabecera-suggest-fila-selected");    
+      $("#cabecera-suggest").find(".cabecera-suggest-fila").eq(window.conf.selectedSuggestion).addClass("cabecera-suggest-fila-selected");    
+      window.conf.selectedSuggestion++;
     }
-  }
 }
 
 
@@ -160,7 +143,7 @@ function suggestBusqueda(texto)
     //$(".scroll-curtain").css('height', $(".scroll-curtain-gradient").position().top-43);
     
 
-    window.selectedSuggestion=0;
+    window.conf.selectedSuggestion=0;
 
     //Añadimos el tooltip
     if(window.conf.clase=='eventos')
@@ -242,7 +225,10 @@ function suggestBusqueda(texto)
     
       //¿Animarlo?
       //$("#cabecera-suggest").find(".cabecera-suggest-fila").slideDown("fast");
-    });    
+    });
+    //for default select cabecera-suggest-fila:first
+            $("#cabecera-suggest").find(".cabecera-suggest-fila:first").addClass("cabecera-suggest-fila-selected");
+            window.conf.selectedSuggestion=1;
   });
 
 

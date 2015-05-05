@@ -502,7 +502,6 @@ function cargarDatos(clase, orden)
   orden = typeof orden !== 'undefined' ? orden : 'fecha';
 
   console.log(clase+" "+orden);
-  //if (window.conf.clase=="undefined")
   window.conf.clase=clase;
   //[{"texto":"Alcal&aacute; De Henares","tipo":"lugar","id":"4284"}] 
   var hayUnLugar=false;
@@ -624,12 +623,12 @@ function cargarDatos(clase, orden)
       if(data.isFollowing)
       {
         $("#boton-avisos").val("Dejar de recibir avisos");
-        window.isFollowing=true;
+        window.conf.isFollowing=true;
       }
       else
       {
         $("#boton-avisos").val("Recibir avisos");        
-        window.isFollowing=false;
+        window.conf.isFollowing=false;
       }
     $(".supergrupo").fadeIn(500);
     // Show sort-by and register only in case ther was results
@@ -711,7 +710,7 @@ function subscribe()
       arrayTagsQuery.push(sugerencia);
     }
     var query=JSON.stringify(arrayTagsQuery);
-    if(window.isFollowing)
+    if(window.conf.isFollowing)
     {
       $.post( "changeSubscriptionStatus.php", { query: query, clase: window.conf.clase, action: 'unsubscribe' } )
       .done(function(data){
@@ -719,7 +718,7 @@ function subscribe()
       });
       $("#boton-avisos").val("Recibir avisos");
       notificarError('Ya no recibirás avisos sobre esta búsqueda.');                
-      window.isFollowing=false;
+      window.conf.isFollowing=false;
     }
     else
     {
@@ -728,7 +727,7 @@ function subscribe()
         console.log(data);
       });
       $("#boton-avisos").val("Dejar de recibir avisos");
-      window.isFollowing=true;
+      window.conf.isFollowing=true;
       notificarExito('Acabas de apuntarte para recibir avisos sobre esta búsqueda.');
     }
   }
@@ -970,9 +969,9 @@ $('#input-busqueda').bind('keyup',function(event)
   switch (event.which) 
   {
     case 13:  //Intro
-      if(window.selectedSuggestion==0)
-        window.selectedSuggestion=1;
-      var fila="#cabecera-suggest-fila-"+(window.selectedSuggestion-1);
+      if(window.conf.selectedSuggestion==0)
+        window.conf.selectedSuggestion=1;
+      var fila="#cabecera-suggest-fila-"+(window.conf.selectedSuggestion-1);
       $(fila).trigger("click");
       /*
       var icono=$(fila).find(".cabecera-suggest-icono").css('background-image');
@@ -985,7 +984,7 @@ $('#input-busqueda').bind('keyup',function(event)
     case 27:  //Escape
         $("#cabecera-suggest").empty();
         $(this).val("");
-        window.selectedSuggestion=0;
+        window.conf.selectedSuggestion=0;
         break;
     case 38:  //Up
         prevSuggestion();
@@ -997,14 +996,17 @@ $('#input-busqueda').bind('keyup',function(event)
         break;
     default:
         suggestBusqueda($(this).val());
+        nextSuggestion();
+        nextSuggestion();
+        
   }
 });
 
 $('.cabecera-lupa').click(function() 
 {
-  if(window.selectedSuggestion==0)
-        window.selectedSuggestion=1;
-  var fila="#cabecera-suggest-fila-"+(window.selectedSuggestion-1);
+  if(window.conf.selectedSuggestion==0)
+        window.conf.selectedSuggestion=1;
+  var fila="#cabecera-suggest-fila-"+(window.conf.selectedSuggestion-1);
   $(fila).trigger("click");  
 });
 

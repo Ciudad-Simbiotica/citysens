@@ -211,9 +211,9 @@ $('#input-busqueda').keyup(function(event)
 {
   if((event.which==13)||($('#input-busqueda').val()==""))
   {
-   if($('#input-busqueda').val()!=window.lastSearch)
+   if($('#input-busqueda').val()!=window.conf.lastSearch)
    {
-     window.lastSearch=$('#input-busqueda').val();
+     window.conf.lastSearch=$('#input-busqueda').val();
      var page = $('#detalle-cuerpo-texto');
      var pageHtml = page.html().replace(/<span>/igm,"").replace(/<\/span>/igm,"");
      if($('#input-busqueda').val()!="")
