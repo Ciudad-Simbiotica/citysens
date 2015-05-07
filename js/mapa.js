@@ -17,7 +17,7 @@ function loadOverlayNoDisponible(url,idCiudad,ciudad)
 
 }
 
-function addPolygonToMap(idTerritorio,navType,url,texto,color,activo,style)
+function addPolygonToMap(idTerritorio,alrededores,url,texto,color,activo,style)
 {
     $.ajax({
         type: "POST",
@@ -35,48 +35,34 @@ function addPolygonToMap(idTerritorio,navType,url,texto,color,activo,style)
             }        
         geojsonLayer = L.geoJson(response,{fillColor: color, weight: 1, style: style}).addTo(map);
 
-        if(activo>=0) //Sólo hacen clic y hover si es >0, si es <0 no es clicable
-        {
-            geojsonLayer.on('click',function()
+              
+            geojsonLayer.on('click',function (e)
             {
-                if(activo>0)
-                {
-                    //history.pushState(null, null, "http://localhost:8888/?idTerritorio="+idTerritorio);
-                    target="?idTerritorio="+idTerritorio;
-                    if (navType==1)
-                        target+="&navType=1"
-                    window.location=target;
-                }
-                else
-                {
-                    //No hay todavía para esta ciudad
-                    loadOverlayNoDisponible("cityNotReadyYet.html",idTerritorio,texto);
-                }
-            });
-        
+                irATerritorio(activo,idTerritorio,texto,alrededores) // llamada a cargar el mapa 
+            }); 
             geojsonLayer.on('mouseover', function(e) 
             {
-            $(".map-footer").html("Ir a "+texto);
-            var layer = e.target;
-            layer.setStyle({
-                weight: 1,              
-                fillColor: '#98FB98',            
-             });
+                $(".map-footer").html("Ir a "+texto);
+                var layer = e.target;
+                layer.setStyle({
+                    weight: 1,              
+                    fillColor: '#98FB98',            
+                });
             });
         
             geojsonLayer.on('mouseout', function(e) 
             {
-              $(".map-footer").html(window.conf.nombre);  
-              var layer = e.target;
-            layer.resetStyle(e.target);  //layer.resetStyle(); 
-            });
+                $(".map-footer").html(window.conf.nombre);  
+                var layer = e.target;
+                layer.resetStyle(e.target);  //layer.resetStyle(); 
+            });        
+        polygons[idTerritorio]=geojsonLayer;   
         }
-        polygons[idTerritorio]=geojsonLayer;
-    }
-});  
-}
+    });
+}  
 
-function cargarMapa(idTerritorio)
+
+function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
 {
   //Creamos el mapa
   window.polygons = [];
@@ -169,12 +155,11 @@ function cargarMapa(idTerritorio)
     }
   });
 
-  navType=$.urlParam('navType');
   $.getJSON("getMapData.php", 
   {
     dataType: 'json',
     idTerritorio: idTerritorio,
-    navType: navType,
+    alrededores: alrededores,
   })
   .done(function (response) 
   {
@@ -232,12 +217,14 @@ function cargarMapa(idTerritorio)
     var last= response.breadcrumbs.length-1;
     $.each(response.breadcrumbs, function(i,lugar)   
     {
+       // $(".map-breadcrumbs > a:nth-child(2)")on.click(irATerritorio(activo,idTerritorio,texto,alrededores));
       if (i) // not first
           breadcrumbs+=" > ";
 
       if (i<last) { //not last
         //  breadcrumbs+='<A HREF=\'?idTerritorio='+lugar[0]+'\' > '+lugar[1]+'</A>';
-          breadcrumbs+='<A HREF=\'?idTerritorio='+lugar[0]+'\'><abbr title=\''+lugar[2]+'\'>'+lugar[1]+'</abbr></A>';
+          //breadcrumbs+='<A HREF=\'?idTerritorio='+lugar[0]+'\'><abbr title=\''+lugar[2]+'\'>'+lugar[1]+'</abbr></A>';
+          breadcrumbs+='<span onclick="irATerritorio(1,'+lugar[0]+',0,\''+lugar[2]+'\')"><abbr title=\''+lugar[2]+'\'>'+lugar[1]+'</abbr></span>';
           lastAncestor=lugar[0];
           lastAncestorName=lugar[2];
       }
@@ -249,10 +236,11 @@ function cargarMapa(idTerritorio)
 
     $(".map-breadcrumbs").html(breadcrumbs);
 
+ 
     // in case it is not the top level, UP arrow displayed  
     if (lastAncestor!="")
     {
-        var htmlUpButton ='<A HREF=\'?idTerritorio='+lastAncestor+'\' > <span class="fa-stack fa-2x id="upButton"><i class="fa fa-arrow-up fa-stack-1x fa-inverse" id="flechaarriba"></i><i class="fa fa-circle-thin fa-stack-2x" id="aro"></i><i class="fa fa-circle fa-stack-2x" id="circulo"></i></span></A>';
+        var htmlUpButton ='<span onclick="irATerritorio(1,'+lastAncestor+',0)"> <span class="fa-stack fa-2x id="upButton"><i class="fa fa-arrow-up fa-stack-1x fa-inverse" id="flechaarriba"></i><i class="fa fa-circle-thin fa-stack-2x" id="aro"></i><i class="fa fa-circle fa-stack-2x" id="circulo"></i></span></span>';
         $("#upbutton").html(htmlUpButton);
         $("#upbutton").on( "mouseover", function(e) 
         {
@@ -312,7 +300,7 @@ function cargarMapa(idTerritorio)
                 }).addTo(map);
         }
     }
-    else if (navType==1) // Territory has child, but we are on special navigation. We allow to clic on it to zoom into it.
+    else if (alrededores==1) // Territory has child, but we are on special navigation. We allow to click on it to zoom into it.
     {
                 addPolygonToMap(conf.idTerritorioMostrado,0,"shp/geoJSON/"+response.nivel+"/"+conf.idTerritorioMostrado+".geojson",response.nombre,'#ffaaaa',response.activo);
 
@@ -344,10 +332,15 @@ function cargarMapa(idTerritorio)
                 window.poligonos[datos.id]=datos.nombre;
                 // For level city and neighborhood, the special navigation (extra parameter in URL) is activated
                 if(nivelHijos==10 || nivelHijos==8)
+                {
                     addPolygonToMap(datos.id,1,"shp/geoJSON/"+nivelHijos+"/"+datos.id+".geojson",datos.nombre,'#ffaaaa',datos.activo);
+                    breadcrumbs_dropdown+='<li onclick="irATerritorio('+datos.activo+','+datos.id+',1,\''+datos.nombre+'\')">'+datos.nombre+'</li>';
+                }
                 else
+                {    
                     addPolygonToMap(datos.id,0,"shp/geoJSON/"+nivelHijos+"/"+datos.id+".geojson",datos.nombre,'#ffaaaa',datos.activo);
-                
+                    breadcrumbs_dropdown+='<li onclick="irATerritorio('+datos.activo+','+datos.id+',0,\''+datos.nombre+'\')">'+datos.nombre+'</li>';
+                }
                 if(response.nivel>7) {
                     if(typeof window.cantidadPorLugar[datos.id] === 'undefined')
                         cantidad='0';
@@ -358,7 +351,7 @@ function cargarMapa(idTerritorio)
                         icon: new L.NumberedDivIcon({number: cantidad})
                         }).addTo(map);
                     }
-                breadcrumbs_dropdown+='<li><A HREF=\'?idTerritorio='+datos.id+'\'>'+datos.nombre+'</A></li>';
+
                 });
                 $("#listabreadcrumbs").html(breadcrumbs_dropdown);
                 $("#hijos").hover(function() {
@@ -371,7 +364,7 @@ function cargarMapa(idTerritorio)
             });
     }
 
-    if (navType!=1)
+    if (alrededores!=1)
       {
         // Show the brothers 
         $.getJSON("getLugaresColindantes.php",
@@ -466,3 +459,20 @@ function irACoordenadas(coordinates,zoom)
 }
 
 
+function irATerritorio(activo,idTerritorio,alrededores,nombre)
+{
+   if(activo>0)//Sólo hacen clic y hover si es >0, si es <0 no es clicable
+       {             
+        window.conf.idTerritorio = idTerritorio;                      
+      //  window.listado.orden=$("#select_ordenar").val();          //
+       //TODO Actualizar configuracion de orden en el evento de cambio de ordenacion.                            
+        window.conf.alrededores=alrededores;
+        cargarDatos();  
+        }
+        else
+        {
+                //No hay todavía para esta ciudad
+                loadOverlayNoDisponible("cityNotReadyYet.html",idTerritorio,nombre);
+        }
+    
+}

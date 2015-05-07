@@ -2,7 +2,7 @@
 	error_reporting(0);
 	include_once "db.php";
 	
-    if($_GET["navType"]==1)
+    if($_GET["alrededores"]==1)
       $respuesta=getDatosLugar($_GET["idTerritorio"]);
     else
       $respuesta=getDatosLugarBase($_GET["idTerritorio"]);
@@ -18,7 +18,7 @@
       $respuesta["ymin"]=$coordenadasInteriores["ymin"];      
     }
 // For the case of neighborhoods and city surroundings, we want a special navigation with no uncles
-    if ($_GET["navType"]==1 && ($respuesta["nivel"]==10 || $respuesta["nivel"]==8)) 
+    if ($_GET["alrededores"]==1 && ($respuesta["nivel"]==10 || $respuesta["nivel"]==8)) 
     {
       //$coordenadasColindantes=getCoordenadasColindantes($respuesta["nivel"],$respuesta["xmin"],$respuesta["xmax"],$respuesta["ymin"],$respuesta["ymax"]); 
       $coordenadasColindantes=getCoordenadasCentroidesColindantes($respuesta["nivel"],$respuesta["xmin"],$respuesta["xmax"],$respuesta["ymin"],$respuesta["ymax"]);

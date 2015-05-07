@@ -27,9 +27,15 @@ function clickSuggestion(imagen,texto1,tipo,id) //Añadir id, texto buscado
       var coincide=((value.texto==texto1)&(value.tipo==tipo)&(value.id==id));
       return !coincide;
     });
-
-    cargarDatos(window.conf.clase,$("#select_ordenar").val());
-
+    
+    //cargarDatos(window.conf.clase,$("#select_ordenar").val());
+   // if (window.listado.tipo)
+   if (!window.listado.tipo)
+    window.listado.tipo="eventos";
+    if (!window.listado.orden)
+        window.listado.orden="puntuacion";
+    window.listado.orden=$("#select_ordenar").val();
+    cargarDatos();
     $(this).fadeOut("fast",function(){
       $(this).parent().remove();
     });
@@ -65,8 +71,9 @@ function clickSuggestion(imagen,texto1,tipo,id) //Añadir id, texto buscado
 
   conf.arrayTags.push(sugerencia);
   $("#input-busqueda").val('');
-  cargarDatos(window.conf.clase,$("#select_ordenar").val());
-
+  //cargarDatos(window.conf.clase,$("#select_ordenar").val());
+  window.listado.orden=$("#select_ordenar").val();
+  cargarDatos();
 
   /*if(!$('#input-busqueda').tagExist(texto1))
     $("#input-busqueda").addTag(texto1,{icon:tipo});
@@ -172,8 +179,15 @@ function suggestBusqueda(texto)
         $("#cabecera-suggest").find(".cabecera-suggest-fila:last").click(function()
         {
           if(value.activo==1)
-          {
-            window.location = "?idTerritorio="+value.id;
+          {           
+        //   window.location = "?idTerritorio="+value.id;//Se podrian añadir los parametros
+           window.conf.idTerritorio = value.id;
+         //   cargarMapa(window.conf.idTerritorio);               
+          // else          
+           window.listado.orden=$("#select_ordenar").val();          
+           cargarDatos();
+           cargarMapa(window.conf.idTerritorio);
+           // clickSuggestion(icono,value.texto1,value.tipo,value.id);
           }
           else
           {         
