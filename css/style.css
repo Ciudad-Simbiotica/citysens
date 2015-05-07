@@ -235,7 +235,8 @@ html,body
 .map-breadcrumbs
 {
 	margin-top: 5px;
-	margin-left: 5px;     
+	margin-left: 5px;    
+        cursor: pointer; cursor: hand;	
 }
 
 .map-map
@@ -575,11 +576,12 @@ ul#listabreadcrumbs{
     left:3em;
     margin-top:0;
     padding-top:0;
+    cursor: pointer; cursor: hand;	
 }
 
 #hijos{
     z-index:10;
-    display:inline-block;
+    display:inline-block;   	
 }
 
 .loading{
