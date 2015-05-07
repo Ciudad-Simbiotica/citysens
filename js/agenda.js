@@ -20,7 +20,24 @@ var miBusqueda = {
     
         
         */
+/* 
+---------------------------------------------------------------------------------------------
+------------------------------------Inicializando variable global-----------------------------------
+---------------------------------------------------------------------------------------------
 
+*/
+//TODO Revisar donde se crea window.con e introducirlo aqui
+   window.conf={};
+  if (!(window.conf.idTerritorio))
+      window.conf.idTerritorio=$.urlParam("idTerritorio");
+  if (!(window.conf.alrededores))
+      window.conf.alrededores=0;
+  
+  window.listado={};
+  if(!window.listado.tipo)
+     window.listado.tipo="eventos";
+  if(!window.listado.orden)
+     window.listado.orden="fecha"; 
 /* 
 ---------------------------------------------------------------------------------------------
 ------------------------------------Creado de grupos/filas-----------------------------------
@@ -494,15 +511,16 @@ function removeAllTags()
 
 }
 
-function cargarDatos(clase, orden)
+//function cargarDatos(clase, orden)
+function cargarDatos()
 {
-
+ window.listado.orden=$("#select_ordenar").val();
   $(".agenda-segunda-linea").fadeOut("fast");
   $(".informacion").slideUp("fast");
-  orden = typeof orden !== 'undefined' ? orden : 'fecha';
+  //orden = typeof orden !== 'undefined' ? orden : 'fecha';
 
-  console.log(clase+" "+orden);
-  window.conf.clase=clase;
+  console.log(window.listado.tipo+" "+window.listado.orden);
+  //window.conf.clase=clase;
   //[{"texto":"Alcal&aacute; De Henares","tipo":"lugar","id":"4284"}] 
   var hayUnLugar=false;
   var arrayTagsQuery=conf.arrayTags.slice();
@@ -521,7 +539,7 @@ function cargarDatos(clase, orden)
     {
       "texto": "", 
       "tipo": "lugar",
-      "id": $.urlParam('idTerritorio'),
+      "id": window.conf.idTerritorio
     };
     arrayTagsQuery.push(sugerencia);
   }
@@ -542,12 +560,13 @@ function cargarDatos(clase, orden)
   var getAgenda = "getAgendaXML.php?";
   $.getJSON(getAgenda, 
   {
-    clase: clase,
+    clase: window.listado.tipo,
     date: "any",
     query: query,
-    idTerritorioOriginal: $.urlParam('idTerritorio'),
+    //idTerritorioOriginal: $.urlParam('idTerritorio'),
+    idTerritorioOriginal: window.conf.idTerritorio,
     format: "json",
-    orden: orden
+    orden: window.listado.orden
   })
     .done(function(data) 
     {
@@ -565,7 +584,7 @@ function cargarDatos(clase, orden)
       $("#cabecera-suggest").empty();
       $(".input-busqueda").val('');
           
-      switch(clase)
+      switch(window.listado.tipo)
       {
         case "eventos":
           primeraLinea="Mostrando EVENTOS en <strong>"+data.lugarOriginal.nombre+"</strong> en las próximas semanas"+conFiltros;
@@ -635,7 +654,7 @@ function cargarDatos(clase, orden)
     if (!jQuery.isEmptyObject(data.grupos))
         $(".agenda-segunda-linea").fadeIn(500);
     comprobarPlegadoFilas();
-    cargarMapa($.urlParam('idTerritorio'));
+    cargarMapa(window.conf.idTerritorio, window.conf.alrededores);
     });  
 }
 
@@ -845,10 +864,18 @@ $(".cabecera-pestania-izq").click(function()
   
   $('#select_ordenar').on('change', function() 
   {
-    cargarDatos('eventos', $(this).val());
+    //cargarDatos('eventos', $(this).val()); 
+   window.listado.tipo="eventos";
+  //if(!window.listado.orden)
+    window.listado.orden=$(this).val();
+    cargarDatos();
+   
   });
 
-  cargarDatos("eventos",'fecha');
+  //cargarDatos("eventos",'fecha');
+    window.listado.tipo="eventos";
+    window.listado.orden="fecha";
+  cargarDatos();
 
 });
 
@@ -863,8 +890,10 @@ $(".cabecera-pestania-ctr").click(function()
 
   $(".subcabecera-pestania-izq").slideUp("fast");
   $(".subcabecera-pestania-dch").slideUp("fast");
-
-  cargarDatos("procesos");
+  //cargarDatos("procesos"); 
+  window.listado.orden="procesos";
+  cargarDatos();
+ 
 
 });
 
@@ -906,10 +935,14 @@ $(".cabecera-pestania-dch").click(function()
   $('#select_ordenar').prop('onchange',null).attr('onchange','').unbind('change');
   $('#select_ordenar').on('change', function() 
   {
-    cargarDatos('organizaciones', $(this).val());
+    //cargarDatos('organizaciones', $(this).val());
+    window.listado.tipo="organizaciones";
+    window.listado.orden=$(this).val();
   });
-
-  cargarDatos("organizaciones",'puntuacion');
+//cargarDatos("organizaciones",'puntuacion');
+window.listado.orden="puntuacion";
+window.listado.tipo="organizaciones";
+cargarDatos();
 
 
 
@@ -929,7 +962,9 @@ $(".cabecera-pestania-noticias").click(function()
   $("#switch-recurrentes").removeClass("switch-filas-off");
   $(".subcabecera-pestania-dch").slideUp("fast");
   $(".subcabecera-pestania-izq").slideUp("fast");
-  cargarDatos("eventos");
+  //cargarDatos("eventos");
+  window.listado.tipo="eventos";
+  cargarDatos();
 
 });
 
@@ -1121,10 +1156,7 @@ function notificarNormal(html)
 ----------------------------------------Inicialización---------------------------------------
 ---------------------------------------------------------------------------------------------
 */
-
-//Aquí está borrando los datos?
- conf={"arrayTags":Array()};
- conf.arrayTags= {id:'',texto:'',tipo:''};
+ 
 //Mostrar notificaciones
 
 var notificacion=$('#notificacion').val(); //Lanza un error si no hay tipo

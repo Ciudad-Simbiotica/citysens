@@ -20,8 +20,10 @@ foreach($tematicas as $tematica)
 {
 	//print_r($entidad);
 	$sugestion["tipo"]="tematica";
-	$sugestion["texto1"]=substr($tematica["tematica"],0,50);
+	//$sugestion["texto1"]=substr($tematica["tematica"],0,50);
+        $sugestion["texto1"]=htmlentities($tematica["tematica"]);
 	$sugestion["texto2"]="";
+        $sugestion["textoBuscado"]=htmlentities($_GET["query"]);//for bold hint string
 	$sugestion["id"]=$tematica["idTematica"];
 	array_push($sugestions,$sugestion);
 }
@@ -57,8 +59,10 @@ foreach($lugares as $lugar)
 {
 	//print_r($lugar);
 	$sugestion["tipo"]="lugar";
-	$sugestion["texto1"]=htmlentities(ucwords(strtolower(substr($lugar[1],0,50))));
+//	$sugestion["texto1"]=htmlentities(ucwords(strtolower(substr($lugar[1],0,50))));
+        $sugestion["texto1"]=htmlentities($lugar[1]);
 	$sugestion["texto2"]="";//htmlentities("Distrito ".$lugar["nombre"]);
+        $sugestion["textoBuscado"]=htmlentities($_GET["query"]);//for bold hint string
 	$sugestion["id"]=$lugar[0];
 	array_push($sugestions,$sugestion);
 }
@@ -71,8 +75,10 @@ if($_GET["entidades"]=="")	//Sólo las mostramos si NO estamos buscando entidade
 	{
 		//print_r($entidad);
 		$sugestion["tipo"]=$entidad["tipoEntidad"];
-		$sugestion["texto1"]=htmlentities(ucwords(strtolower(substr($entidad["entidad"],0,50))));
+		//$sugestion["texto1"]=htmlentities(ucwords(strtolower(substr($entidad["entidad"],0,50))));
+                $sugestion["texto1"]=htmlentities($entidad["entidad"]);
 		$sugestion["texto2"]=htmlentities("Distrito ".$entidad["distrito"]);
+                 $sugestion["textoBuscado"]=htmlentities($_GET["query"]);//for bold hint string
 		$sugestion["id"]=$entidad["idEntidad"];
 		array_push($sugestions,$sugestion);
 	}
@@ -84,7 +90,9 @@ if($lugaresIrA)
 {
 	//print_r($lugaresIrA);
 	$sugestion["tipo"]="IrA";
-	$sugestion["texto1"]=htmlentities(ucwords(strtolower(substr($lugaresIrA["nombre"],0,50))));
+//	$sugestion["texto1"]=htmlentities(ucwords(strtolower(substr($lugaresIrA["nombre"],0,50))));   
+        $sugestion["texto1"]=htmlentities($lugaresIrA["nombre"]);
+        $sugestion["textoBuscado"]=htmlentities($_GET["query"]);//for bold hint string
 	$sugestion["texto2"]="";
 	$sugestion["id"]=$lugaresIrA["id"];
 	$sugestion["activo"]=$lugaresIrA["activo"];
