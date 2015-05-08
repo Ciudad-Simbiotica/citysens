@@ -27,17 +27,17 @@ var miBusqueda = {
 
 */
 //TODO Revisar donde se crea window.con e introducirlo aqui
-   window.conf={};
-  if (!(window.conf.idTerritorio))
-      window.conf.idTerritorio=$.urlParam("idTerritorio");
-  if (!(window.conf.alrededores))
-      window.conf.alrededores=0;
+  window.conf={};
+  window.conf.idTerritorio=$.urlParam("idTerritorio");
+  window.conf.alrededores=0;
   
   window.listado={};
   if(!window.listado.tipo)
      window.listado.tipo="eventos";
   if(!window.listado.orden)
      window.listado.orden="fecha"; 
+
+
 /* 
 ---------------------------------------------------------------------------------------------
 ------------------------------------Creado de grupos/filas-----------------------------------
@@ -518,6 +518,7 @@ function cargarDatos()
   $(".agenda-segunda-linea").fadeOut("fast");
   $(".informacion").slideUp("fast");
   //orden = typeof orden !== 'undefined' ? orden : 'fecha';
+  $(".cabecera-logo a").attr("href", "?idTerritorio="+conf.idTerritorio);
 
   console.log(window.listado.tipo+" "+window.listado.orden);
   //window.conf.clase=clase;
@@ -724,7 +725,7 @@ function subscribe()
       {
         "texto": "", 
         "tipo": "lugar",
-        "id": $.urlParam('idTerritorio'),
+        "id": window.conf.idTerritorio
       };
       arrayTagsQuery.push(sugerencia);
     }

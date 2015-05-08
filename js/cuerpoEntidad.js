@@ -113,7 +113,7 @@ $.getJSON('getDatosEntidad.php',
     $(".detalle-mapa-pie-nombre").text(data.direccion.nombre);
     $(".detalle-mapa-pie-direccion").text(data.direccion.direccion);
     $(".detalle-mapa-cabecera-volver").click(function(){
-        window.location="/?idTerritorio="+$.urlParam('idOrigen');
+        window.location="/?idTerritorio="+window.conf.idTerritorio;   //$.urlParam('idOrigen'); De donde es esto¿
     });
     
     /*
@@ -132,7 +132,7 @@ $.getJSON('getDatosEntidad.php',
 
 
     //Sharing code
-    url="http://www.citysens.net/?idEntidad="+data.idEntidad+"%26idOrigen="+$.urlParam('idOrigen');
+    url="http://www.citysens.net/?idEntidad="+data.idEntidad+"%26idOrigen="+window.conf.idTerritorio;
     mensaje="¡¡¡Esta entidad te puede interesar!!!";
     
     var tbx = document.getElementById("toolbox");

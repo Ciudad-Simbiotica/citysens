@@ -109,7 +109,7 @@ $.getJSON('getDatos.php',
     $(".detalle-mapa-pie-nombre").text(data.direccion.nombre);
     $(".detalle-mapa-pie-direccion").text(data.direccion.direccion);
     $(".detalle-mapa-cabecera-volver").click(function(){
-        window.location="?idTerritorio="+$.urlParam('idOrigen');
+      //  window.location="?idTerritorio="+$.urlParam('idOrigen'); Creo que esta linea sobraba ahora
     });
 
 
@@ -128,7 +128,7 @@ $.getJSON('getDatos.php',
 
 
     //Sharing code
-    url="http://www.citysens.net/?idEvento="+data.idEvento+"%26idOrigen="+$.urlParam('idOrigen');
+    url="http://www.citysens.net/?idEvento="+data.idEvento+"%26idOrigen="+$.urlParam('idOrigen');//TODO revisar los link nuevos
     mensaje="¡¡¡Este evento te puede interesar!!!";
     
     var tbx = document.getElementById("toolbox");
@@ -224,13 +224,13 @@ $("#contacto").click(function ()
 
 $(".cabecera-pestania-izq").click(function()
 {
-    window.location="?idTerritorio="+$.urlParam('idOrigen');
+    window.location="?idTerritorio="+window.conf.idTerritorio;
 });
 
 
 $(".cabecera-pestania-dch").click(function()
 {
-    window.location="?idTerritorio="+$.urlParam('idOrigen')+'&category=ent';
+    window.location="?idTerritorio="+window.conf.idTerritorio+'&category=ent';
 });
 
 $('#input-busqueda').attr('placeholder','Buscar en el evento...');
