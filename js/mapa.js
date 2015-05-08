@@ -286,7 +286,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
     // If the territory has no child, the territory is shown
     if (response.idDescendiente==0) 
     {
-        addPolygonToMap(conf.idTerritorioMostrado,0,"shp/geoJSON/"+response.nivel+"/"+conf.idTerritorioMostrado+".geojson","ABCDE",'#ffaaaa',-1);
+        addPolygonToMap(conf.idTerritorioMostrado,0,"shp/geoJSON/"+response.nivel+"/"+conf.idTerritorioMostrado+".geojson",response.nombre,'#ffaaaa',-1);
 
         if  (nivelMostrado>7) // If the territory is of level city or lower, counter is included
         {
