@@ -17,7 +17,7 @@ function loadOverlayNoDisponible(url,idCiudad,ciudad)
 
 }
 
-function addPolygonToMap(idTerritorio,alrededores,url,texto,color,activo,style)
+function addPolygonToMap(idTerritorio,alrededores,url,nombre,color,activo,style)
 {
     $.ajax({
         type: "POST",
@@ -38,11 +38,11 @@ function addPolygonToMap(idTerritorio,alrededores,url,texto,color,activo,style)
               
             geojsonLayer.on('click',function (e)
             {
-                irATerritorio(activo,idTerritorio,texto,alrededores) // llamada a cargar el mapa 
+                irATerritorio(activo,idTerritorio,alrededores,nombre) // llamada a cargar el mapa 
             }); 
             geojsonLayer.on('mouseover', function(e) 
             {
-                $(".map-footer").html("Ir a "+texto);
+                $(".map-footer").html("Ir a "+nombre);
                 var layer = e.target;
                 layer.setStyle({
                     weight: 1,              
