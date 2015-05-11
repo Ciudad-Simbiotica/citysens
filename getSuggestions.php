@@ -33,7 +33,6 @@ print_r($tematicas);
 print_r($sugestions);
 */
 
-
 /*
 $sugestion["tipo"]="sanidad";
 $sugestion["texto1"]="Sanidad";
@@ -67,10 +66,9 @@ foreach($lugares as $lugar)
 	array_push($sugestions,$sugestion);
 }
 
-
-if($_GET["entidades"]=="")	//Sólo las mostramos si NO estamos buscando entidades
+if($_GET["entidades"]=="")	//Sólo las mostramos si NO estamos en página de entidades
 {
-	$entidades=getEntidadesZonaConEventos($_GET["query"],4,$_GET["idTerritorio"]);
+	$entidades=getEntidadesZonaConEventos($_GET["query"],$_GET["idTerritorio"],4);
 	foreach($entidades as $entidad)
 	{
 		//print_r($entidad);

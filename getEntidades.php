@@ -1,10 +1,12 @@
 <?php
 error_reporting(E_ERROR);
 include_once "db.php";
-$query=json_decode($_GET["query"],true);
+$filtros=json_decode($_GET["filtros"],true);
+$idTerritorio=$_GET["idLugarOriginal"];
 
-$entidades=getEntidadesQuery($query,50);
 
+// $params is an object with parameters of search
+$entidades=getEntidades($filtros,$idTerritorio,50);
 
 $i=0;
 
@@ -83,7 +85,6 @@ if($tipoGrupos=="puntuacion")
 }
 else
 {
-	
 	foreach($entidades as $entidad)
 	{
 		if($tipoGrupos=="tematica")
