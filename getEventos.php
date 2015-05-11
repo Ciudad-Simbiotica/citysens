@@ -1,9 +1,10 @@
 <?php
 error_reporting(E_ERROR);
 include_once "db.php";
-$query=json_decode($_GET["query"],true);
-$eventos=getEventos($query,50,$_GET["orden"]);
+$filtros=json_decode($_GET["filtros"],true);
+$idTerritorio=$_GET["idLugarOriginal"];
 
+$eventos=getEventos($filtros,$idTerritorio,50);
 
 
 $tipoGrupos=$_GET["orden"];
