@@ -20,7 +20,7 @@ include "preload.php";
  <title>CitYsens</title>
  <base href="<?php echo BASE_URL; //Base URL?>">
  
- <link rel="shortcut icon" href="css\icons\citysens.logoPrincipal.ico" />
+ <link rel="shortcut icon" href="css\icons\CitYsens.monigote.color.fw.png" />
      
  <link href="css/style.css" rel="stylesheet" type="text/css" />
  <link href="css/cabecera.css" rel="stylesheet" type="text/css" />
@@ -49,6 +49,7 @@ include "preload.php";
  <script type="text/javascript" src="js/jNotify.jquery.js"></script>
  <script src="js/datetimepicker/jquery.datetimepicker.js"></script>
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5405f16570d4251b"></script>
+
 
 </head>
 
