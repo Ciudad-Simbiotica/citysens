@@ -1,5 +1,5 @@
 $.urlParam = function(name){
-    var results = new RegExp('[\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.href);
+    var results = new RegExp('[\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.search);
     return results?results[1]:null;
 }
 
@@ -56,19 +56,19 @@ function addPolygonToMap(idLugar,navType,url,texto,color,activo,style)
         
             geojsonLayer.on('mouseover', function(e) 
             {
-            $(".map-footer").html("Ir a "+texto);
-            var layer = e.target;
-            layer.setStyle({
+              $(".map-footer").html("Ir a "+texto);
+              var layer = e.target;
+              layer.setStyle({
                 weight: 1,              
                 fillColor: '#98FB98',            
-             });
+              });
             });
         
             geojsonLayer.on('mouseout', function(e) 
             {
               $(".map-footer").html(window.nombre);  
               var layer = e.target;
-            layer.resetStyle(e.target);  //layer.resetStyle(); 
+              layer.resetStyle(e.target);  //layer.resetStyle(); 
             });
         }
         polygons[idLugar]=geojsonLayer;
@@ -226,7 +226,15 @@ function cargarMapa(idLugar)
     $("#map").css("-ms-transform","scale("+zoom+")");
     $("#map").css("-moz-transform","scale("+zoom+")");
     $("#map").css("-webkit-transform","scale("+zoom+")");
-    //Breadcrumbs
+    
+    // Definde to use in footer and other places
+    window.idTerritorio=idLugar;
+    if (response.nivel==8 && navType==1)
+        window.nombre=response.nombre+' y alrededores';
+    else
+        window.nombre=response.nombre;
+
+      //Breadcrumbs
     var breadcrumbs="";
     var lastAncestor="", lastAncestorName=""; //Debe guardar el último ancestro para el botón de ir a nivel superior
     var last= response.breadcrumbs.length-1;
@@ -242,8 +250,8 @@ function cargarMapa(idLugar)
           lastAncestorName=lugar[2];
       }
       else{
-          breadcrumbs+='<div id=\'hijos\'><strong>'+lugar[1]+'</strong><ul id=\'listabreadcrumbs\'></ul></div>';         
-          $(".map-footer").html(lugar[1]);
+          breadcrumbs+='<div id=\'hijos\'><strong>'+lugar[1]+'</strong><ul id=\'listabreadcrumbs\'></ul></div>';
+            $(".map-footer").html(window.nombre);
          }      
     });
 
@@ -260,12 +268,10 @@ function cargarMapa(idLugar)
         });
         $("#upbutton").on('mouseout', function(e) 
         {
-          $(".map-footer").html("&nbsp;");
+          $(".map-footer").html(window.nombre);
         });
     };
 
-    window.nombre=response.nombre;
-    window.idTerritorio=idLugar;
     
     idTerritorioMostrado=response.id;
     var nivelMostrado=parseInt(response.nivel,10);
@@ -289,7 +295,7 @@ function cargarMapa(idLugar)
             });
             $("#circle-button").on('mouseout', function (e)
             {
-                $(".map-footer").html("&nbsp;");
+                $(".map-footer").html(window.nombre);
             });
         }
     }
