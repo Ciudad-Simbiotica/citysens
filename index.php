@@ -19,6 +19,9 @@ include "preload.php";
  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
  <title>CitYsens</title>
  <base href="<?php echo BASE_URL; //Base URL?>">
+ 
+ <link rel="shortcut icon" href="css\icons\citysens.logoPrincipal.ico" />
+     
  <link href="css/style.css" rel="stylesheet" type="text/css" />
  <link href="css/cabecera.css" rel="stylesheet" type="text/css" />
  <link href="css/grupos.css" rel="stylesheet" type="text/css" />
