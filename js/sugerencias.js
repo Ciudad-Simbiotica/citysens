@@ -1,7 +1,7 @@
 //Para sacar los parámetros de GET
 $.urlParam = function(name){
-    var results = new RegExp('[\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.href);
-    return results[1] || 0;
+    var results = new RegExp('[\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.search);
+    return results?results[1]:null;
 }
 
 
@@ -128,6 +128,9 @@ function suggestBusqueda(texto)
     return;    
   }
 
+  // TODO: Later it uses the condition     if(window.clase=='eventos') for somthing simmilar.
+  //       Probably it would be better to think of some alternative method to indicate what section we are in.
+  //       Specially considering that there will be other categories in addition to events and entities.
   if($(".cabecera-pestania-izq").hasClass("cabecera-pestania-seleccionada"))
     entidades="";
   else

@@ -1,6 +1,6 @@
 //Para sacar los parámetros de GET
 $.urlParam = function(name){
-    var results = new RegExp('[\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.href);
+    var results = new RegExp('[\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.search);
     return results?results[1]:null;
 }
 
@@ -490,6 +490,9 @@ function cargarDatos(clase, orden)
   var hayUnLugar=false;
   var arrayTagsQuery=arrayTags.slice();
 
+  // If there is no territory filter, then the original territoryId is inserted as a filter.
+  // TODO 2015.05.04: This is not optimal. It seems better that the function receives the territoryID which is applied in case there is none.
+  // but for the moment being... we leave it as it is.
   $.each(arrayTagsQuery, function(i, object) 
   {
     if(object.tipo=="lugar")
@@ -497,7 +500,6 @@ function cargarDatos(clase, orden)
       hayUnLugar=true;
     }
   });
-
   if(!hayUnLugar)
   {
     var sugerencia = 
@@ -510,9 +512,8 @@ function cargarDatos(clase, orden)
   }
   
 
-  var query=JSON.stringify(arrayTagsQuery);
-  //console.log(arrayTagsQuery);
-  console.log(query);
+  var filtros=JSON.stringify(arrayTagsQuery);
+  console.log(filtros);
 
 
   $(".supergrupo").attr('id',"").remove();  //Para que no se inserten en esta les quitamos el ID
@@ -527,7 +528,7 @@ function cargarDatos(clase, orden)
   {
     clase: clase,
     date: "any",
-    query: query,
+    filtros: filtros,
     idLugarOriginal: $.urlParam('idLugar'),
     format: "json",
     orden: orden
@@ -692,10 +693,10 @@ function subscribe()
       };
       arrayTagsQuery.push(sugerencia);
     }
-    var query=JSON.stringify(arrayTagsQuery);
+    var params=JSON.stringify(arrayTagsQuery);
     if(window.isFollowing)
     {
-      $.post( "changeSubscriptionStatus.php", { query: query, clase: window.clase, action: 'unsubscribe' } )
+      $.post( "changeSubscriptionStatus.php", { params: params, clase: window.clase, action: 'unsubscribe' } )
       .done(function(data){
         console.log(data);
       });
@@ -705,7 +706,7 @@ function subscribe()
     }
     else
     {
-      $.post( "changeSubscriptionStatus.php", { query: query, clase: window.clase,  action: 'subscribe' } )
+      $.post( "changeSubscriptionStatus.php", { params: params, clase: window.clase,  action: 'subscribe' } )
       .done(function(data){
         console.log(data);
       });

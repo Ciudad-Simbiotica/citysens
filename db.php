@@ -201,15 +201,15 @@ function getEntidad($idEntidad)
         {
             $entidad['direccion']['direccion']="Sin dirección";
             $entidad['direccion']['idDireccion']="0";
-            $entidad['direccion']['idPadre']="0";
+            $entidad['direccion']['idCiudad']="0";
+            $entidad['direccion']['idDistrito']="0";
+            $entidad['direccion']['idBarrio']="0";
             $entidad['direccion']['lat']=0;
             $entidad['direccion']['lng']=0;
             $entidad['direccion']['nombre']="Sin nombre";
             $entidad['direccion']['zoom']="15";
         }
 
-
-        //$entidad['direccion']="Distrito ".($entidad["idDistritoPadre"]-999000004);
         $sql="SELECT * FROM entidades_tematicas, tematicas 
                 WHERE entidades_tematicas.identidad='$idEntidad' AND
                 entidades_tematicas.idTematica=tematicas.idTematica";
@@ -228,13 +228,12 @@ function getEntidad($idEntidad)
 
 }
 
-function getEntidades($cadena,$cantidad=10)
+function getEntidadesPorNombre($cadena,$cantidad=10)
 {
     $link=connect();
     $cadena=safe($link, $cadena);
     $cantidad=safe($link, filter_var($cantidad,FILTER_SANITIZE_NUMBER_INT));
    
-    
     $sql="SELECT * 
             FROM  entidades 
             WHERE entidad LIKE '%$cadena%'
@@ -246,27 +245,46 @@ function getEntidades($cadena,$cantidad=10)
     return $returnData;
 }
 
-function getEntidadesZonaConEventos($cadena,$cantidad=10,$idDistritoPadre=0)
+// Returns a list of entities that have events in a certain territory
+// Needs to be updated to comply with new logic (using direcciones, not idDistritoPadre in eventos)
+// TODO: It could be required to change to a collection of territories (for city+ and neighbourhood areas
+function getEntidadesZonaConEventos($cadena,$idTerritorio,$cantidad=10)
 {
+  $link=connect();
   // Sanitize inputs
   $cadena=safe($link, $cadena);
   $cantidad=safe($link, filter_var($cantidad,FILTER_SANITIZE_NUMBER_INT));
-  $idDistritoPadre=safe($link, $idDistritoPadre);
+  $idTerritorio=safe($link, $idTerritorio);
+  $nivel=getNivelTerritorio($idTerritorio);
 
-  $link=connect();
     $sql="SELECT *
-            FROM entidades JOIN eventos
-            ON entidades.idEntidad=eventos.idEntidad
+            FROM entidades 
+            JOIN eventos ON entidades.idEntidad=eventos.idEntidad
+            JOIN direcciones ON eventos.idDireccion=direcciones.idDireccion
             WHERE entidad LIKE '%$cadena%'";
 
-    if($idDistritoPadre!=0)
+    if ($nivel<8) // Levels above city, searches will be done on a city-basis
+    {    
+      $hijos=getDescendantsOfLevel($idTerritorio,8);
+      $sql.=" AND direcciones.idCiudad IN ('".join($hijos,"','")."')";
+    }
+    else // Map under city, seaches done on a district neighborhood-basis
     {
-        $hijos=getAllChildren(array($idDistritoPadre));
-        $sql.=" AND eventos.idDistritoPadre IN ('".join($hijos,"','")."')";
+        $hijos=getAllChildren($idTerritorio,9);
+        $sql.=" AND direcciones.idSubCiudad IN ('".join($hijos,"','")."')";
     }
 
     $sql.=" GROUP BY entidades.idEntidad
             LIMIT 0,$cantidad";
+    
+// Ejemplo de query producida:
+// SELECT *	FROM entidades 
+//	JOIN eventos ON entidades.idEntidad=eventos.idEntidad
+//  JOIN direcciones ON eventos.idDireccion=direcciones.direccion
+//	WHERE entidad LIKE '%centro%' 
+//    AND direcciones.idDistrito IN ('901280005','901280006')    
+//  GROUP BY entidades.idEntidad
+//  LIMIT 0,10;
 
     $result=mysqli_query($link, $sql);
     $returnData=array();
@@ -275,22 +293,24 @@ function getEntidadesZonaConEventos($cadena,$cantidad=10,$idDistritoPadre=0)
     return $returnData;
 }
 
-function getEntidadesQuery($params,$cantidad=10)
+// Gets the information about Entities to be displayed, taking into account all filters and   
+function getEntidades($filtros, $idTerritorio, $cantidad=10)
 {
     $link=connect();
   // Sanitize inpusts
     $cantidad=safe($link, filter_var($cantidad,FILTER_SANITIZE_NUMBER_INT));
-
-    
+    $idTerritorio=safe($link,$idTerritorio);
+    $nivel= getNivelTerritorio($idTerritorio);
+        
     $busqueda="";
-    $tematicas=array();
+    $tematica="";
     $lugar="";
     $lugares=array();
-    foreach($params as $tag)
+    foreach($filtros as $filtro)
     {
-        $tipo=$tag["tipo"];
-        $texto=$tag["texto"];
-        $id=$tag["id"];
+        $tipo=$filtro["tipo"];
+        $texto=$filtro["texto"];
+        $id=$filtro["id"];
         switch($tipo)
         {
             case "busqueda":
@@ -309,22 +329,28 @@ function getEntidadesQuery($params,$cantidad=10)
         }
     }
 
-
-    $lugares=getAllChildren($lugares);
-    foreach($lugares as $idLugar)
-    {
-        if($lugar!="")
-            $lugar.=" OR ";
-        $lugar.="direcciones.idPadre='$idLugar'";
-    }
-
-
+    
     $sql="SELECT entidades.*,entidades_tematicas.*,tematicas.*,direcciones.*, lugares_shp.nombre as nombreLugar FROM entidades 
-            JOIN entidades_tematicas ON entidades.idEntidad=entidades_tematicas.idEntidad 
-            JOIN tematicas ON entidades_tematicas.idTematica=tematicas.idTematica 
-            JOIN direcciones ON entidades.idDireccion=direcciones.idDireccion
-            JOIN lugares_shp ON direcciones.idPadre=lugares_shp.id
-            WHERE ";
+          JOIN entidades_tematicas ON entidades.idEntidad=entidades_tematicas.idEntidad 
+          JOIN tematicas ON entidades_tematicas.idTematica=tematicas.idTematica 
+          JOIN direcciones ON entidades.idDireccion=direcciones.idDireccion ";
+    
+    if ($nivel<8) // Levels above city, searches will be done on a city-basis
+    {
+      $sql.="JOIN lugares_shp ON direcciones.idCiudad=lugares_shp.id
+             WHERE ";
+      $hijos=getAllDescendantsOfLevel($lugares,8);
+      $lugar="direcciones.idCiudad IN ('".join($hijos,"','")."')";
+    }
+    else // Map at City or lower level, searches done on SubCityLevel (district, neighborhood) basis
+    {
+      $sql.="JOIN lugares_shp ON direcciones.idSubCiudad=lugares_shp.id
+             WHERE ";
+      $lugares=getAllChildren($lugares,9);
+      $ids=implode(",",$lugares);
+      $lugar="direcciones.idSubCiudad in ($ids)";
+    }
+               
     if($busqueda!="")
         $sql.="($busqueda) AND ";
     if($tematica!="")
@@ -332,6 +358,24 @@ function getEntidadesQuery($params,$cantidad=10)
     if($lugar!="")
         $sql.="($lugar) AND ";
     $sql.="1 GROUP BY entidades.idEntidad ORDER BY points DESC LIMIT 0,$cantidad";
+    
+//  Example of query. 
+//  We need to edit it. The way the filters of territories are applied is unsatisfactory.
+//  Now lugar will have ids of city and subCity (district or neighbourhood).
+//  Depending of where the search happens, we will use different ones.
+//  
+//  SELECT entidades.*,entidades_tematicas.*,tematicas.*,direcciones.*, lugares_shp.nombre as nombreLugar 
+//  FROM entidades 
+//    JOIN entidades_tematicas ON entidades.idEntidad=entidades_tematicas.idEntidad 
+//    JOIN tematicas ON entidades_tematicas.idTematica=tematicas.idTematica 
+//    JOIN direcciones ON entidades.idDireccion=direcciones.idDireccion 
+//    JOIN lugares_shp ON direcciones.idPadre=lugares_shp.id             
+//  WHERE 
+//    (entidad LIKE '%$texto%' OR entidad LIKE '%$texto%') and
+//    (entidades_tematicas.idTematica='$id' OR entidades_tematicas.idTematica='$id') AND
+//    (direcciones.idBarrio='801280005') OR direcciones.idBarrio='901280005' OR direcciones.idBarrio='901280006' OR direcciones.idBarrio='901280007' OR direcciones.idBarrio='901280008') AND
+//    1 
+//  GROUP BY entidades.idEntidad ORDER BY points DESC LIMIT 0,$cantidad
 
     $result=mysqli_query($link, $sql);
     $returnData=array();
@@ -341,21 +385,6 @@ function getEntidadesQuery($params,$cantidad=10)
     }
     return $returnData;
 
-    //id/clase=organizaciones/tipo/tituloOrg/textoOrg/lugarOrg/puntos
-    /*
-    $link=connect();
-    $sql="SELECT *
-            FROM entidades JOIN eventos
-            ON entidades.idEntidad=eventos.idEntidad
-            WHERE entidad LIKE '%$cadena%'
-            GROUP BY entidades.idEntidad
-            LIMIT 0,$cantidad";
-    $result=mysqli_query($link, $sql);
-    $returnData=array();
-    while($fila=mysqli_fetch_assoc($result))
-        array_push($returnData,$fila);
-    return $returnData;
-    */
 }
 
 function insertEmailPreregister($email, $idCiudad)
@@ -397,8 +426,10 @@ function getTematicas($cadena,$cantidad=10)
 function crearNuevoEvento($datosNuevoEvento)
 {
     $link=connect();
+    //Sanitize inputs
     $fecha=safe($link, $datosNuevoEvento["fecha"]);
     $fechaFin=safe($link, $datosNuevoEvento["fechaFin"]);
+    
     if($fechaFin=="")
         $fechaFin='NULL';
     else
@@ -488,23 +519,24 @@ function getEvento($idEvento)
 
 }
 
-function getEventos($params,$cantidad=50,$orden="fecha")
+function getEventos($filtros,$idTerritorio,$cantidad=50)
 {
     $link=connect();
     //Sanitize inputs
     $cantidad=safe($link, filter_var($cantidad, FILTER_SANITIZE_NUMBER_INT));
-    $orden=safe($link, $orden);
+    $idTerritorio=safe($link,$idTerritorio);
+    $nivel= getNivelTerritorio($idTerritorio);
 
     $busqueda="";
     $tematica="";
     $lugar="";
     $lugares=array();
     $organizacion="";
-    foreach($params as $tag)
+    foreach($filtros as $filtro)
     {
-        $tipo=$tag["tipo"];
-        $texto=$tag["texto"];
-        $id=$tag["id"];
+        $tipo=$filtro["tipo"];
+        $texto=$filtro["texto"];
+        $id=$filtro["id"];
         switch($tipo)
         {
             case "busqueda":
@@ -530,22 +562,40 @@ function getEventos($params,$cantidad=50,$orden="fecha")
         }
     }
 
-
-    $lugares=getAllChildren($lugares);
-    foreach($lugares as $idLugar)
-    {
-        if($lugar!="")
-            $lugar.=" OR ";
-        $lugar.="idDistritoPadre='$idLugar'";
-    }
-
-
-    $sql="SELECT eventos.*,
+        $sql="SELECT eventos.*,
     (SELECT GROUP_CONCAT(tematicas.tematica)
              FROM eventos_tematicas, tematicas
              WHERE eventos_tematicas.idTematica=tematicas.idTematica
              AND eventos_tematicas.idEvento = eventos.idEvento) AS tematicas
-       FROM eventos, eventos_tematicas WHERE eventos.eventoActivo='1' AND ";
+       FROM eventos, eventos_tematicas, direcciones 
+       WHERE eventos.idDireccion=direcciones.idDireccion 
+         AND eventos.eventoActivo='1' AND ";
+//TODO: Validate where the territory place is taken from. Event? It should probably be changed.
+        
+    if ($nivel<8) // Levels above city, searches will be done on a city-basis
+    {    
+      $hijos=getAllDescendantsOfLevel($lugares,8);
+      $lugar="direcciones.idCiudad IN ('".join($hijos,"','")."')";
+    }
+    else // Map at City or lower level, searches done on SubCityLevel (district, neighborhood) basis
+    {
+        $hijos=getAllChildren($lugares,9);
+        $lugar="direcciones.idSubCiudad IN ('".join($hijos,"','")."')";
+    }
+//  Example of the query, already using the direcciones instead of idPadre at events
+//  SELECT eventos.*,
+//    (SELECT GROUP_CONCAT(tematicas.tematica)
+//             FROM eventos_tematicas, tematicas
+//             WHERE eventos_tematicas.idTematica=tematicas.idTematica
+//             AND eventos_tematicas.idEvento = eventos.idEvento) AS tematicas
+//       FROM eventos, eventos_tematicas, direcciones 
+//       WHERE eventos.idDireccion=direcciones.idDireccion
+//       AND eventos.eventoActivo='1'
+//       AND direcciones.idSubCiudad IN ('901280005','901280006','901280007') 
+//       and eventos.idEvento=eventos_tematicas.idEvento 
+//       GROUP BY eventos.idEvento        ORDER BY fecha ASC LIMIT 0,50;
+//       
+    
     if($busqueda!="")
         $sql.="($busqueda) AND ";
     if($tematica!="")
@@ -589,7 +639,7 @@ function getEventosPorValidar()
             AND direcciones.idPadre=lugares_shp.id 
             AND eventos.idEntidad=entidades.idEntidad
             GROUP BY eventos.idEvento 
-            ORDER BY idEvento ASC";    
+            ORDER BY idEvento ASC";    //needs to be updated (idPadre)
     mysqli_query($link, 'SET CHARACTER SET utf8');
     $result=mysqli_query($link, $sql);
     $returnData=array();
@@ -600,20 +650,87 @@ function getEventosPorValidar()
     return $returnData;
 }
 
-function getAllChildren($lugares)
+// Returns all descendants of a list of territories, with levels from 5 to 10
+// $nivelBase initialised to 5 (country) by default, to cover all territories.
+function getAllChildren($territorios, $nivelBase=5)
 {
     $link=connect();
-    for($nivel=6;$nivel<=10;$nivel++)
+    for($nivel=$nivelBase;$nivel<=10;$nivel++)
     {
-        $ids=implode(",",$lugares);
+        $ids=implode(",",$territorios);
         $sql="SELECT id FROM lugares_shp WHERE nivel='$nivel' AND idPadre IN ($ids)";
         $result=mysqli_query($link, $sql);
         while($fila=mysqli_fetch_assoc($result))
-            array_push($lugares,$fila['id']);
+            array_push($territorios,$fila['id']);
     }
     
-    return(array_unique($lugares));
+    return(array_unique($territorios));
 
+}
+
+// Returns all descendants of a list of territories, that are of level $nivelFinal
+// $nivelBase initialised to 5 (country) by default, to cover all territories.
+function getAllDescendantsOfLevel($territorios,$nivelFinal,$nivelBase=5)
+{
+    $link=connect();
+    
+    // In case there is just one territory, we can use its level as the base of the loop
+    if (count($territorios)==1)
+        $nivelBase=getNivelTerritorio($territorios[0])+1;
+    
+    for($nivel=$nivelBase;$nivel<=$nivelFinal;$nivel++)
+    {
+        $ids=implode(",",$territorios);
+        if ($nivel==$nivelFinal) {
+          // When the final level has been reached, array is emptied to just have the results from the lower level
+          // and make sure territories of that level included in $territorios are also part of the result        
+          $territorios=[];
+          $sql="SELECT id FROM lugares_shp WHERE nivel='$nivel' AND (idPadre IN ($ids) OR id IN ($ids))";
+        }
+        else
+          $sql="SELECT id FROM lugares_shp WHERE nivel='$nivel' AND idPadre IN ($ids)";
+
+        $result=mysqli_query($link, $sql);
+        while($fila=mysqli_fetch_assoc($result))
+          array_push($territorios,$fila['id']);
+    }  
+    return(array_unique($territorios));
+}
+
+// Returns descendants of $idTerritorio that are of level $nivelFinal
+function getDescendantsOfLevel($idTerritorio,$nivelFinal)
+{
+    $link=connect();
+    
+    $nivelTerritorio=getNivelTerritorio($idTerritorio);
+    $territorios=array();
+    if ($nivelTerritorio==$nivelFinal)
+      array_push($territorios,$idTerritorio);
+    else
+    {
+      $ids=$idTerritorio;
+      for($nivelLoop=$nivelTerritorio+1;$nivelLoop<=$nivelFinal;$nivelLoop++)
+      {
+        $sql="SELECT id FROM lugares_shp WHERE nivel='$nivelLoop' AND idPadre IN ($ids)";
+        $result=mysqli_query($link, $sql);
+        if ($nivelLoop<$nivelFinal)
+        {
+          $ids="";
+          while($fila=mysqli_fetch_assoc($result))
+          {
+            if($ids!="")
+              $ids.=",";
+            $ids.=$fila['id'];
+          }   
+        }
+        else
+        {
+          while($fila=mysqli_fetch_assoc($result))
+            array_push($territorios,$fila['id']);
+        }
+      }
+    }
+    return($territorios);
 }
 
 //Devuelve array con los datos de los territorios ancestros de idLugar.
@@ -630,18 +747,6 @@ function getAllAncestors($idLugar)
             $idPadre=$lugar["idPadre"];
     }
     
-  /* 
-    //Simulando Comunidad de Madrid
-    $lugares[4]["nombre"]="Comunidad de Madrid";
-    $lugares[4]["nombreCorto"]="CM";
-    $lugares[4]["id"]="444000028";
-    
- 
-    //Simulando España
-    $lugares[2]["nombre"]="España";
-    $lugares[2]["nombreCorto"]="ES";
-    $lugares[2]["id"]="201000034";
-*/
     return $lugares;
 }
 
@@ -677,8 +782,9 @@ function getFertileAncestors($idLugar)
 
 function getFertility($idLugar)
 {
-        $link=connect();
-        $idLugar=safe($link,$idLugar);
+    $link=connect();
+    $idLugar=safe($link,$idLugar);
+    
     $sql="SELECT id
             FROM lugares_shp 
             WHERE idPadre='$idLugar'";
@@ -852,6 +958,7 @@ function getLugares($cadena,$lugarOriginal,$type,$cantidad=3,$inSet=array())
     $lugarOriginal=safe($link, $lugarOriginal);
     $type=safe($link, $type);
     $cantidad=safe($link, filter_var($cantidad, FILTER_SANITIZE_NUMBER_INT));
+    
     $sql="SELECT * FROM lugares_shp WHERE
             nivel='$type' AND
             provincia=28 AND
@@ -940,7 +1047,7 @@ function getDireccionesSuggestions($cadena,$lugarOriginal,$cantidad=5)
     $sql="SELECT * FROM direcciones WHERE 
             (nombre LIKE '%$cadena%' OR direccion LIKE '%$cadena%') AND
             idPadre IN (".implode(",",$inSet).")  AND direcciones.direccionActiva='1' 
-            LIMIT 0,$cantidad";
+            LIMIT 0,$cantidad"; // Needs to be updated (idPadre)
     //echo $sql;
     mysqli_query($link, 'SET CHARACTER SET utf8');
     $result=mysqli_query($link, $sql);
@@ -955,7 +1062,7 @@ function getDireccionesSuggestions($cadena,$lugarOriginal,$cantidad=5)
 
 }
 
-function getDistritoPadreDireccion($idDireccion)
+function getDistritoPadreDireccion($idDireccion) //Needs to be updated (idPadre)
 {
     $link=connect();
     $direccion=safe($link, $direccion);
@@ -1027,7 +1134,7 @@ function crearNuevaDireccion($nombreLugar,$direccion,$lat,$lng,$idPadre)
     //Zoom=15
     //Activa=0
     $sql="INSERT INTO direcciones (idPadre,nombre,direccion,lat,lng,zoom,direccionActiva)
-                           VALUES ('$idDistritoPadre','$nombreLugar','$direccion','$lat','$lng','15','0')";
+                           VALUES ('$idDistritoPadre','$nombreLugar','$direccion','$lat','$lng','15','0')"; // Needs to be updated (idPadre)
     mysqli_query($link, $sql);
     $returnData["idLugar"]=mysqli_insert_id();
     $returnData["idDistritoPadre"]=$idDistritoPadre;
