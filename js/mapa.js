@@ -266,28 +266,8 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
     nivelHijos=nivelMostrado+1;
     nivelTios=nivelMostrado-1; // It could be adjusted if there is some level that is not considered significant (like districts, regions, etc.)
    
-    if (nivelMostrado > 7) // If the territory is of level city or lower, there are counters, and a switcher is needed
-    {
-        if (window.listado.grupos) 
-        {
-            var htmlshowpointers = '<button><i class="fa fa-toggle-off"></i></button>';
-            $("#circle-button").html(htmlshowpointers);
 
-            $("#circle-button button").click(function () {
-                $(this).find('i').toggleClass('fa-toggle-on fa-toggle-off');
-                $(".leaflet-div-icon").fadeToggle("fast", "linear");
-            });
-            $("#circle-button").on("mouseover", function (e)
-            {
-                $(".map-footer").html("mostrar / ocultar eventos");
-            });
-            $("#circle-button").on('mouseout', function (e)
-            {
-                $(".map-footer").html(window.conf.nombre);
-            });
-        }
-    }
-    
+       
     // If the territory has no child, the territory is shown
     if (response.idDescendiente==0) 
     {
@@ -356,7 +336,45 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                         icon: new L.NumberedDivIcon({number: cantidad})
                         }).addTo(map);
                     }
-
+    if (nivelMostrado > 7) // If the territory is of level city or lower, there are counters, and a switcher is needed
+    {     
+        if (window.listado.grupos) 
+        {
+            if (window.conf.palanca==0|window.conf.palanca==undefined)
+            {
+                var htmlshowpointers = '<button><i class="fa fa-toggle-off"></i></button>';     
+            }
+            else 
+            {
+                var htmlshowpointers = '<button><i class="fa fa-toggle-on"></i></button>';
+                $(".leaflet-div-icon").fadeIn("fast", "linear");            
+            }
+            $("#circle-button").html(htmlshowpointers);
+            $("#circle-button button").click(function () { 
+                    if (window.conf.palanca==0|window.conf.palanca==undefined)
+                    {
+                        $(this).find('i').toggleClass('fa-toggle-on fa-toggle-off');
+                        $(".leaflet-div-icon").fadeToggle("fast", "linear");
+                        window.conf.palanca=1;
+                    }
+                    else
+                    {
+                        $(this).find('i').toggleClass('fa-toggle-off fa-toggle-on');
+                        $(".leaflet-div-icon").fadeToggle("fast", "linear");
+                        window.conf.palanca=0;
+                    }
+                }
+            );
+            $("#circle-button").on("mouseover", function (e)
+            {
+                $(".map-footer").html("mostrar / ocultar eventos");
+            });
+            $("#circle-button").on('mouseout', function (e)
+            {
+                $(".map-footer").html(window.conf.nombre);
+            });
+        }     
+    }    
                 });
                 $("#listabreadcrumbs").html(breadcrumbs_dropdown);
                 $("#hijos").hover(function() {
@@ -432,7 +450,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                     });
                 });
     }
-        
+    
         //Cargamos los eventos
         window.markers = [];
         //TODO: esto genera excepción cuando listado es vacío. Convendría hacer chequeo de si es vacío antes de lanzarlo.
@@ -454,9 +472,10 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
             });
 
     });
+// muestro los contadores si estaban activados
 
-    
-}
+  
+  }
 
 function irACoordenadas(coordinates,zoom)
 {
