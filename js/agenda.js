@@ -581,7 +581,7 @@ function cargarDatos()
       
       primeraLinea="";
       conFiltros=":";
-      if(conf.arrayTags.length>0)
+      if(window.conf.arrayTags.length>0)
         conFiltros=" que satisfacen los siguientes filtros de búsqueda:";
       $("#cabecera-suggest").empty();
       $(".input-busqueda").val('');
@@ -589,22 +589,32 @@ function cargarDatos()
       switch(window.listado.tipo)
       {
         case "eventos":
-          primeraLinea="Mostrando EVENTOS en <strong>"+data.lugarOriginal.nombre+"</strong> en las próximas semanas"+conFiltros;
+            if (window.conf.alrededores==1)
+                primeraLinea="Mostrando EVENTOS en <strong>"+data.lugarOriginal.nombre+" y alrededores</strong> en las próximas semanas"+conFiltros;      
+            else
+                primeraLinea="Mostrando EVENTOS en <strong>"+data.lugarOriginal.nombre+"</strong> en las próximas semanas"+conFiltros;
+         
           if(jQuery.isEmptyObject(data.grupos)) {
             primeraLinea+="<br><br><strong>Ningún evento.</strong>";
           }
           $(".input-busqueda").attr('placeholder', 'Filtrar eventos...');
           break;
         case "organizaciones":
-          primeraLinea="Mostrando ENTIDADES en <strong>"+data.lugarOriginal.nombre+"</strong> en las próximas semanas"+conFiltros;
+            if (window.conf.alrededores==1)
+                primeraLinea="Mostrando ENTIDADES en <strong>"+data.lugarOriginal.nombre+" y alrededores</strong> en las próximas semanas"+conFiltros;
+            else
+                primeraLinea="Mostrando ENTIDADES en <strong>"+data.lugarOriginal.nombre+"</strong> en las próximas semanas"+conFiltros;
           if(jQuery.isEmptyObject(data.grupos)) {
             primeraLinea+="<br><br><strong>Ninguna entidad.</strong>";
             $(".div-avisos").hide();
           }
           $(".input-busqueda").attr('placeholder', 'Filtrar entidades...');
           break;
-        case "procesos":
-          primeraLinea="Mostrando INICIATIVAS en <strong>"+data.lugarOriginal.nombre+"</strong> en las próximas semanas"+conFiltros;
+        case "procesos":          
+            if (window.conf.alrededores==1)
+                primeraLinea="Mostrando INICIATIVAS en <strong>"+data.lugarOriginal.nombre+" y alrededores</strong> en las próximas semanas"+conFiltros;
+            else                          
+          primeraLinea="Mostrando INICIATIVAS en <strong>"+data.lugarOriginal.nombre+"</strong> en las próximas semanas"+conFiltros;          
           if(jQuery.isEmptyObject(data.grupos))
           {
             primeraLinea+="<br><br><strong>Ninguna iniciativa.</strong>";

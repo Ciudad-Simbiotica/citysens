@@ -175,7 +175,10 @@ function suggestBusqueda(texto)
     {
       if(value.tipo=="IrA")
       {
-        $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1 cabecera-suggest-texto1-sinTexto2'>Ir a "+value.texto1.replace(new RegExp("("+value.textoBuscado+")", 'gi'), "<b>$1</b>")+"</div></div>");
+        if ($("#input-busqueda").val().length>3)         
+            $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1 cabecera-suggest-texto1-sinTexto2'>Ir a "+value.texto1.replace(new RegExp("("+value.textoBuscado+")", 'gi'), "<b>$1</b>")+"</div></div>");
+        else
+            $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1 cabecera-suggest-texto1-sinTexto2'>Ir a "+value.texto1+"</div></div>");
         $("#cabecera-suggest").find(".cabecera-suggest-fila:last").addClass("cabecera-suggest-fila-IrA");
         $("#cabecera-suggest").find(".cabecera-suggest-icono:last").addClass("cabecera-suggest-icono-IrA");
         $("#cabecera-suggest").find(".cabecera-suggest-fila:last").attr("id","cabecera-suggest-fila-"+i);
@@ -209,7 +212,10 @@ function suggestBusqueda(texto)
       else
       {
         //Creamos la sugerencia
-        $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1'>"+value.texto1.replace(new RegExp("("+value.textoBuscado+")", 'gi'), "<b>$1</b>")+"</div><div class='cabecera-suggest-texto2'>"+value.texto2+"</div></div>");
+        if ($("#input-busqueda").val().length>2)    
+            $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1'>"+value.texto1.replace(new RegExp("("+value.textoBuscado+")", 'gi'), "<b>$1</b>")+"</div><div class='cabecera-suggest-texto2'>"+value.texto2+"</div></div>");
+        else
+            $("#cabecera-suggest").append("<div class='cabecera-suggest-fila'><div class='cabecera-suggest-icono'></div><div class='cabecera-suggest-texto1'>"+value.texto1+"</div><div class='cabecera-suggest-texto2'>"+value.texto2+"</div></div>");
         $("#cabecera-suggest").find(".cabecera-suggest-icono:last").addClass("cabecera-suggest-icono-"+value.tipo);
         $("#cabecera-suggest").find(".cabecera-suggest-fila:last").attr("id","cabecera-suggest-fila-"+i);
         if(value.texto2=="")
