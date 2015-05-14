@@ -191,8 +191,7 @@ function suggestBusqueda(texto)
          //   cargarMapa(window.conf.idTerritorio);               
           // else          
            window.listado.orden=$("#select_ordenar").val();          
-           cargarDatos();
-           cargarMapa(window.conf.idTerritorio);
+           cargarDatos();        
            // clickSuggestion(icono,value.texto1,value.tipo,value.id);
           }
           else

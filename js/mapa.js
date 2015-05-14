@@ -17,7 +17,7 @@ function loadOverlayNoDisponible(url,idCiudad,ciudad)
 
 }
 
-function addPolygonToMap(idTerritorio,alrededores,url,nombre,color,activo,style)
+function addPolygonToMap(idTerritorio,alrededores,url,nombre,color,activo)
 {
     $.ajax({
         type: "POST",
@@ -35,9 +35,10 @@ function addPolygonToMap(idTerritorio,alrededores,url,nombre,color,activo,style)
             }        
         geojsonLayer = L.geoJson(response,{fillColor: color, weight: 1, style: style}).addTo(map);
 
-              
+        if (activo!=-1)
+        {
             geojsonLayer.on('click',function (e)
-            {
+            {              
                 irATerritorio(activo,idTerritorio,alrededores,nombre) // llamada a cargar el mapa 
             }); 
             geojsonLayer.on('mouseover', function(e) 
@@ -56,6 +57,7 @@ function addPolygonToMap(idTerritorio,alrededores,url,nombre,color,activo,style)
                 var layer = e.target;
                 layer.resetStyle(e.target);  //layer.resetStyle(); 
             });        
+        }       
         polygons[idTerritorio]=geojsonLayer;
         }
     });
@@ -271,8 +273,11 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
     // If the territory has no child, the territory is shown
     if (response.idDescendiente==0) 
     {
-        addPolygonToMap(conf.idTerritorioMostrado,0,"shp/geoJSON/"+response.nivel+"/"+conf.idTerritorioMostrado+".geojson",response.nombre,'#ffaaaa',-1);
-
+        if (response.activo==0)
+            addPolygonToMap(conf.idTerritorioMostrado,0,"shp/geoJSON/"+response.nivel+"/"+conf.idTerritorioMostrado+".geojson",response.nombre,'#ffaaaa',0);
+        else //está activo pero no tiene hijos, mandamos código especial -1
+            addPolygonToMap(conf.idTerritorioMostrado,0,"shp/geoJSON/"+response.nivel+"/"+conf.idTerritorioMostrado+".geojson",response.nombre,'#ffaaaa',-1);
+        
         if  (nivelMostrado>7) // If the territory is of level city or lower, counter is included
         {
             if (typeof window.cantidadPorLugar[idTerritorio] === 'undefined')
@@ -285,7 +290,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                 }).addTo(map);
         }
     }
-    else if (alrededores==1) // Territory has child, but we are on special navigation. We allow to click on it to zoom into it.
+    else if (alrededores==1||nivelMostrado==10) // Territory has child, but we are on special navigation. We allow to click on it to zoom into it.
     {
                 addPolygonToMap(conf.idTerritorioMostrado,0,"shp/geoJSON/"+response.nivel+"/"+conf.idTerritorioMostrado+".geojson",response.nombre,'#ffaaaa',response.activo);
 
@@ -387,7 +392,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
             });
     }
 
-    if (alrededores!=1)
+    if (nivelMostrado!=10 && !(alrededores==1&&nivelMostrado==8)) //Navegación normal (no municipio + o barrios)
       {
         // Show the brothers 
         $.getJSON("getLugaresColindantes.php",
@@ -431,7 +436,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
     }
     else 
     {
-        // For level 10 (neighbourhood), and 8 (city) there is a special behaviour. We show all, brothers, cousins, etc.
+        // For level 10 (neighbourhood), and 8 (city) with "alrededores" there is a special behaviour. We show all, brothers, cousins, etc.
         $.getJSON("getLugaresColindantes.php",
             {
             dataType: 'json',
@@ -486,17 +491,15 @@ function irACoordenadas(coordinates,zoom)
 function irATerritorio(activo,idTerritorio,alrededores,nombre)
 {
    if(activo>0)//Sólo hacen clic y hover si es >0, si es <0 no es clicable
-       {             
-        window.conf.idTerritorio = idTerritorio;                      
-      //  window.listado.orden=$("#select_ordenar").val();          //
-       //TODO Actualizar configuracion de orden en el evento de cambio de ordenacion.                            
+   {             
+        window.conf.idTerritorio = idTerritorio;                          
         window.conf.alrededores=alrededores;
         cargarDatos();  
-        }
-        else
-        {
-                //No hay todavía para esta ciudad
-                loadOverlayNoDisponible("cityNotReadyYet.html",idTerritorio,nombre);
-        }
+    }
+    else
+    {
+        //No hay todavía para esta ciudad
+         loadOverlayNoDisponible("cityNotReadyYet.html",idTerritorio,nombre);
+    }
     
 }
