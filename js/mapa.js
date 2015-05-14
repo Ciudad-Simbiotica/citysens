@@ -38,7 +38,7 @@ function addPolygonToMap(idTerritorio,alrededores,url,nombre,color,activo)
         if (activo!=-1)
         {
             geojsonLayer.on('click',function (e)
-            {
+            {              
                 irATerritorio(activo,idTerritorio,alrededores,nombre) // llamada a cargar el mapa 
             }); 
             geojsonLayer.on('mouseover', function(e) 
@@ -290,7 +290,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                 }).addTo(map);
         }
     }
-    else if (alrededores==1) // Territory has child, but we are on special navigation. We allow to click on it to zoom into it.
+    else if (alrededores==1||nivelMostrado==10) // Territory has child, but we are on special navigation. We allow to click on it to zoom into it.
     {
                 addPolygonToMap(conf.idTerritorioMostrado,0,"shp/geoJSON/"+response.nivel+"/"+conf.idTerritorioMostrado+".geojson",response.nombre,'#ffaaaa',response.activo);
 
@@ -392,7 +392,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
             });
     }
 
-    if (alrededores!=1)
+    if (nivelMostrado!=10 && !(alrededores==1&&nivelMostrado==8)) //Navegación normal (no municipio + o barrios)
       {
         // Show the brothers 
         $.getJSON("getLugaresColindantes.php",
@@ -436,7 +436,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
     }
     else 
     {
-        // For level 10 (neighbourhood), and 8 (city) there is a special behaviour. We show all, brothers, cousins, etc.
+        // For level 10 (neighbourhood), and 8 (city) with "alrededores" there is a special behaviour. We show all, brothers, cousins, etc.
         $.getJSON("getLugaresColindantes.php",
             {
             dataType: 'json',
