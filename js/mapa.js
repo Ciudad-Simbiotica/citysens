@@ -92,7 +92,6 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
   L.NumberedDivIcon = L.Icon.extend(
   {
     options: {
-      iconUrl: '',
       number: '',
       shadowUrl: null,
       iconSize: new L.Point(24, 24),
@@ -103,11 +102,12 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
       popupAnchor: (Point)
       */
       className: 'leaflet-div-icon'
+     
     },
    
     createIcon: function () {
       var div = document.createElement('div');
-      //var img = this._createImg(this.options['iconUrl']);
+      var img = this._createImg(this.options['iconUrl']);
       var numdiv = document.createElement('div');
       numdiv.setAttribute ( "class", "number" );
       numdiv.innerHTML = this.options['number'] || '';
@@ -126,12 +126,16 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
   L.TargetIcon = L.Icon.extend(
   {
     options: {
-      iconUrl: 'css/icons/mira.png',
+      iconUrl: 'css/icons/leafletimages/marker-icon.png',
       number: '',
       shadowUrl: null,
-      iconSize: new L.Point(38, 37),
-      iconAnchor: new L.Point(29, 29),
-      popupAnchor: new L.Point(0, -29),
+      iconSize:     (25, 41),
+       // iconSize: new L.Point(38, 37),
+      //iconAnchor: new L.Point(29, 29),
+      iconAnchor:   (12, 41),
+      //popupAnchor: new L.Point(0, -29),
+      popupAnchor:  (-3, -76),
+      
       /*
       iconAnchor: (Point)
       popupAnchor: (Point)
