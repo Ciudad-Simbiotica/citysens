@@ -740,7 +740,7 @@ function getAllAncestors($idTerritorio)
     $lugares[$lugar["nivel"]]=$lugar;
     $idPadre=$lugar["idPadre"];
     
-    while($idTerritorio!=0)
+    while($idPadre!=0)
     {
             $lugar=getDatosLugar($idPadre);
             $lugares[$lugar["nivel"]]=$lugar;
@@ -995,27 +995,62 @@ function getLugaresSuggestions($cadena,$lugarOriginal,$cantidad=4)
             nombre LIKE '%$cadena%' AND
             id IN (".implode(",",$inSet).")
             $whereNiveles
+            ORDER BY nombre
             LIMIT 0,$cantidad";
     //echo $sql;
     $result=mysqli_query($link, $sql);
     $returnData=array();
     while($fila=mysqli_fetch_assoc($result))
-        array_push($returnData,array($fila["id"],$fila["nombre"],$fila["xcentroid"],$fila["ycentroid"]));
+        array_push($returnData,array($fila["id"],$fila["nombre"])); //,$fila["xcentroid"],$fila["ycentroid"])); valores no usados
     return $returnData;
 
 }
 
 function getIrA($cadena,$lugarOriginal)
 {
-    //echo $lugarOriginal;
-    //$inSet=getAllChildren(array($lugarOriginal));
-
+    //echo $lugarOriginal;      
     //Sanitize inputs
     $link=connect();
     $cadena=safe($link, $cadena);
     $lugarOriginal=safe($link, $lugarOriginal);
+    //Datos del idProvincia
+    $datosLugar=getDatosLugar($lugarOriginal);
+    $nivel= $datosLugar["nivel"];
+                      
+    if ($nivel>5)
+    {
+        if ($nivel==6)    
+            $idProvincia=$lugarOriginal;
+        else if  ($nivel==7)
+            $idProvincia=$datosLugar['idPadre'];
+        else
+        {
+            $ancestors=getAllAncestors($lugarOriginal);
+            $idProvincia=$ancestors["6"]["id"];
+            
+            $idCiudad=$ancestors["8"]["id"];
+            $inSet=getAllChildren(array($idCiudad));
 
-   $sql="SELECT id, nombre, activo FROM territorios WHERE nombre LIKE '$cadena%' AND nivel<9 ORDER BY nombre, activo DESC, id DESC";
+            $sqlCity="OR id IN (".implode(",",$inSet).") ";           
+        }
+        $sqlRegion="OR idPadre=$idProvincia"; // OR (nivel=7 AND idPadre=$idProvincia)"
+    }           
+        $sql="SELECT id, nombre, activo, 1 as flag 
+                FROM territorios 
+                WHERE nombre LIKE '$cadena%' AND "
+                . "(nivel<7 "
+                . "OR nivel=8 )"
+      . " UNION SELECT id, nombre, activo, 2 as flag 
+                FROM territorios 
+                WHERE nombre LIKE '%$cadena%' AND "
+                . "(nivel<7 "
+                . "OR nivel=8 "
+                . "$sqlRegion "
+                . "$sqlCity )"
+                . "ORDER BY flag, nombre, activo DESC, id DESC "
+                . "LIMIT 0,1";
+
+   
    // Order by, so the lower level appear before higher levels with the same name. Guadalajara (city), Guadalajara (province)
    // Order by activo DESC for show first
 
