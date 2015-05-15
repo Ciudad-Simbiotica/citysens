@@ -122,44 +122,41 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
       return null;
     }
   });
-
-  L.TargetIcon = L.Icon.extend(
-  {
-    options: {
-      iconUrl: 'css/icons/leafletimages/marker-icon.png',
-      number: '',
-      shadowUrl: null,
-      iconSize:     (25, 41),
-       // iconSize: new L.Point(38, 37),
-      //iconAnchor: new L.Point(29, 29),
-      iconAnchor:   (12, 41),
-      //popupAnchor: new L.Point(0, -29),
-      popupAnchor:  (-3, -76),
-      
-      /*
-      iconAnchor: (Point)
-      popupAnchor: (Point)
-      */
-      className: 'leaflet-target-icon'
-    },
-   
-    createIcon: function () {
-      var div = document.createElement('div');
-      var img = this._createImg(this.options['iconUrl']);
-      /*var numdiv = document.createElement('div');
-      numdiv.setAttribute ( "class", "number" );
-      numdiv.innerHTML = this.options['number'] || '';*/
-      div.appendChild( img );
-      //div.appendChild( numdiv );
-      this._setIconStyles(div, 'icon');
-      return div;
-    },
-   
-    //you could change this to add a shadow like in the normal marker if you really wanted
-    createShadow: function () {
-      return null;
-    }
-  });
+  
+// icono no usado, estamos usando el default
+// L.TargetIcon = L.Icon.extend(
+//  {
+//    options: {
+//      iconUrl: 'css/icons/leafletimages/marker-icon.png',
+//      number: '',
+//      shadowUrl: null,
+//      iconSize:     (25, 41),
+//      // iconSize: new L.Point(38, 37),
+//      //iconAnchor: new L.Point(29, 29),
+//      iconAnchor:   (12, 41),
+//      //popupAnchor: new L.Point(0, -29),
+//      popupAnchor:  (-3, -76),
+//      
+//      className: 'leaflet-target-icon'
+//    },
+//
+//    createIcon: function () {
+//      var div = document.createElement('div');
+//      var img = this._createImg(this.options['iconUrl']);
+//      /*var numdiv = document.createElement('div');
+//      numdiv.setAttribute ( "class", "number" );
+//      numdiv.innerHTML = this.options['number'] || '';*/
+//      div.appendChild( img );
+//      //div.appendChild( numdiv );
+//      this._setIconStyles(div, 'icon');
+//      return div;
+//    },
+//   
+//    //you could change this to add a shadow like in the normal marker if you really wanted
+//    createShadow: function () {
+//      return null;
+//    }
+//  });
 
   $.getJSON("getMapData.php", 
   {
@@ -469,10 +466,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                 {
                 $.each(filas.filas,function(i,datos)
                     {
-                    var marker=new L.Marker([datos.y,datos.x], 
-                        {
-                        icon: new L.TargetIcon()
-                        }).setOpacity(0).setZIndexOffset(100).addTo(map);
+                    var marker=new L.Marker([datos.y,datos.x]).setOpacity(0).setZIndexOffset(100).addTo(map);
                     marker.dragging.disable();
                     markers[datos.id]=marker;
                     
@@ -483,8 +477,16 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
     });
 // muestro los contadores si estaban activados
 
+function onMapClick(e) {
+    alert("You clicked the map at " + e.latlng);
+}
+
+map.on('oncontextmenu', onMapClick);    
+
   
-  }
+ }
+
+
 
 function irACoordenadas(coordinates,zoom)
 {
