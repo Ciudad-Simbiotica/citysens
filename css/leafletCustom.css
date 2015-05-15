@@ -7,9 +7,10 @@
         display:none;
     
 }
-
-.leaflet-marker-icon
+/*for default markers*/
+.leaflet-marker-icon, .leaflet-marker-shadow
 {
+    pointer-events:none;
 }
  
 .leaflet-marker-icon .number{
@@ -25,6 +26,5 @@
 }
 .leaflet-target-icon
 {
-        margin-left: -27px;
 	background: transparent;	
 }
