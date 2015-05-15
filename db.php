@@ -948,20 +948,20 @@ function getChildAreas($lugarOriginal,$nivel)
     return $returnData;   
 }
 
-//function is used?
-function getLugares($cadena,$lugarOriginal,$type,$cantidad=3,$inSet=array())
+//Is this function used/needed?
+function getTerritorios($cadena,$territorioOriginal,$nivel,$cantidad=3,$inSet=array())
 {
     //Sanitize inputs
     $link=connect();
     $cadena=safe($link, $cadena);
-    $lugarOriginal=safe($link, $lugarOriginal);
-    $type=safe($link, $type);
+    $territorioOriginal=safe($link, $territorioOriginal);
+    $nivel=safe($link, $nivel);
     $cantidad=safe($link, filter_var($cantidad, FILTER_SANITIZE_NUMBER_INT));
     $sql="SELECT * FROM territorios WHERE
-            nivel='$type' AND
+            nivel='$nivel' AND
             provincia=28 AND
             nombre LIKE '%$cadena%' AND
-            id<>'$lugarOriginal' ORDER BY nombre";
+            id<>'$territorioOriginal' ORDER BY nombre";
     if(count($inSet)>0)
         $sql.="";
     $sql.="LIMIT 0,$cantidad";
@@ -975,7 +975,7 @@ function getLugares($cadena,$lugarOriginal,$type,$cantidad=3,$inSet=array())
 
 }
 
-function getLugaresSuggestions($cadena,$lugarOriginal,$cantidad=4)
+function getTerritoriosSuggestions($cadena,$lugarOriginal,$cantidad=4)
 {
     //Sanitize input
     $link=connect();
@@ -1204,7 +1204,7 @@ function validarEvento($idEvento,$status)
 }
 
 // Gets the areas of level $type that are contained within the limits, excluding the central $lugarOriginal
-function getColindantes($lugarOriginal,$type,$xmin,$xmax,$ymin,$ymax)
+function getTerritoriosColindantes($lugarOriginal,$type,$xmin,$xmax,$ymin,$ymax)
 {
     $link=connect();
     //sanitize inputs

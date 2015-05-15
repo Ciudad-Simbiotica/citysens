@@ -53,7 +53,7 @@ array_push($sugestions,$sugestion);
 */
 
 
-$lugares=getLugaresSuggestions($_GET["query"],$_GET["idTerritorio"]);
+$lugares=getTerritoriosSuggestions($_GET["query"],$_GET["idTerritorio"]);
 foreach($lugares as $lugar)
 {
 	//print_r($lugar);

@@ -396,7 +396,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
     if (nivelMostrado!=10 && !(alrededores==1&&nivelMostrado==8)) //Navegación normal (no municipio + o barrios)
       {
         // Show the brothers 
-        $.getJSON("getLugaresColindantes.php",
+        $.getJSON("getTerritoriosColindantes.php",
             {
             dataType: 'json',
             tipo:nivelMostrado,
@@ -416,7 +416,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                 });
 
         //Show the "uncles"
-        $.getJSON("getLugaresColindantes.php", 
+        $.getJSON("getTerritoriosColindantes.php", 
                 {
                 dataType: 'json',
                 tipo:nivelTios,
@@ -438,7 +438,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
     else 
     {
         // For level 10 (neighbourhood), and 8 (city) with "alrededores" there is a special behaviour. We show all, brothers, cousins, etc.
-        $.getJSON("getLugaresColindantes.php",
+        $.getJSON("getTerritoriosColindantes.php",
             {
             dataType: 'json',
             tipo:nivelMostrado,
