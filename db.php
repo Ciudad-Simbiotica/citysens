@@ -562,7 +562,7 @@ function getEventos($filtros,$idTerritorio,$cantidad=50)
     }
 
 
-    $sql="SELECT eventos.*,
+    $sql="SELECT eventos.*, direcciones.lat as y, direcciones.lng as x,
     (SELECT GROUP_CONCAT(tematicas.tematica)
              FROM eventos_tematicas, tematicas
              WHERE eventos_tematicas.idTematica=tematicas.idTematica
