@@ -507,6 +507,7 @@ function removeAllTags()
   $(".tagFiltro-busqueda").remove();
   $(".tagFiltro-tematica").remove();
   $(".tagFiltro-lugar").remove();
+  $(".tagFiltro-entidad").remove();
   conf.arrayTags=[];
 
 }
@@ -514,177 +515,177 @@ function removeAllTags()
 //function cargarDatos(clase, orden)
 function cargarDatos()
 {
- window.listado.orden=$("#select_ordenar").val();
-  $(".agenda-segunda-linea").fadeOut("fast");
-  $(".informacion").slideUp("fast");
-  //orden = typeof orden !== 'undefined' ? orden : 'fecha';
-  $(".cabecera-logo a").attr("href", "?idTerritorio="+conf.idTerritorio);
+    window.listado.orden = $("#select_ordenar").val();
+    $(".agenda-segunda-linea").fadeOut("fast");
+    $(".informacion").slideUp("fast");
+    //orden = typeof orden !== 'undefined' ? orden : 'fecha';
+    $(".cabecera-logo a").attr("href", "?idTerritorio=" + conf.idTerritorio);
 
-  console.log(window.listado.tipo+" "+window.listado.orden);
-  //window.conf.clase=clase;
-  //[{"texto":"Alcal&aacute; De Henares","tipo":"lugar","id":"4284"}] 
-  var hayUnLugar=false;
-  var arrayTagsQuery=conf.arrayTags.slice();
+    console.log(window.listado.tipo + " " + window.listado.orden);
+    //window.conf.clase=clase;
+    //[{"texto":"Alcal&aacute; De Henares","tipo":"lugar","id":"4284"}] 
+    var hayUnLugar = false;
+    var arrayTagsQuery = conf.arrayTags.slice();
 
-  // If there is no territory filter, then the original territoryId is inserted as a filter.
-  // TODO 2015.05.04: This is not optimal. It seems better that the function receives the territoryID which is applied in case there is none.
-  // but for the moment being... we leave it as it is.
-  $.each(arrayTagsQuery, function(i, object) 
-  {
-    if(object.tipo=="lugar")
+    // If there is no territory filter, then the original territoryId is inserted as a filter.
+    // TODO 2015.05.04: This is not optimal. It seems better that the function receives the territoryID which is applied in case there is none.
+    // but for the moment being... we leave it as it is.
+    $.each(arrayTagsQuery, function (i, object)
     {
-      hayUnLugar=true;
-    }
-  });
-  if(!hayUnLugar)
-  {
-    var sugerencia = 
-    {
-      "texto": "", 
-      "tipo": "lugar",
-      "id": window.conf.idTerritorio
-    };
-    arrayTagsQuery.push(sugerencia);
-  }
-  
-
-  var filtros=JSON.stringify(arrayTagsQuery);
-  console.log(filtros);
-
-
-  $(".supergrupo").attr('id',"").remove();  //Para que no se inserten en esta les quitamos el ID
-  $(".agenda-segunda-linea").hide();
-  /*$(".supergrupo").fadeOut("1000",function()
-  {
-    $(this).remove();
-  });  */
-
-  var getAgenda = "getAgendaXML.php?";
-  $.getJSON(getAgenda, 
-  {
-    clase: window.listado.tipo,
-    date: "any",
-    filtros: filtros,
-    //idTerritorioOriginal: $.urlParam('idTerritorio'),
-    idTerritorioOriginal: window.conf.idTerritorio,
-    format: "json",
-    orden: window.listado.orden
-  })
-    .done(function(data) 
-    {
-      //Esperamos a que se hayan borrado los grupos (por si acaba antes) antes de clonar
-      //console.log(arrayTagsQuery);
-
-      //console.log(data);
-
-      window.listado=data;
-      
-      primeraLinea="";
-      conFiltros=":";
-      if(window.conf.arrayTags.length>0)
-        conFiltros=" que satisfacen los siguientes filtros de búsqueda:";
-      $("#cabecera-suggest").empty();
-      $(".input-busqueda").val('');
-          
-      switch(window.listado.tipo)
-      {
-        case "eventos":
-            if (window.conf.alrededores==1)
-                primeraLinea="Mostrando EVENTOS en <strong>"+data.lugarOriginal.nombre+" y alrededores</strong> en las próximas semanas"+conFiltros;      
-            else
-                primeraLinea="Mostrando EVENTOS en <strong>"+data.lugarOriginal.nombre+"</strong> en las próximas semanas"+conFiltros;
-         
-          if(jQuery.isEmptyObject(data.grupos)) {
-            primeraLinea+="<br><br><strong>Ningún evento.</strong>";
-          }
-          $(".input-busqueda").attr('placeholder', 'Filtrar eventos...');
-          break;
-        case "organizaciones":
-            if (window.conf.alrededores==1)
-                primeraLinea="Mostrando ENTIDADES en <strong>"+data.lugarOriginal.nombre+" y alrededores</strong> en las próximas semanas"+conFiltros;
-            else
-                primeraLinea="Mostrando ENTIDADES en <strong>"+data.lugarOriginal.nombre+"</strong> en las próximas semanas"+conFiltros;
-          if(jQuery.isEmptyObject(data.grupos)) {
-            primeraLinea+="<br><br><strong>Ninguna entidad.</strong>";
-            $(".div-avisos").hide();
-          }
-          $(".input-busqueda").attr('placeholder', 'Filtrar entidades...');
-          break;
-        case "procesos":          
-            if (window.conf.alrededores==1)
-                primeraLinea="Mostrando INICIATIVAS en <strong>"+data.lugarOriginal.nombre+" y alrededores</strong> en las próximas semanas"+conFiltros;
-            else                          
-          primeraLinea="Mostrando INICIATIVAS en <strong>"+data.lugarOriginal.nombre+"</strong> en las próximas semanas"+conFiltros;          
-          if(jQuery.isEmptyObject(data.grupos))
-          {
-            primeraLinea+="<br><br><strong>Ninguna iniciativa.</strong>";
-          }
-          $(".input-busqueda").attr('placeholder', 'Filtrar iniciativas...');
-          break;      
-        case "noticias":
-          break;
-      }
-      $(".agenda-primera-linea").html(primeraLinea);
-      
-
-      //console.log(data.grupos);
-
-      window.cantidadPorLugar = [];
-
-      if(!(typeof data.grupos === 'undefined'))
-      { 
-        $.each(data.grupos, function(nombreSuperGrupo,datosSuperGrupo)
+        if (object.tipo == "lugar")
         {
-          createSuperGroup(nombreSuperGrupo);
-          $.each(datosSuperGrupo, function(grupo,filas)
-          {
-            createGroup(grupo,filas.cabeceraIzq,filas.cabeceraCntr,filas.cabeceraDch,filas.totalFilas,nombreSuperGrupo);
-            $.each(filas.filas,function(i,item)
-            {
-              createLine(grupo,item,0,nombreSuperGrupo);
-              //console.log(item);
-              if(typeof window.cantidadPorLugar[item.idDistritoPadre] === 'undefined')
-                window.cantidadPorLugar[item.idDistritoPadre]=0;
-              window.cantidadPorLugar[item.idDistritoPadre]++;
-            });
-          });
-        });
-      }
+            hayUnLugar = true;
+        }
+    });
+    if (!hayUnLugar)
+    {
+        var sugerencia =
+                {
+                    "texto": "",
+                    "tipo": "lugar",
+                    "id": window.conf.idTerritorio
+                };
+        arrayTagsQuery.push(sugerencia);
+    }
 
-      if(data.isFollowing)
-      {
-        $("#boton-avisos").val("Dejar de recibir avisos");
-        window.conf.isFollowing=true;
-      }
-      else
-      {
-        $("#boton-avisos").val("Recibir avisos");        
-        window.conf.isFollowing=false;
-      }
-    $(".supergrupo").fadeIn(500);
-    // Show sort-by and register only in case ther was results
-    if (!jQuery.isEmptyObject(data.grupos))
-        $(".agenda-segunda-linea").fadeIn(500);
-    comprobarPlegadoFilas();
-    cargarMapa(window.conf.idTerritorio, window.conf.alrededores);
-    });  
+
+    var filtros = JSON.stringify(arrayTagsQuery);
+    console.log(filtros);
+
+
+    $(".supergrupo").attr('id', "").remove();  //Para que no se inserten en esta les quitamos el ID
+    $(".agenda-segunda-linea").hide();
+    /*$(".supergrupo").fadeOut("1000",function()
+     {
+     $(this).remove();
+     });  */
+
+    var getAgenda = "getAgendaXML.php?";
+    $.getJSON(getAgenda,
+            {
+                clase: window.listado.tipo,
+                date: "any",
+                filtros: filtros,
+                //idTerritorioOriginal: $.urlParam('idTerritorio'),
+                idTerritorioOriginal: window.conf.idTerritorio,
+                format: "json",
+                orden: window.listado.orden
+            })
+            .done(function (data)
+            {
+                //Esperamos a que se hayan borrado los grupos (por si acaba antes) antes de clonar
+                //console.log(arrayTagsQuery);
+
+                //console.log(data);
+
+                window.listado = data;
+
+                primeraLinea = "";
+                conFiltros = ":";
+                if (window.conf.arrayTags.length > 0)
+                    conFiltros = " que satisfacen los siguientes filtros de búsqueda:";
+                $("#cabecera-suggest").empty();
+                $(".input-busqueda").val('');
+
+                switch (window.listado.tipo)
+                {
+                    case "eventos":
+                        if (window.conf.alrededores == 1)
+                            primeraLinea = "Mostrando EVENTOS en <strong>" + data.lugarOriginal.nombre + " y alrededores</strong> en las próximas semanas" + conFiltros;
+                        else
+                            primeraLinea = "Mostrando EVENTOS en <strong>" + data.lugarOriginal.nombre + "</strong> en las próximas semanas" + conFiltros;
+
+                        if (jQuery.isEmptyObject(data.grupos)) {
+                            primeraLinea += "<br><br><strong>Ningún evento.</strong>";
+                        }
+                        $(".input-busqueda").attr('placeholder', 'Filtrar eventos...');
+                        break;
+                    case "organizaciones":
+                        if (window.conf.alrededores == 1)
+                            primeraLinea = "Mostrando ENTIDADES en <strong>" + data.lugarOriginal.nombre + " y alrededores</strong> en las próximas semanas" + conFiltros;
+                        else
+                            primeraLinea = "Mostrando ENTIDADES en <strong>" + data.lugarOriginal.nombre + "</strong> en las próximas semanas" + conFiltros;
+                        if (jQuery.isEmptyObject(data.grupos)) {
+                            primeraLinea += "<br><br><strong>Ninguna entidad.</strong>";
+                            $(".div-avisos").hide();
+                        }
+                        $(".input-busqueda").attr('placeholder', 'Filtrar entidades...');
+                        break;
+                    case "procesos":
+                        if (window.conf.alrededores == 1)
+                            primeraLinea = "Mostrando INICIATIVAS en <strong>" + data.lugarOriginal.nombre + " y alrededores</strong> en las próximas semanas" + conFiltros;
+                        else
+                            primeraLinea = "Mostrando INICIATIVAS en <strong>" + data.lugarOriginal.nombre + "</strong> en las próximas semanas" + conFiltros;
+                        if (jQuery.isEmptyObject(data.grupos))
+                        {
+                            primeraLinea += "<br><br><strong>Ninguna iniciativa.</strong>";
+                        }
+                        $(".input-busqueda").attr('placeholder', 'Filtrar iniciativas...');
+                        break;
+                    case "noticias":
+                        break;
+                }
+                $(".agenda-primera-linea").html(primeraLinea);
+
+
+                //console.log(data.grupos);
+
+                window.cantidadPorLugar = [];
+
+                if (!(typeof data.grupos === 'undefined'))
+                {
+                    $.each(data.grupos, function (nombreSuperGrupo, datosSuperGrupo)
+                    {
+                        createSuperGroup(nombreSuperGrupo);
+                        $.each(datosSuperGrupo, function (grupo, filas)
+                        {
+                            createGroup(grupo, filas.cabeceraIzq, filas.cabeceraCntr, filas.cabeceraDch, filas.totalFilas, nombreSuperGrupo);
+                            $.each(filas.filas, function (i, item)
+                            {
+                                createLine(grupo, item, 0, nombreSuperGrupo);
+                                //console.log(item);
+                                if (typeof window.cantidadPorLugar[item.idDistritoPadre] === 'undefined')
+                                    window.cantidadPorLugar[item.idDistritoPadre] = 0;
+                                window.cantidadPorLugar[item.idDistritoPadre]++;
+                            });
+                        });
+                    });
+                }
+
+                if (data.isFollowing)
+                {
+                    $("#boton-avisos").val("Dejar de recibir avisos");
+                    window.conf.isFollowing = true;
+                }
+                else
+                {
+                    $("#boton-avisos").val("Recibir avisos");
+                    window.conf.isFollowing = false;
+                }
+                $(".supergrupo").fadeIn(500);
+                // Show sort-by and register only in case ther was results
+                if (!jQuery.isEmptyObject(data.grupos))
+                    $(".agenda-segunda-linea").fadeIn(500);
+                comprobarPlegadoFilas();
+                cargarMapa(window.conf.idTerritorio, window.conf.alrededores);
+            });
 }
 
 /* 
----------------------------------------------------------------------------------------------
----------------------------------------Overlay Loading---------------------------------------
----------------------------------------------------------------------------------------------
-*/
+ ---------------------------------------------------------------------------------------------
+ ---------------------------------------Overlay Loading---------------------------------------
+ ---------------------------------------------------------------------------------------------
+ */
 
-function loadOverlay(url,peque)
+function loadOverlay(url, peque)
 {
-  if(peque)
-    $("#overlay").addClass("overlayPeque");
-  else
-    $("#overlay").removeClass("overlayPeque");
+    if (peque)
+        $("#overlay").addClass("overlayPeque");
+    else
+        $("#overlay").removeClass("overlayPeque");
 
-  $(".darkOverlay").fadeIn("fast");
-  $("#overlay").load(url);
+    $(".darkOverlay").fadeIn("fast");
+    $("#overlay").load(url);
 }
 
 function hideOverlay(url)
@@ -744,7 +745,7 @@ function subscribe()
     var params=JSON.stringify(arrayTagsQuery);
     if(window.isFollowing)
     {
-      $.post( "changeSubscriptionStatus.php", { params: params, clase: window.clase, action: 'unsubscribe' } )
+      $.post( "changeSubscriptionStatus.php", { params: params, clase: window.conf.clase, action: 'unsubscribe' } )
       .done(function(data){
         console.log(data);
       });
