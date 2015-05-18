@@ -500,7 +500,8 @@ function irATerritorio(activo,idTerritorio,alrededores,nombre)
    {             
         window.conf.idTerritorio = idTerritorio;                          
         window.conf.alrededores=alrededores;
-        cargarDatos();  
+        removeAllTags();
+        cargarDatos();       
     }
     else
     {
