@@ -11,7 +11,7 @@ foreach($eventos as $evento)
 {
 	//print_r($evento);
 	
-	$nivel9=getColindantes(-1,9,$evento["x"]-0.0001,$evento["x"]+0.0001,$evento["y"]-0.0001,$evento["y"]+0.0001);
+	$nivel9=getTerritoriosColindantes(-1,9,$evento["x"]-0.0001,$evento["x"]+0.0001,$evento["y"]-0.0001,$evento["y"]+0.0001);
 	$point = geoPHP::load("POINT ({$evento["x"]} {$evento["y"]})",'wkt');
 	unset($distritoPadre);
     foreach($nivel9 as $distrito)

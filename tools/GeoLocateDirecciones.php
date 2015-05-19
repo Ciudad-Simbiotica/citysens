@@ -2,6 +2,9 @@
 include "../db.php";
 error_reporting(E_ERROR);
 
+// script deactivated unless needed
+exit();
+
 // Script to get from Google GeoCode API the lat and lng of the directions of a city
 
 ini_set('default_charset', 'utf-8');
@@ -11,13 +14,13 @@ $direcciones=array();
 $link=connect();
 mysql_query("SET NAMES 'utf8'");
 $sql="SELECT * FROM lugares_shp WHERE id='$idCiudad'";
-$result=mysql_query($sql,$link);
-$area=mysql_fetch_assoc($result);
+$result=mysqli_query($link,$sql);
+$area=mysqli_fetch_assoc($result);
 $nombreCiudad=$area["nombre"];
     
 $sql="SELECT * FROM direcciones WHERE idCiudad='$idCiudad' AND lat='0'";
-$result=mysql_query($sql,$link);
-while($fila=mysql_fetch_assoc($result))
+$result=mysqli_query($link,$sql);
+while($fila=mysqli_fetch_assoc($result))
 {
 	array_push($direcciones,$fila);
 }
@@ -38,7 +41,7 @@ foreach($direcciones as $direccion)
         $queryStr = "UPDATE direcciones SET lat='$lat', lng='$lng' WHERE idDireccion='$idDireccion'";
         echo $queryStr, PHP_EOL;
 
-        mysql_query($queryStr);
+        mysqli_query($link,$queryStr);
     }    
 }
 
