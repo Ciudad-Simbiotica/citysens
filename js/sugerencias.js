@@ -34,11 +34,11 @@ function clickSuggestion(imagen,texto1,tipo,id) //Añadir id, texto buscado
     window.listado.tipo="eventos";
     if (!window.listado.orden)
         window.listado.orden="puntuacion";
-    window.listado.orden=$("#select_ordenar").val();
-    cargarDatos();
+    window.listado.orden=$("#select_ordenar").val();      
     $(this).fadeOut("fast",function(){
       $(this).parent().remove();
     });
+    cargarDatos();
   });
 
   //clone.find('.grupo-cabecera-cntr').html(center);
@@ -190,7 +190,8 @@ function suggestBusqueda(texto)
            window.conf.idTerritorio = value.id;
          //   cargarMapa(window.conf.idTerritorio);               
           // else          
-           window.listado.orden=$("#select_ordenar").val();          
+           window.listado.orden=$("#select_ordenar").val(); 
+           removeAllTags();
            cargarDatos();        
            // clickSuggestion(icono,value.texto1,value.tipo,value.id);
           }
