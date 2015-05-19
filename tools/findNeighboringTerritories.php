@@ -4,7 +4,7 @@ include_once('../vendor/phayes/geophp/geoPHP.inc');
 error_reporting(E_ERROR);
 
 // script deactivated unless needed
-exit();
+//exit();
 
 
 // This scripts determines neighbouring cities and neighbourhoods given cities/neighbourhoods.
@@ -27,12 +27,12 @@ $territorios=mysqli_query($link, $sql);
 
 foreach($territorios as $territorio) {
   
-  if (!isset($territorio["vecinos"])) {
+//  if (!isset($territorio["vecinos"])) {
       $idTerritorio=$territorio["id"];
       $nombreTerritorio=$territorio["nombre"];
       $poli_ciudad = geoPHP::load(file_get_contents("../shp/geoJSON/$nivel/$idTerritorio.geojson"),'json');	
 
-      $cercanos=getTerritoriosColindantes($idTerritorio,$nivel,$territorio["xmin"]-0.0001,$territorio["xmax"]+0.0001,$territorio["ymin"]-0.0001,$territorio["ymax"]+0.0001);
+      $cercanos=getTerritoriosColindantes($idTerritorio,$nivel,$territorio["xmin"]-0.002,$territorio["xmax"]+0.002,$territorio["ymin"]-0.002,$territorio["ymax"]+0.002);
 
 
 
@@ -45,7 +45,7 @@ foreach($territorios as $territorio) {
             $distance=$poli_ciudad->distance($poli_cercano);
 
 //            if ($distance<0.02) { // For cities (8), around 2km
-              if ($distance<0.002) { // For neighborhoods (10), around 200m
+              if ($distance<0.0025) { // For neighborhoods (10), around 350m
             
               array_push($vecinos,$idCercano);
             }
@@ -57,7 +57,7 @@ foreach($territorios as $territorio) {
         $vecinos=[];
       }
   }
-}
+//}
 
 
 /*
@@ -72,5 +72,5 @@ $combined_poly=$poly1->union($poly2);
 
 //file_put_contents($output,$combined_poly->out('json'));
 
-
+echo 'finish!';
 ?>

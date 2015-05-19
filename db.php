@@ -871,6 +871,24 @@ function getCoordenadasColindantes($type,$xmin,$xmax,$ymin,$ymax)
     return $fila;
 }
 
+// Returns max min coordinates from the surrounding territories of an idLugar. 
+function getCoordenadasVecinos($type,$vecinos)
+{
+    $link=connect();
+    //sanitize inputs
+    $type=safe($link, $type);
+    $vecinos=safe($link, $vecinos);
+
+
+    $sql="SELECT min(xmin) as xmin, max(xmax) as xmax, min(ymin) as ymin, max(ymax) as ymax FROM territorios WHERE
+            nivel='$type'
+            AND id IN ($vecinos)";
+
+    $result=mysqli_query($link, $sql);
+    $fila=mysqli_fetch_assoc($result);
+    return $fila;
+}
+
 // Returns max min coordinates of the centroids of the surrounding territories of an idLugar. 
 function getCoordenadasCentroidesColindantes($type,$xmin,$xmax,$ymin,$ymax)
 {
@@ -949,7 +967,7 @@ function getChildAreas($lugarOriginal,$nivel)
 }
 
 //Is this function used/needed?
-function getTerritorios($cadena,$territorioOriginal,$nivel,$cantidad=3,$inSet=array())
+function getLugares($cadena,$territorioOriginal,$nivel,$cantidad=3,$inSet=array())
 {
     //Sanitize inputs
     $link=connect();
@@ -1204,11 +1222,11 @@ function validarEvento($idEvento,$status)
 }
 
 // Gets the areas of level $type that are contained within the limits, excluding the central $lugarOriginal
-function getTerritoriosColindantes($lugarOriginal,$type,$xmin,$xmax,$ymin,$ymax)
+function getTerritoriosColindantes($territoriosExcluidos,$type,$xmin,$xmax,$ymin,$ymax)
 {
     $link=connect();
     //sanitize inputs
-    $lugarOriginal=safe($link, $lugarOriginal);
+    $territoriosExcluidos=safe($link, $territoriosExcluidos);
     $type=safe($link, $type);
     $xmin=safe($link, $xmin);
     $xmax=safe($link, $xmax);
@@ -1221,17 +1239,34 @@ function getTerritoriosColindantes($lugarOriginal,$type,$xmin,$xmax,$ymin,$ymax)
             NOT(xmin > $xmax
             OR $xmin >  xmax
             OR  ymax < $ymin
-            OR $ymax < ymin)";
+            OR $ymax < ymin)
+            AND id NOT IN ($territoriosExcluidos)";
 
     mysqli_query($link, 'SET CHARACTER SET utf8');
     $result=mysqli_query($link, $sql);
     $returnData=array();
-    while($fila=mysqli_fetch_assoc($result))
-        // the original territory is excluded
-        if($fila["id"]!=$lugarOriginal)
-        {
-            array_push($returnData,$fila);
-        }
+    while($fila=mysqli_fetch_assoc($result)) {
+      array_push($returnData,$fila);
+    }
+    return $returnData;
+}
+
+// Gets the territories in $territorios (either a territoryID or a comma separated collection of territoryIDs
+function getTerritorios($territorios)
+{
+    $link=connect();
+    //sanitize inputs
+    $territorios=safe($link, $territorios);
+
+    $sql="SELECT * FROM territorios WHERE
+            id IN ($territorios)";
+
+    mysqli_query($link, 'SET CHARACTER SET utf8');
+    $result=mysqli_query($link, $sql);
+    $returnData=array();
+    while($fila=mysqli_fetch_assoc($result)) {
+      array_push($returnData,$fila);
+    }
     return $returnData;
 }
 

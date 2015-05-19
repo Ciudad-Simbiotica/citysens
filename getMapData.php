@@ -21,20 +21,21 @@
     if ($respuesta["nivel"]==10 ||($_GET["alrededores"]==1 && $respuesta["nivel"]==8)) 
     {
       //$coordenadasColindantes=getCoordenadasColindantes($respuesta["nivel"],$respuesta["xmin"],$respuesta["xmax"],$respuesta["ymin"],$respuesta["ymax"]); 
-      $coordenadasColindantes=getCoordenadasCentroidesColindantes($respuesta["nivel"],$respuesta["xmin"],$respuesta["xmax"],$respuesta["ymin"],$respuesta["ymax"]);
-      
+      //$coordenadasColindantes=getCoordenadasCentroidesColindantes($respuesta["nivel"],$respuesta["xmin"],$respuesta["xmax"],$respuesta["ymin"],$respuesta["ymax"]);
+      $coordenadasColindantes=getCoordenadasVecinos($respuesta["nivel"],$respuesta["vecinos"]);      
+
       // In case of cities having a very big neighbour, coordinates are too wide and territory loses central position. Check for it and correct, using a 0,05 margin 
-      if ($respuesta["nivel"]==8)
-      {
-        if ($coordenadasColindantes["xmax"]>$respuesta["xmax"]+0.05)
-          $coordenadasColindantes["xmax"]=$respuesta["xmax"]+0.05;
-        if ($coordenadasColindantes["ymax"]>$respuesta["ymax"]+0.05)
-          $coordenadasColindantes["ymax"]=$respuesta["ymax"]+0.05;
-        if ($coordenadasColindantes["xmin"]<$respuesta["xmin"]-0.05)
-          $coordenadasColindantes["xmin"]=$respuesta["xmin"]-0.05;
-        if ($coordenadasColindantes["ymin"]<$respuesta["ymin"]-0.05)
-          $coordenadasColindantes["ymin"]=$respuesta["ymin"]-0.05;  
-      }
+//      if ($respuesta["nivel"]==8)
+//      {
+//        if ($coordenadasColindantes["xmax"]>$respuesta["xmax"]+0.05)
+//          $coordenadasColindantes["xmax"]=$respuesta["xmax"]+0.05;
+//        if ($coordenadasColindantes["ymax"]>$respuesta["ymax"]+0.05)
+//          $coordenadasColindantes["ymax"]=$respuesta["ymax"]+0.05;
+//        if ($coordenadasColindantes["xmin"]<$respuesta["xmin"]-0.05)
+//          $coordenadasColindantes["xmin"]=$respuesta["xmin"]-0.05;
+//        if ($coordenadasColindantes["ymin"]<$respuesta["ymin"]-0.05)
+//          $coordenadasColindantes["ymin"]=$respuesta["ymin"]-0.05;  
+//      }
       
       // Coordinates of centroids are not satisfactory for a peripheric territory, as they get cut. Check for it and correct.
       $respuesta["xmax"]=($respuesta["xmax"]>$coordenadasColindantes["xmax"]?$respuesta["xmax"]:$coordenadasColindantes["xmax"]);

@@ -318,8 +318,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
             {
             window.poligonos = [];
             breadcrumbs_dropdown="";
-            $.each(data, function(i,datos)
-                {
+            $.each(data, function(i,datos) {
                 window.poligonos[datos.id]=datos.nombre;
                 // For level city and neighborhood, the special navigation (extra parameter in URL) is activated
                 if(nivelHijos==10 || nivelHijos==8)
@@ -332,7 +331,8 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                     addPolygonToMap(datos.id,0,"shp/geoJSON/"+nivelHijos+"/"+datos.id+".geojson",datos.nombre,'#ffaaaa',datos.activo);
                     breadcrumbs_dropdown+='<li onclick="irATerritorio('+datos.activo+','+datos.id+',0,\''+datos.nombre+'\')">'+datos.nombre+'</li>';
                 }
-                if(response.nivel>7) {
+                
+                if(nivelMostrado>7) { // If the territory is of level city or lower, there are counters, and a switcher is needed
                     if(typeof window.cantidadPorLugar[datos.id] === 'undefined')
                         cantidad='0';
                     else
@@ -340,57 +340,54 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                     new L.Marker([datos.ycentroid,datos.xcentroid], 
                         {
                         icon: new L.NumberedDivIcon({number: cantidad})
-                        }).addTo(map);
-                    }
-    if (nivelMostrado > 7) // If the territory is of level city or lower, there are counters, and a switcher is needed
-    {     
-        if (window.listado.grupos) 
-        {
-            if (window.conf.palanca==0|window.conf.palanca==undefined)
-            {
-                var htmlshowpointers = '<button><i class="fa fa-toggle-off"></i></button>';     
-            }
-            else 
-            {
-                var htmlshowpointers = '<button><i class="fa fa-toggle-on"></i></button>';
-                $(".leaflet-div-icon").fadeIn("fast", "linear");            
-            }
-            $("#circle-button").html(htmlshowpointers);
-            $("#circle-button button").click(function () { 
-                    if (window.conf.palanca==0|window.conf.palanca==undefined)
+                        }).addTo(map);   
+                    if (window.listado.grupos) 
                     {
-                        $(this).find('i').toggleClass('fa-toggle-on fa-toggle-off');
-                        $(".leaflet-div-icon").fadeToggle("fast", "linear");
-                        window.conf.palanca=1;
-                    }
-                    else
-                    {
-                        $(this).find('i').toggleClass('fa-toggle-off fa-toggle-on');
-                        $(".leaflet-div-icon").fadeToggle("fast", "linear");
-                        window.conf.palanca=0;
-                    }
-                }
-            );
-            $("#circle-button").on("mouseover", function (e)
-            {
-                $(".map-footer").html("mostrar / ocultar eventos");
+                        if (window.conf.palanca==0|window.conf.palanca==undefined)
+                        {
+                            var htmlshowpointers = '<button><i class="fa fa-toggle-off"></i></button>';     
+                        }
+                        else 
+                        {
+                            var htmlshowpointers = '<button><i class="fa fa-toggle-on"></i></button>';
+                            $(".leaflet-div-icon").fadeIn("fast", "linear");            
+                        }
+                        $("#circle-button").html(htmlshowpointers);
+                        $("#circle-button button").click(function () { 
+                                if (window.conf.palanca==0|window.conf.palanca==undefined)
+                                {
+                                    $(this).find('i').toggleClass('fa-toggle-on fa-toggle-off');
+                                    $(".leaflet-div-icon").fadeToggle("fast", "linear");
+                                    window.conf.palanca=1;
+                                }
+                                else
+                                {
+                                    $(this).find('i').toggleClass('fa-toggle-off fa-toggle-on');
+                                    $(".leaflet-div-icon").fadeToggle("fast", "linear");
+                                    window.conf.palanca=0;
+                                }
+                            }
+                        );
+                        $("#circle-button").on("mouseover", function (e)
+                        {
+                            $(".map-footer").html("mostrar / ocultar eventos");
+                        });
+                        $("#circle-button").on('mouseout', function (e)
+                        {
+                            $(".map-footer").html(window.conf.nombre);
+                        });
+                    }     
+                }    
             });
-            $("#circle-button").on('mouseout', function (e)
-            {
-                $(".map-footer").html(window.conf.nombre);
+            $("#listabreadcrumbs").html(breadcrumbs_dropdown);
+            $("#hijos").hover(function() {
+                    $('#listabreadcrumbs').fadeIn(); //muestro mediante id	
+             },
+            function(){
+                    $('#listabreadcrumbs').fadeOut(); //oculto mediante id		
             });
-        }     
-    }    
-                });
-                $("#listabreadcrumbs").html(breadcrumbs_dropdown);
-                $("#hijos").hover(function() {
-			$('#listabreadcrumbs').fadeIn(); //muestro mediante id	
-		 },
-		function(){
-			$('#listabreadcrumbs').fadeOut(); //oculto mediante id		
-		});
-                
-            });
+
+        });
     }
 
     if (nivelMostrado!=10 && !(alrededores==1&&nivelMostrado==8)) //Navegación normal (no municipio + o barrios)
@@ -404,7 +401,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
             xmax:fittedXMax,
             ymin:fittedYMin,
             ymax:fittedYMax,
-            lugarOriginal:conf.idTerritorioMostrado,
+            territoriosExcluidos:conf.idTerritorioMostrado,
             })
             .done(function(data) 
                 {
@@ -424,7 +421,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                 xmax:fittedXMax,
                 ymin:fittedYMin,
                 ymax:fittedYMax,
-                lugarOriginal:response.idPadre,
+                territoriosExcluidos:response.idPadre,
                 })
                 .done(function(data) 
                     {
@@ -437,7 +434,21 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
     }
     else 
     {
-        // For level 10 (neighbourhood), and 8 (city) with "alrededores" there is a special behaviour. We show all, brothers, cousins, etc.
+        // For level 10 (neighbourhood), and 8 (city) with "alrededores" there is a special behaviour. Vecinos are shown in a different colour.
+        
+        $.getJSON("getTerritorios.php",
+            {
+            dataType: 'json',
+            territorios:response["vecinos"],
+            })
+            .done(function(data) 
+                {
+                $.each(data, function(i,datos)
+                    {
+                        addPolygonToMap(datos.id,1,"shp/geoJSON/"+nivelMostrado+"/"+datos.id+".geojson",datos.nombre,'#FFE4C5',datos.activo);
+                    });
+                });
+                
         $.getJSON("getTerritoriosColindantes.php",
             {
             dataType: 'json',
@@ -446,7 +457,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
             xmax:fittedXMax,
             ymin:fittedYMin,
             ymax:fittedYMax,
-            lugarOriginal:conf.idTerritorioMostrado,
+            territoriosExcluidos:response["vecinos"]+','+conf.idTerritorioMostrado,
             })
             .done(function(data) 
                 {
