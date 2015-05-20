@@ -225,7 +225,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
       //Breadcrumbs
     var breadcrumbs="";
     var lastAncestor="", lastAncestorName=""; //Debe guardar el último ancestro para el botón de ir a nivel superior
-    var last= response.breadcrumbs[response.breadcrumbs.length-1];
+    var last= response.breadcrumbs.length-1;
     $.each(response.breadcrumbs, function(i,lugar)   
     {
        // $(".map-breadcrumbs > a:nth-child(2)")on.click(irATerritorio(activo,idTerritorio,texto,alrededores));

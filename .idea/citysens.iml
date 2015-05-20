@@ -5,16 +5,15 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
-      <library name="PHARS">
+      <library name="PHP">
         <CLASSES>
-          <root url="phar://$MODULE_DIR$/composer.phar" />
-          <root url="phar://$MODULE_DIR$/tools/toolsJesus/composer.phar" />
+          <root url="file:///Applications/MAMP/bin/php/php5.5.10/lib/php" />
         </CLASSES>
         <SOURCES>
-          <root url="phar://$MODULE_DIR$/composer.phar" />
-          <root url="phar://$MODULE_DIR$/tools/toolsJesus/composer.phar" />
+          <root url="file:///Applications/MAMP/bin/php/php5.5.10/lib/php" />
         </SOURCES>
       </library>
     </orderEntry>
   </component>
 </module>
+

@@ -170,7 +170,6 @@ function suggestBusqueda(texto)
       $("#cabecera-suggest").find(".cabecera-suggest-fila:last").click(function()
       {
           clickSuggestion("css/icons/lupa.png",texto,'busqueda',0);
-     $("#input-busqueda").val('');
       });
     var i=1;
     $.each(data.suggestions, function(key, value)
@@ -254,10 +253,6 @@ function suggestBusqueda(texto)
     //for default select cabecera-suggest-fila:first
             $("#cabecera-suggest").find(".cabecera-suggest-fila:first").addClass("cabecera-suggest-fila-selected");
             window.conf.selectedSuggestion=1;
-            if ($(".input-busqueda").val()==''){
-                $(".input-busqueda").val('');
-                $("#cabecera-suggest").empty();
-            }
   });
 
 
