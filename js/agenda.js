@@ -1047,9 +1047,7 @@ $('#input-busqueda').bind('keyup',function(event)
         break;
     default:
         suggestBusqueda($(this).val());
-        nextSuggestion();
-        nextSuggestion();
-        
+               
   }
 });
 
