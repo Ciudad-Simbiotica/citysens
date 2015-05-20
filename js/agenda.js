@@ -668,6 +668,7 @@ function cargarDatos()
                     $(".agenda-segunda-linea").fadeIn(500);
                 comprobarPlegadoFilas();
                 cargarMapa(window.conf.idTerritorio, window.conf.alrededores);
+                scroll(0,0); //Nos posicionamos en la parte superior de la web.
             });
 }
 

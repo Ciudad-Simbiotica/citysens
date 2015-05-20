@@ -74,9 +74,10 @@ if($_GET["entidades"]=="")	//Sólo las mostramos si NO estamos en página de ent
 		//print_r($entidad);
 		$sugestion["tipo"]=$entidad["tipoEntidad"];
 		//$sugestion["texto1"]=htmlentities(ucwords(strtolower(substr($entidad["entidad"],0,50))));
-                $sugestion["texto1"]=htmlentities($entidad["entidad"]);
-		$sugestion["texto2"]=htmlentities("Distrito ".$entidad["distrito"]);
-                 $sugestion["textoBuscado"]=htmlentities($_GET["query"]);//for bold hint string
+                $sugestion["texto1"]=htmlentities($entidad["entidad"]);         
+                $sugestion["abrev"]=htmlentities(rtrim(substr($entidad["entidad"],0,27))."...");
+		$sugestion["texto2"]=htmlentities($entidad["nombre"]);
+                $sugestion["textoBuscado"]=htmlentities($_GET["query"]);//for bold hint string
 		$sugestion["id"]=$entidad["idEntidad"];
 		array_push($sugestions,$sugestion);
 	}

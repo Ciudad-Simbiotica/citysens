@@ -256,11 +256,16 @@ function getEntidadesZonaConEventos($cadena,$idTerritorio,$cantidad=10)
   $idTerritorio=safe($link, $idTerritorio);
   $nivel=getNivelTerritorio($idTerritorio);
 
-    $sql="SELECT *
+  mysqli_query($link, 'SET CHARACTER SET utf8');
+    $sql="SELECT entidades.tipoEntidad, entidades.entidad, entidades.idEntidad, territorios.nombre
             FROM entidades 
-            JOIN eventos ON entidades.idEntidad=eventos.idEntidad
-            JOIN direcciones ON eventos.idDireccion=direcciones.idDireccion
-            WHERE entidad LIKE '%$cadena%'";
+            JOIN eventos
+              ON entidades.idEntidad=eventos.idEntidad
+            JOIN direcciones 
+              ON entidades.idDireccion=direcciones.idDireccion
+            JOIN territorios
+              ON direcciones.idCiudad=territorios.id             
+           WHERE entidad LIKE '%$cadena%'";
 
     if ($nivel<8) // Levels above city, searches will be done on a city-basis
     {    
@@ -269,7 +274,7 @@ function getEntidadesZonaConEventos($cadena,$idTerritorio,$cantidad=10)
     }
     else // Map under city, seaches done on a district neighborhood-basis
     {
-        $hijos=getAllChildren($idTerritorio,9);
+        $hijos=getChildren($idTerritorio,9);
         $sql.=" AND direcciones.idSubCiudad IN ('".join($hijos,"','")."')";
     }
 
@@ -649,6 +654,15 @@ function getEventosPorValidar()
     }
     return $returnData;
 }
+
+
+function getChildren ($idTerritorio, $nivelBase=5)
+{
+    $territorios=array();
+    array_push($territorios,$idTerritorio);
+    return getAllChildren ($territorios,$nivelBase);
+}
+
 
 // Returns all descendants of a list of territories, with levels from 5 to 10
 // $nivelBase initialised to 5 (country) by default, to cover all territories.

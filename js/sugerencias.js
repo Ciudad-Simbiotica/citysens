@@ -5,7 +5,7 @@ $.urlParam = function(name){
 }
 
 
-function clickSuggestion(imagen,texto1,tipo,id) //Añadir id, texto buscado
+function clickSuggestion(imagen,texto1,tipo,id,abrev) //Añadir id, texto buscado
 {
   $("#cabecera-suggest").empty();
   console.log("Clic Sugerencia: "+imagen+"/"+texto1+"/"+tipo);
@@ -13,7 +13,8 @@ function clickSuggestion(imagen,texto1,tipo,id) //Añadir id, texto buscado
   var clone=$("#tagFiltroTemplate").clone();
   clone.hide();
   clone.attr("id",texto1);
-
+  if (texto1.length>27)
+  texto1=abrev;
   clone.find('.tagFiltro-texto').html(texto1);
   clone.find('.tagFiltro-imagen').css('background-image', "url("+imagen+")");
 
@@ -241,7 +242,7 @@ function suggestBusqueda(texto)
             else if(value.tipo=="busqueda")
               icono="css/icons/lupa.png";
 
-            clickSuggestion(icono,value.texto1,value.tipo,value.id);
+            clickSuggestion(icono,value.texto1,value.tipo,value.id,value.abrev);
         });
       }
       i++;

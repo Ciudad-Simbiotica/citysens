@@ -369,11 +369,11 @@ html,body
 .agenda-filtros-busqueda,.agenda-filtros-tematica,.agenda-filtros-lugar,.agenda-filtros-entidad
 {
 	float:left;
-	/*display: inline-block;*/
+	display: inline;
 	width: 50%;
 	height: auto;
 	overflow: hidden;
-	vertical-align: top;
+	vertical-align: top;      
 }
 
 .tagFiltro
@@ -390,7 +390,7 @@ html,body
 	margin-right: 5px; 
 	margin-bottom:5px;
 	font-family: helvetica;  
-	font-size:16px;
+	font-size:16px;     
 }
 
 .tagFiltro-busqueda
@@ -429,7 +429,7 @@ html,body
 	opacity:0.5;
 	background-size: contain;
 	background-repeat: no-repeat;
-    background-position: center;
+        background-position: center;
 	background-image: url("icons/Event-Unique.64.png");	
 	margin-right: 4px;
 }
@@ -438,6 +438,7 @@ html,body
 	float:left;
 	margin-top: 1px;
 	margin-right: 4px;
+        text-overflow:clip;
 }
 .tagFiltro-x
 {

@@ -139,6 +139,7 @@
 	margin-left: 225px;
 	margin-top: 46px;
 	box-shadow:0 2px 3px 0px #aaa, 2px 0px 3px 0px #aaa, -2px 0px 3px 0px #aaa ;
+        overflow:hidden;
 }
 
 
@@ -174,12 +175,19 @@
 	position:relative;
 	left:40px;
 	top:5px;
+        width:435px; /*TODO OJO, NO RESPONSIVE*/
+        overflow: hidden;
+	white-space: nowrap;
+        text-overflow: ellipsis;
 }
 .cabecera-suggest-texto1-sinTexto2
 {
 	position:relative;
 	left:40px;
 	top:10px;
+        overflow: hidden;
+	white-space: nowrap;
+        text-overflow: ellipsis;
 }
 
 
