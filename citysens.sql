@@ -1,14 +1,20 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.10
+-- version 4.0.10deb1
 -- http://www.phpmyadmin.net
 --
--- Servidor: localhost:8889
--- Tiempo de generación: 19-05-2015 a las 10:27:23
--- Versión del servidor: 5.5.38
--- Versión de PHP: 5.5.18
+-- Servidor: localhost:3306
+-- Tiempo de generación: 20-05-2015 a las 10:45:19
+-- Versión del servidor: 5.5.43-0ubuntu0.14.04.1
+-- Versión de PHP: 5.5.24-1+deb.sury.org~trusty+1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Base de datos: `citysens`
@@ -56,12 +62,14 @@ DELIMITER ;
 --
 
 DROP TABLE IF EXISTS `avisoslistados`;
-CREATE TABLE `avisoslistados` (
-`idAvisoListado` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `avisoslistados` (
+  `idAvisoListado` int(11) NOT NULL AUTO_INCREMENT,
   `idUser` int(11) NOT NULL,
   `query` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `clase` varchar(20) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `clase` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`idAvisoListado`),
+  UNIQUE KEY `idUser` (`idUser`,`query`,`clase`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=40 ;
 
 --
 -- Volcado de datos para la tabla `avisoslistados`
@@ -79,7 +87,7 @@ INSERT INTO `avisoslistados` (`idAvisoListado`, `idUser`, `query`, `clase`) VALU
 --
 
 DROP TABLE IF EXISTS `direcciones`;
-CREATE TABLE `direcciones` (
+CREATE TABLE IF NOT EXISTS `direcciones` (
   `idDireccion` int(11) NOT NULL,
   `idCiudad` int(11) NOT NULL COMMENT 'Id of the territory of level 8 (city) the place is located in.',
   `idSubCiudad` int(11) DEFAULT NULL COMMENT 'id of the lowest possible territory within the city (8, 9 or 10, city, district or neighborhood) the place is located in.',
@@ -90,7 +98,10 @@ CREATE TABLE `direcciones` (
   `lat` float NOT NULL,
   `lng` float NOT NULL,
   `zoom` int(11) NOT NULL,
-  `direccionActiva` tinyint(1) NOT NULL
+  `direccionActiva` tinyint(1) NOT NULL,
+  PRIMARY KEY (`idDireccion`),
+  KEY `idCiudad` (`idCiudad`),
+  KEY `idPadre` (`idSubCiudad`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='This table refers to lugares/places, not just direcciones';
 
 --
@@ -135,7 +146,7 @@ INSERT INTO `direcciones` (`idDireccion`, `idCiudad`, `idSubCiudad`, `nombre`, `
 (71, 801280005, 1001280050, 'Casa de la Juventud', 'Plaza de la Juventud, s/n', 'Salón de Actos', '', 40.482, -3.35385, 17, 1),
 (73, 801280005, 1001280052, 'Local para el desarrollo humano', 'C/ Lope de Figueroa, 7', '', '', 40.4831, -3.35469, 16, 1),
 (74, 801280005, 1001280021, 'Federación Comarcal de Asociación de Vecinos de Alcalá de Henares', 'C/ Eduardo Pascual y Cuéllar, 10', '', '', 40.489, -3.36845, 15, 1),
-(76, 801280078, NULL, 'Centro de Artesanía de Alcalá', 'Ctra. Alcalá-Arganda, Km. 2.200', '', '', 40.4342, -3.67112, 12, 1),
+(76, 801280165, NULL, 'Centro de Artesanía de Alcalá', 'Ctra. Alcalá-Arganda, Km. 2.200', '', '', 40.4342, -3.67112, 12, 1),
 (80, 801280005, 1001280013, 'Asociación de Vecinos Azaña', 'C/ Entrepeñas, 4', '', '', 40.4697, -3.36387, 15, 1),
 (81, 801280005, 1001280002, 'Asociación de Vecions Cervantes', 'C/ Diego López de Zúñíga, 26, trasera', '', '', 40.482, -3.36354, 15, 1),
 (82, 801280005, 1001280002, 'Consejo de Estudiantes UAH', 'Callejón de Santa Maria, s/n', '', '', 40.4817, -3.3633, 15, 1),
@@ -699,8 +710,8 @@ INSERT INTO `direcciones` (`idDireccion`, `idCiudad`, `idSubCiudad`, `nombre`, `
 --
 
 DROP TABLE IF EXISTS `entidades`;
-CREATE TABLE `entidades` (
-`idEntidad` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `entidades` (
+  `idEntidad` int(11) NOT NULL AUTO_INCREMENT,
   `entidad` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `siglas` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tipo` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -719,8 +730,11 @@ CREATE TABLE `entidades` (
   `etiquetas` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `descBreve` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `texto` text COLLATE utf8_unicode_ci NOT NULL,
-  `idDireccion` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=554 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `idDireccion` int(11) NOT NULL,
+  PRIMARY KEY (`idEntidad`),
+  KEY `entidad` (`entidad`),
+  KEY `idDireccion` (`idDireccion`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=554 ;
 
 --
 -- Volcado de datos para la tabla `entidades`
@@ -1282,11 +1296,14 @@ INSERT INTO `entidades` (`idEntidad`, `entidad`, `siglas`, `tipo`, `domicilio`, 
 --
 
 DROP TABLE IF EXISTS `entidades_tematicas`;
-CREATE TABLE `entidades_tematicas` (
-`idEntidadTematica` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `entidades_tematicas` (
+  `idEntidadTematica` int(11) NOT NULL AUTO_INCREMENT,
   `idEntidad` int(11) NOT NULL,
-  `idTematica` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=1687 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `idTematica` int(11) NOT NULL,
+  PRIMARY KEY (`idEntidadTematica`),
+  KEY `idEntidad` (`idEntidad`),
+  KEY `idTematica` (`idTematica`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1687 ;
 
 --
 -- Volcado de datos para la tabla `entidades_tematicas`
@@ -2987,8 +3004,8 @@ INSERT INTO `entidades_tematicas` (`idEntidadTematica`, `idEntidad`, `idTematica
 --
 
 DROP TABLE IF EXISTS `eventos`;
-CREATE TABLE `eventos` (
-`idEvento` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `eventos` (
+  `idEvento` int(11) NOT NULL AUTO_INCREMENT,
   `fecha` datetime NOT NULL,
   `fechaFin` datetime DEFAULT NULL,
   `clase` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'So far, only class "evento". What else?',
@@ -3007,8 +3024,11 @@ CREATE TABLE `eventos` (
   `email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `etiquetas` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `repeatsAfter` int(11) NOT NULL,
-  `eventoActivo` tinyint(1) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=1850 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `eventoActivo` tinyint(1) NOT NULL,
+  PRIMARY KEY (`idEvento`),
+  KEY `titulo` (`titulo`),
+  KEY `idDistritoPadre` (`idDistritoPadre`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1850 ;
 
 --
 -- Volcado de datos para la tabla `eventos`
@@ -3016,7 +3036,7 @@ CREATE TABLE `eventos` (
 
 INSERT INTO `eventos` (`idEvento`, `fecha`, `fechaFin`, `clase`, `tipo`, `titulo`, `texto`, `lugar`, `temperatura`, `x`, `y`, `idDistritoPadre`, `idEntidad`, `idTematica`, `idDireccion`, `url`, `email`, `etiquetas`, `repeatsAfter`, `eventoActivo`) VALUES
 (667, '2014-05-27 20:00:00', NULL, 'eventos', 'convocatoria', 'Bicicrítica Torrejón ¡Usa la bici todos los días, celébralo una vez al mes!', 'Bicicrítica Torrejón ¡Usa la bici todos los días, celébralo una vez al mes!', 'Torrejón de Ardoz', 1, -3.47981, 40.4589, 999000206, 31, 179, 266, NULL, NULL, '', 0, 1),
-(737, '2014-05-25 09:00:00', NULL, 'eventos', 'convocatoria', 'Elecciones al Parlamento Europeo', 'Elecciones al Parlamento Europeo', 'Alcalá de Henares', 3, -3.35946, 40.478, 901280005, 241, 35, 901, NULL, NULL, '', 0, 1),
+(737, '2014-05-25 09:00:00', NULL, 'eventos', 'convocatoria', 'Elecciones al Parlamento Europeo', 'Elecciones al Parlamento Europeo', 'Villalbilla', 3, -3.35946, 40.478, 901280005, 241, 35, 76, NULL, NULL, '', 0, 1),
 (886, '2014-05-16 16:30:00', NULL, 'eventos', 'recurrente', 'Lactancia Reunión Grupo Lactard', 'Lactancia Reunión Grupo Lactard', 'Torres, CM', 4, -3.3637, 40.4066, 999000213, 8, 203, 41, NULL, NULL, '', 21, 1),
 (887, '2014-05-23 16:30:00', NULL, 'eventos', 'recurrente', 'Lactancia Reunión Grupo Lactard', 'Lactancia Reunión Grupo Lactard', 'Torres, CM', 3, -3.3637, 40.4066, 999000213, 420, 166, 41, NULL, NULL, '', 19, 1),
 (888, '2014-05-30 16:30:00', NULL, 'eventos', 'convocatoria', 'Lactancia Reunión Grupo Lactard', 'Lactancia Reunión Grupo Lactard', 'Torres, CM', 2, -3.3637, 40.4066, 999000213, 416, 50, 41, NULL, NULL, '', 0, 1),
@@ -3080,11 +3100,14 @@ INSERT INTO `eventos` (`idEvento`, `fecha`, `fechaFin`, `clase`, `tipo`, `titulo
 --
 
 DROP TABLE IF EXISTS `eventos_tematicas`;
-CREATE TABLE `eventos_tematicas` (
-`idEventoTematica` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `eventos_tematicas` (
+  `idEventoTematica` int(11) NOT NULL AUTO_INCREMENT,
   `idEvento` int(11) NOT NULL,
-  `idTematica` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=164 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `idTematica` int(11) NOT NULL,
+  PRIMARY KEY (`idEventoTematica`),
+  KEY `idEntidad` (`idEvento`),
+  KEY `idTematica` (`idTematica`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=164 ;
 
 --
 -- Volcado de datos para la tabla `eventos_tematicas`
@@ -3260,12 +3283,13 @@ INSERT INTO `eventos_tematicas` (`idEventoTematica`, `idEvento`, `idTematica`) V
 --
 
 DROP TABLE IF EXISTS `preregister`;
-CREATE TABLE `preregister` (
-`idPreregister` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `preregister` (
+  `idPreregister` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `idCiudad` int(11) NOT NULL,
-  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idPreregister`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
 
 --
 -- Volcado de datos para la tabla `preregister`
@@ -3285,10 +3309,12 @@ INSERT INTO `preregister` (`idPreregister`, `email`, `idCiudad`, `fecha`) VALUES
 --
 
 DROP TABLE IF EXISTS `tematicas`;
-CREATE TABLE `tematicas` (
-`idTematica` int(11) NOT NULL,
-  `tematica` varchar(255) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE IF NOT EXISTS `tematicas` (
+  `idTematica` int(11) NOT NULL AUTO_INCREMENT,
+  `tematica` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`idTematica`),
+  KEY `tematica` (`tematica`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=31 ;
 
 --
 -- Volcado de datos para la tabla `tematicas`
@@ -3333,7 +3359,7 @@ INSERT INTO `tematicas` (`idTematica`, `tematica`) VALUES
 --
 
 DROP TABLE IF EXISTS `territorios`;
-CREATE TABLE `territorios` (
+CREATE TABLE IF NOT EXISTS `territorios` (
   `id` int(11) unsigned NOT NULL,
   `idPadre` int(11) unsigned DEFAULT NULL,
   `idDescendiente` int(11) unsigned DEFAULT NULL COMMENT 'Id of the only child , 0 if no child, NULL otherwise',
@@ -3350,7 +3376,9 @@ CREATE TABLE `territorios` (
   `ycentroid` float DEFAULT NULL,
   `nombreCorto` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `activo` tinyint(1) NOT NULL DEFAULT '0',
-  `vecinos` varchar(350) COLLATE utf8_unicode_ci DEFAULT NULL
+  `vecinos` varchar(350) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `nivel` (`nivel`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -3362,17 +3390,17 @@ INSERT INTO `territorios` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nive
 (501000001, 401000034, 2, '01', 5, 'Andalucía', '01', NULL, -7.52288, 35.9376, -1.63012, 38.7291, -4.57561, 37.4633, 'AN', 1, NULL),
 (501000002, 401000034, 2, '02', 5, 'Aragón', '02', NULL, -2.17367, 39.8468, 0.771307, 42.9245, -0.660474, 41.5206, 'AR', 1, NULL),
 (501000003, 401000034, 601030033, '03', 5, 'Principado de Asturias', '03', NULL, -7.18249, 42.8825, -4.51059, 43.6665, -5.99364, 43.2924, 'AS', 1, NULL),
-(501000004, 401000034, 601040007, '04', 5, 'Illes Balears', '04', NULL, 1.15724, 38.6404, 4.32778, 40.0946, NULL, NULL, 'IB', 1, NULL),
-(501000005, 401000034, 2, '05', 5, 'Canarias', '05', NULL, -18.1613, 27.6378, -13.3336, 29.4165, NULL, NULL, 'CN', 1, NULL),
+(501000004, 401000034, 601040007, '04', 5, 'Illes Balears', '04', NULL, 1.15724, 38.6404, 4.32778, 40.0946, 2.91243, 39.5741, 'IB', 1, NULL),
+(501000005, 401000034, 2, '05', 5, 'Canarias', '05', NULL, -18.1613, 27.6378, -13.3336, 29.4165, -15.6682, 28.3413, 'CN', 1, NULL),
 (501000006, 401000034, 601060039, '06', 5, 'Cantabria', '06', NULL, -4.85178, 42.758, -3.14963, 43.5137, -4.0296, 43.1968, 'CB', 1, NULL),
 (501000007, 401000034, 2, '07', 5, 'Castilla y León', '07', NULL, -7.07705, 40.0825, -1.77537, 43.2386, -4.78176, 41.7541, 'CL', 1, NULL),
 (501000008, 401000034, 2, '08', 5, 'Castilla-La Mancha', '08', NULL, -5.40618, 38.0224, -0.915793, 41.3276, -3.00462, 39.581, 'CM', 1, NULL),
-(501000009, 401000034, 2, '09', 5, 'Cataluña/Catalunya', '09', NULL, 0.159181, 40.523, 3.33255, 42.8615, NULL, NULL, 'CT', 1, NULL),
+(501000009, 401000034, 2, '09', 5, 'Cataluña/Catalunya', '09', NULL, 0.159181, 40.523, 3.33255, 42.8615, 1.52854, 41.7982, 'CT', 1, NULL),
 (501000010, 401000034, 2, '10', 5, 'Comunitat Valenciana', '10', NULL, -1.52894, 37.8439, 0.691227, 40.7886, -0.55473, 39.4014, 'VC', 1, NULL),
 (501000011, 401000034, 2, '11', 5, 'Extremadura', '11', NULL, -7.54502, 37.941, -4.64758, 40.4867, -6.15073, 39.1915, 'EX', 1, NULL),
-(501000012, 401000034, 2, '12', 5, 'Galicia', '12', NULL, -9.30152, 41.8075, -6.73395, 43.7924, NULL, NULL, 'GA', 1, NULL),
+(501000012, 401000034, 2, '12', 5, 'Galicia', '12', NULL, -9.30152, 41.8075, -6.73395, 43.7924, -7.90999, 42.7571, 'GA', 1, NULL),
 (501000013, 401000034, 601130028, '13', 5, 'Comunidad de Madrid', '13', NULL, -4.57908, 39.8847, -3.05298, 41.1658, -3.71701, 40.4951, 'MD', 1, NULL),
-(501000014, 401000034, 601140030, '14', 5, 'Región de Murcia', '14', NULL, -2.34441, 37.3738, -0.647983, 38.7551, NULL, NULL, 'MC', 1, NULL),
+(501000014, 401000034, 601140030, '14', 5, 'Región de Murcia', '14', NULL, -2.34441, 37.3738, -0.647983, 38.7551, -0.647983, 38.7551, 'MC', 1, NULL),
 (501000015, 401000034, 601150031, '15', 5, 'Comunidad Foral de Navarra', '15', NULL, -2.50008, 41.9099, -0.72395, 43.3148, -1.64606, 42.6671, 'NC', 1, NULL),
 (501000016, 401000034, 2, '16', 5, 'País Vasco/Euskadi', '16', NULL, -3.45033, 42.4723, -1.72934, 43.4572, -2.62558, 43.0218, 'PV', 1, NULL),
 (501000017, 401000034, 601170026, '17', 5, 'La Rioja', '17', NULL, -3.13427, 41.919, -1.6787, 42.6443, -2.51759, 42.2753, 'RI', 1, NULL),
@@ -12194,14 +12222,17 @@ INSERT INTO `territorios` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nive
 --
 
 DROP TABLE IF EXISTS `users`;
-CREATE TABLE `users` (
-`idUser` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `users` (
+  `idUser` int(11) NOT NULL AUTO_INCREMENT,
   `user` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `hash` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `verified` tinyint(1) NOT NULL,
-  `verificationToken` varchar(255) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `verificationToken` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`idUser`),
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `user` (`user`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=26 ;
 
 --
 -- Volcado de datos para la tabla `users`
@@ -12212,111 +12243,6 @@ INSERT INTO `users` (`idUser`, `user`, `email`, `hash`, `verified`, `verificatio
 (24, 'Pedro Prieto', 'correo+pedro@kike.es', 'sha256:1000:JQgoVaIuccBSFGVXlyOvwK9lKn6iOxtZ:j0yb6cI9rhCS+cZ/5k7RU+Qe4o5DJVQc', 0, '7qmQDkCBkHlfx91xgOYKuXYGaxOITA3g'),
 (25, 'Jesus', 'funambulo@hotmail.com', 'sha256:1000:HnTUpMETqrxQ/IimQZXHA8cl8wS0cvo5:00H2nxE8x1cdYX6w9+fpLyxoJqOtBCoI', 0, 'BTdXm2l/2Z7YXq6ZtApBH730CiXSpEMk');
 
---
--- Índices para tablas volcadas
---
-
---
--- Indices de la tabla `avisoslistados`
---
-ALTER TABLE `avisoslistados`
- ADD PRIMARY KEY (`idAvisoListado`), ADD UNIQUE KEY `idUser` (`idUser`,`query`,`clase`);
-
---
--- Indices de la tabla `direcciones`
---
-ALTER TABLE `direcciones`
- ADD PRIMARY KEY (`idDireccion`), ADD KEY `idCiudad` (`idCiudad`), ADD KEY `idPadre` (`idSubCiudad`);
-
---
--- Indices de la tabla `entidades`
---
-ALTER TABLE `entidades`
- ADD PRIMARY KEY (`idEntidad`), ADD KEY `entidad` (`entidad`), ADD KEY `idDireccion` (`idDireccion`);
-
---
--- Indices de la tabla `entidades_tematicas`
---
-ALTER TABLE `entidades_tematicas`
- ADD PRIMARY KEY (`idEntidadTematica`), ADD KEY `idEntidad` (`idEntidad`), ADD KEY `idTematica` (`idTematica`);
-
---
--- Indices de la tabla `eventos`
---
-ALTER TABLE `eventos`
- ADD PRIMARY KEY (`idEvento`), ADD KEY `titulo` (`titulo`), ADD KEY `idDistritoPadre` (`idDistritoPadre`);
-
---
--- Indices de la tabla `eventos_tematicas`
---
-ALTER TABLE `eventos_tematicas`
- ADD PRIMARY KEY (`idEventoTematica`), ADD KEY `idEntidad` (`idEvento`), ADD KEY `idTematica` (`idTematica`);
-
---
--- Indices de la tabla `preregister`
---
-ALTER TABLE `preregister`
- ADD PRIMARY KEY (`idPreregister`);
-
---
--- Indices de la tabla `tematicas`
---
-ALTER TABLE `tematicas`
- ADD PRIMARY KEY (`idTematica`), ADD KEY `tematica` (`tematica`);
-
---
--- Indices de la tabla `territorios`
---
-ALTER TABLE `territorios`
- ADD PRIMARY KEY (`id`), ADD KEY `nivel` (`nivel`);
-
---
--- Indices de la tabla `users`
---
-ALTER TABLE `users`
- ADD PRIMARY KEY (`idUser`), ADD UNIQUE KEY `email` (`email`), ADD UNIQUE KEY `user` (`user`);
-
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `avisoslistados`
---
-ALTER TABLE `avisoslistados`
-MODIFY `idAvisoListado` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=40;
---
--- AUTO_INCREMENT de la tabla `entidades`
---
-ALTER TABLE `entidades`
-MODIFY `idEntidad` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=554;
---
--- AUTO_INCREMENT de la tabla `entidades_tematicas`
---
-ALTER TABLE `entidades_tematicas`
-MODIFY `idEntidadTematica` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1687;
---
--- AUTO_INCREMENT de la tabla `eventos`
---
-ALTER TABLE `eventos`
-MODIFY `idEvento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1850;
---
--- AUTO_INCREMENT de la tabla `eventos_tematicas`
---
-ALTER TABLE `eventos_tematicas`
-MODIFY `idEventoTematica` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=164;
---
--- AUTO_INCREMENT de la tabla `preregister`
---
-ALTER TABLE `preregister`
-MODIFY `idPreregister` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
---
--- AUTO_INCREMENT de la tabla `tematicas`
---
-ALTER TABLE `tematicas`
-MODIFY `idTematica` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=31;
---
--- AUTO_INCREMENT de la tabla `users`
---
-ALTER TABLE `users`
-MODIFY `idUser` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=26;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
