@@ -34,20 +34,20 @@ include "preload.php";
  <link rel="stylesheet" type="text/css" href="js/datetimepicker/jquery.datetimepicker.css"/ >
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
- <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
- <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
- <script src="js/datepicker-es.js"></script>
- <script src="js/jquery.custom-animations.js"></script>
- <script src="js/spin.min.js"></script>
- <script src="js/jquery.spin.js"></script>
- <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
- <script src="http://maps.google.com/maps/api/js?v=3&sensor=false"></script>
- <script src="js/leaflet-plugins-master/layer/Leaflet.ContinuousZoom.js"></script>
- <script src="js/leaflet-plugins-master/layer/tile/Google.js"></script>
- <script src="js/wysihtml5/parser_rules/advanced.js"></script>
- <script src="js/wysihtml5/dist/wysihtml5-0.3.0.min.js"></script>
- <script type="text/javascript" src="js/jNotify.jquery.js"></script>
- <script src="js/datetimepicker/jquery.datetimepicker.js"></script>
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js" type="text/javascript"></script>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js" type="text/javascript"></script>
+ <script src="js/datepicker-es.js" type="text/javascript"></script>
+ <script src="js/jquery.custom-animations.js" type="text/javascript"></script>
+ <script src="js/spin.min.js" type="text/javascript"></script>
+ <script src="js/jquery.spin.js" type="text/javascript"></script>
+ <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js" type="text/javascript"></script>
+ <script src="http://maps.google.com/maps/api/js?v=3&sensor=false" type="text/javascript"></script>
+ <script src="js/leaflet-plugins-master/layer/Leaflet.ContinuousZoom.js" type="text/javascript"></script>
+ <script src="js/leaflet-plugins-master/layer/tile/Google.js" type="text/javascript"></script>
+ <script src="js/wysihtml5/parser_rules/advanced.js" type="text/javascript"></script>
+ <script src="js/wysihtml5/dist/wysihtml5-0.3.0.min.js" type="text/javascript"></script>
+ <script type="text/javascript" src="js/jNotify.jquery.js" type="text/javascript"></script>
+ <script src="js/datetimepicker/jquery.datetimepicker.js" type="text/javascript"></script>
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5405f16570d4251b"></script>
 
 
