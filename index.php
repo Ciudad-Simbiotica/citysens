@@ -39,14 +39,14 @@ include "preload.php";
  <script src="js/datepicker-es.js" type="text/javascript"></script>
  <script src="js/jquery.custom-animations.js" type="text/javascript"></script>
  <script src="js/spin.min.js" type="text/javascript"></script>
- <script src="js/jquery.spin.js" type="text/javascript"></script>
+ <script src="js/jquery.spin.js" type="text/javascript"></script> <!--por si usamos un loading-->
  <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js" type="text/javascript"></script>
  <script src="http://maps.google.com/maps/api/js?v=3&sensor=false" type="text/javascript"></script>
  <script src="js/leaflet-plugins-master/layer/Leaflet.ContinuousZoom.js" type="text/javascript"></script>
  <script src="js/leaflet-plugins-master/layer/tile/Google.js" type="text/javascript"></script>
  <script src="js/wysihtml5/parser_rules/advanced.js" type="text/javascript"></script>
  <script src="js/wysihtml5/dist/wysihtml5-0.3.0.min.js" type="text/javascript"></script>
- <script type="text/javascript" src="js/jNotify.jquery.js" type="text/javascript"></script>
+ <script type="text/javascript" src="js/jNotify.jquery.js"></script>
  <script src="js/datetimepicker/jquery.datetimepicker.js" type="text/javascript"></script>
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5405f16570d4251b"></script>
 
