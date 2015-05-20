@@ -175,16 +175,19 @@
 	position:relative;
 	left:40px;
 	top:5px;
-        text-overflow:clip;
-        white-space: nowrap;
+        width:435px; /*TODO OJO, NO RESPONSIVE*/
+        overflow: hidden;
+	white-space: nowrap;
+        text-overflow: ellipsis;
 }
 .cabecera-suggest-texto1-sinTexto2
 {
 	position:relative;
 	left:40px;
 	top:10px;
-        text-overflow:clip;
-        white-space: nowrap;
+        overflow: hidden;
+	white-space: nowrap;
+        text-overflow: ellipsis;
 }
 
 
