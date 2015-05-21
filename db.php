@@ -244,10 +244,9 @@ function getEntidadesPorNombre($cadena,$cantidad=10)
     return $returnData;
 }
 
-// Returns a list of entities that have events in a certain territory
-// Needs to be updated to comply with new logic (using direcciones, not idDistritoPadre in eventos)
+// Returns a list of entities that have events in a certain territory (set of territories, in special levels)
 // TODO: It could be required to change to a collection of territories (for city+ and neighbourhood areas
-function getEntidadesZonaConEventos($cadena,$idTerritorio,$cantidad=10)
+function getEntidadesZonaConEventos($cadena,$idTerritorio,$alrededores,$cantidad=10)
 {
   $link=connect();
   // Sanitize inputs
@@ -255,7 +254,9 @@ function getEntidadesZonaConEventos($cadena,$idTerritorio,$cantidad=10)
   $cantidad=safe($link, filter_var($cantidad,FILTER_SANITIZE_NUMBER_INT));
   $idTerritorio=safe($link, $idTerritorio);
   $nivel=getNivelTerritorio($idTerritorio);
-
+  $alrededores=safe($link,$alrededores);
+  $lugares=array();
+  
   mysqli_query($link, 'SET CHARACTER SET utf8');
     $sql="SELECT entidades.tipoEntidad, entidades.entidad, entidades.idEntidad, territorios.nombre
             FROM entidades 
@@ -272,10 +273,24 @@ function getEntidadesZonaConEventos($cadena,$idTerritorio,$cantidad=10)
       $hijos=getDescendantsOfLevel($idTerritorio,8);
       $sql.=" AND direcciones.idCiudad IN ('".join($hijos,"','")."')";
     }
-    else // Map under city, seaches done on a district neighborhood-basis
+    else if ($nivel==8) {
+      $territorios=$idTerritorio;
+      if ($alrededores!=0) {
+        $territorios.=",".$alrededores;
+      }
+      $sql.=" AND direcciones.idCiudad IN ($territorios)";      
+    }
+    else if ($nivel==9) // Map under city, searches done on a district neighborhood-basis
     {
-        $hijos=getChildren($idTerritorio,9);
+        $hijos=getAllChildren(array($idTerritorio),9);
         $sql.=" AND direcciones.idSubCiudad IN ('".join($hijos,"','")."')";
+    }
+    else { // Level 10, neighborhood
+        $territorios=$idTerritorio;
+        if ($alrededores!=0) {
+          $territorios.=",".$alrededores;
+        }
+        $sql.=" AND direcciones.idSubCiudad IN ($territorios)";  
     }
 
     $sql.=" GROUP BY entidades.idEntidad
@@ -298,14 +313,16 @@ function getEntidadesZonaConEventos($cadena,$idTerritorio,$cantidad=10)
 }
 
 // Gets the information about Entities to be displayed, taking into account all filters and   
-function getEntidades($filtros, $idTerritorio, $cantidad=10)
+function getEntidades($filtros, $idTerritorio, $alrededores, $cantidad=10)
 {
     $link=connect();
   // Sanitize inpusts
     $cantidad=safe($link, filter_var($cantidad,FILTER_SANITIZE_NUMBER_INT));
     $idTerritorio=safe($link,$idTerritorio);
+    $alrededores=safe($link,$alrededores);
     $nivel= getNivelTerritorio($idTerritorio);
-        
+
+    $hayFiltroLugar=false;
     $busqueda="";
     $tematica="";
     $lugar="";
@@ -328,6 +345,7 @@ function getEntidades($filtros, $idTerritorio, $cantidad=10)
                 $tematica.="entidades_tematicas.idTematica='$id'";
                 break;
             case "lugar":
+                $hayFiltroLugar=true;
                 array_push($lugares,$id);
                 break;
         }
@@ -338,6 +356,13 @@ function getEntidades($filtros, $idTerritorio, $cantidad=10)
           JOIN entidades_tematicas ON entidades.idEntidad=entidades_tematicas.idEntidad 
           JOIN tematicas ON entidades_tematicas.idTematica=tematicas.idTematica 
           JOIN direcciones ON entidades.idDireccion=direcciones.idDireccion ";
+    
+  if (!$hayFiltroLugar) {
+    $lugares[]=$idTerritorio;
+    if ($alrededores!=0) {
+      $lugares=array_merge($lugares,explode(',',$alrededores));
+    }
+  }  
     
     if ($nivel<8) // Levels above city, searches will be done on a city-basis
     {
@@ -523,16 +548,18 @@ function getEvento($idEvento)
 
 }
 
-function getEventos($filtros,$idTerritorio,$cantidad=50)
+function getEventos($filtros,$idTerritorio,$alrededores,$cantidad=50)
 {
     $link=connect();
     //Sanitize inputs
     $cantidad=safe($link, filter_var($cantidad, FILTER_SANITIZE_NUMBER_INT));
     $idTerritorio=safe($link,$idTerritorio);
+    $alrededores=safe($link,$alrededores);
     $nivel= getNivelTerritorio($idTerritorio);
 
     $busqueda="";
     $tematica="";
+    $hayFiltroLugar=false;
     $lugar="";
     $lugares=array();
     $organizacion="";
@@ -554,6 +581,7 @@ function getEventos($filtros,$idTerritorio,$cantidad=50)
                 $tematica.="eventos_tematicas.idTematica='$id'";
                 break;
             case "lugar":
+                $hayFiltroLugar=true;
                 array_push($lugares,$id);
                 break;
             case "organizacion":
@@ -567,16 +595,23 @@ function getEventos($filtros,$idTerritorio,$cantidad=50)
     }
 
 
-    $sql="SELECT eventos.*, direcciones.lat as y, direcciones.lng as x,
+    $sql="SELECT eventos.*, direcciones.lat as y, direcciones.lng as x, territorios.nombre,
     (SELECT GROUP_CONCAT(tematicas.tematica)
              FROM eventos_tematicas, tematicas
              WHERE eventos_tematicas.idTematica=tematicas.idTematica
              AND eventos_tematicas.idEvento = eventos.idEvento) AS tematicas
-       FROM eventos, eventos_tematicas, direcciones 
-       WHERE eventos.idDireccion=direcciones.idDireccion 
+       FROM eventos, eventos_tematicas, direcciones, territorios 
+       WHERE eventos.idDireccion=direcciones.idDireccion
+         AND direcciones.idCiudad=territorios.id
          AND eventos.eventoActivo='1' AND ";
-//TODO: Validate where the territory place is taken from. Event? It should probably be changed.
-        
+//TODO: Validate where the territory place is taken from. Event? It should probably be changed to use territorios.nombre (already changed the query to include it)
+  
+if (!$hayFiltroLugar) {
+  $lugares[]=$idTerritorio;
+  if ($alrededores!=0) {
+    $lugares=array_merge($lugares,explode(',',$alrededores));
+  }
+}
     if ($nivel<8) // Levels above city, searches will be done on a city-basis
     {    
       $hijos=getAllDescendantsOfLevel($lugares,8);
@@ -1007,20 +1042,29 @@ function getLugares($cadena,$territorioOriginal,$nivel,$cantidad=3,$inSet=array(
 
 }
 
-function getTerritoriosSuggestions($cadena,$lugarOriginal,$cantidad=4)
+function getTerritoriosSuggestions($cadena,$idTerritorio,$alrededores,$cantidad=4)
 {
     //Sanitize input
     $link=connect();
     $cadena=safe($link, $cadena);
     $cantidad=safe($link, filter_var($cantidad, FILTER_SANITIZE_NUMBER_INT));
-    $lugarOriginal=safe($link, $lugarOriginal);
-
-    $datosLugar=getDatosLugar($lugarOriginal);
-    if($datosLugar['nivel']<8)
+    $idTerritorio=safe($link, $idTerritorio);
+    $alrededores=safe($link,$alrededores);
+    $lugares=array();
+    
+    $nivel=getNivelTerritorio($idTerritorio);
+    if($nivel<8 || ($nivel==8 && $alrededores!=0)) // If nivel is city+ or above, we only suggest cities
         $whereNiveles="AND nivel<='8'";
 
-    $inSet=getAllChildren(array($lugarOriginal));
-    unset($inSet[0]);   //Quitamos el original
+    $lugares[]=$idTerritorio;
+    if ($alrededores!=0) {
+      $lugares=array_merge($lugares,explode(',',$alrededores));
+    }
+    
+    $inSet=getAllChildren($lugares);
+    if ($alrededores==0) {
+      unset($inSet[0]);   //Quitamos el original, but not in special navigation
+    }
     
     mysqli_query($link, 'SET CHARACTER SET utf8');
     $sql="SELECT * FROM territorios WHERE
@@ -1035,7 +1079,7 @@ function getTerritoriosSuggestions($cadena,$lugarOriginal,$cantidad=4)
     while($fila=mysqli_fetch_assoc($result))
         array_push($returnData,array($fila["id"],$fila["nombre"])); //,$fila["xcentroid"],$fila["ycentroid"])); valores no usados
     return $returnData;
-
+    
 }
 
 function getIrA($cadena,$lugarOriginal)
@@ -1097,17 +1141,17 @@ function getIrA($cadena,$lugarOriginal)
 
 }
 
-function getDireccionesSuggestions($cadena,$lugarOriginal,$cantidad=5)
+function getDireccionesSuggestions($cadena,$idTerritorio,$cantidad=5)
 {
 
     //sanitize inputs
     $link=connect();
     $cadena=safe($link, $cadena);
-    $lugarOriginal=safe($link, $lugarOriginal);
+    $idTerritorio=safe($link, $idTerritorio);
     $cantidad=safe($link, filter_var($cantidad, FILTER_SANITIZE_NUMBER_INT));
 
     //echo $lugarOriginal;
-    $inSet=getAllChildren(array($lugarOriginal));
+    $inSet=getAllChildren(array($idTerritorio));
     
     //unset($inSet[0]);   //Quitamos el original
     $sql="SELECT * FROM direcciones WHERE 

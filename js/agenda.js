@@ -26,7 +26,7 @@ var miBusqueda = {
 ---------------------------------------------------------------------------------------------
 
 */
-//TODO Revisar donde se crea window.con e introducirlo aqui
+
   window.conf={};
   window.conf.idTerritorio=$.urlParam("idTerritorio");
   window.conf.alrededores=0;
@@ -529,24 +529,24 @@ function cargarDatos()
 
     // If there is no territory filter, then the original territoryId is inserted as a filter.
     // TODO 2015.05.04: This is not optimal. It seems better that the function receives the territoryID which is applied in case there is none.
-    // but for the moment being... we leave it as it is.
-    $.each(arrayTagsQuery, function (i, object)
-    {
-        if (object.tipo == "lugar")
-        {
-            hayUnLugar = true;
-        }
-    });
-    if (!hayUnLugar)
-    {
-        var sugerencia =
-                {
-                    "texto": "",
-                    "tipo": "lugar",
-                    "id": window.conf.idTerritorio
-                };
-        arrayTagsQuery.push(sugerencia);
-    }
+
+//    $.each(arrayTagsQuery, function (i, object)
+//    {
+//        if (object.tipo == "lugar")
+//        {
+//            hayUnLugar = true;
+//        }
+//    });
+//    if (!hayUnLugar)
+//    {
+//        var sugerencia =
+//                {
+//                    "texto": "",
+//                    "tipo": "lugar",
+//                    "id": window.conf.idTerritorio
+//                };
+//        arrayTagsQuery.push(sugerencia);
+//    }
 
 
     var filtros = JSON.stringify(arrayTagsQuery);
@@ -566,8 +566,8 @@ function cargarDatos()
                 clase: window.listado.tipo,
                 date: "any",
                 filtros: filtros,
-                //idTerritorioOriginal: $.urlParam('idTerritorio'),
                 idTerritorioOriginal: window.conf.idTerritorio,
+                alrededores:window.conf.alrededores,
                 format: "json",
                 orden: window.listado.orden
             })
@@ -590,10 +590,11 @@ function cargarDatos()
                 switch (window.listado.tipo)
                 {
                     case "eventos":
-                        if (window.conf.alrededores == 1)
-                            primeraLinea = "Mostrando EVENTOS en <strong>" + data.lugarOriginal.nombre + " y alrededores</strong> en las próximas semanas" + conFiltros;
+                        if (window.conf.alrededores != 0)
+                            //TODO: Verify if this is necesary: it could be that lugarOriginal.nombre already includes " y alrededores"
+                            primeraLinea = "Mostrando ENTIDADES en <strong>" + data.lugarOriginal.nombre + " y alrededores</strong> en las próximas semanas" + conFiltros;
                         else
-                            primeraLinea = "Mostrando EVENTOS en <strong>" + data.lugarOriginal.nombre + "</strong> en las próximas semanas" + conFiltros;
+                            primeraLinea = "Mostrando ENTIDADES en <strong>" + data.lugarOriginal.nombre + "</strong> en las próximas semanas" + conFiltros;
 
                         if (jQuery.isEmptyObject(data.grupos)) {
                             primeraLinea += "<br><br><strong>Ningún evento.</strong>";
@@ -601,7 +602,8 @@ function cargarDatos()
                         $(".input-busqueda").attr('placeholder', 'Filtrar eventos...');
                         break;
                     case "organizaciones":
-                        if (window.conf.alrededores == 1)
+                        if (window.conf.alrededores != 0)
+                            //TODO: Verify if this is necesary: it could be that lugarOriginal.nombre already includes " y alrededores"
                             primeraLinea = "Mostrando ENTIDADES en <strong>" + data.lugarOriginal.nombre + " y alrededores</strong> en las próximas semanas" + conFiltros;
                         else
                             primeraLinea = "Mostrando ENTIDADES en <strong>" + data.lugarOriginal.nombre + "</strong> en las próximas semanas" + conFiltros;
@@ -612,7 +614,7 @@ function cargarDatos()
                         $(".input-busqueda").attr('placeholder', 'Filtrar entidades...');
                         break;
                     case "procesos":
-                        if (window.conf.alrededores == 1)
+                        if (window.conf.alrededores != 0)
                             primeraLinea = "Mostrando INICIATIVAS en <strong>" + data.lugarOriginal.nombre + " y alrededores</strong> en las próximas semanas" + conFiltros;
                         else
                             primeraLinea = "Mostrando INICIATIVAS en <strong>" + data.lugarOriginal.nombre + "</strong> en las próximas semanas" + conFiltros;

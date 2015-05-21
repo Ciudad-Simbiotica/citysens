@@ -5,6 +5,14 @@ include_once "db.php";
 
 $sugestions=array();
 
+//  PARÁMETROS
+//  
+//    query: texto,
+//    idTerritorio: window.conf.idTerritorio,
+//    alrededores: window.conf.alrededores,
+//    date: "any",
+//    entidades: entidades
+//  
 
 //ToDo: Sugerencia de búsquedas comunes
 /*
@@ -28,10 +36,7 @@ foreach($tematicas as $tematica)
 	array_push($sugestions,$sugestion);
 }
 
-/*
-print_r($tematicas);
-print_r($sugestions);
-*/
+
 
 /*
 $sugestion["tipo"]="sanidad";
@@ -53,7 +58,7 @@ array_push($sugestions,$sugestion);
 */
 
 
-$lugares=getTerritoriosSuggestions($_GET["query"],$_GET["idTerritorio"]);
+$lugares=getTerritoriosSuggestions($_GET["query"],$_GET["idTerritorio"],$_GET["alrededores"]);
 foreach($lugares as $lugar)
 {
 	//print_r($lugar);
@@ -68,10 +73,9 @@ foreach($lugares as $lugar)
 
 if($_GET["entidades"]=="")	//Sólo las mostramos si NO estamos en página de entidades
 {
-	$entidades=getEntidadesZonaConEventos($_GET["query"],$_GET["idTerritorio"],4);
+	$entidades=getEntidadesZonaConEventos($_GET["query"],$_GET["idTerritorio"],$_GET["alrededores"],4);
 	foreach($entidades as $entidad)
 	{
-		//print_r($entidad);
 		$sugestion["tipo"]=$entidad["tipoEntidad"];
 		//$sugestion["texto1"]=htmlentities(ucwords(strtolower(substr($entidad["entidad"],0,50))));
                 $sugestion["texto1"]=htmlentities($entidad["entidad"]);         

@@ -3,8 +3,9 @@ error_reporting(E_ERROR);
 include_once "db.php";
 $filtros=json_decode($_GET["filtros"],true);
 $idTerritorio=$_GET["idTerritorioOriginal"];
+$alrededores=$_GET["alrededores"];
 
-$eventos=getEventos($filtros,$idTerritorio,50);
+$eventos=getEventos($filtros,$idTerritorio,$alrededores,50);
 
 
 $tipoGrupos=$_GET["orden"];

@@ -3,10 +3,10 @@ error_reporting(E_ERROR);
 include_once "db.php";
 $filtros=json_decode($_GET["filtros"],true);
 $idTerritorio=$_GET["idTerritorioOriginal"];
+$alrededores=$_GET["alrededores"];
 
 
-// $params is an object with parameters of search
-$entidades=getEntidades($filtros,$idTerritorio,50);
+$entidades=getEntidades($filtros,$idTerritorio,$alrededores,50);
 
 $i=0;
 

@@ -217,7 +217,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
     
     // Define to use in footer and other places
     window.conf.idTerritorio=idTerritorio;
-    if (response.nivel==8 && alrededores==1)
+    if (response.nivel==10 ||(alrededores!=0 && response.nivel==8))
         window.conf.nombre=response.nombre+' y alrededores';
     else
         window.conf.nombre=response.nombre;
@@ -241,7 +241,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
       }
       else{
           breadcrumbs+='<div id=\'hijos\'><strong>'+lugar[1]+'</strong><ul id=\'listabreadcrumbs\'></ul></div>';
-            $(".map-footer").html(window.nombre);
+            $(".map-footer").html(window.conf.nombre);
          }      
     });
 
@@ -259,7 +259,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
         });
         $("#upbutton").on('mouseout', function(e) 
         {
-          $(".map-footer").html(window.nombre);
+          $(".map-footer").html(window.conf.nombre);
         });
     };
 
@@ -291,7 +291,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                 }).addTo(map);
         }
     }
-    else if (alrededores==1||nivelMostrado==10) // Territory has child, but we are on special navigation. We allow to click on it to zoom into it.
+    else if (alrededores!=0||nivelMostrado==10) // Territory has child, but we are on special navigation. We allow to click on it to zoom into it.
     {
                 addPolygonToMap(conf.idTerritorioMostrado,0,"shp/geoJSON/"+response.nivel+"/"+conf.idTerritorioMostrado+".geojson",response.nombre,'#ffaaaa',response.activo);
 
@@ -323,7 +323,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                 // For level city and neighborhood, the special navigation (extra parameter in URL) is activated
                 if(nivelHijos==10 || nivelHijos==8)
                 {
-                    addPolygonToMap(datos.id,1,"shp/geoJSON/"+nivelHijos+"/"+datos.id+".geojson",datos.nombre,'#ffaaaa',datos.activo);
+                    addPolygonToMap(datos.id,datos.vecinos,"shp/geoJSON/"+nivelHijos+"/"+datos.id+".geojson",datos.nombre,'#ffaaaa',datos.activo);
                     breadcrumbs_dropdown+='<li onclick="irATerritorio('+datos.activo+','+datos.id+',1,\''+datos.nombre+'\')">'+datos.nombre+'</li>';
                 }
                 else
@@ -390,7 +390,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
         });
     }
 
-    if (nivelMostrado!=10 && !(alrededores==1&&nivelMostrado==8)) //Navegación normal (no municipio + o barrios)
+    if (nivelMostrado!=10 && !(alrededores!=0&&nivelMostrado==8)) //Navegación normal (no municipio + o barrios)
       {
         // Show the brothers 
         $.getJSON("getTerritoriosColindantes.php",
@@ -445,7 +445,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                 {
                 $.each(data, function(i,datos)
                     {
-                        addPolygonToMap(datos.id,1,"shp/geoJSON/"+nivelMostrado+"/"+datos.id+".geojson",datos.nombre,'#FFE4C5',datos.activo);
+                        addPolygonToMap(datos.id,datos.vecinos,"shp/geoJSON/"+nivelMostrado+"/"+datos.id+".geojson",datos.nombre,'#FFE4C5',datos.activo);
                     });
                 });
                 
@@ -463,7 +463,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                 {
                 $.each(data, function(i,datos)
                     {
-                        addPolygonToMap(datos.id,1,"shp/geoJSON/"+nivelMostrado+"/"+datos.id+".geojson",datos.nombre,'#aaaaff',datos.activo);
+                        addPolygonToMap(datos.id,datos.vecinos,"shp/geoJSON/"+nivelMostrado+"/"+datos.id+".geojson",datos.nombre,'#aaaaff',datos.activo);
                     });
                 });
     }

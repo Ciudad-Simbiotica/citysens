@@ -2,7 +2,7 @@
 	error_reporting(0);
 	include_once "db.php";
 	
-    if($_GET["alrededores"]==1)
+    if($_GET["alrededores"]!=0)
       $respuesta=getDatosLugar($_GET["idTerritorio"]);
     else
       $respuesta=getDatosLugarBase($_GET["idTerritorio"]);
@@ -18,7 +18,7 @@
       $respuesta["ymin"]=$coordenadasInteriores["ymin"];      
     }
 // For the case of neighborhoods and city surroundings, we want a special navigation with no uncles
-    if ($respuesta["nivel"]==10 ||($_GET["alrededores"]==1 && $respuesta["nivel"]==8)) 
+    if ($respuesta["nivel"]==10 ||($_GET["alrededores"]!=0 && $respuesta["nivel"]==8)) 
     {
       //$coordenadasColindantes=getCoordenadasColindantes($respuesta["nivel"],$respuesta["xmin"],$respuesta["xmax"],$respuesta["ymin"],$respuesta["ymax"]); 
       //$coordenadasColindantes=getCoordenadasCentroidesColindantes($respuesta["nivel"],$respuesta["xmin"],$respuesta["xmax"],$respuesta["ymin"],$respuesta["ymax"]);
@@ -37,11 +37,16 @@
 //          $coordenadasColindantes["ymin"]=$respuesta["ymin"]-0.05;  
 //      }
       
-      // Coordinates of centroids are not satisfactory for a peripheric territory, as they get cut. Check for it and correct.
-      $respuesta["xmax"]=($respuesta["xmax"]>$coordenadasColindantes["xmax"]?$respuesta["xmax"]:$coordenadasColindantes["xmax"]);
-      $respuesta["ymax"]=($respuesta["ymax"]>$coordenadasColindantes["ymax"]?$respuesta["ymax"]:$coordenadasColindantes["ymax"]);
-      $respuesta["xmin"]=($respuesta["xmin"]<$coordenadasColindantes["xmin"]?$respuesta["xmin"]:$coordenadasColindantes["xmin"]);
-      $respuesta["ymin"]=($respuesta["ymin"]<$coordenadasColindantes["ymin"]?$respuesta["ymin"]:$coordenadasColindantes["ymin"]);
+      // Coordinates might not be satisfactory for a peripheric territory, as they get cut. Check for it and correct.
+//      $respuesta["xmax"]=($respuesta["xmax"]>$coordenadasColindantes["xmax"]?$respuesta["xmax"]:$coordenadasColindantes["xmax"]);
+//      $respuesta["ymax"]=($respuesta["ymax"]>$coordenadasColindantes["ymax"]?$respuesta["ymax"]:$coordenadasColindantes["ymax"]);
+//      $respuesta["xmin"]=($respuesta["xmin"]<$coordenadasColindantes["xmin"]?$respuesta["xmin"]:$coordenadasColindantes["xmin"]);
+//      $respuesta["ymin"]=($respuesta["ymin"]<$coordenadasColindantes["ymin"]?$respuesta["ymin"]:$coordenadasColindantes["ymin"]);
+      
+      $respuesta["xmax"]=$coordenadasColindantes["xmax"];
+      $respuesta["ymax"]=$coordenadasColindantes["ymax"];
+      $respuesta["xmin"]=$coordenadasColindantes["xmin"];
+      $respuesta["ymin"]=$coordenadasColindantes["ymin"];
     }
     
     //Data for the Breadcrumbs

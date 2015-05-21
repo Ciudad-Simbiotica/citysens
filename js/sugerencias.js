@@ -134,6 +134,7 @@ function suggestBusqueda(texto)
   {
     query: texto,
     idTerritorio: window.conf.idTerritorio,
+    alrededores: window.conf.alrededores,
     date: "any",
     format: "json",
     entidades: entidades
