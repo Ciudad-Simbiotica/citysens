@@ -4,7 +4,7 @@ include_once('../vendor/phayes/geophp/geoPHP.inc');
 error_reporting(E_ERROR);
 
 // script deactivated unless needed
-//exit();
+exit();
 
 
 // This scripts determines neighbouring cities and neighbourhoods given cities/neighbourhoods.
