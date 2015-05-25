@@ -595,7 +595,7 @@ function getEventos($filtros,$idTerritorio,$alrededores,$cantidad=50)
     }
 
 
-    $sql="SELECT eventos.*, direcciones.lat as y, direcciones.lng as x, territorios.nombre,
+    $sql="SELECT eventos.*, direcciones.lat as y, direcciones.lng as x, direcciones.idCiudad as idCiudad, direcciones.idSubCiudad as idSubCiudad, territorios.nombre,
     (SELECT GROUP_CONCAT(tematicas.tematica)
              FROM eventos_tematicas, tematicas
              WHERE eventos_tematicas.idTematica=tematicas.idTematica
@@ -617,13 +617,24 @@ if (!$hayFiltroLugar) {
       $hijos=getAllDescendantsOfLevel($lugares,8);
       $lugar="direcciones.idCiudad IN ('".join($hijos,"','")."')";
     }
-    else // Map at City or lower level, searches done on SubCityLevel (district, neighborhood) basis
+    else if ($nivel==8 && $alrededores!=0) // Map at City + level, searches based on idCiudad 
+    {
+      // No need to find descendants, as all ids in $lugares must already be ids from cities
+      $lugar="direcciones.idCiudad IN ('".join($lugares,"','")."')";
+    }
+    else if ($nivel==10) // Map at Neighborhood level, search done on SubCityLevel basis
+    {
+      // No need to find descendants, as all ids in $lugares must already be ids from neighborhoods
+      $lugar="direcciones.idSubCiudad IN ('".join($lugares,"','")."')";        
+    }
+    else //Map at city or lower level, searches done on SubCityLevel (district, neighborhood) basis
     {
         $hijos=getAllChildren($lugares,9);
         $lugar="direcciones.idSubCiudad IN ('".join($hijos,"','")."')";
     }
+    
 //  Example of the query, already using the direcciones instead of idPadre at events
-//  SELECT eventos.*,
+//  SELECT eventos.*, direcciones.lat as y, direcciones.lng as x, direcciones.idCiudad, direcciones.idSubCiudad, territorios.nombre,
 //    (SELECT GROUP_CONCAT(tematicas.tematica)
 //             FROM eventos_tematicas, tematicas
 //             WHERE eventos_tematicas.idTematica=tematicas.idTematica
@@ -1337,7 +1348,7 @@ function getEventosCoordenadas($xmin,$xmax,$ymin,$ymax)
     $ymin=safe($link, $ymin);
     $ymax=safe($link, $ymax);
 
-    
+    //TODO: eventos.idDistritoPadre está obsoleto. Es a través del lugar (direcciones) que se localizan los eventos.
     $sql="SELECT * FROM eventos,territorios WHERE 
             x>$xmin AND x<$xmax AND y>$ymin AND y<$ymax AND eventos.idDistritoPadre=territorios.id AND eventos.eventoActivo='1' ";
 

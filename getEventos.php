@@ -32,9 +32,11 @@ foreach($eventos as $evento)
 	$datos["lugar"]=utf8_encode($evento["lugar"]);
 	$datos["temperatura"]=$evento["temperatura"];
 	$datos["tematicas"]=utf8_encode($evento["tematicas"]);
+    // TODO: Verify that these are taken from Direcciones and not from Eventos
 	$datos["x"]=$evento["x"];
 	$datos["y"]=$evento["y"];
-	$datos["idDistritoPadre"]=$evento["idDistritoPadre"];
+	$datos["idCiudad"]=$evento["idCiudad"];
+    $datos["idSubCiudad"]=$evento["idSubCiudad"];
 
 	if($grupo==date("Y-m-d",strtotime("2014-05-13")))
 		$cabeceraIzq="Hoy, ";

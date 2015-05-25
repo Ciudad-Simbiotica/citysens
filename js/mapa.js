@@ -269,7 +269,6 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
     nivelHijos=nivelMostrado+1;
     nivelTios=nivelMostrado-1; // It could be adjusted if there is some level that is not considered significant (like districts, regions, etc.)
    
-
        
     // If the territory has no child, the territory is shown
     if (response.idDescendiente==0) 
@@ -295,8 +294,6 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
     {
                 addPolygonToMap(conf.idTerritorioMostrado,0,"shp/geoJSON/"+response.nivel+"/"+conf.idTerritorioMostrado+".geojson",response.nombre,'#ffaaaa',response.activo);
 
-        if  (nivelMostrado>7) // If the territory is of level city or lower, counter is included
-        {
             if (typeof window.cantidadPorLugar[idTerritorio] === 'undefined')
                 cantidad = '0';
             else
@@ -305,7 +302,6 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                 {
                 icon: new L.NumberedDivIcon({number: cantidad})
                 }).addTo(map);
-        }
     } 
     else { //Cargamos los polígonos hijos
         $.getJSON("getChildAreas.php", 
@@ -320,7 +316,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
             breadcrumbs_dropdown="";
             $.each(data, function(i,datos) {
                 window.poligonos[datos.id]=datos.nombre;
-                // For level city and neighborhood, the special navigation (extra parameter in URL) is activated
+                // For level city and neighborhood, the special navigation is activated by including list of neighbour territories in a conf parameter)
                 if(nivelHijos==10 || nivelHijos==8)
                 {
                     addPolygonToMap(datos.id,datos.vecinos,"shp/geoJSON/"+nivelHijos+"/"+datos.id+".geojson",datos.nombre,'#ffaaaa',datos.activo);
@@ -337,48 +333,16 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                         cantidad='0';
                     else
                         cantidad=window.cantidadPorLugar[datos.id];
+                    
                     new L.Marker([datos.ycentroid,datos.xcentroid], 
                         {
                         icon: new L.NumberedDivIcon({number: cantidad})
-                        }).addTo(map);   
-                    if (window.listado.grupos) 
-                    {
-                        if (window.conf.palanca==0|window.conf.palanca==undefined)
-                        {
-                            var htmlshowpointers = '<button><i class="fa fa-toggle-off"></i></button>';     
-                        }
-                        else 
-                        {
-                            var htmlshowpointers = '<button><i class="fa fa-toggle-on"></i></button>';
-                            $(".leaflet-div-icon").fadeIn("fast", "linear");            
-                        }
-                        $("#circle-button").html(htmlshowpointers);
-                        $("#circle-button button").click(function () { 
-                                if (window.conf.palanca==0|window.conf.palanca==undefined)
-                                {
-                                    $(this).find('i').toggleClass('fa-toggle-on fa-toggle-off');
-                                    $(".leaflet-div-icon").fadeToggle("fast", "linear");
-                                    window.conf.palanca=1;
-                                }
-                                else
-                                {
-                                    $(this).find('i').toggleClass('fa-toggle-off fa-toggle-on');
-                                    $(".leaflet-div-icon").fadeToggle("fast", "linear");
-                                    window.conf.palanca=0;
-                                }
-                            }
-                        );
-                        $("#circle-button").on("mouseover", function (e)
-                        {
-                            $(".map-footer").html("mostrar / ocultar eventos");
-                        });
-                        $("#circle-button").on('mouseout', function (e)
-                        {
-                            $(".map-footer").html(window.conf.nombre);
-                        });
-                    }     
+                        }).addTo(map);        
                 }    
             });
+            if (nivelMostrado>7)   // We show the switcher to display amount of items per territory
+                incluirPalanca();
+ 
             $("#listabreadcrumbs").html(breadcrumbs_dropdown);
             $("#hijos").hover(function() {
                     $('#listabreadcrumbs').fadeIn(); //muestro mediante id	
@@ -446,7 +410,19 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                 $.each(data, function(i,datos)
                     {
                         addPolygonToMap(datos.id,datos.vecinos,"shp/geoJSON/"+nivelMostrado+"/"+datos.id+".geojson",datos.nombre,'#FFE4C5',datos.activo);
+
+                        if(typeof window.cantidadPorLugar[datos.id] === 'undefined')
+                            cantidad='0';
+                        else
+                            cantidad=window.cantidadPorLugar[datos.id];
+
+                        new L.Marker([datos.ycentroid,datos.xcentroid], 
+                        {
+                            icon: new L.NumberedDivIcon({number: cantidad})
+                        }).addTo(map); 
                     });
+                // We show the switcher to display amount of items per territory
+                incluirPalanca();
                 });
                 
         $.getJSON("getTerritoriosColindantes.php",
@@ -467,8 +443,8 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                     });
                 });
     }
-    
-        //Cargamos los eventos
+                    
+      //Cargamos los eventos
         window.markers = [];
         //TODO: esto genera excepción cuando listado es vacío. Convendría hacer chequeo de si es vacío antes de lanzarlo.
         $.each(window.listado.grupos, function(nombreSuperGrupo,datosSuperGrupo)
@@ -486,15 +462,6 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
             });
 
     });
-// muestro los contadores si estaban activados
-
-function onMapClick(e) {
-    alert("You clicked the map at " + e.latlng);
-}
-
-map.on('oncontextmenu', onMapClick);    
-
-  
  }
 
 
@@ -518,6 +485,44 @@ function irATerritorio(activo,idTerritorio,alrededores,nombre)
     {
         //No hay todavía para esta ciudad
          loadOverlayNoDisponible("cityNotReadyYet.html",idTerritorio,nombre);
-    }
-    
+    }    
 }
+
+function incluirPalanca() {
+        if (window.cantidadPorLugar) 
+        {
+            if (window.conf.palanca==0||window.conf.palanca==='undefined')
+            {
+                var htmlshowpointers = '<button><i class="fa fa-toggle-off"></i></button>';     
+            }
+            else 
+            {
+                var htmlshowpointers = '<button><i class="fa fa-toggle-on"></i></button>';
+                $(".leaflet-div-icon").fadeIn("fast", "linear");            
+            }
+            $("#circle-button").html(htmlshowpointers);
+            $("#circle-button button").click(function () { 
+                    if (window.conf.palanca==0||window.conf.palanca==='undefined')
+                    {
+                        $(this).find('i').toggleClass('fa-toggle-on fa-toggle-off');
+                        $(".leaflet-div-icon").fadeToggle("fast", "linear");
+                        window.conf.palanca=1;
+                    }
+                    else
+                    {
+                        $(this).find('i').toggleClass('fa-toggle-off fa-toggle-on');
+                        $(".leaflet-div-icon").fadeToggle("fast", "linear");
+                        window.conf.palanca=0;
+                    }
+                }
+            );
+            $("#circle-button").on("mouseover", function (e)
+            {
+                $(".map-footer").html("mostrar / ocultar eventos");
+            });
+            $("#circle-button").on('mouseout', function (e)
+            {
+                $(".map-footer").html(window.conf.nombre);
+            });
+        }
+    }

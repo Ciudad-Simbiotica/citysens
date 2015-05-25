@@ -603,10 +603,10 @@ function cargarDatos()
                         break;
                     case "organizaciones":
                         if (window.conf.alrededores != 0)
-                            //TODO: Verify if this is necesary: it could be that lugarOriginal.nombre already includes " y alrededores"
                             primeraLinea = "Mostrando ENTIDADES en <strong>" + data.lugarOriginal.nombre + " y alrededores</strong> en las próximas semanas" + conFiltros;
                         else
                             primeraLinea = "Mostrando ENTIDADES en <strong>" + data.lugarOriginal.nombre + "</strong> en las próximas semanas" + conFiltros;
+
                         if (jQuery.isEmptyObject(data.grupos)) {
                             primeraLinea += "<br><br><strong>Ninguna entidad.</strong>";
                             $(".div-avisos").hide();
@@ -632,7 +632,7 @@ function cargarDatos()
 
                 //console.log(data.grupos);
 
-                window.cantidadPorLugar = [];
+                window.cantidadPorLugar = {};
 
                 if (!(typeof data.grupos === 'undefined'))
                 {
@@ -646,9 +646,13 @@ function cargarDatos()
                             {
                                 createLine(grupo, item, 0, nombreSuperGrupo);
                                 //console.log(item);
-                                if (typeof window.cantidadPorLugar[item.idDistritoPadre] === 'undefined')
-                                    window.cantidadPorLugar[item.idDistritoPadre] = 0;
-                                window.cantidadPorLugar[item.idDistritoPadre]++;
+                                // BY NOW, we calculate number of events both for "ciudad" and "subCiudad" territories.
+                                if (typeof window.cantidadPorLugar[item.idSubCiudad] === 'undefined')
+                                    window.cantidadPorLugar[item.idSubCiudad] = 0;
+                                if (typeof window.cantidadPorLugar[item.idCiudad] === 'undefined')
+                                    window.cantidadPorLugar[item.idCiudad] = 0;
+                                window.cantidadPorLugar[item.idSubCiudad]++;
+                                window.cantidadPorLugar[item.idCiudad]++;
                             });
                         });
                     });
