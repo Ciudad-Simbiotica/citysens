@@ -8,7 +8,7 @@ exit();
 
  $link=connect();
 
-$sql="SELECT id FROM lugares_shp WHERE idDescendiente is NULL";       
+$sql="SELECT id FROM territorios WHERE id like '80128%'";       
 $result=mysqli_query($link, $sql);
 
 while($fila=mysqli_fetch_assoc($result))
@@ -17,10 +17,10 @@ while($fila=mysqli_fetch_assoc($result))
     //Actualiza idDescendiente con el campo adecuado   
      $idDescendiente=getFertility($idLugar);
      
-     $sql="UPDATE lugares_shp SET 
+     $sql="UPDATE territorios SET 
 	  idDescendiente='$idDescendiente' 
 	  WHERE id='$idLugar'";
-	 //echo $sql;
+	 echo $sql.PHP_EOL;;
 	 mysqli_query($link, $sql);
          
 } 
