@@ -592,9 +592,9 @@ function cargarDatos()
                     case "eventos":
                         if (window.conf.alrededores != 0)
                             //TODO: Verify if this is necesary: it could be that lugarOriginal.nombre already includes " y alrededores"
-                            primeraLinea = "Mostrando ENTIDADES en <strong>" + data.lugarOriginal.nombre + " y alrededores</strong> en las próximas semanas" + conFiltros;
+                            primeraLinea = "Mostrando EVENTOS en <strong>" + data.lugarOriginal.nombre + " y alrededores</strong> en las próximas semanas" + conFiltros;
                         else
-                            primeraLinea = "Mostrando ENTIDADES en <strong>" + data.lugarOriginal.nombre + "</strong> en las próximas semanas" + conFiltros;
+                            primeraLinea = "Mostrando EVENTOS en <strong>" + data.lugarOriginal.nombre + "</strong> en las próximas semanas" + conFiltros;
 
                         if (jQuery.isEmptyObject(data.grupos)) {
                             primeraLinea += "<br><br><strong>Ningún evento.</strong>";
