@@ -2,10 +2,11 @@
 	error_reporting(0);
 	include_once "db.php";
 	
+    $idTerritorio=$_GET["idTerritorio"];
     if($_GET["alrededores"]!=0)
-      $respuesta=getDatosLugar($_GET["idTerritorio"]);
+      $respuesta=getDatosLugar($idTerritorio);
     else
-      $respuesta=getDatosLugarBase($_GET["idTerritorio"]);
+      $respuesta=getDatosLugarBase($idTerritorio);
     
 // For the case of districts, whose surface normally is only partially covered by the neighbourhoods within, zoom is adjusted 
 // to the surface covered by the neighbourhood polygons 
@@ -22,7 +23,15 @@
     {
       //$coordenadasColindantes=getCoordenadasColindantes($respuesta["nivel"],$respuesta["xmin"],$respuesta["xmax"],$respuesta["ymin"],$respuesta["ymax"]); 
       //$coordenadasColindantes=getCoordenadasCentroidesColindantes($respuesta["nivel"],$respuesta["xmin"],$respuesta["xmax"],$respuesta["ymin"],$respuesta["ymax"]);
-      $coordenadasColindantes=getCoordenadasVecinos($respuesta["nivel"],$respuesta["vecinos"]);      
+      $vecindad=$respuesta["vecinos"];
+      if ($vecindad<>'') {
+        $vecindad.=",".$idTerritorio;
+      }
+      else {
+        $vecindad=$idTerritorio;
+      }
+        
+      $coordenadasColindantes=getCoordenadasVecinos($respuesta["nivel"],$vecindad);      
 
       // In case of cities having a very big neighbour, coordinates are too wide and territory loses central position. Check for it and correct, using a 0,05 margin 
 //      if ($respuesta["nivel"]==8)

@@ -9,7 +9,8 @@ exit();
 $nivel=9;  // Districts are level 9
 $distritos=array();
 $link=connect();
-$sql="SELECT * FROM lugares_shp WHERE nivel='$nivel' AND idPadre=801280005";
+$sql="SELECT * FROM lugares_shp WHERE nivel='$nivel' AND provincia='$provincia'";
+//$sql="SELECT * FROM lugares_shp WHERE nivel='$nivel' AND idPadre like '80128%'";
 $result=mysqli_query($link,$sql);
 while($fila=mysqli_fetch_assoc($result))
 {

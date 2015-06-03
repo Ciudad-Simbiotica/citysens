@@ -36,8 +36,9 @@ foreach($eventos as $evento)
 	$datos["x"]=$evento["x"];
 	$datos["y"]=$evento["y"];
 	$datos["idCiudad"]=$evento["idCiudad"];
-    $datos["idSubCiudad"]=$evento["idSubCiudad"];
-
+    $datos["idDistrito"]=$evento["idDistrito"];
+    $datos["idBarrio"]=$evento["idBarrio"];
+    
 	if($grupo==date("Y-m-d",strtotime("2014-05-13")))
 		$cabeceraIzq="Hoy, ";
 	else if($grupo==date("Y-m-d",strtotime("2014-05-13")+86400))

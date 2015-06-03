@@ -647,11 +647,14 @@ function cargarDatos()
                                 createLine(grupo, item, 0, nombreSuperGrupo);
                                 //console.log(item);
                                 // BY NOW, we calculate number of events both for "ciudad" and "subCiudad" territories.
-                                if (typeof window.cantidadPorLugar[item.idSubCiudad] === 'undefined')
-                                    window.cantidadPorLugar[item.idSubCiudad] = 0;
+                                if (typeof window.cantidadPorLugar[item.idBarrio] === 'undefined')
+                                    window.cantidadPorLugar[item.idBarrio] = 0;
+                                if (typeof window.cantidadPorLugar[item.idDistrito] === 'undefined')
+                                    window.cantidadPorLugar[item.idDistrito] = 0;
                                 if (typeof window.cantidadPorLugar[item.idCiudad] === 'undefined')
                                     window.cantidadPorLugar[item.idCiudad] = 0;
-                                window.cantidadPorLugar[item.idSubCiudad]++;
+                                window.cantidadPorLugar[item.idBarrio]++;
+                                window.cantidadPorLugar[item.idDistrito]++;
                                 window.cantidadPorLugar[item.idCiudad]++;
                             });
                         });

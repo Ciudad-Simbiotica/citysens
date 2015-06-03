@@ -90,7 +90,8 @@ DROP TABLE IF EXISTS `direcciones`;
 CREATE TABLE IF NOT EXISTS `direcciones` (
   `idDireccion` int(11) NOT NULL,
   `idCiudad` int(11) NOT NULL COMMENT 'Id of the territory of level 8 (city) the place is located in.',
-  `idSubCiudad` int(11) DEFAULT NULL COMMENT 'id of the lowest possible territory within the city (8, 9 or 10, city, district or neighborhood) the place is located in.',
+  `idDistrito` int(11) DEFAULT NULL COMMENT 'id of the district (level 9) the place is located in.',
+  `idBarrio` int(11) DEFAULT NULL COMMENT 'id of the the neighborhood (level 10) the place is located in.',
   `nombre` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Name of the place. Answers question "what"?',
   `direccion` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Address within the city. Answers question "where"',
   `indicacion` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT 'extra indication to locate the place',
@@ -101,7 +102,8 @@ CREATE TABLE IF NOT EXISTS `direcciones` (
   `direccionActiva` tinyint(1) NOT NULL,
   PRIMARY KEY (`idDireccion`),
   KEY `idCiudad` (`idCiudad`),
-  KEY `idPadre` (`idSubCiudad`)
+  KEY `idDistrito` (`idDistrito`),
+  KEY `idBarrio` (`idBarrio`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='This table refers to lugares/places, not just direcciones';
 
 --
@@ -146,7 +148,7 @@ INSERT INTO `direcciones` (`idDireccion`, `idCiudad`, `idSubCiudad`, `nombre`, `
 (71, 801280005, 1001280050, 'Casa de la Juventud', 'Plaza de la Juventud, s/n', 'Salón de Actos', '', 40.482, -3.35385, 17, 1),
 (73, 801280005, 1001280052, 'Local para el desarrollo humano', 'C/ Lope de Figueroa, 7', '', '', 40.4831, -3.35469, 16, 1),
 (74, 801280005, 1001280021, 'Federación Comarcal de Asociación de Vecinos de Alcalá de Henares', 'C/ Eduardo Pascual y Cuéllar, 10', '', '', 40.489, -3.36845, 15, 1),
-(76, 801280165, NULL, 'Centro de Artesanía de Alcalá', 'Ctra. Alcalá-Arganda, Km. 2.200', '', '', 40.4342, -3.67112, 12, 1),
+(76, 801280165, NULL, 'Centro de Artesanía de Alcalá', 'Ctra. Alcalá-Arganda, Km. 2.200', '', '', 40.4332, -3.2996, 12, 1),
 (80, 801280005, 1001280013, 'Asociación de Vecinos Azaña', 'C/ Entrepeñas, 4', '', '', 40.4697, -3.36387, 15, 1),
 (81, 801280005, 1001280002, 'Asociación de Vecions Cervantes', 'C/ Diego López de Zúñíga, 26, trasera', '', '', 40.482, -3.36354, 15, 1),
 (82, 801280005, 1001280002, 'Consejo de Estudiantes UAH', 'Callejón de Santa Maria, s/n', '', '', 40.4817, -3.3633, 15, 1),

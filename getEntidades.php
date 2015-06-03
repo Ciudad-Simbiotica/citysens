@@ -37,9 +37,12 @@ if($tipoGrupos=="puntuacion")
 			$datos["textoOrg"]=utf8_encode($entidad["domicilio"]);
 			$datos["lugarOrg"]=utf8_encode($entidad["nombreLugar"]);
 			$datos["puntos"]=$entidad["points"];
+    // TODO: Verify that these are taken from Direcciones and not from Entidades
 			$datos["x"]=$entidad["lng"];
 			$datos["y"]=$entidad["lat"];
-			$datos["idDistritoPadre"]=$entidad["idPadre"];
+            $datos["idCiudad"]=$entidad["idCiudad"];
+            $datos["idDistrito"]=$entidad["idDistrito"];
+            $datos["idBarrio"]=$entidad["idSubCiudad"];
 			$datos["tematica"]=utf8_encode($entidad["tematica"]);
 			array_push($filas,$datos);
 

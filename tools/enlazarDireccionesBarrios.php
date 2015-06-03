@@ -9,7 +9,7 @@ exit();
 $nivel=10;  // Neighborhoods are level 10
 $barrios=array();
 $link=connect();
-$sql="SELECT * FROM lugares_shp WHERE nivel='$nivel' AND idPadre like '90128000%'";
+$sql="SELECT * FROM territorios WHERE nivel='$nivel' AND idPadre like '90128%'";
 $result=mysqli_query($link,$sql);
 while($fila=mysqli_fetch_assoc($result))
 {

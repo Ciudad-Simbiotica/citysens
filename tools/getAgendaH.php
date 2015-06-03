@@ -1,10 +1,18 @@
 <?php
 //GENERAR EVENTOS
 set_time_limit(0);
-
+error_reporting(E_ALL);
+include_once 'simplehtmldom/simple_html_dom.php';
 // Script is unactive unless it is required
 // For use  select id an direcotories targeted.
-//exit();
+$html = file_get_html('http://agendadelhenares.org/evento/3996');
+$ret = $html->find('div[id=htmlView]')[0];
+//echo "<pre>";
+echo($ret);
+//*[@id="textPart0"]
+
+
+exit();
 $url="http://agendadelhenares.org/widget-json?selectRecentChanges=86400&orderByLastBigChanges=true";
 //$url="eventos.json";
 $raw_data=file_get_contents($url);
@@ -41,6 +49,12 @@ foreach($data["events"] as $id=>$event)
     $datos["idlugarAgenda"]=$event["dboUseForeign_place_id"]["id"];
 
 }
+
+
+// Identificar todo lo que queremos, inicializarlos a cero, y así nos sirve para saber todo lo que queremos.
+
+
+
 // hacer comprobación
 /*
 foreach($datos["idAgenda"??
