@@ -5,7 +5,7 @@ error_reporting(E_ERROR);
 set_time_limit(0);
 
 exit();
-// Links an address to the neighborhood it lies within (lugares_shp with level 10).
+// Update idPadre of territories of level 10 (neighborhood) to the district that contains its centroid.
 
 $distritos=array();
 $link=connect();
