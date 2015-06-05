@@ -374,7 +374,7 @@ function getEntidades($filtros, $idTerritorio, $alrededores, $cantidad=10)
     }
     else if ($nivel==8 && $alrededores!=0) // Map at City + level, searches based on idCiudad 
     {
-      $sql.="JOIN territorios ON direcciones.idBarrio=territorios.id
+      $sql.="JOIN territorios ON direcciones.idCiudad=territorios.id
              WHERE ";   
       // No need to find descendants, as all ids in $lugares must already be ids from cities
       $lugar="direcciones.idCiudad IN ('".join($lugares,"','")."')";
@@ -391,7 +391,7 @@ function getEntidades($filtros, $idTerritorio, $alrededores, $cantidad=10)
       $sql.="JOIN territorios ON direcciones.idDistrito=territorios.id
              WHERE ";         
         $hijos=getAllChildren($lugares,9);
-        $lugar="direcciones.idDistrito IN ('".join($hijos,"','")."')";
+        $lugar="direcciones.idDistrito IN ('".join($hijos,"','")."') OR direcciones.idBarrio IN ('".join($hijos,"','")."')";
     }
                
     if($busqueda!="")
@@ -641,7 +641,7 @@ if (!$hayFiltroLugar) {
     else //Map at city or lower level, searches done on SubCityLevel (district, neighborhood) basis
     {
         $hijos=getAllChildren($lugares,9);
-        $lugar="direcciones.idDistrito IN ('".join($hijos,"','")."')";
+        $lugar="direcciones.idDistrito IN ('".join($hijos,"','")."') OR direcciones.idBarrio IN ('".join($hijos,"','")."')";
     }
     
 //  Example of the query, already using the direcciones instead of idPadre at events
@@ -675,7 +675,7 @@ if (!$hayFiltroLugar) {
     $returnData=array();
     while($fila=mysqli_fetch_assoc($result))
     {
-        unset($fila["texto"]);
+        unset($fila["texto"]);  // Why this unset $fila["texto"]  ?? TODO
     	array_push($returnData,$fila);
     }
     return $returnData;
