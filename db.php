@@ -1089,7 +1089,7 @@ function getTerritoriosSuggestions($cadena,$idTerritorio,$alrededores,$cantidad=
     }
     
     mysqli_query($link, 'SET CHARACTER SET utf8');
-    $sql="SELECT * FROM territorios WHERE
+    $sql="SELECT id, nombre FROM territorios WHERE
             nombre LIKE '%$cadena%' AND
             id IN (".implode(",",$inSet).")
             $whereNiveles
@@ -1099,7 +1099,7 @@ function getTerritoriosSuggestions($cadena,$idTerritorio,$alrededores,$cantidad=
     $result=mysqli_query($link, $sql);
     $returnData=array();
     while($fila=mysqli_fetch_assoc($result))
-        array_push($returnData,array($fila["id"],$fila["nombre"])); //,$fila["xcentroid"],$fila["ycentroid"])); valores no usados
+        array_push($returnData,$fila);
     return $returnData;
     
 }
