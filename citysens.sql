@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.10deb1
+-- version 4.2.10
 -- http://www.phpmyadmin.net
 --
--- Servidor: localhost:3306
--- Tiempo de generación: 03-06-2015 a las 14:20:14
--- Versión del servidor: 5.5.43-0ubuntu0.14.04.1
--- Versión de PHP: 5.5.25-1+deb.sury.org~trusty+2
+-- Servidor: localhost:8889
+-- Tiempo de generación: 05-06-2015 a las 11:54:27
+-- Versión del servidor: 5.5.38
+-- Versión de PHP: 5.5.18
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -62,14 +62,12 @@ DELIMITER ;
 --
 
 DROP TABLE IF EXISTS `avisoslistados`;
-CREATE TABLE IF NOT EXISTS `avisoslistados` (
-  `idAvisoListado` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `avisoslistados` (
+`idAvisoListado` int(11) NOT NULL,
   `idUser` int(11) NOT NULL,
   `query` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `clase` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`idAvisoListado`),
-  UNIQUE KEY `idUser` (`idUser`,`query`,`clase`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=40 ;
+  `clase` varchar(20) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `avisoslistados`
@@ -87,7 +85,7 @@ INSERT INTO `avisoslistados` (`idAvisoListado`, `idUser`, `query`, `clase`) VALU
 --
 
 DROP TABLE IF EXISTS `direcciones`;
-CREATE TABLE IF NOT EXISTS `direcciones` (
+CREATE TABLE `direcciones` (
   `idDireccion` int(11) NOT NULL,
   `idCiudad` int(11) NOT NULL COMMENT 'Id of the territory of level 8 (city) the place is located in.',
   `idDistrito` int(11) DEFAULT NULL COMMENT 'id of the district (level 9) the place is located in.',
@@ -99,17 +97,12 @@ CREATE TABLE IF NOT EXISTS `direcciones` (
   `lat` float NOT NULL,
   `lng` float NOT NULL,
   `zoom` int(11) NOT NULL,
-  `direccionActiva` tinyint(1) NOT NULL,
-  PRIMARY KEY (`idDireccion`),
-  KEY `idCiudad` (`idCiudad`),
-  KEY `idDistrito` (`idDistrito`),
-  KEY `idBarrio` (`idBarrio`)
+  `direccionActiva` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='This table refers to lugares/places, not just direcciones';
 
 --
 -- Volcado de datos para la tabla `direcciones`
 --
-
 
 INSERT INTO `direcciones` (`idDireccion`, `idCiudad`, `idDistrito`, `idBarrio`, `nombre`, `direccion`, `indicacion`, `cp`, `lat`, `lng`, `zoom`, `direccionActiva`) VALUES
 (7, 801280005, 901280005, 1001280002, 'Facultad de Filosofía y Letras (UAH) - Colegio de Málaga', 'Colegios 2', '', '', 40.4813, -3.36354, 15, 1),
@@ -713,8 +706,8 @@ INSERT INTO `direcciones` (`idDireccion`, `idCiudad`, `idDistrito`, `idBarrio`, 
 --
 
 DROP TABLE IF EXISTS `entidades`;
-CREATE TABLE IF NOT EXISTS `entidades` (
-  `idEntidad` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `entidades` (
+`idEntidad` int(11) NOT NULL,
   `entidad` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `siglas` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tipo` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -733,11 +726,8 @@ CREATE TABLE IF NOT EXISTS `entidades` (
   `etiquetas` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `descBreve` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `texto` text COLLATE utf8_unicode_ci NOT NULL,
-  `idDireccion` int(11) NOT NULL,
-  PRIMARY KEY (`idEntidad`),
-  KEY `entidad` (`entidad`),
-  KEY `idDireccion` (`idDireccion`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=554 ;
+  `idDireccion` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=554 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `entidades`
@@ -1299,14 +1289,11 @@ INSERT INTO `entidades` (`idEntidad`, `entidad`, `siglas`, `tipo`, `domicilio`, 
 --
 
 DROP TABLE IF EXISTS `entidades_tematicas`;
-CREATE TABLE IF NOT EXISTS `entidades_tematicas` (
-  `idEntidadTematica` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `entidades_tematicas` (
+`idEntidadTematica` int(11) NOT NULL,
   `idEntidad` int(11) NOT NULL,
-  `idTematica` int(11) NOT NULL,
-  PRIMARY KEY (`idEntidadTematica`),
-  KEY `idEntidad` (`idEntidad`),
-  KEY `idTematica` (`idTematica`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1687 ;
+  `idTematica` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=1687 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `entidades_tematicas`
@@ -3007,8 +2994,8 @@ INSERT INTO `entidades_tematicas` (`idEntidadTematica`, `idEntidad`, `idTematica
 --
 
 DROP TABLE IF EXISTS `eventos`;
-CREATE TABLE IF NOT EXISTS `eventos` (
-  `idEvento` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `eventos` (
+`idEvento` int(11) NOT NULL,
   `fecha` datetime NOT NULL,
   `fechaFin` datetime DEFAULT NULL,
   `clase` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'So far, only class "evento". What else?',
@@ -3017,9 +3004,6 @@ CREATE TABLE IF NOT EXISTS `eventos` (
   `texto` text COLLATE utf8_unicode_ci NOT NULL,
   `lugar` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `temperatura` int(11) NOT NULL,
-  `x` float NOT NULL,
-  `y` float NOT NULL,
-  `idDistritoPadre` int(11) NOT NULL,
   `idEntidad` int(11) NOT NULL,
   `idTematica` int(11) NOT NULL,
   `idDireccion` int(11) NOT NULL,
@@ -3027,74 +3011,71 @@ CREATE TABLE IF NOT EXISTS `eventos` (
   `email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `etiquetas` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `repeatsAfter` int(11) NOT NULL,
-  `eventoActivo` tinyint(1) NOT NULL,
-  PRIMARY KEY (`idEvento`),
-  KEY `titulo` (`titulo`),
-  KEY `idDistritoPadre` (`idDistritoPadre`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1850 ;
+  `eventoActivo` tinyint(1) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=1850 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `eventos`
 --
 
-INSERT INTO `eventos` (`idEvento`, `fecha`, `fechaFin`, `clase`, `tipo`, `titulo`, `texto`, `lugar`, `temperatura`, `x`, `y`, `idDistritoPadre`, `idEntidad`, `idTematica`, `idDireccion`, `url`, `email`, `etiquetas`, `repeatsAfter`, `eventoActivo`) VALUES
-(667, '2014-05-27 20:00:00', NULL, 'eventos', 'convocatoria', 'Bicicrítica Torrejón ¡Usa la bici todos los días, celébralo una vez al mes!', 'Bicicrítica Torrejón ¡Usa la bici todos los días, celébralo una vez al mes!', 'Torrejón de Ardoz', 1, -3.47981, 40.4589, 999000206, 31, 179, 266, NULL, NULL, '', 0, 1),
-(737, '2014-05-25 09:00:00', NULL, 'eventos', 'convocatoria', 'Elecciones al Parlamento Europeo', 'Elecciones al Parlamento Europeo', 'Villalbilla', 3, -3.35946, 40.478, 901280005, 241, 35, 76, NULL, NULL, '', 0, 1),
-(886, '2014-05-16 16:30:00', NULL, 'eventos', 'recurrente', 'Lactancia Reunión Grupo Lactard', 'Lactancia Reunión Grupo Lactard', 'Torres, CM', 4, -3.3637, 40.4066, 999000213, 8, 203, 41, NULL, NULL, '', 21, 1),
-(887, '2014-05-23 16:30:00', NULL, 'eventos', 'recurrente', 'Lactancia Reunión Grupo Lactard', 'Lactancia Reunión Grupo Lactard', 'Torres, CM', 3, -3.3637, 40.4066, 999000213, 420, 166, 41, NULL, NULL, '', 19, 1),
-(888, '2014-05-30 16:30:00', NULL, 'eventos', 'convocatoria', 'Lactancia Reunión Grupo Lactard', 'Lactancia Reunión Grupo Lactard', 'Torres, CM', 2, -3.3637, 40.4066, 999000213, 416, 50, 41, NULL, NULL, '', 0, 1),
-(971, '2014-05-13 19:00:00', '2014-05-13 20:30:00', 'eventos', 'recurrente', 'Reunión PAH - Corredor del Henares', '<h3>El pasaje est&aacute;ndar Lorem Ipsum, usado desde el a&ntilde;o 1500.</h3>\r\n			<p>"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>\r\n			<h3>Secci&oacute;n 1.10.32 de &quot;de Finibus Bonorum et Malorum&quot;, escrito por Cicero en el 45 antes de Cristo</h3>\r\n			<p>"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"</p>\r\n			<h3>Traducción hecha por H. Rackham en 1914</h3>\r\n			<p>"But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?"</p>\r\n			<h3>Secci&oacute;n 1.10.33 de &quot;de Finibus Bonorum et Malorum&quot;, escrito por Cicero en el 45 antes de Cristo</h3>\r\n			<p>"At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."</p>\r\n			<h3>Traducción hecha por H. Rackham en 1914</h3>\r\n			<p>"On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains."</p>', 'Alcalá de Henares', 2, -3.36243, 40.4881, 901280009, 266, 112, 902, 'http://www.urldeejemplo.es', 'correo@emaildeejemplo.es', 'Dignidad, 15M, 22M', 14, 1),
-(972, '2014-05-20 19:00:00', NULL, 'eventos', 'convocatoria', 'Reunión PAH - Corredor del Henares', 'Reunión PAH - Corredor del Henares', 'Alcalá de Henares', 4, -3.37027, 40.4808, 901280009, 84, 213, 903, NULL, NULL, '', 0, 1),
-(973, '2014-05-27 19:00:00', NULL, 'eventos', 'recurrente', 'Reunión PAH - Corredor del Henares', 'Reunión PAH - Corredor del Henares', 'Alcalá de Henares', 4, -3.36926, 40.4808, 901280005, 169, 316, 904, NULL, NULL, '', 12, 1),
-(1007, '2014-05-14 17:00:00', NULL, 'eventos', 'convocatoria', 'Lactancia  Grupo de apoyo de Lactavida', 'Lactancia  Grupo de apoyo de Lactavida', 'Alcalá de Henares', 5, -3.35772, 40.4857, 901280005, 41, 298, 905, NULL, NULL, '', 0, 1),
-(1008, '2014-05-28 17:00:00', NULL, 'eventos', 'recurrente', 'Lactancia  Grupo de apoyo de Lactavida', 'Lactancia  Grupo de apoyo de Lactavida', 'Alcalá de Henares', 2, -3.36946, 40.4889, 901280005, 247, 225, 906, NULL, NULL, '', 11, 1),
-(1022, '2014-05-20 11:00:00', NULL, 'eventos', 'convocatoria', 'Lactancia  Grupo de apoyo de Lactavida', 'Lactancia  Grupo de apoyo de Lactavida', 'Alcalá de Henares', 2, -3.38598, 40.507, 901280006, 434, 214, 907, NULL, NULL, '', 0, 1),
-(1042, '2014-05-22 16:30:00', NULL, 'eventos', 'convocatoria', 'Lactancia  Grupo de apoyo de Lactavida', 'Lactancia  Grupo de apoyo de Lactavida', 'Alcalá de Henares', 4, -3.37548, 40.471, 901280007, 401, 277, 908, NULL, NULL, '', 0, 1),
-(1052, '2014-05-28 20:00:00', NULL, 'eventos', 'recurrente', 'Bici Crítica Alcalá ¡Usa la bici todos los días, celébralo una vez al mes!', 'Bici Crítica Alcalá ¡Usa la bici todos los días, celébralo una vez al mes!', 'Alcalá de Henares', 1, -3.36926, 40.4808, 901280005, 322, 294, 909, NULL, NULL, '', 17, 1),
-(1090, '2014-05-19 18:00:00', NULL, 'eventos', 'recurrente', 'Taller Social de la Bici', 'Taller Social de la Bici', 'Alcalá de Henares', 3, -3.36317, 40.483, 901280007, 408, 46, 910, NULL, NULL, '', 12, 1),
-(1091, '2014-05-26 18:00:00', NULL, 'eventos', 'recurrente', 'Taller Social de la Bici', 'Taller Social de la Bici', 'Alcalá de Henares', 5, -3.36268, 40.4885, 901280005, 521, 170, 911, NULL, NULL, '', 7, 1),
-(1119, '2014-05-18 18:00:00', NULL, 'eventos', 'recurrente', 'Taller Social de la Bici', 'Taller Social de la Bici', 'Alcalá de Henares', 1, -3.3581, 40.4819, 901280009, 276, 14, 912, NULL, NULL, '', 18, 1),
-(1120, '2014-05-25 18:00:00', NULL, 'eventos', 'convocatoria', 'Taller Social de la Bici', 'Taller Social de la Bici', 'Alcalá de Henares', 2, -3.3633, 40.4832, 901280009, 365, 152, 913, NULL, NULL, '', 0, 1),
-(1151, '2014-05-16 18:30:00', NULL, 'eventos', 'convocatoria', 'PAH Reunión-Asesoría', 'PAH Reunión-Asesoría', 'Coslada', 1, -3.56516, 40.426, 999000062, 445, 45, 288, NULL, NULL, '', 0, 1),
-(1152, '2014-05-23 18:30:00', NULL, 'eventos', 'recurrente', 'PAH Reunión-Asesoría', 'PAH Reunión-Asesoría', 'Coslada', 3, -3.56213, 40.4279, 999000062, 26, 194, 308, NULL, NULL, '', 6, 1),
-(1201, '2014-05-19 19:00:00', NULL, 'eventos', 'convocatoria', 'Asamblea abierta Red de Solidaridad Popular', 'Asamblea abierta Red de Solidaridad Popular', 'Alcalá de Henares', 4, -3.36884, 40.4768, 901280009, 448, 243, 914, NULL, NULL, '', 0, 1),
-(1202, '2014-05-26 19:00:00', NULL, 'eventos', 'convocatoria', 'Asamblea abierta Red de Solidaridad Popular', 'Asamblea abierta Red de Solidaridad Popular', 'Alcalá de Henares', 1, -3.3641, 40.47, 901280009, 506, 139, 915, NULL, NULL, '', 0, 1),
-(1227, '2014-05-20 17:00:00', NULL, 'eventos', 'convocatoria', 'Pleno municipal Ayuntamiento de Alcalá', 'Pleno municipal Ayuntamiento de Alcalá', 'Alcalá de Henares', 3, -3.3581, 40.4819, 901280005, 81, 196, 916, NULL, NULL, '', 0, 1),
-(1340, '2014-05-29 18:00:00', NULL, 'eventos', 'convocatoria', 'Plenos en Juntas Municipales de Distrito', 'Plenos en Juntas Municipales de Distrito', 'Alcalá de Henares', 5, -3.36387, 40.4697, 999000006, 542, 28, 917, NULL, NULL, '', 0, 1),
-(1478, '2014-05-24 11:30:00', NULL, 'eventos', 'recurrente', 'I Encuentro de Alternativas Fácticas de Vivienda del Henares', 'I Encuentro de Alternativas Fácticas de Vivienda del Henares', 'Alcalá de Henares', 4, -3.3413, 40.4909, 901280005, 257, 191, 918, NULL, NULL, '', 19, 1),
-(1555, '2014-05-19 10:30:00', NULL, 'eventos', 'recurrente', 'Lactancia reunión del grupo Lactard', 'Lactancia reunión del grupo Lactard', 'Alcalá de Henares', 5, -3.3739, 40.5043, 901280005, 208, 288, 919, NULL, NULL, '', 14, 1),
-(1556, '2014-05-26 10:30:00', NULL, 'eventos', 'recurrente', 'Lactancia reunión del grupo Lactard', 'Lactancia reunión del grupo Lactard', 'Alcalá de Henares', 3, -3.33555, 40.5058, 901280005, 267, 36, 920, NULL, NULL, '', 12, 1),
-(1602, '2014-05-13 11:00:00', NULL, 'eventos', 'convocatoria', 'Grupo de apoyo a la lactancia de Lactavida', 'Grupo de apoyo a la lactancia de Lactavida', 'Alcalá de Henares', 1, -3.36383, 40.4825, 901280005, 158, 175, 921, NULL, NULL, '', 0, 1),
-(1603, '2014-05-20 11:00:00', NULL, 'eventos', 'convocatoria', 'Grupo de apoyo a la lactancia de Lactavida', 'Grupo de apoyo a la lactancia de Lactavida', 'Alcalá de Henares', 3, -3.36886, 40.489, 901280005, 542, 107, 922, NULL, NULL, '', 0, 1),
-(1604, '2014-05-27 11:00:00', NULL, 'eventos', 'recurrente', 'Grupo de apoyo a la lactancia de Lactavida', 'Grupo de apoyo a la lactancia de Lactavida', 'Alcalá de Henares', 3, -3.37548, 40.471, 901280005, 24, 190, 923, NULL, NULL, '', 16, 1),
-(1665, '2014-05-27 19:30:00', NULL, 'eventos', 'convocatoria', 'Presentación libro Guía de árboles singulares Molina de Aragón y el Alto Tajo', 'Presentación libro Guía de árboles singulares Molina de Aragón y el Alto Tajo', 'Alcalá de Henares', 1, -3.36726, 40.4846, 901280005, 149, 232, 924, NULL, NULL, '', 0, 1),
-(1691, '2014-05-22 20:30:00', NULL, 'eventos', 'recurrente', 'Presentación libro El movimiento obrero en Alcalá de Henares, 1868-1939', 'Presentación libro El movimiento obrero en Alcalá de Henares, 1868-1939', 'Alcalá de Henares', 3, -3.36421, 40.4823, 901280005, 118, 300, 925, NULL, NULL, '', 1, 1),
-(1703, '2014-05-23 19:30:00', NULL, 'eventos', 'convocatoria', 'Agua de Mayo - Un nuevo espacio en Alcalá', 'Agua de Mayo - Un nuevo espacio en Alcalá', 'Alcalá de Henares', 3, -3.3413, 40.4909, 901280005, 141, 231, 926, NULL, NULL, '', 0, 1),
-(1722, '2014-05-24 20:30:00', NULL, 'eventos', 'convocatoria', 'Proyección del documental "Stop! Rodando el cambio"', 'Proyección del documental "Stop! Rodando el cambio"', 'Alcalá de Henares', 2, -3.36154, 40.4852, 901280007, 352, 153, 927, NULL, NULL, '', 0, 1),
-(1769, '2014-05-13 18:00:00', NULL, 'eventos', 'convocatoria', 'Mesa redonda sobre las elecciones europeas y el delegacionismo', 'Mesa redonda sobre las elecciones europeas y el delegacionismo', 'Alcalá de Henares', 3, -3.3374, 40.4966, 901280005, 230, 250, 928, NULL, NULL, '', 0, 1),
-(1774, '2014-05-16 18:00:00', NULL, 'eventos', 'convocatoria', 'Presentación del libro “Contrapoder sindical” ', 'Presentación del libro “Contrapoder sindical” ', 'Alcalá de Henares', 5, -3.34768, 40.5104, 901280006, 95, 222, 929, NULL, NULL, '', 0, 1),
-(1781, '2014-05-17 11:00:00', NULL, 'eventos', 'recurrente', 'Encuentro con autor "Abriendo brecha. (...) la lucha de las mujeres por su emancipación" ', 'Encuentro con autor "Abriendo brecha. (...) la lucha de las mujeres por su emancipación" ', 'Alcalá de Henares', 1, -3.36877, 40.4888, 901280005, 333, 253, 930, NULL, NULL, '', 19, 1),
-(1799, '2014-05-17 12:00:00', NULL, 'eventos', 'recurrente', 'I aniversario de Fraguas Jornada de trabajo y celebración', 'I aniversario de Fraguas Jornada de trabajo y celebración', 'Alcalá de Henares', 4, -3.36268, 40.4885, 901280009, 277, 33, 931, NULL, NULL, '', 7, 1),
-(1805, '2014-05-15 19:30:00', NULL, 'eventos', 'recurrente', 'Proyección de la película "SALMOS DESDE LA COCINA"', 'Proyección de la película "SALMOS DESDE LA COCINA"', 'Alcalá de Henares', 4, -3.36668, 40.4816, 901280005, 383, 118, 932, NULL, NULL, '', 20, 1),
-(1807, '2014-05-16 20:30:00', NULL, 'eventos', 'recurrente', '¡Vuelve "LA FARMACIA DE ANTON CHEJOV"!', '¡Vuelve "LA FARMACIA DE ANTON CHEJOV"!', 'Alcalá de Henares', 3, -3.36615, 40.4836, 901280005, 532, 131, 933, NULL, NULL, '', 15, 1),
-(1813, '2014-05-26 19:30:00', NULL, 'eventos', 'convocatoria', 'Conferencia Protege tu salud, evita los tóxicos', 'Conferencia Protege tu salud, evita los tóxicos', 'Alcalá de Henares', 2, -3.33555, 40.5058, 901280005, 407, 15, 934, NULL, NULL, '', 0, 1),
-(1820, '2014-05-19 18:00:00', NULL, 'eventos', 'convocatoria', 'Construcción de un nuevo espacio educativo alternativo en Alcalá (E. Infantil)', 'Construcción de un nuevo espacio educativo alternativo en Alcalá (E. Infantil)', 'Alcalá de Henares', 4, -3.36886, 40.489, 901280005, 434, 286, 935, NULL, NULL, '', 0, 1),
-(1821, '2014-05-26 18:00:00', NULL, 'eventos', 'recurrente', 'Construcción de un nuevo espacio educativo alternativo en Alcalá (E. Primaria)', 'Construcción de un nuevo espacio educativo alternativo en Alcalá (E. Primaria)', 'Alcalá de Henares', 3, -3.36886, 40.489, 901280008, 398, 154, 936, NULL, NULL, '', 15, 1),
-(1823, '2014-05-18 13:00:00', NULL, 'eventos', 'recurrente', 'Mercadillo artesano DIY Y trueque', 'Mercadillo artesano DIY Y trueque', 'Alcalá de Henares', 3, -3.36896, 40.4811, 901280008, 132, 198, 937, NULL, NULL, '', 7, 1),
-(1830, '2014-05-13 17:30:00', NULL, 'eventos', 'convocatoria', 'Taller de Economía Doméstica', 'Taller de Economía Doméstica', 'Alcalá de Henares', 1, -3.3797, 40.4747, 901280005, 20, 23, 938, NULL, NULL, '', 0, 1),
-(1831, '2014-05-20 18:00:00', NULL, 'eventos', 'recurrente', 'Punto de Información sobre la bellota (moneda social)', 'Punto de Información sobre la bellota (moneda social)', 'Alcalá de Henares', 1, -3.36932, 40.491, 901280005, 251, 314, 939, NULL, NULL, '', 13, 1),
-(1832, '2014-05-22 18:00:00', NULL, 'eventos', 'convocatoria', 'Inauguración de la Exposición “5 años de Rincón Lento”', 'Inauguración de la Exposición “5 años de Rincón Lento”', 'Alcalá de Henares', 2, -3.3538, 40.482, 901280008, 90, 250, 940, NULL, NULL, '', 0, 1),
-(1833, '2014-05-25 17:30:00', NULL, 'eventos', 'convocatoria', 'Taller de economía Doméstica (2ª parte).', 'Taller de economía Doméstica (2ª parte).', 'Alcalá de Henares', 4, -3.36387, 40.4697, 901280005, 248, 168, 941, NULL, NULL, '', 0, 1),
-(1836, '2014-05-18 11:00:00', NULL, 'eventos', 'convocatoria', 'Carrera del lápiz verde', 'Carrera del lápiz verde', 'Alcalá de Henares', 2, -3.36354, 40.4813, 901280005, 416, 250, 942, NULL, NULL, '', 0, 1),
-(1839, '2014-05-17 18:00:00', NULL, 'eventos', 'convocatoria', 'CIne Forum Precarias a la deriva', 'CIne Forum Precarias a la deriva', 'Alcalá de Henares', 2, -3.36435, 40.4818, 901280005, 231, 179, 943, NULL, NULL, '', 0, 1),
-(1840, '2014-05-18 13:00:00', NULL, 'eventos', 'convocatoria', 'Vermú Rock PODEMOS', 'Vermú Rock PODEMOS', 'Alcalá de Henares', 3, -3.36802, 40.483, 901280007, 459, 218, 944, NULL, NULL, '', 0, 1),
-(1842, '2014-10-01 03:00:00', NULL, 'eventos', 'convocatoria', 'Título', 'Desc', 'Casa de Kike', 1, -3.36483, 40.471, 999000006, 158, 1, 324, 'kike.es', 'correo@kike.es', '', 0, 1),
-(1843, '2014-10-02 08:00:00', '2014-10-02 09:00:00', 'eventos', 'convocatoria', 'Título nuevo de evento', '<h1>Cabecera nivel 1</h1><h2><u>Cabecera subrayada nivel 2</u></h2>Texto inicial<br>Texto segundo<br><ol><li>Numerado 1</li><li>Numerado 2</li></ol><ul><li>Puntuado 1</li><li>Puntuado 2</li></ul>', 'Parque Copasa', 1, -3.3731, 40.4732, 0, 158, 1, 1, 'google.com', 'acorreo@kike.es', 'Etiqueta 1,Etiqueta 2,Etiqueta 3', 0, 0),
-(1844, '2014-10-02 03:00:00', NULL, 'eventos', 'convocatoria', 'Segundo título', '<h1>Descripción dos</h1>Eso, otra descripción<br>', 'Facultad de Filosofía y Letras (UAH) Colegio de Málaga', 1, -3.36354, 40.4813, 901280005, 158, 8, 7, 'facebook.com', 'cdorreo@kike.es', '', 0, 0),
-(1845, '2014-10-03 06:00:00', '2014-10-03 04:00:00', 'eventos', 'convocatoria', 'Tercero', 'Desc', 'Prueba colegios 2', 1, -3.36354, 40.4813, 999000005, 158, 4, 325, 'google.com', 'cordreo@kike.es', '', 0, 0),
-(1847, '2014-09-12 03:00:00', NULL, 'eventos', 'convocatoria', 'Quinto', 'aaaaa', 'Facultad de Filosofía y Letras (UAH) Colegio de Málaga', 1, -3.36354, 40.4813, 901280005, 158, 3, 7, 'meneame.net', 'coerreo@kike.es', '', 0, 0),
-(1848, '2014-09-12 04:00:00', NULL, 'eventos', 'convocatoria', 'Sexto', 'Texto', 'Cuatro Caños', 1, -3.36131, 40.4851, 999000005, 158, 1, 8, 'ab.ce', 'correro@kike.es', 'aa', 0, 1),
-(1849, '2014-10-01 19:00:00', NULL, 'eventos', 'convocatoria', 'Prueba final editor texto', '<h1>Cabecera</h1><h2>Cuerpo</h2><ol><li>Uno</li><li>Dos</li><li>Tres</li></ol><b>Enlace:</b><br><a href="http://www.google.es" title="Link: http://www.google.es">Vamos a Google</a><br><br><b>Foto:<br></b><img src="https://c1.staticflickr.com/5/4046/4670729810_f3811e83b7_n.jpg" title="Image: https://c1.staticflickr.com/5/4046/4670729810_f3811e83b7_n.jpg"><br><br><i>Pie en cursiva</i><br>', 'Casa de Rafa', 1, -3.37478, 40.4946, 999000007, 158, 6, 326, 'google.es', 'pedro@citysens.net', 'Etiqueta Creada', 0, 0);
+INSERT INTO `eventos` (`idEvento`, `fecha`, `fechaFin`, `clase`, `tipo`, `titulo`, `texto`, `lugar`, `temperatura`, `idEntidad`, `idTematica`, `idDireccion`, `url`, `email`, `etiquetas`, `repeatsAfter`, `eventoActivo`) VALUES
+(667, '2014-05-27 20:00:00', NULL, 'eventos', 'convocatoria', 'Bicicrítica Torrejón ¡Usa la bici todos los días, celébralo una vez al mes!', 'Bicicrítica Torrejón ¡Usa la bici todos los días, celébralo una vez al mes!', 'Torrejón de Ardoz', 1, 31, 179, 266, NULL, NULL, '', 0, 1),
+(737, '2014-05-25 09:00:00', NULL, 'eventos', 'convocatoria', 'Elecciones al Parlamento Europeo', 'Elecciones al Parlamento Europeo', 'Villalbilla', 3, 241, 35, 76, NULL, NULL, '', 0, 1),
+(886, '2014-05-16 16:30:00', NULL, 'eventos', 'recurrente', 'Lactancia Reunión Grupo Lactard', 'Lactancia Reunión Grupo Lactard', 'Torres, CM', 4, 8, 203, 41, NULL, NULL, '', 21, 1),
+(887, '2014-05-23 16:30:00', NULL, 'eventos', 'recurrente', 'Lactancia Reunión Grupo Lactard', 'Lactancia Reunión Grupo Lactard', 'Torres, CM', 3, 420, 166, 41, NULL, NULL, '', 19, 1),
+(888, '2014-05-30 16:30:00', NULL, 'eventos', 'convocatoria', 'Lactancia Reunión Grupo Lactard', 'Lactancia Reunión Grupo Lactard', 'Torres, CM', 2, 416, 50, 41, NULL, NULL, '', 0, 1),
+(971, '2014-05-13 19:00:00', '2014-05-13 20:30:00', 'eventos', 'recurrente', 'Reunión PAH - Corredor del Henares', '<h3>El pasaje est&aacute;ndar Lorem Ipsum, usado desde el a&ntilde;o 1500.</h3>\r\n			<p>"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>\r\n			<h3>Secci&oacute;n 1.10.32 de &quot;de Finibus Bonorum et Malorum&quot;, escrito por Cicero en el 45 antes de Cristo</h3>\r\n			<p>"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"</p>\r\n			<h3>Traducción hecha por H. Rackham en 1914</h3>\r\n			<p>"But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?"</p>\r\n			<h3>Secci&oacute;n 1.10.33 de &quot;de Finibus Bonorum et Malorum&quot;, escrito por Cicero en el 45 antes de Cristo</h3>\r\n			<p>"At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."</p>\r\n			<h3>Traducción hecha por H. Rackham en 1914</h3>\r\n			<p>"On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains."</p>', 'Alcalá de Henares', 2, 266, 112, 902, 'http://www.urldeejemplo.es', 'correo@emaildeejemplo.es', 'Dignidad, 15M, 22M', 14, 1),
+(972, '2014-05-20 19:00:00', NULL, 'eventos', 'convocatoria', 'Reunión PAH - Corredor del Henares', 'Reunión PAH - Corredor del Henares', 'Alcalá de Henares', 4, 84, 213, 903, NULL, NULL, '', 0, 1),
+(973, '2014-05-27 19:00:00', NULL, 'eventos', 'recurrente', 'Reunión PAH - Corredor del Henares', 'Reunión PAH - Corredor del Henares', 'Alcalá de Henares', 4, 169, 316, 904, NULL, NULL, '', 12, 1),
+(1007, '2014-05-14 17:00:00', NULL, 'eventos', 'convocatoria', 'Lactancia  Grupo de apoyo de Lactavida', 'Lactancia  Grupo de apoyo de Lactavida', 'Alcalá de Henares', 5, 41, 298, 905, NULL, NULL, '', 0, 1),
+(1008, '2014-05-28 17:00:00', NULL, 'eventos', 'recurrente', 'Lactancia  Grupo de apoyo de Lactavida', 'Lactancia  Grupo de apoyo de Lactavida', 'Alcalá de Henares', 2, 247, 225, 906, NULL, NULL, '', 11, 1),
+(1022, '2014-05-20 11:00:00', NULL, 'eventos', 'convocatoria', 'Lactancia  Grupo de apoyo de Lactavida', 'Lactancia  Grupo de apoyo de Lactavida', 'Alcalá de Henares', 2, 434, 214, 907, NULL, NULL, '', 0, 1),
+(1042, '2014-05-22 16:30:00', NULL, 'eventos', 'convocatoria', 'Lactancia  Grupo de apoyo de Lactavida', 'Lactancia  Grupo de apoyo de Lactavida', 'Alcalá de Henares', 4, 401, 277, 908, NULL, NULL, '', 0, 1),
+(1052, '2014-05-28 20:00:00', NULL, 'eventos', 'recurrente', 'Bici Crítica Alcalá ¡Usa la bici todos los días, celébralo una vez al mes!', 'Bici Crítica Alcalá ¡Usa la bici todos los días, celébralo una vez al mes!', 'Alcalá de Henares', 1, 322, 294, 909, NULL, NULL, '', 17, 1),
+(1090, '2014-05-19 18:00:00', NULL, 'eventos', 'recurrente', 'Taller Social de la Bici', 'Taller Social de la Bici', 'Alcalá de Henares', 3, 408, 46, 910, NULL, NULL, '', 12, 1),
+(1091, '2014-05-26 18:00:00', NULL, 'eventos', 'recurrente', 'Taller Social de la Bici', 'Taller Social de la Bici', 'Alcalá de Henares', 5, 521, 170, 911, NULL, NULL, '', 7, 1),
+(1119, '2014-05-18 18:00:00', NULL, 'eventos', 'recurrente', 'Taller Social de la Bici', 'Taller Social de la Bici', 'Alcalá de Henares', 1, 276, 14, 912, NULL, NULL, '', 18, 1),
+(1120, '2014-05-25 18:00:00', NULL, 'eventos', 'convocatoria', 'Taller Social de la Bici', 'Taller Social de la Bici', 'Alcalá de Henares', 2, 365, 152, 913, NULL, NULL, '', 0, 1),
+(1151, '2014-05-16 18:30:00', NULL, 'eventos', 'convocatoria', 'PAH Reunión-Asesoría', 'PAH Reunión-Asesoría', 'Coslada', 1, 445, 45, 288, NULL, NULL, '', 0, 1),
+(1152, '2014-05-23 18:30:00', NULL, 'eventos', 'recurrente', 'PAH Reunión-Asesoría', 'PAH Reunión-Asesoría', 'Coslada', 3, 26, 194, 308, NULL, NULL, '', 6, 1),
+(1201, '2014-05-19 19:00:00', NULL, 'eventos', 'convocatoria', 'Asamblea abierta Red de Solidaridad Popular', 'Asamblea abierta Red de Solidaridad Popular', 'Alcalá de Henares', 4, 448, 243, 914, NULL, NULL, '', 0, 1),
+(1202, '2014-05-26 19:00:00', NULL, 'eventos', 'convocatoria', 'Asamblea abierta Red de Solidaridad Popular', 'Asamblea abierta Red de Solidaridad Popular', 'Alcalá de Henares', 1, 506, 139, 915, NULL, NULL, '', 0, 1),
+(1227, '2014-05-20 17:00:00', NULL, 'eventos', 'convocatoria', 'Pleno municipal Ayuntamiento de Alcalá', 'Pleno municipal Ayuntamiento de Alcalá', 'Alcalá de Henares', 3, 81, 196, 916, NULL, NULL, '', 0, 1),
+(1340, '2014-05-29 18:00:00', NULL, 'eventos', 'convocatoria', 'Plenos en Juntas Municipales de Distrito', 'Plenos en Juntas Municipales de Distrito', 'Alcalá de Henares', 5, 542, 28, 917, NULL, NULL, '', 0, 1),
+(1478, '2014-05-24 11:30:00', NULL, 'eventos', 'recurrente', 'I Encuentro de Alternativas Fácticas de Vivienda del Henares', 'I Encuentro de Alternativas Fácticas de Vivienda del Henares', 'Alcalá de Henares', 4, 257, 191, 918, NULL, NULL, '', 19, 1),
+(1555, '2014-05-19 10:30:00', NULL, 'eventos', 'recurrente', 'Lactancia reunión del grupo Lactard', 'Lactancia reunión del grupo Lactard', 'Alcalá de Henares', 5, 208, 288, 919, NULL, NULL, '', 14, 1),
+(1556, '2014-05-26 10:30:00', NULL, 'eventos', 'recurrente', 'Lactancia reunión del grupo Lactard', 'Lactancia reunión del grupo Lactard', 'Alcalá de Henares', 3, 267, 36, 920, NULL, NULL, '', 12, 1),
+(1602, '2014-05-13 11:00:00', NULL, 'eventos', 'convocatoria', 'Grupo de apoyo a la lactancia de Lactavida', 'Grupo de apoyo a la lactancia de Lactavida', 'Alcalá de Henares', 1, 158, 175, 921, NULL, NULL, '', 0, 1),
+(1603, '2014-05-20 11:00:00', NULL, 'eventos', 'convocatoria', 'Grupo de apoyo a la lactancia de Lactavida', 'Grupo de apoyo a la lactancia de Lactavida', 'Alcalá de Henares', 3, 542, 107, 922, NULL, NULL, '', 0, 1),
+(1604, '2014-05-27 11:00:00', NULL, 'eventos', 'recurrente', 'Grupo de apoyo a la lactancia de Lactavida', 'Grupo de apoyo a la lactancia de Lactavida', 'Alcalá de Henares', 3, 24, 190, 923, NULL, NULL, '', 16, 1),
+(1665, '2014-05-27 19:30:00', NULL, 'eventos', 'convocatoria', 'Presentación libro Guía de árboles singulares Molina de Aragón y el Alto Tajo', 'Presentación libro Guía de árboles singulares Molina de Aragón y el Alto Tajo', 'Alcalá de Henares', 1, 149, 232, 924, NULL, NULL, '', 0, 1),
+(1691, '2014-05-22 20:30:00', NULL, 'eventos', 'recurrente', 'Presentación libro El movimiento obrero en Alcalá de Henares, 1868-1939', 'Presentación libro El movimiento obrero en Alcalá de Henares, 1868-1939', 'Alcalá de Henares', 3, 118, 300, 925, NULL, NULL, '', 1, 1),
+(1703, '2014-05-23 19:30:00', NULL, 'eventos', 'convocatoria', 'Agua de Mayo - Un nuevo espacio en Alcalá', 'Agua de Mayo - Un nuevo espacio en Alcalá', 'Alcalá de Henares', 3, 141, 231, 926, NULL, NULL, '', 0, 1),
+(1722, '2014-05-24 20:30:00', NULL, 'eventos', 'convocatoria', 'Proyección del documental "Stop! Rodando el cambio"', 'Proyección del documental "Stop! Rodando el cambio"', 'Alcalá de Henares', 2, 352, 153, 927, NULL, NULL, '', 0, 1),
+(1769, '2014-05-13 18:00:00', NULL, 'eventos', 'convocatoria', 'Mesa redonda sobre las elecciones europeas y el delegacionismo', 'Mesa redonda sobre las elecciones europeas y el delegacionismo', 'Alcalá de Henares', 3, 230, 250, 928, NULL, NULL, '', 0, 1),
+(1774, '2014-05-16 18:00:00', NULL, 'eventos', 'convocatoria', 'Presentación del libro “Contrapoder sindical” ', 'Presentación del libro “Contrapoder sindical” ', 'Alcalá de Henares', 5, 95, 222, 929, NULL, NULL, '', 0, 1),
+(1781, '2014-05-17 11:00:00', NULL, 'eventos', 'recurrente', 'Encuentro con autor "Abriendo brecha. (...) la lucha de las mujeres por su emancipación" ', 'Encuentro con autor "Abriendo brecha. (...) la lucha de las mujeres por su emancipación" ', 'Alcalá de Henares', 1, 333, 253, 930, NULL, NULL, '', 19, 1),
+(1799, '2014-05-17 12:00:00', NULL, 'eventos', 'recurrente', 'I aniversario de Fraguas Jornada de trabajo y celebración', 'I aniversario de Fraguas Jornada de trabajo y celebración', 'Alcalá de Henares', 4, 277, 33, 931, NULL, NULL, '', 7, 1),
+(1805, '2014-05-15 19:30:00', NULL, 'eventos', 'recurrente', 'Proyección de la película "SALMOS DESDE LA COCINA"', 'Proyección de la película "SALMOS DESDE LA COCINA"', 'Alcalá de Henares', 4, 383, 118, 932, NULL, NULL, '', 20, 1),
+(1807, '2014-05-16 20:30:00', NULL, 'eventos', 'recurrente', '¡Vuelve "LA FARMACIA DE ANTON CHEJOV"!', '¡Vuelve "LA FARMACIA DE ANTON CHEJOV"!', 'Alcalá de Henares', 3, 532, 131, 933, NULL, NULL, '', 15, 1),
+(1813, '2014-05-26 19:30:00', NULL, 'eventos', 'convocatoria', 'Conferencia Protege tu salud, evita los tóxicos', 'Conferencia Protege tu salud, evita los tóxicos', 'Alcalá de Henares', 2, 407, 15, 934, NULL, NULL, '', 0, 1),
+(1820, '2014-05-19 18:00:00', NULL, 'eventos', 'convocatoria', 'Construcción de un nuevo espacio educativo alternativo en Alcalá (E. Infantil)', 'Construcción de un nuevo espacio educativo alternativo en Alcalá (E. Infantil)', 'Alcalá de Henares', 4, 434, 286, 935, NULL, NULL, '', 0, 1),
+(1821, '2014-05-26 18:00:00', NULL, 'eventos', 'recurrente', 'Construcción de un nuevo espacio educativo alternativo en Alcalá (E. Primaria)', 'Construcción de un nuevo espacio educativo alternativo en Alcalá (E. Primaria)', 'Alcalá de Henares', 3, 398, 154, 936, NULL, NULL, '', 15, 1),
+(1823, '2014-05-18 13:00:00', NULL, 'eventos', 'recurrente', 'Mercadillo artesano DIY Y trueque', 'Mercadillo artesano DIY Y trueque', 'Alcalá de Henares', 3, 132, 198, 937, NULL, NULL, '', 7, 1),
+(1830, '2014-05-13 17:30:00', NULL, 'eventos', 'convocatoria', 'Taller de Economía Doméstica', 'Taller de Economía Doméstica', 'Alcalá de Henares', 1, 20, 23, 938, NULL, NULL, '', 0, 1),
+(1831, '2014-05-20 18:00:00', NULL, 'eventos', 'recurrente', 'Punto de Información sobre la bellota (moneda social)', 'Punto de Información sobre la bellota (moneda social)', 'Alcalá de Henares', 1, 251, 314, 939, NULL, NULL, '', 13, 1),
+(1832, '2014-05-22 18:00:00', NULL, 'eventos', 'convocatoria', 'Inauguración de la Exposición “5 años de Rincón Lento”', 'Inauguración de la Exposición “5 años de Rincón Lento”', 'Alcalá de Henares', 2, 90, 250, 940, NULL, NULL, '', 0, 1),
+(1833, '2014-05-25 17:30:00', NULL, 'eventos', 'convocatoria', 'Taller de economía Doméstica (2ª parte).', 'Taller de economía Doméstica (2ª parte).', 'Alcalá de Henares', 4, 248, 168, 941, NULL, NULL, '', 0, 1),
+(1836, '2014-05-18 11:00:00', NULL, 'eventos', 'convocatoria', 'Carrera del lápiz verde', 'Carrera del lápiz verde', 'Alcalá de Henares', 2, 416, 250, 942, NULL, NULL, '', 0, 1),
+(1839, '2014-05-17 18:00:00', NULL, 'eventos', 'convocatoria', 'CIne Forum Precarias a la deriva', 'CIne Forum Precarias a la deriva', 'Alcalá de Henares', 2, 231, 179, 943, NULL, NULL, '', 0, 1),
+(1840, '2014-05-18 13:00:00', NULL, 'eventos', 'convocatoria', 'Vermú Rock PODEMOS', 'Vermú Rock PODEMOS', 'Alcalá de Henares', 3, 459, 218, 944, NULL, NULL, '', 0, 1),
+(1842, '2014-10-01 03:00:00', NULL, 'eventos', 'convocatoria', 'Título', 'Desc', 'Casa de Kike', 1, 158, 1, 324, 'kike.es', 'correo@kike.es', '', 0, 1),
+(1843, '2014-10-02 08:00:00', '2014-10-02 09:00:00', 'eventos', 'convocatoria', 'Título nuevo de evento', '<h1>Cabecera nivel 1</h1><h2><u>Cabecera subrayada nivel 2</u></h2>Texto inicial<br>Texto segundo<br><ol><li>Numerado 1</li><li>Numerado 2</li></ol><ul><li>Puntuado 1</li><li>Puntuado 2</li></ul>', 'Parque Copasa', 1, 158, 1, 1, 'google.com', 'acorreo@kike.es', 'Etiqueta 1,Etiqueta 2,Etiqueta 3', 0, 0),
+(1844, '2014-10-02 03:00:00', NULL, 'eventos', 'convocatoria', 'Segundo título', '<h1>Descripción dos</h1>Eso, otra descripción<br>', 'Facultad de Filosofía y Letras (UAH) Colegio de Málaga', 1, 158, 8, 7, 'facebook.com', 'cdorreo@kike.es', '', 0, 0),
+(1845, '2014-10-03 06:00:00', '2014-10-03 04:00:00', 'eventos', 'convocatoria', 'Tercero', 'Desc', 'Prueba colegios 2', 1, 158, 4, 325, 'google.com', 'cordreo@kike.es', '', 0, 0),
+(1847, '2014-09-12 03:00:00', NULL, 'eventos', 'convocatoria', 'Quinto', 'aaaaa', 'Facultad de Filosofía y Letras (UAH) Colegio de Málaga', 1, 158, 3, 7, 'meneame.net', 'coerreo@kike.es', '', 0, 0),
+(1848, '2014-09-12 04:00:00', NULL, 'eventos', 'convocatoria', 'Sexto', 'Texto', 'Cuatro Caños', 1, 158, 1, 8, 'ab.ce', 'correro@kike.es', 'aa', 0, 1),
+(1849, '2014-10-01 19:00:00', NULL, 'eventos', 'convocatoria', 'Prueba final editor texto', '<h1>Cabecera</h1><h2>Cuerpo</h2><ol><li>Uno</li><li>Dos</li><li>Tres</li></ol><b>Enlace:</b><br><a href="http://www.google.es" title="Link: http://www.google.es">Vamos a Google</a><br><br><b>Foto:<br></b><img src="https://c1.staticflickr.com/5/4046/4670729810_f3811e83b7_n.jpg" title="Image: https://c1.staticflickr.com/5/4046/4670729810_f3811e83b7_n.jpg"><br><br><i>Pie en cursiva</i><br>', 'Casa de Rafa', 1, 158, 6, 326, 'google.es', 'pedro@citysens.net', 'Etiqueta Creada', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -3103,14 +3084,11 @@ INSERT INTO `eventos` (`idEvento`, `fecha`, `fechaFin`, `clase`, `tipo`, `titulo
 --
 
 DROP TABLE IF EXISTS `eventos_tematicas`;
-CREATE TABLE IF NOT EXISTS `eventos_tematicas` (
-  `idEventoTematica` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `eventos_tematicas` (
+`idEventoTematica` int(11) NOT NULL,
   `idEvento` int(11) NOT NULL,
-  `idTematica` int(11) NOT NULL,
-  PRIMARY KEY (`idEventoTematica`),
-  KEY `idEntidad` (`idEvento`),
-  KEY `idTematica` (`idTematica`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=164 ;
+  `idTematica` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=164 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `eventos_tematicas`
@@ -3286,13 +3264,12 @@ INSERT INTO `eventos_tematicas` (`idEventoTematica`, `idEvento`, `idTematica`) V
 --
 
 DROP TABLE IF EXISTS `preregister`;
-CREATE TABLE IF NOT EXISTS `preregister` (
-  `idPreregister` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `preregister` (
+`idPreregister` int(11) NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `idCiudad` int(11) NOT NULL,
-  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`idPreregister`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
+  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `preregister`
@@ -3312,13 +3289,11 @@ INSERT INTO `preregister` (`idPreregister`, `email`, `idCiudad`, `fecha`) VALUES
 --
 
 DROP TABLE IF EXISTS `tematicas`;
-CREATE TABLE IF NOT EXISTS `tematicas` (
-  `idTematica` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `tematicas` (
+`idTematica` int(11) NOT NULL,
   `tematica` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `idTopicAgenda` int(11) NOT NULL,
-  PRIMARY KEY (`idTematica`),
-  KEY `tematica` (`tematica`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=32 ;
+  `idTopicAgenda` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `tematicas`
@@ -3364,7 +3339,7 @@ INSERT INTO `tematicas` (`idTematica`, `tematica`, `idTopicAgenda`) VALUES
 --
 
 DROP TABLE IF EXISTS `territorios`;
-CREATE TABLE IF NOT EXISTS `territorios` (
+CREATE TABLE `territorios` (
   `id` int(11) unsigned NOT NULL,
   `idPadre` int(11) unsigned DEFAULT NULL,
   `idDescendiente` int(11) unsigned DEFAULT NULL COMMENT 'Id of the only child , 0 if no child, NULL otherwise',
@@ -3382,9 +3357,7 @@ CREATE TABLE IF NOT EXISTS `territorios` (
   `nombreCorto` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `activo` tinyint(1) NOT NULL DEFAULT '0',
   `vecinos` varchar(350) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `idAgenda` int(11) unsigned DEFAULT NULL COMMENT 'idAgendaDelHenaresTerritorio',
-  PRIMARY KEY (`id`),
-  KEY `nivel` (`nivel`)
+  `idAgenda` int(11) unsigned DEFAULT NULL COMMENT 'idAgendaDelHenaresTerritorio'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -16938,17 +16911,14 @@ INSERT INTO `territorios` (`id`, `idPadre`, `idDescendiente`, `provincia`, `nive
 --
 
 DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
-  `idUser` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users` (
+`idUser` int(11) NOT NULL,
   `user` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `hash` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `verified` tinyint(1) NOT NULL,
-  `verificationToken` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`idUser`),
-  UNIQUE KEY `email` (`email`),
-  UNIQUE KEY `user` (`user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=26 ;
+  `verificationToken` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `users`
@@ -16959,6 +16929,114 @@ INSERT INTO `users` (`idUser`, `user`, `email`, `hash`, `verified`, `verificatio
 (24, 'Pedro Prieto', 'correo+pedro@kike.es', 'sha256:1000:JQgoVaIuccBSFGVXlyOvwK9lKn6iOxtZ:j0yb6cI9rhCS+cZ/5k7RU+Qe4o5DJVQc', 0, '7qmQDkCBkHlfx91xgOYKuXYGaxOITA3g'),
 (25, 'Jesus', 'funambulo@hotmail.com', 'sha256:1000:HnTUpMETqrxQ/IimQZXHA8cl8wS0cvo5:00H2nxE8x1cdYX6w9+fpLyxoJqOtBCoI', 0, 'BTdXm2l/2Z7YXq6ZtApBH730CiXSpEMk');
 
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `avisoslistados`
+--
+ALTER TABLE `avisoslistados`
+ ADD PRIMARY KEY (`idAvisoListado`), ADD UNIQUE KEY `idUser` (`idUser`,`query`,`clase`);
+
+--
+-- Indices de la tabla `direcciones`
+--
+ALTER TABLE `direcciones`
+ ADD PRIMARY KEY (`idDireccion`), ADD KEY `idCiudad` (`idCiudad`), ADD KEY `idDistrito` (`idDistrito`), ADD KEY `idBarrio` (`idBarrio`);
+
+--
+-- Indices de la tabla `entidades`
+--
+ALTER TABLE `entidades`
+ ADD PRIMARY KEY (`idEntidad`), ADD KEY `entidad` (`entidad`), ADD KEY `idDireccion` (`idDireccion`);
+
+--
+-- Indices de la tabla `entidades_tematicas`
+--
+ALTER TABLE `entidades_tematicas`
+ ADD PRIMARY KEY (`idEntidadTematica`), ADD KEY `idEntidad` (`idEntidad`), ADD KEY `idTematica` (`idTematica`);
+
+--
+-- Indices de la tabla `eventos`
+--
+ALTER TABLE `eventos`
+ ADD PRIMARY KEY (`idEvento`), ADD KEY `titulo` (`titulo`);
+
+--
+-- Indices de la tabla `eventos_tematicas`
+--
+ALTER TABLE `eventos_tematicas`
+ ADD PRIMARY KEY (`idEventoTematica`), ADD KEY `idEntidad` (`idEvento`), ADD KEY `idTematica` (`idTematica`);
+
+--
+-- Indices de la tabla `preregister`
+--
+ALTER TABLE `preregister`
+ ADD PRIMARY KEY (`idPreregister`);
+
+--
+-- Indices de la tabla `tematicas`
+--
+ALTER TABLE `tematicas`
+ ADD PRIMARY KEY (`idTematica`), ADD KEY `tematica` (`tematica`);
+
+--
+-- Indices de la tabla `territorios`
+--
+ALTER TABLE `territorios`
+ ADD PRIMARY KEY (`id`), ADD KEY `nivel` (`nivel`);
+
+--
+-- Indices de la tabla `users`
+--
+ALTER TABLE `users`
+ ADD PRIMARY KEY (`idUser`), ADD UNIQUE KEY `email` (`email`), ADD UNIQUE KEY `user` (`user`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `avisoslistados`
+--
+ALTER TABLE `avisoslistados`
+MODIFY `idAvisoListado` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=40;
+--
+-- AUTO_INCREMENT de la tabla `entidades`
+--
+ALTER TABLE `entidades`
+MODIFY `idEntidad` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=554;
+--
+-- AUTO_INCREMENT de la tabla `entidades_tematicas`
+--
+ALTER TABLE `entidades_tematicas`
+MODIFY `idEntidadTematica` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1687;
+--
+-- AUTO_INCREMENT de la tabla `eventos`
+--
+ALTER TABLE `eventos`
+MODIFY `idEvento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1850;
+--
+-- AUTO_INCREMENT de la tabla `eventos_tematicas`
+--
+ALTER TABLE `eventos_tematicas`
+MODIFY `idEventoTematica` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=164;
+--
+-- AUTO_INCREMENT de la tabla `preregister`
+--
+ALTER TABLE `preregister`
+MODIFY `idPreregister` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT de la tabla `tematicas`
+--
+ALTER TABLE `tematicas`
+MODIFY `idTematica` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=32;
+--
+-- AUTO_INCREMENT de la tabla `users`
+--
+ALTER TABLE `users`
+MODIFY `idUser` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=26;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

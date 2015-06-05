@@ -482,9 +482,6 @@ function crearNuevoEvento($datosNuevoEvento)
     $titulo=safe($link, $datosNuevoEvento["titulo"]);
     $texto=safe($link, $datosNuevoEvento["texto"]);
     $lugar=safe($link, $datosNuevoEvento["lugar"]);
-    $x=safe($link, $datosNuevoEvento["x"]);
-    $y=safe($link, $datosNuevoEvento["y"]);
-    $idDistritoPadre=safe($link, $datosNuevoEvento["idDistritoPadre"]);
     $idEntidad=safe($link, $datosNuevoEvento["idEntidad"]);
     $temperatura=safe($link, $datosNuevoEvento["temperatura"]);
     $tematicas=array();
@@ -502,9 +499,9 @@ function crearNuevoEvento($datosNuevoEvento)
     
     mysqli_query($link, 'SET CHARACTER SET utf8');
 
-    $sql="INSERT INTO eventos (fecha,fechaFin,clase,tipo,titulo,texto,lugar,temperatura,x,y,idDistritoPadre,idEntidad,
+    $sql="INSERT INTO eventos (fecha,fechaFin,clase,tipo,titulo,texto,lugar,temperatura,idEntidad,
                                 idTematica,idDireccion,url,email,etiquetas,repeatsAfter,eventoActivo)
-                       VALUES ('$fecha',$fechaFin,'$clase','$tipo','$titulo','$texto','$lugar','$temperatura','$x','$y','$idDistritoPadre','$idEntidad',
+                       VALUES ('$fecha',$fechaFin,'$clase','$tipo','$titulo','$texto','$lugar','$temperatura','$idEntidad',
                                 '$idTematica','$idDireccion','$url','$email','$etiquetas','$repeatsAfter','$eventoActivo')";
     mysqli_query($link, $sql);
     $idEvento=mysql_insert_id();
