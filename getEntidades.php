@@ -42,7 +42,7 @@ if($tipoGrupos=="puntuacion")
 			$datos["y"]=$entidad["lat"];
             $datos["idCiudad"]=$entidad["idCiudad"];
             $datos["idDistrito"]=$entidad["idDistrito"];
-            $datos["idBarrio"]=$entidad["idSubCiudad"];
+            $datos["idBarrio"]=$entidad["idBarrio"];
 			$datos["tematica"]=utf8_encode($entidad["tematica"]);
 			array_push($filas,$datos);
 
@@ -108,7 +108,9 @@ else
 		$datos["tematica"]=utf8_encode($entidad["tematica"]);
 		$datos["x"]=$entidad["lng"];
 		$datos["y"]=$entidad["lat"];
-		$datos["idDistritoPadre"]=$entidad["idPadre"];
+		$datos["idCiudad"]=$entidad["idCiudad"];
+        $datos["idDistrito"]=$entidad["idDistrito"];
+        $datos["idBarrio"]=$entidad["idBarrio"];
 
 		if(!is_array($grupos[$grupoActual][""]["filas"]))
 		{

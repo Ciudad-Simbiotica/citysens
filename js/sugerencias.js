@@ -7,74 +7,82 @@ $.urlParam = function(name){
 
 function clickSuggestion(imagen,texto1,tipo,id,abrev) //Añadir id, texto buscado
 {
-  $("#cabecera-suggest").empty();
-  console.log("Clic Sugerencia: "+imagen+"/"+texto1+"/"+tipo);
-
-  var clone=$("#tagFiltroTemplate").clone();
-  clone.hide();
-  clone.attr("id",texto1);
-  if (texto1.length>27)
-  texto1=abrev;
-  clone.find('.tagFiltro-texto').html(texto1);
-  clone.find('.tagFiltro-imagen').css('background-image', "url("+imagen+")");
-
-  console.log(window.conf.clase);
-
-  clone.find('.tagFiltro-x').click(function()
-  {
-    //Borrado  del filtro
-    conf.arrayTags = jQuery.grep(conf.arrayTags, function(value) 
-    {
-      var coincide=((value.texto==texto1)&(value.tipo==tipo)&(value.id==id));
-      return !coincide;
+  existe=false;
+  $.each(conf.arrayTags, function(key,value) {
+      if(!existe)
+        existe=((value.texto==texto1)&(value.tipo==tipo));
     });
-    
-    //cargarDatos(window.conf.clase,$("#select_ordenar").val());
-   // if (window.listado.tipo)
-   if (!window.listado.tipo)
-    window.listado.tipo="eventos";
-    if (!window.listado.orden)
-        window.listado.orden="puntuacion";
-    window.listado.orden=$("#select_ordenar").val();      
-    $(this).fadeOut("fast",function(){
-      $(this).parent().remove();
-    });
-    cargarDatos();
-  });
+  if (!existe)
+  {    
+      $("#cabecera-suggest").empty();
+      console.log("Clic Sugerencia: "+imagen+"/"+texto1+"/"+tipo);
 
-  //clone.find('.grupo-cabecera-cntr').html(center);
-  //clone.find('.grupo-cabecera-dch').html(right);
-  
-  tipoFiltro=tipo;
-  if((tipoFiltro=='institucion')|(tipoFiltro=='colectivo')|(tipoFiltro=='organizacion'))
-    tipoFiltro='entidad';
+      var clone=$("#tagFiltroTemplate").clone();
+      clone.hide();
+      clone.attr("id",texto1);
+      if (texto1.length>27)
+      texto1=abrev;
+      clone.find('.tagFiltro-texto').html(texto1);
+      clone.find('.tagFiltro-imagen').css('background-image', "url("+imagen+")");
 
-  clone.addClass("tagFiltro-"+tipoFiltro);
+      console.log(window.conf.clase);
 
-  clone.appendTo(".agenda-filtros-"+tipoFiltro);
-  clone.fadeIn("fast");
+      clone.find('.tagFiltro-x').click(function()
+      {
+        //Borrado  del filtro
+        conf.arrayTags = jQuery.grep(conf.arrayTags, function(value) 
+        {
+          var coincide=((value.texto==texto1)&(value.tipo==tipo)&(value.id==id));
+          return !coincide;
+        });
+
+        //cargarDatos(window.conf.clase,$("#select_ordenar").val());
+       // if (window.listado.tipo)
+       if (!window.listado.tipo)
+        window.listado.tipo="eventos";
+        if (!window.listado.orden)
+            window.listado.orden="puntuacion";
+        window.listado.orden=$("#select_ordenar").val();      
+        $(this).fadeOut("fast",function(){
+          $(this).parent().remove();
+        });
+        cargarDatos();
+      });
+
+      //clone.find('.grupo-cabecera-cntr').html(center);
+      //clone.find('.grupo-cabecera-dch').html(right);
+
+      tipoFiltro=tipo;
+      if((tipoFiltro=='institucion')|(tipoFiltro=='colectivo')|(tipoFiltro=='organizacion'))
+        tipoFiltro='entidad';
+
+      clone.addClass("tagFiltro-"+tipoFiltro);
+
+      clone.appendTo(".agenda-filtros-"+tipoFiltro);
+      clone.fadeIn("fast");
 
 
-  /*
-  var sugerencia=new Array();
-  sugerencia["texto"]=texto1;
-  sugerencia["tipo"]=tipo;
-  sugerencia["id"]=id;
-  */
+      /*
+      var sugerencia=new Array();
+      sugerencia["texto"]=texto1;
+      sugerencia["tipo"]=tipo;
+      sugerencia["id"]=id;
+      */
 
-  var sugerencia = 
-  {
-    "texto": texto1, 
-    "tipo": tipo,
-    "id": id
-  };
+      var sugerencia = 
+      {
+        "texto": texto1, 
+        "tipo": tipo,
+        "id": id
+      };
 
 
-  conf.arrayTags.push(sugerencia);
-  $("#input-busqueda").val('');
-  //cargarDatos(window.conf.clase,$("#select_ordenar").val());
-  window.listado.orden=$("#select_ordenar").val();
-  cargarDatos();
+      conf.arrayTags.push(sugerencia);
+      $("#input-busqueda").val('');
+      //cargarDatos(window.conf.clase,$("#select_ordenar").val());
+      window.listado.orden=$("#select_ordenar").val();
+      cargarDatos();
+  }
 
   /*if(!$('#input-busqueda').tagExist(texto1))
     $("#input-busqueda").addTag(texto1,{icon:tipo});
@@ -170,8 +178,7 @@ function suggestBusqueda(texto)
     $("#cabecera-suggest").find(".cabecera-suggest-fila:last").attr("id","cabecera-suggest-fila-0");
       $("#cabecera-suggest").find(".cabecera-suggest-fila:last").click(function()
       {
-          clickSuggestion("css/icons/lupa.png",texto,'busqueda',0);
-     $("#input-busqueda").val('');
+          clickSuggestion("css/icons/lupa.png",texto,'busqueda',0,"");
       });
     var i=1;
     $.each(data.suggestions, function(key, value)
