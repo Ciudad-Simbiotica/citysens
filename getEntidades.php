@@ -35,7 +35,10 @@ if($tipoGrupos=="puntuacion")
 
 			$datos["tituloOrg"]=utf8_encode($entidad["entidad"]);
 			$datos["textoOrg"]=utf8_encode($entidad["domicilio"]);
-			$datos["lugarOrg"]=utf8_encode($entidad["nombreLugar"]);
+            if($entidad["nombreCorto"]!="")
+				$datos["lugarOrg"]=utf8_encode($entidad["nombreCorto"]);
+            else
+				$datos["lugarOrg"]=utf8_encode($entidad["nombreLugar"]);
 			$datos["puntos"]=$entidad["points"];
     // TODO: Verify that these are taken from Direcciones and not from Entidades
 			$datos["x"]=$entidad["lng"];

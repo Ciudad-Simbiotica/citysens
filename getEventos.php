@@ -25,11 +25,13 @@ foreach($eventos as $evento)
 	$datos["tipo"]=utf8_encode($evento["tipo"]);
 	$grupo=date("Y-m-d",strtotime($evento["fecha"]));
 
-
 	$datos["titulo"]=utf8_encode($evento["titulo"]);
 	$datos["texto"]=utf8_encode($evento["texto"]);//$lorem;
 	$datos["hora"]=date("H:i",strtotime($evento["fecha"]));
-	$datos["lugar"]=utf8_encode($evento["lugar"]);
+    if($evento["nombreCorto"]!="")
+      $datos["lugar"]=utf8_encode($evento["nombreCorto"]);
+    else
+	  $datos["lugar"]=utf8_encode($evento["lugar"]);
 	$datos["temperatura"]=$evento["temperatura"];
 	$datos["tematicas"]=utf8_encode($evento["tematicas"]);
     // TODO: Verify that these are taken from Direcciones and not from Eventos
