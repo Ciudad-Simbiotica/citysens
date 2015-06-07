@@ -264,7 +264,7 @@ function getEntidadesZonaConEventos($cadena,$idTerritorio,$alrededores,$cantidad
             JOIN eventos
               ON entidades.idEntidad=eventos.idEntidad
             JOIN direcciones 
-              ON entidades.idDireccion=direcciones.idDireccion
+              ON eventos.idDireccion=direcciones.idDireccion
             JOIN territorios
               ON direcciones.idCiudad=territorios.id             
            WHERE entidad LIKE '%$cadena%'";
