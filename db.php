@@ -1002,7 +1002,7 @@ function getCoordenadasCentroidesColindantes($type,$xmin,$xmax,$ymin,$ymax)
 }
 
 
-// Returns data from the "base" territory for idLugar, ie: the first descendent with multiple offspring or no child. 
+// Returns data from the "base" territory for idLugar, ie: the first descendent with multiple offspring or no child.
 function getDatosLugarBase($idTerritorio)
 {
         //Sanitize input
@@ -1016,7 +1016,8 @@ function getDatosLugarBase($idTerritorio)
     $result=mysqli_query($link, $sql);
     $fila=mysqli_fetch_assoc($result);
     $descendiente=$fila["idDescendiente"];
-    if (!isset($descendiente) || ($descendiente!=0 && $descendiente!=2))
+    $nivel=$fila["nivel"];
+    if ($nivel!=8 && (!isset($descendiente) || ($descendiente!=0 && $descendiente!=2))) // In case it is not city level and it is mono-child
         //it has just one child
         return getDatosLugarBase($descendiente);
     else

@@ -23,42 +23,43 @@ function addPolygonToMap(idTerritorio,alrededores,url,nombre,color,activo)
         type: "POST",
         url: url,
         dataType: 'json',
-        success: function (response) {
-            function style(feature) {
-                return {
-                fillColor: color,
-                weight: 1,       
-                //color: 'white', //color de la linea
-                dashArray: '',
-                fillOpacity: 0.3,
-                };
-            }        
-        geojsonLayer = L.geoJson(response,{fillColor: color, weight: 1, style: style}).addTo(map);
-
-        if (activo!=-1)
+        success: function (response) 
         {
-            geojsonLayer.on('click',function (e)
-            {              
-                irATerritorio(activo,idTerritorio,alrededores,nombre) // llamada a cargar el mapa 
-            }); 
-            geojsonLayer.on('mouseover', function(e) 
+            function style(feature) {
+                    return {
+                    fillColor: color,
+                    weight: 1,       
+                    //color: 'white', //color de la linea
+                    dashArray: '',
+                    fillOpacity: 0.3,
+                    };
+                }        
+            geojsonLayer = L.geoJson(response,{fillColor: color, weight: 1, style: style}).addTo(map);
+
+            if (activo!=-1)
             {
-                $(".map-footer").html("Ir a "+nombre);
-                var layer = e.target;
-                layer.setStyle({
-                    weight: 1,              
-                    fillColor: '#98FB98',            
-                });      
-            });
-        
-            geojsonLayer.on('mouseout', function(e) 
-            {
-                $(".map-footer").html(window.conf.nombre);  
-                var layer = e.target;
-                layer.resetStyle(e.target);  //layer.resetStyle(); 
-            });        
-        }       
-        polygons[idTerritorio]=geojsonLayer;
+                geojsonLayer.on('click',function (e)
+                {              
+                    irATerritorio(activo,idTerritorio,alrededores,nombre) // llamada a cargar el mapa 
+                }); 
+                geojsonLayer.on('mouseover', function(e) 
+                {
+                    $(".map-footer").html("Ir a "+nombre);
+                    var layer = e.target;
+                    layer.setStyle({
+                        weight: 1,              
+                        fillColor: '#98FB98',            
+                    });      
+                });
+
+                geojsonLayer.on('mouseout', function(e) 
+                {
+                    $(".map-footer").html(window.conf.nombre);  
+                    var layer = e.target;
+                    layer.resetStyle(e.target);  //layer.resetStyle(); 
+                });        
+            }       
+            polygons[idTerritorio]=geojsonLayer;
         }
     });
 }  
@@ -270,8 +271,21 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
     nivelTios=nivelMostrado-1; // It could be adjusted if there is some level that is not considered significant (like districts, regions, etc.)
    
        
+    if (alrededores!=0) // We are on special navigation. We always allow to click on it to zoom into it.
+    {
+                addPolygonToMap(conf.idTerritorioMostrado,0,"shp/geoJSON/"+response.nivel+"/"+conf.idTerritorioMostrado+".geojson",response.nombre,'#ffaaaa',response.activo);
+
+            if (typeof window.cantidadPorLugar[idTerritorio] === 'undefined')
+                cantidad = '0';
+            else
+                cantidad = window.cantidadPorLugar[idTerritorio];
+            new L.Marker([response.ycentroid, response.xcentroid],
+                {
+                icon: new L.NumberedDivIcon({number: cantidad})
+                }).addTo(map);
+    }
     // If the territory has no child, the territory is shown
-    if (response.idDescendiente==0) 
+    else if (response.idDescendiente==0) 
     {
         if (response.activo==0)
             addPolygonToMap(conf.idTerritorioMostrado,0,"shp/geoJSON/"+response.nivel+"/"+conf.idTerritorioMostrado+".geojson",response.nombre,'#ffaaaa',0);
@@ -290,19 +304,6 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                 }).addTo(map);
         }
     }
-    else if (alrededores!=0||nivelMostrado==10) // Territory has child, but we are on special navigation. We allow to click on it to zoom into it.
-    {
-                addPolygonToMap(conf.idTerritorioMostrado,0,"shp/geoJSON/"+response.nivel+"/"+conf.idTerritorioMostrado+".geojson",response.nombre,'#ffaaaa',response.activo);
-
-            if (typeof window.cantidadPorLugar[idTerritorio] === 'undefined')
-                cantidad = '0';
-            else
-                cantidad = window.cantidadPorLugar[idTerritorio];
-            new L.Marker([response.ycentroid, response.xcentroid],
-                {
-                icon: new L.NumberedDivIcon({number: cantidad})
-                }).addTo(map);
-    } 
     else { //Cargamos los polígonos hijos
         $.getJSON("getChildAreas.php", 
             {
@@ -354,7 +355,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
         });
     }
 
-    if (nivelMostrado!=10 && !(alrededores!=0&&nivelMostrado==8)) //Navegación normal (no municipio + o barrios)
+    if (nivelMostrado!=8 && nivelMostrado!=10) //Navegación normal (no municipio +, municipio, barrio+ o barrio)
       {
         // Show the brothers 
         $.getJSON("getTerritoriosColindantes.php",
@@ -396,10 +397,8 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                         }); 
                     });
     }
-    else 
-    {
-        // For level 10 (neighbourhood), and 8 (city) with "alrededores" there is a special behaviour. Vecinos are shown in a different colour.
-        
+    else if (alrededores!=0)
+    {        // For level 10 (neighbourhood) and 8 (city) with special behaviour, vecinos are shown in a different colour.
         $.getJSON("getTerritorios.php",
             {
             dataType: 'json',
@@ -443,6 +442,28 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                     });
                 });
     }
+    else
+    {        // For level 10 (neighbourhood) and 8 (city) with no special behaviour, vecinos are shown.
+        $.getJSON("getTerritoriosColindantes.php",
+            {
+            dataType: 'json',
+            tipo:nivelMostrado,
+            xmin:fittedXMin,
+            xmax:fittedXMax,
+            ymin:fittedYMin,
+            ymax:fittedYMax,
+            territoriosExcluidos:conf.idTerritorioMostrado,
+            })
+            .done(function(data) 
+                {
+                $.each(data, function(i,datos)
+                    {
+                        addPolygonToMap(datos.id,0,"shp/geoJSON/"+nivelMostrado+"/"+datos.id+".geojson",datos.nombre,'#aaaaff',datos.activo);
+                    });
+                incluirPalanca();
+                });
+    }
+    
                     
       //Cargamos los eventos
         window.markers = [];
