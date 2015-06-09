@@ -218,7 +218,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
     
     // Define to use in footer and other places
     window.conf.idTerritorio=idTerritorio;
-    if (response.nivel==10 ||(alrededores!=0 && response.nivel==8))
+    if (alrededores!=0 && (response.nivel==10 || response.nivel==8))
         window.conf.nombre=response.nombre+' y alrededores';
     else
         window.conf.nombre=response.nombre;
@@ -320,7 +320,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                 // For level city and neighborhood, the special navigation is activated by including list of neighbour territories in a conf parameter)
                 if(nivelHijos==10 || nivelHijos==8)
                 {
-                    addPolygonToMap(datos.id,datos.vecinos,"shp/geoJSON/"+nivelHijos+"/"+datos.id+".geojson",datos.nombre,'#ffaaaa',datos.activo);
+                    addPolygonToMap(datos.id,datos.vecinos,"shp/geoJSON/"+nivelHijos+"/"+datos.id+".geojson",datos.nombre+" y alrededores",'#ffaaaa',datos.activo);
                     breadcrumbs_dropdown+='<li onclick="irATerritorio('+datos.activo+','+datos.id+',1,\''+datos.nombre+'\')">'+datos.nombre+'</li>';
                 }
                 else
@@ -408,7 +408,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                 {
                 $.each(data, function(i,datos)
                     {
-                        addPolygonToMap(datos.id,datos.vecinos,"shp/geoJSON/"+nivelMostrado+"/"+datos.id+".geojson",datos.nombre,'#FFE4C5',datos.activo);
+                        addPolygonToMap(datos.id,datos.vecinos,"shp/geoJSON/"+nivelMostrado+"/"+datos.id+".geojson",datos.nombre+" y alrededores",'#FFE4C5',datos.activo);
 
                         if(typeof window.cantidadPorLugar[datos.id] === 'undefined')
                             cantidad='0';
@@ -438,7 +438,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                 {
                 $.each(data, function(i,datos)
                     {
-                        addPolygonToMap(datos.id,datos.vecinos,"shp/geoJSON/"+nivelMostrado+"/"+datos.id+".geojson",datos.nombre,'#aaaaff',datos.activo);
+                        addPolygonToMap(datos.id,datos.vecinos,"shp/geoJSON/"+nivelMostrado+"/"+datos.id+".geojson",datos.nombre+" y alrededores",'#aaaaff',datos.activo);
                     });
                 });
     }
