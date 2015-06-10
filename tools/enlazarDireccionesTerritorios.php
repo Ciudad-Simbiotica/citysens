@@ -13,11 +13,9 @@ $provincia=28;
 
 $link=connect();
 
-for ($nivel=8; $nivel<=10;$nivel++) {
-
   $territorios=array();
   //Take all territories of level $nivel in a certain province
-  $sql="SELECT * FROM territorios WHERE nivel='$nivel' AND provincia='$provincia'";
+  $sql="SELECT * FROM territorios WHERE nivel='8' AND provincia='$provincia'";
 
   $result=mysqli_query($link,$sql);
   while($fila=mysqli_fetch_assoc($result))
@@ -25,13 +23,8 @@ for ($nivel=8; $nivel<=10;$nivel++) {
       array_push($territorios,$fila["id"]);
   }
   
-  if ($nivel==8)
   // Takes addresses that are not linked to any city
-    $sql="SELECT * FROM direcciones WHERE idCiudad is null";
-  else if ($nivel==9)
-    $sql="SELECT * FROM direcciones WHERE idDistrito is null";
-  else
-    $sql="SELECT * FROM direcciones WHERE idBarrio is null";
+    $sql="SELECT * FROM direcciones WHERE idCiudad is null OR idCiudad='0'";
   
   $direcciones=array();
   $asociados=array();
@@ -46,7 +39,7 @@ for ($nivel=8; $nivel<=10;$nivel++) {
   if (!empty($direcciones)){
     foreach($territorios as $territorio) {
         echo $territorio.PHP_EOL;
-        $poligono = geoPHP::load(file_get_contents("../shp/geoJSON/$nivel/$territorio.geojson"),'json');	
+        $poligono = geoPHP::load(file_get_contents("../shp/geoJSON/8/$territorio.geojson"),'json');	
 
         //print_r($poligono->asArray());//.PHP_EOL;
 
@@ -65,16 +58,93 @@ for ($nivel=8; $nivel<=10;$nivel++) {
 
     foreach($asociados as $id=>$territorio)
     {
-        if ($nivel==8)
-          mysqli_query($link,"UPDATE direcciones SET idCiudad='$territorio' WHERE idDireccion='$id'");
-        else if ($nivel==9)
-          mysqli_query($link,"UPDATE direcciones SET idDistrito='$territorio' WHERE idDireccion='$id'");
-        else
-          mysqli_query($link,"UPDATE direcciones SET idBarrio='$territorio' WHERE idDireccion='$id'");
+      mysqli_query($link,"UPDATE direcciones SET idCiudad='$territorio' WHERE idDireccion='$id'");
     }
   }
 
-}
-echo "HECHO!";
+  
+  $sql="SELECT * FROM direcciones WHERE (idDistrito is null OR idDistrito='0') AND idCiudad is not null AND idCiudad<>'0'";
+  
+  $direcciones=array();
+  $asociados=array();
+    
+  $result=mysqli_query($link,$sql);
+  while($fila=mysqli_fetch_assoc($result))
+  {
+//      array_push($direcciones,$fila);
+      $idCiudad=$fila["idCiudad"];
 
+      $territorios=array();
+      //Take all territories of level $nivel in a certain province
+      $sql="SELECT * FROM territorios WHERE nivel='9' AND idPadre='$idCiudad'";
+
+      $distritos=mysqli_query($link,$sql);
+      while($distrito=mysqli_fetch_assoc($distritos))
+      {
+          array_push($territorios,$distrito["id"]);
+      }  
+  
+
+        foreach($territorios as $territorio) {
+            echo $territorio.PHP_EOL;
+            $poligono = geoPHP::load(file_get_contents("../shp/geoJSON/9/$territorio.geojson"),'json');	
+
+            //print_r($poligono->asArray());//.PHP_EOL;
+
+                $punto = geoPHP::load("POINT({$fila['lng']} {$fila['lat']})","wkt");
+
+                if($poligono->contains($punto))
+                {
+                    $asociados[$fila["idDireccion"]]=$territorio;
+                }
+  }
+  
+    foreach($asociados as $id=>$territorio)
+    {
+          mysqli_query($link,"UPDATE direcciones SET idDistrito='$territorio' WHERE idDireccion='$id'");
+    }
+  }
+
+  $sql="SELECT * FROM direcciones WHERE (idBarrio is null OR idBarrio='0') AND idCiudad is not null AND idCiudad<>'0'";
+  
+  $direcciones=array();
+  $asociados=array();
+    
+  $result=mysqli_query($link,$sql);
+  while($fila=mysqli_fetch_assoc($result))
+  {
+//      array_push($direcciones,$fila);
+      $idCiudad=$fila["idCiudad"];
+
+      $territorios=array();
+      //Take all territories of level $nivel in a certain province
+      $sql="SELECT barrio.* FROM territorios as distrito, territorios as barrio WHERE barrio.nivel='10' AND barrio.idPadre=distrito.id AND distrito.idPadre='$idCiudad'";
+
+      $barrios=mysqli_query($link,$sql);
+      while($barrio=mysqli_fetch_assoc($barrios))
+      {
+          array_push($territorios,$barrio["id"]);
+      }  
+  
+
+        foreach($territorios as $territorio) {
+            echo $territorio.PHP_EOL;
+            $poligono = geoPHP::load(file_get_contents("../shp/geoJSON/10/$territorio.geojson"),'json');	
+
+            //print_r($poligono->asArray());//.PHP_EOL;
+
+                $punto = geoPHP::load("POINT({$fila['lng']} {$fila['lat']})","wkt");
+
+                if($poligono->contains($punto))
+                {
+                    $asociados[$fila["idDireccion"]]=$territorio;
+                }
+  }
+  
+    foreach($asociados as $id=>$territorio)
+    {
+          mysqli_query($link,"UPDATE direcciones SET idBarrio='$territorio' WHERE idDireccion='$id'");
+    }
+  }
+  echo "HECHO!";
 ?>
