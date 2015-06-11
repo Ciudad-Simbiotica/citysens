@@ -527,26 +527,6 @@ function cargarDatos()
     var hayUnLugar = false;
     var arrayTagsQuery = conf.arrayTags.slice();
 
-    // If there is no territory filter, then the original territoryId is inserted as a filter.
-    // TODO 2015.05.04: This is not optimal. It seems better that the function receives the territoryID which is applied in case there is none.
-
-//    $.each(arrayTagsQuery, function (i, object)
-//    {
-//        if (object.tipo == "lugar")
-//        {
-//            hayUnLugar = true;
-//        }
-//    });
-//    if (!hayUnLugar)
-//    {
-//        var sugerencia =
-//                {
-//                    "texto": "",
-//                    "tipo": "lugar",
-//                    "id": window.conf.idTerritorio
-//                };
-//        arrayTagsQuery.push(sugerencia);
-//    }
 
 
     var filtros = JSON.stringify(arrayTagsQuery);
@@ -591,7 +571,6 @@ function cargarDatos()
                 {
                     case "eventos":
                         if (window.conf.alrededores != 0)
-                            //TODO: Verify if this is necesary: it could be that lugarOriginal.nombre already includes " y alrededores"
                             primeraLinea = "Mostrando EVENTOS en <strong>" + data.lugarOriginal.nombre + " y alrededores</strong> en las próximas semanas" + conFiltros;
                         else
                             primeraLinea = "Mostrando EVENTOS en <strong>" + data.lugarOriginal.nombre + "</strong> en las próximas semanas" + conFiltros;
@@ -963,6 +942,7 @@ $(".cabecera-pestania-dch").click(function()
     //cargarDatos('organizaciones', $(this).val());
     window.listado.tipo="organizaciones";
     window.listado.orden=$(this).val();
+    cargarDatos();
   });
 //cargarDatos("organizaciones",'puntuacion');
 window.listado.orden="puntuacion";
