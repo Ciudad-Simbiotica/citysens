@@ -5,7 +5,7 @@ error_reporting(E_ERROR);
 set_time_limit(0);
 
 // Disabled unless needed
-//exit();
+exit();
 
 // Links addresses of a province to the correponding city (level 8), disctrict (9) and neighborhood (10) territories
 

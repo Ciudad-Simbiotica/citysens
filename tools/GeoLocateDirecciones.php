@@ -12,7 +12,7 @@ ini_set('default_charset', 'utf-8');
 $idCiudad="888004284";  //Id of the city addresses to update. In this case, Alcalá de Henares
 $direcciones=array();
 $link=connect();
-mysql_query("SET NAMES 'utf8'");
+mysqli_query($link,"SET NAMES 'utf8'");
 $sql="SELECT * FROM lugares_shp WHERE id='$idCiudad'";
 $result=mysqli_query($link,$sql);
 $area=mysqli_fetch_assoc($result);
