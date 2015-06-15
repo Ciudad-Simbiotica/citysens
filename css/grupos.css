@@ -341,6 +341,9 @@ div[class*='grupo-elemento-']
 	font-size: 12px;
 	height: 30px;
 	visibility:hidden;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
 }
 
 .grupo-elemento-textoOrg
@@ -350,6 +353,10 @@ div[class*='grupo-elemento-']
 	top:22px;
 	font-size: 12px;
 	height: 30px;
+        width: 385px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
 }
 
 .grupo-elemento-lugar
