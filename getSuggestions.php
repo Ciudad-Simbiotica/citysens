@@ -77,7 +77,7 @@ if($_GET["entidades"]=="")	//Sólo las mostramos si NO estamos en página de ent
 	$entidades=getEntidadesZonaConEventos($_GET["query"],$_GET["idTerritorio"],$_GET["alrededores"],4);
 	foreach($entidades as $entidad)
 	{
-		$sugestion["tipo"]=$entidad["tipoEntidad"];
+		$sugestion["tipo"]=$entidad["tipo"];
 		//$sugestion["texto1"]=htmlentities(ucwords(strtolower(substr($entidad["entidad"],0,50))));
         $sugestion["texto1"]=htmlentities($entidad["entidad"]);         
         $sugestion["abrev"]=htmlentities(rtrim(substr($entidad["entidad"],0,27))."...");

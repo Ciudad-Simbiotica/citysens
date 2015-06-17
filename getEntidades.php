@@ -39,7 +39,7 @@ if($tipoGrupos=="puntuacion")
             $i++;
             $datos["id"]=$entidad["idEntidad"];
             $datos["clase"]="organizaciones";
-            $datos["tipo"]=utf8_encode($entidad["tipoEntidad"]);	
+            $datos["tipo"]=utf8_encode($entidad["tipo"]);	
             $returnData["grupos"][""][$grupoActual]["totalFilas"][$datos["tipo"]]++;
             $datos["tituloOrg"]=utf8_encode($entidad["entidad"]);
             $datos["textoOrg"]=utf8_encode($entidad["domicilio"]);
@@ -102,7 +102,7 @@ else {
 			
         $datos["id"]=$entidad["idEntidad"];
         $datos["clase"]="organizaciones";
-        $datos["tipo"]=utf8_encode($entidad["tipoEntidad"]);
+        $datos["tipo"]=utf8_encode($entidad["tipo"]);
 
         $datos["tituloOrg"]=utf8_encode($entidad["entidad"]);
         $datos["textoOrg"]=utf8_encode($entidad["domicilio"]);

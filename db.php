@@ -259,7 +259,7 @@ function getEntidadesZonaConEventos($cadena,$idTerritorio,$alrededores,$cantidad
   $lugares=array();
   
   mysqli_query($link, 'SET CHARACTER SET utf8');
-    $sql="SELECT entidades.tipoEntidad, entidades.entidad, entidades.idEntidad, territorios.nombre
+    $sql="SELECT entidades.tipo, entidades.entidad, entidades.idEntidad, territorios.nombre
             FROM entidades 
             JOIN eventos
               ON entidades.idEntidad=eventos.idEntidad
