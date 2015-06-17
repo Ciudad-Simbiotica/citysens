@@ -114,6 +114,7 @@ function createLine(grupo,datos,animated,nombreSuperGrupo)
    		if(clase=="id")
       {
         clone.attr("id",contenido); //Ponemos ID a la fila
+        clone.addClass("id"+contenido);
         clone.find(".grupo-elemento-handup").click(function() //Añadimos la función de click al botón
         {
           clickHandUp(contenido);
@@ -193,7 +194,7 @@ function clickFila(id)
 {
   //alert("Click Fila: "+id);
   $("[class^=grupo-fila-]").removeClass("grupo-fila-selected");
-  $("#"+id).addClass("grupo-fila-selected");
+  $(".id"+id).addClass("grupo-fila-selected");
   //$(".informacion-cabecera").html("Cargando contenido: "+id);
 
   if($(".cabecera-pestania-izq").hasClass("cabecera-pestania-seleccionada"))
@@ -212,16 +213,18 @@ function clickFila(id)
 
 function enterFila(id)
 {
-    if(!($("#"+id).hasClass("grupo-fila-selected")))
+    if(!($("."+id).hasClass("grupo-fila-selected")))
        if(markers[id]!=null)   
-          markers[id].setOpacity(0.6);  
+          markers[id].setOpacity(0.6);
+    $(".id"+id).addClass("grupo-fila-hover");
 }
 
 function leaveFila(id)
 {
-  if(!($("#"+id).hasClass("grupo-fila-selected")))
+  if(!($("."+id).hasClass("grupo-fila-selected")))
     if(markers[id]!=null)
       markers[id].setOpacity(0);  
+  $(".id"+id).removeClass("grupo-fila-hover");
 }
 
 function switchFilas(clase,tipo)
@@ -632,9 +635,12 @@ function cargarDatos()
                                     window.cantidadPorLugar[item.idDistrito] = 0;
                                 if (typeof window.cantidadPorLugar[item.idCiudad] === 'undefined')
                                     window.cantidadPorLugar[item.idCiudad] = 0;
-                                window.cantidadPorLugar[item.idBarrio]++;
-                                window.cantidadPorLugar[item.idDistrito]++;
-                                window.cantidadPorLugar[item.idCiudad]++;
+                                if (item.primeraOcurrencia==1)
+                                {
+                                    window.cantidadPorLugar[item.idBarrio]++;
+                                    window.cantidadPorLugar[item.idDistrito]++;
+                                    window.cantidadPorLugar[item.idCiudad]++;
+                                }
                             });
                         });
                     });

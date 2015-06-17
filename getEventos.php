@@ -9,7 +9,8 @@ $eventos=getEventos($filtros,$idTerritorio,$alrededores,50);
 
 
 $tipoGrupos=$_GET["orden"];
-
+$filtrosTematica = array();
+       
 if($tipoGrupos=="popularidad")
 {
 	$returnData["grupos"]["Los más populares"]=array();
@@ -17,102 +18,116 @@ if($tipoGrupos=="popularidad")
 	$returnData["grupos"]["Bastante populares"]=array();
 	$returnData["grupos"]["Populares"]=array();
 	$returnData["grupos"]["Otros"]=array();
+} else if($tipoGrupos=="tematica")
+{
+    if (count($filtros)!=0){
+        //Verificar si hay filtros antes
+        foreach ($filtros as $filtro) {
+            if($filtro["tipo"]=="tematica")
+                $filtrosTematica[]=html_entity_decode($filtro["texto"]);                              	     
+        }        
+    }
 }
+   
 foreach($eventos as $evento)
 {
-	$datos["id"]=$evento["idEvento"];
-	$datos["clase"]="eventos";
-	$datos["tipo"]=utf8_encode($evento["tipo"]);
-	$grupo=date("Y-m-d",strtotime($evento["fecha"]));
-
-	$datos["titulo"]=utf8_encode($evento["titulo"]);
-	$datos["texto"]=utf8_encode($evento["texto"]);//$lorem;
-	$datos["hora"]=date("H:i",strtotime($evento["fecha"]));
+    $grupo=date("Y-m-d",strtotime($evento["fecha"]));
+    
+    $datos["id"]=$evento["idEvento"];
+    $datos["clase"]="eventos";
+    $datos["tipo"]=utf8_encode($evento["tipo"]);    
+    $datos["titulo"]=utf8_encode($evento["titulo"]);
+    $datos["texto"]=utf8_encode($evento["texto"]);//$lorem;
+    $datos["hora"]=date("H:i",strtotime($evento["fecha"]));
     if($evento["nombreCorto"]!="")
       $datos["lugar"]=utf8_encode($evento["nombreCorto"]);
     else
-	  $datos["lugar"]=utf8_encode($evento["lugar"]);
-	$datos["temperatura"]=$evento["temperatura"];
-	$datos["tematicas"]=utf8_encode($evento["tematicas"]);
-    // TODO: Verify that these are taken from Direcciones and not from Eventos
-	$datos["x"]=$evento["x"];
-	$datos["y"]=$evento["y"];
-	$datos["idCiudad"]=$evento["idCiudad"];
+      $datos["lugar"]=utf8_encode($evento["lugar"]);
+    $datos["temperatura"]=$evento["temperatura"];
+    $datos["tematicas"]=utf8_encode($evento["tematicas"]);
+    $datos["x"]=$evento["lng"];
+    $datos["y"]=$evento["lat"];
+    $datos["idCiudad"]=$evento["idCiudad"];
     $datos["idDistrito"]=$evento["idDistrito"];
     $datos["idBarrio"]=$evento["idBarrio"];
     
-	if($grupo==date("Y-m-d",strtotime("2014-05-13")))
-		$cabeceraIzq="Hoy, ";
-	else if($grupo==date("Y-m-d",strtotime("2014-05-13")+86400))
-		$cabeceraIzq="Mañana, ";
-	else
-		$cabeceraIzq="";
+    if($grupo==date("Y-m-d",strtotime("2014-05-13")))
+            $cabeceraIzq="Hoy, ";
+    else if($grupo==date("Y-m-d",strtotime("2014-05-13")+86400))
+            $cabeceraIzq="Mañana, ";
+    else
+            $cabeceraIzq="";
 
-	$cabeceraIzq.=ucfirst(strftime("%A %e",strtotime($evento["fecha"])));
-	$cabeceraIzq.=" de ".ucfirst(strftime("%B",strtotime($evento["fecha"])));
-
-
-	unset($nombreGrupos);
-	$nombreGrupos=array();
-
-	if($tipoGrupos=="fecha")
-		array_push($nombreGrupos,"");
-	else if($tipoGrupos=="lugar")
-		array_push($nombreGrupos,utf8_encode($evento["lugar"]));
-	else if($tipoGrupos=="tematica")
-	{
-		$nombreGrupos=split(',',utf8_encode($evento["tematicas"]));
-	}
-	else if($tipoGrupos=="popularidad")
-	{
-		$popularidad="";
-		switch ($evento["temperatura"]) 
-		{
-			case 5:
-				$popularidad="Los más populares";
-				break;
-			case 4:
-				$popularidad="Muy populares";
-				break;
-			case 3:
-				$popularidad="Bastante populares";
-				break;
-			case 2:
-				$popularidad="Populares";
-				break;
-			case 1:
-				$popularidad="Otros";
-				break;
-		}
-		array_push($nombreGrupos,$popularidad);		
-	}
+    $cabeceraIzq.=ucfirst(strftime("%A %e",strtotime($evento["fecha"])));
+    $cabeceraIzq.=" de ".ucfirst(strftime("%B",strtotime($evento["fecha"])));
 
 
-	
-	foreach($nombreGrupos as $nombreGrupo)
-	{		
-		if(!isset($returnData["grupos"][$nombreGrupo][$grupo]["totalFilas"]))
-		{
-			$returnData["grupos"][$nombreGrupo][$grupo]["totalFilas"]["convocatoria"]=0;
-			$returnData["grupos"][$nombreGrupo][$grupo]["totalFilas"]["recurrente"]=0;
-		}
+    unset($nombreGrupos);
+    $nombreGrupos=array();
 
-		$returnData["grupos"][$nombreGrupo][$grupo]["cabeceraIzq"]=$cabeceraIzq;
-		$returnData["grupos"][$nombreGrupo][$grupo]["cabeceraCntr"]="";//ucfirst(strftime("%A %e",$event["start_time"]));
-		$returnData["grupos"][$nombreGrupo][$grupo]["cabeceraDch"]="";//ucfirst(strftime("%B",$event["start_time"]));
-		$returnData["grupos"][$nombreGrupo][$grupo]["totalFilas"][$datos["tipo"]]++;
+    if($tipoGrupos=="fecha")
+            array_push($nombreGrupos,"");
+    else if($tipoGrupos=="lugar")
+            array_push($nombreGrupos,utf8_encode($evento["lugar"]));
+    else if($tipoGrupos=="tematica")
+    {
+        //Si no hay filtros de temáticas
+        if(count($filtrosTematica)==0)                       
+        $nombreGrupos=split(',',utf8_encode($evento["tematicas"]));
+        else{
+            $nombreGruposTemp=split(',',utf8_encode($evento["tematicas"]));
+            foreach ($nombreGruposTemp as $nombre){
+                if (in_array($nombre, $filtrosTematica))
+                 $nombreGrupos[]=$nombre;
+            }
+        } 
+    }
+    else if($tipoGrupos=="popularidad")
+    {
+            $popularidad="";
+            switch ($evento["temperatura"]) 
+            {
+                    case 5:
+                            $popularidad="Los más populares";
+                            break;
+                    case 4:
+                            $popularidad="Muy populares";
+                            break;
+                    case 3:
+                            $popularidad="Bastante populares";
+                            break;
+                    case 2:
+                            $popularidad="Populares";
+                            break;
+                    case 1:
+                            $popularidad="Otros";
+                            break;
+            }
+            array_push($nombreGrupos,$popularidad);		
+    }
 
-		
-		if(!is_array($returnData["grupos"][$nombreGrupo][$grupo]["filas"]))
-			$returnData["grupos"][$nombreGrupo][$grupo]["filas"]=array();
-		array_push($returnData["grupos"][$nombreGrupo][$grupo]["filas"],$datos);
-		
-	}
-	
+    $datos["primeraOcurrencia"]=1; //Para evitar que se cuente varias veces en el mapa
+    foreach($nombreGrupos as $nombreGrupo)
+    {		
+        $returnData["grupos"][$nombreGrupo][$grupo]["totalFilas"][$datos["tipo"]]++;
+
+        if(!is_array($returnData["grupos"][$nombreGrupo][$grupo]["filas"])) {
+            $returnData["grupos"][$nombreGrupo][$grupo]["cabeceraIzq"]=$cabeceraIzq;
+            $returnData["grupos"][$nombreGrupo][$grupo]["cabeceraCntr"]="";//ucfirst(strftime("%A %e",$event["start_time"]));
+            $returnData["grupos"][$nombreGrupo][$grupo]["cabeceraDch"]="";//ucfirst(strftime("%B",$event["start_time"]));
+            
+            $returnData["grupos"][$nombreGrupo][$grupo]["filas"]=array();
+        }
+        array_push($returnData["grupos"][$nombreGrupo][$grupo]["filas"],$datos);
+
+        if ($datos["primeraOcurrencia"]==1)
+            $datos["primeraOcurrencia"]=0;
+    }
+      
 }
 
 if($tipoGrupos=="tematica")
-	ksort($returnData["grupos"]);	//Ordenamos por la clave
+    ksort($returnData["grupos"]);	//Ordenamos por la clave
 else if($tipoGrupos=="popularidad")
 {
 	//Si no tienen ningún evento lo quitamos de los grupos
@@ -127,16 +142,17 @@ else if($tipoGrupos=="popularidad")
 	if(count($returnData["grupos"]["Otros"])==0)	
 		unset($returnData["grupos"]["Otros"]);
 }
+//
+//foreach($returnData["grupos"] as $nombreGrupo=>$datosGrupo)
+//foreach($datosGrupo as $id=>$grupo)
+//foreach($grupo["totalFilas"] as $key=>$value)
+//{
+//	if($value==0)
+//	{
+//		unset($returnData["grupos"][$nombreGrupo][$id]["totalFilas"][$key]);			
+//	}
+//}
 
-foreach($returnData["grupos"] as $nombreGrupo=>$datosGrupo)
-foreach($datosGrupo as $id=>$grupo)
-foreach($grupo["totalFilas"] as $key=>$value)
-{
-	if($value==0)
-	{
-		unset($returnData["grupos"][$nombreGrupo][$id]["totalFilas"][$key]);			
-	}
-}
 $returnData["tipo"]="eventos";
-$returnData["orden"]=$_GET["orden"];
+$returnData["orden"]=$tipoGrupos;
 ?>
