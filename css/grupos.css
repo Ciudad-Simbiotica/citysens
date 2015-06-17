@@ -172,7 +172,10 @@ div[class*='grupo-fila-']:hover
 		cursor: pointer; cursor: hand;		
 		background-color: #ffffe2;
 }
-
+.grupo-fila-hover
+{
+background-color: #ffffe2;    
+}
 .grupo-fila-selected
 {
 	box-shadow:0 2px 3px #aaa, 0 -2px 3px #aaa;
