@@ -353,10 +353,14 @@ function getEntidades($filtros, $idTerritorio, $alrededores, $cantidad=10)
         }
     }
 
-    $sql="SELECT entidades.*,entidades_tematicas.*,tematicas.*,direcciones.lng, direcciones.lat, direcciones.idCiudad as idCiudad, direcciones.idDistrito as idDistrito, direcciones.idBarrio as idBarrio, territorios.nombre as nombreLugar, territorios.nombreCorto as nombreCorto
-          FROM entidades JOIN entidades_tematicas ON entidades.idEntidad=entidades_tematicas.idEntidad 
-          JOIN tematicas ON entidades_tematicas.idTematica=tematicas.idTematica 
-          JOIN direcciones ON entidades.idDireccion=direcciones.idDireccion ";
+    $sql="SELECT entidades.*,direcciones.nombre as domicilio, direcciones.lng, direcciones.lat, direcciones.idCiudad, direcciones.idDistrito, direcciones.idBarrio, territorios.nombre as nombreLugar, territorios.nombreCorto as nombreCorto,
+            (SELECT GROUP_CONCAT(tematicas.tematica)
+               FROM entidades_tematicas, tematicas
+              WHERE entidades_tematicas.idTematica=tematicas.idTematica
+                AND entidades_tematicas.idEntidad = entidades.idEntidad) AS tematicas
+          FROM entidades, entidades_tematicas,direcciones, territorios
+          WHERE entidades.idDireccion=direcciones.idDireccion 
+          AND ";
     
   if (!$hayFiltroLugar) {
     $lugares[]=$idTerritorio;
@@ -367,36 +371,31 @@ function getEntidades($filtros, $idTerritorio, $alrededores, $cantidad=10)
 
   if ($nivel<8) // Levels above city, searches will be done on a city-basis
     {    
-      $sql.="JOIN territorios ON direcciones.idCiudad=territorios.id
-             WHERE ";    
+      $sql.=" direcciones.idCiudad=territorios.id AND ";    
       $hijos=getAllDescendantsOfLevel($lugares,8);
       $lugar="direcciones.idCiudad IN ('".join($hijos,"','")."')";
     }
     else if ($nivel==8 && $alrededores!=0) // Map at City + level, searches based on idCiudad 
     {
-      $sql.="JOIN territorios ON direcciones.idCiudad=territorios.id
-             WHERE ";   
+      $sql.=" direcciones.idCiudad=territorios.id AND ";   
       // No need to find descendants, as all ids in $lugares must already be ids from cities
       $lugar="direcciones.idCiudad IN ('".join($lugares,"','")."')";
     }
     else if ($nivel==8) //Map at city, searches done on SubCityLevel (district, neighborhood) basis, District name will be displayed
     {
-      $sql.="JOIN territorios ON direcciones.idDistrito=territorios.id
-             WHERE ";         
+      $sql.=" direcciones.idDistrito=territorios.id AND ";         
         $hijos=getAllChildren($lugares,9);
         $lugar="direcciones.idDistrito IN ('".join($hijos,"','")."') OR direcciones.idBarrio IN ('".join($hijos,"','")."')";
     }
     else if ($nivel==9) //Map at district level, searches done on SubCityLevel (district, neighborhood) basis, Neighborhood name will be displayed
     {
-      $sql.="JOIN territorios ON direcciones.idBarrio=territorios.id
-             WHERE ";         
+      $sql.=" direcciones.idBarrio=territorios.id AND ";         
         $hijos=getAllChildren($lugares,9);
         $lugar="direcciones.idDistrito IN ('".join($hijos,"','")."') OR direcciones.idBarrio IN ('".join($hijos,"','")."')";
     }
     else // Map at Neighborhood level, search done on idBarrio basis
     {
-      $sql.="JOIN territorios ON direcciones.idBarrio=territorios.id
-             WHERE ";         
+      $sql.=" direcciones.idBarrio=territorios.id AND ";         
       // No need to find descendants, as all ids in $lugares must already be ids from neighborhoods
       $lugar="direcciones.idBarrio IN ('".join($lugares,"','")."')";        
     }
@@ -408,13 +407,9 @@ function getEntidades($filtros, $idTerritorio, $alrededores, $cantidad=10)
         $sql.="($tematica) AND ";
     if($lugar!="")
         $sql.="($lugar) AND ";
-    $sql.="1 GROUP BY entidades.idEntidad ORDER BY points DESC LIMIT 0,$cantidad";
+    $sql.="  entidades.idEntidad=entidades_tematicas.idEntidad GROUP BY entidades.idEntidad ORDER BY points DESC LIMIT 0,$cantidad";
     
-//  Example of query. 
-//  We need to edit it. The way the filters of territories are applied is unsatisfactory.
-//  Now lugar will have ids of city and subCity (district or neighbourhood).
-//  Depending of where the search happens, we will use different ones.
-//  
+//  Example of query.   
 //  SELECT entidades.*,entidades_tematicas.*,tematicas.*,direcciones.*, territorios.nombre as nombreLugar 
 //  FROM entidades 
 //    JOIN entidades_tematicas ON entidades.idEntidad=entidades_tematicas.idEntidad 
@@ -426,7 +421,7 @@ function getEntidades($filtros, $idTerritorio, $alrededores, $cantidad=10)
 //    (entidades_tematicas.idTematica='$id' OR entidades_tematicas.idTematica='$id') AND
 //    (direcciones.idBarrio='801280005') OR direcciones.idBarrio='901280005' OR direcciones.idBarrio='901280006' OR direcciones.idBarrio='901280007' OR direcciones.idBarrio='901280008') AND
 //    1 
-//  GROUP BY entidades.idEntidad ORDER BY points DESC LIMIT 0,$cantidad
+//  GROUP BY entidades.idEntidad ORDER BY points DESC LIMIT 0,50
 
     $result=mysqli_query($link, $sql);
     $returnData=array();
@@ -613,16 +608,16 @@ function getEventos($filtros,$idTerritorio,$alrededores,$cantidad=50)
         }
     }
 
-    $sql="SELECT eventos.*, direcciones.lat as y, direcciones.lng as x, direcciones.idCiudad as idCiudad, direcciones.idDistrito as idDistrito, direcciones.idBarrio as idBarrio, territorios.nombre as lugar, territorios.nombreCorto,
-    (SELECT GROUP_CONCAT(tematicas.tematica)
-             FROM eventos_tematicas, tematicas
-             WHERE eventos_tematicas.idTematica=tematicas.idTematica
-             AND eventos_tematicas.idEvento = eventos.idEvento) AS tematicas
-       FROM eventos, eventos_tematicas, direcciones, territorios 
+    $sql="SELECT eventos.*, direcciones.lat, direcciones.lng, direcciones.idCiudad, direcciones.idDistrito, direcciones.idBarrio, territorios.nombre as lugar, territorios.nombreCorto,
+            (SELECT GROUP_CONCAT(tematicas.tematica)
+               FROM eventos_tematicas, tematicas
+              WHERE eventos_tematicas.idTematica=tematicas.idTematica
+                AND eventos_tematicas.idEvento = eventos.idEvento) AS tematicas
+        FROM eventos, eventos_tematicas, direcciones, territorios 
        WHERE eventos.idDireccion=direcciones.idDireccion
          AND eventos.eventoActivo='1'
          AND ";
-//TODO: Validate where the territory place is taken from. Event? It should probably be changed to use territorios.nombre (already changed the query to include it)
+//TODO: Por qué forzamos que exista una temática?
   
 if (!$hayFiltroLugar) {
   $lugares[]=$idTerritorio;
@@ -661,7 +656,7 @@ if (!$hayFiltroLugar) {
       $lugar="direcciones.idBarrio IN ('".join($lugares,"','")."')";        
     }
     
-//  Example of the query, already using the direcciones instead of idPadre at events
+//  Example of the query
 //  SELECT eventos.*, direcciones.lat as y, direcciones.lng as x, direcciones.idCiudad, direcciones.idDistrito, direcciones.idBarrio, territorios.nombre,
 //    (SELECT GROUP_CONCAT(tematicas.tematica)
 //             FROM eventos_tematicas, tematicas
@@ -683,7 +678,7 @@ if (!$hayFiltroLugar) {
         $sql.="($lugar) AND ";
     if($organizacion!="")
          $sql.="($organizacion) AND ";
-    $sql.="eventos.idEvento=eventos_tematicas.idEvento GROUP BY eventos.idEvento ORDER BY fecha ASC LIMIT 0,$cantidad";
+    $sql.=" eventos.idEvento=eventos_tematicas.idEvento GROUP BY eventos.idEvento ORDER BY fecha ASC LIMIT 0,$cantidad";
 
     //echo $sql;
     //exit();
