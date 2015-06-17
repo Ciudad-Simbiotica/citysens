@@ -180,7 +180,7 @@ background-color: #ffffe2;
 {
 	box-shadow:0 2px 3px #aaa, 0 -2px 3px #aaa;
 	z-index:10;
-	background-color: #ffffe2;
+	background-color: #FFE8D1 !important;
 }
 
 .grupo-fila-convocatoria
