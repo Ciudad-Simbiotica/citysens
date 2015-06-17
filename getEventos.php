@@ -31,13 +31,13 @@ if($tipoGrupos=="popularidad")
    
 foreach($eventos as $evento)
 {
-    $grupo=date("Y-m-d",strtotime($evento["fecha"]));
+    $grupo=date("Y-m-d",strtotime($evento["fecha"])); // The groups' titles are the dates
     
     $datos["id"]=$evento["idEvento"];
     $datos["clase"]="eventos";
     $datos["tipo"]=utf8_encode($evento["tipo"]);    
     $datos["titulo"]=utf8_encode($evento["titulo"]);
-    $datos["texto"]=utf8_encode($evento["texto"]);//$lorem;
+    $datos["texto"]=utf8_encode($evento["texto"]); // It's empty, by now
     $datos["hora"]=date("H:i",strtotime($evento["fecha"]));
     if($evento["nombreCorto"]!="")
       $datos["lugar"]=utf8_encode($evento["nombreCorto"]);

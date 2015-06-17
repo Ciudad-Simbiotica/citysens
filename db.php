@@ -687,7 +687,7 @@ if (!$hayFiltroLugar) {
     $returnData=array();
     while($fila=mysqli_fetch_assoc($result))
     {
-        unset($fila["texto"]);  // Why this unset $fila["texto"]  ?? TODO
+        unset($fila["texto"]);  // Unset to reduce the size of the data transferred, as it was not shown in lists. If it would, it would need to be included.
     	array_push($returnData,$fila);
     }
     return $returnData;
