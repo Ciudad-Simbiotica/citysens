@@ -213,7 +213,7 @@ function clickFila(id)
 
 function enterFila(id)
 {
-    if(!($("."+id).hasClass("grupo-fila-selected")))
+    if(!($(".id"+id).hasClass("grupo-fila-selected")))
        if(markers[id]!=null)   
           markers[id].setOpacity(0.6);
     $(".id"+id).addClass("grupo-fila-hover");
@@ -221,7 +221,7 @@ function enterFila(id)
 
 function leaveFila(id)
 {
-  if(!($("."+id).hasClass("grupo-fila-selected")))
+  if(!($(".id"+id).hasClass("grupo-fila-selected")))
     if(markers[id]!=null)
       markers[id].setOpacity(0);  
   $(".id"+id).removeClass("grupo-fila-hover");
