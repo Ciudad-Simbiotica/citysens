@@ -29,9 +29,10 @@ if($tipoGrupos=="puntuacion")
     {
         $grupoActual="Top 10";
         $filas=array();
-        $returnData["grupos"][""][$grupoActual]["totalFilas"]["institucion"]=0;
-        $returnData["grupos"][""][$grupoActual]["totalFilas"]["organizacion"]=0;
-        $returnData["grupos"][""][$grupoActual]["totalFilas"]["colectivo"]=0;
+//        Seems this is not needed
+//        $returnData["grupos"][""][$grupoActual]["totalFilas"]["institucion"]=0;
+//        $returnData["grupos"][""][$grupoActual]["totalFilas"]["organizacion"]=0;
+//        $returnData["grupos"][""][$grupoActual]["totalFilas"]["colectivo"]=0;
 
         foreach($entidades as $entidad)
         {
@@ -76,9 +77,10 @@ if($tipoGrupos=="puntuacion")
                 $fin=$inicio+9;
                 $grupoActual="Top $inicio-$fin";
                 if($i==50)break;
-                $returnData["grupos"][""][$grupoActual]["totalFilas"]["institucion"]=0;
-                $returnData["grupos"][""][$grupoActual]["totalFilas"]["organizacion"]=0;
-                $returnData["grupos"][""][$grupoActual]["totalFilas"]["colectivo"]=0;
+//                Seems this is not needed
+//                $returnData["grupos"][""][$grupoActual]["totalFilas"]["institucion"]=0;
+//                $returnData["grupos"][""][$grupoActual]["totalFilas"]["organizacion"]=0;
+//                $returnData["grupos"][""][$grupoActual]["totalFilas"]["colectivo"]=0;
             }
 	}
         if((($i%10)!=0))	//No hemos añadido las últimas
@@ -122,7 +124,7 @@ else {
         $nombreGrupos=array();
 
         if($tipoGrupos=="lugar")
-            array_push($nombreGrupos,utf8_encode($entidad["nombreLugar"]));
+            array_push($nombreGrupos,$datos["lugarOrg"]);
         else if($tipoGrupos=="tematica") {
             //Si no hay filtros de temáticas
             if(count($filtrosTematica)==0)                       
@@ -158,9 +160,7 @@ else {
     }		
 	
 }
-if($tipoGrupos=="lugar") //Is it needed for lugar? 
-    ksort($returnData["grupos"][""]);
-else if ($tipoGrupos=="tematica")
+if($tipoGrupos=="lugar" || $tipoGrupos=="tematica")
     ksort($returnData["grupos"]);
 
 $returnData["tipo"]="organizaciones";

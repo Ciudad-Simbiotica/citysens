@@ -7,7 +7,6 @@ $alrededores=$_GET["alrededores"];
 
 $eventos=getEventos($filtros,$idTerritorio,$alrededores,50);
 
-
 $tipoGrupos=$_GET["orden"];
 $filtrosTematica = array();
        
@@ -61,14 +60,13 @@ foreach($eventos as $evento)
     $cabeceraIzq.=ucfirst(strftime("%A %e",strtotime($evento["fecha"])));
     $cabeceraIzq.=" de ".ucfirst(strftime("%B",strtotime($evento["fecha"])));
 
-
     unset($nombreGrupos);
     $nombreGrupos=array();
 
     if($tipoGrupos=="fecha")
             array_push($nombreGrupos,"");
     else if($tipoGrupos=="lugar")
-            array_push($nombreGrupos,utf8_encode($evento["lugar"]));
+            array_push($nombreGrupos,$datos["lugar"]);
     else if($tipoGrupos=="tematica")
     {
         //Si no hay filtros de temáticas
@@ -126,7 +124,7 @@ foreach($eventos as $evento)
       
 }
 
-if($tipoGrupos=="tematica")
+if($tipoGrupos=="tematica" || $tipoGrupos=="lugar")
     ksort($returnData["grupos"]);	//Ordenamos por la clave
 else if($tipoGrupos=="popularidad")
 {
