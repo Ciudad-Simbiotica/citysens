@@ -20,7 +20,14 @@
 	top: 3px;
 	text-align: center;
 	color:white;
-	text-shadow:1px 1px 5px #000000;
+	text-shadow:-0.2px 0.25px 0px rgba(80, 70, 255, 0.2),
+                    -0.4px 0.5px 0px rgba(70, 65, 255, 0.3),
+                    -0.6px 0.75px 0px rgba(73, 75, 255, 0.4),
+                    -0.8px 1px 0px rgba(74, 102, 252, 0.8),
+                    -1px 1.2px 0px #4460FE,
+                    0px 0px 5px rgba(0, 0, 0, 0.12),
+                    1px 1px 3px rgba(0, 0, 0, 0.22),
+                    2px -2px 5px rgba(0, 0, 0, 0.32);
         font-weight: bolder;
         font-size: 1.2em;
 }
