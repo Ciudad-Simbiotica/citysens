@@ -1,0 +1,80 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 25-jun-2015, 16:48:45
+    Author     : TWOTWO
+*/
+
+
+    .grupo-fila-eventos {
+   display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-align-content: stretch;
+    -ms-flex-line-pack: stretch;
+    align-content: stretch;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    }
+
+.flex-item:nth-child(1) {
+    -webkit-order: 0;
+    -ms-flex-order: 0;
+    order: 0;
+    -webkit-flex: 1 4 auto;
+    -ms-flex: 1 4 auto;
+    flex: 1 4 auto;
+    -webkit-align-self: stretch;
+    -ms-flex-item-align: stretch;
+    align-self: stretch;
+    }  
+    
+    .grupo-elemento-tipo,
+    .grupo-elemento-hora,
+    .grupo-elemento-handup,
+    .grupo-elemento-temp,
+    .grupo-elemento-titulo,
+    .grupo-elemento-lugar,
+    .grupo-elemento-texto {
+        
+    }
+    
+ 
+    
+
+.flex-item:nth-child(2) {
+    -webkit-order: 1;
+    -ms-flex-order: 1;
+    order: 1;
+    -webkit-flex: 6 1 auto;
+    -ms-flex: 6 1 auto;
+    flex: 6 1 auto;
+    -webkit-align-self: stretch;
+    -ms-flex-item-align: stretch;
+    align-self: stretch;
+    }
+
+.flex-item:nth-child(3) {
+    -webkit-order: 2;
+    -ms-flex-order: 2;
+    order: 2;
+    -webkit-flex: 1 3 auto;
+    -ms-flex: 1 3 auto;
+    flex: 1 3 auto;
+    -webkit-align-self: stretch;
+    -ms-flex-item-align: stretch;
+    align-self: stretch;
+    }

@@ -69,7 +69,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
 {
   //Creamos el mapa
   window.polygons = [];
-  $('.map-map').html('<div id="circle-button"></div><div id="upbutton"></div><div id="map"></div>'); //Borramos mapa previo si existía
+  $('.map-map').html('<div id="upbutton"></div><div id="map"></div>'); //Borramos mapa previo si existía
   var map = L.map('map',
   {
     zoomControl: false,

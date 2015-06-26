@@ -2,10 +2,11 @@
 error_reporting(E_ERROR);
 include_once "db.php";
 $filtros=json_decode($_GET["filtros"],true);
+$cantidad=$_GET["cantidadMostrada"];
 $idTerritorio=$_GET["idTerritorioOriginal"];
 $alrededores=$_GET["alrededores"];
 
-$eventos=getEventos($filtros,$idTerritorio,$alrededores,50);
+$eventos=getEventos($filtros,$idTerritorio,$alrededores,$cantidad);
 
 $tipoGrupos=$_GET["orden"];
 $filtrosTematica = array();

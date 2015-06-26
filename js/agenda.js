@@ -36,7 +36,8 @@ var miBusqueda = {
      window.listado.tipo="eventos";
   if(!window.listado.orden)
      window.listado.orden="fecha"; 
-
+  if(!window.conf.cantidadMostrada)
+        window.conf.cantidadMostrada=50;  
 
 /* 
 ---------------------------------------------------------------------------------------------
@@ -533,7 +534,6 @@ function cargarDatos()
 
 
     var filtros = JSON.stringify(arrayTagsQuery);
-    console.log(filtros);
 
 
     $(".supergrupo").attr('id', "").remove();  //Para que no se inserten en esta les quitamos el ID
@@ -552,7 +552,8 @@ function cargarDatos()
                 idTerritorioOriginal: window.conf.idTerritorio,
                 alrededores:window.conf.alrededores,
                 format: "json",
-                orden: window.listado.orden
+                orden: window.listado.orden,
+                cantidadMostrada: window.conf.cantidadMostrada
             })
             .done(function (data)
             {
