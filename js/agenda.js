@@ -397,12 +397,12 @@ function cargarContenido(id)
           break;         
       }
       $(".informacion-cabecera-abajo").text(textoRepeticion);
-      $(".informacion-cabecera").height(70);
+      //$(".informacion-cabecera").height(70);
       $(".informacion-cabecera-abajo").show();
     }
     else
     {
-      $(".informacion-cabecera").height(50);
+     // $(".informacion-cabecera").height(50);
       $(".informacion-cabecera-abajo").hide();
     }
 
@@ -500,7 +500,7 @@ function cargarContenidoEntidad(id)
     //Ocultamos lo que corresponde a entidades y mostramos los de eventos
     $(".informacion-cuerpo-contacto-elemento-evento").hide();
     $(".informacion-cuerpo-contacto-elemento-entidad").show();
-    $(".informacion-cabecera").height(50);
+    //$(".informacion-cabecera").height(50);
 
     $(".informacion").slideDown("fast");
   });
