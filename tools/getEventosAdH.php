@@ -8,6 +8,28 @@ include_once('../vendor/phayes/geophp/geoPHP.inc');
 
 ini_set('default_charset', 'utf-8');
 $link = connect();
+mysqli_query($link, 'SET CHARACTER SET utf8');
+
+
+function getCP($lat, $lng) {
+  $returnValue = NULL;
+  $url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&sensor=false";
+  
+  $respuesta=json_decode(file_get_contents("http://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&sensor=false"),true);
+  
+  if ($respuesta['status']=='OK' && isset($respuesta['results'])) {
+     foreach    ($respuesta['results'] as $result) {
+        foreach ($result['address_components'] as $address_component) {
+          $types = $address_component['types'];
+          if (in_array('postal_code', $types) && sizeof($types) == 1) {
+             $returnValue = $address_component['short_name'];
+             break 2; 
+          }
+        }
+     }
+  }
+  return $returnValue;
+}
 
 // Script is unactive unless it is required
 //exit();
@@ -48,15 +70,15 @@ foreach ($data["events"] as $event) {
     *      place__zoom: 16
     */
 
-   if ($event["changed"]>=($now-$seconds)) {
+   if ($event["changed"]>=$lastChangedLimit) {
    
       //PLACE
       // Initialice
       
-      $placeData["idCiudad"] = $placeData["idDistrito"] = $placeData["idBarrio"] = $placeData["nombre"] = $placeData["direccion"] = $placeData["indicacion"] = $placeData["cp"] = "";
+      $placeData["idCiudad"] = $placeData["idDistrito"] = $placeData["idBarrio"] = $placeData["nombre"] = $placeData["direccion"] = $placeData["indicacion"] = "";
       $placeData["direccionActiva"] = "1";
-      $placeData["lat"] = ($event["place__latitude"]!=0) ? $event["place__latitude"]: "";
-      $placeData["lng"] = ($event["place__longitude"]!=0) ? $event["place__longitude"]: "";
+      $placeData["lat"] = ($event["place__latitude"]!=0) ? (string)$event["place__latitude"]: "";
+      $placeData["lng"] = ($event["place__longitude"]!=0) ? (string)$event["place__longitude"]: "";
       //These can be empty in case place is not geo-located.
       $placeData["zoom"] = ($event["place__zoom"]!=0) ? $event["place__zoom"]: "";
       
@@ -69,12 +91,19 @@ foreach ($data["events"] as $event) {
          // We have to create a new direccion. 
          $newPlace=true;
       } else {
-         // A place already exists. We will only update in case we detect a change.
+         // A place already exists. We will only update in case we detect a change on important fields.
          $eventData["idDireccion"] = mysqli_fetch_assoc($result_lugares)['ctsIdLugar'];
 
          $sql= "SELECT * FROM direcciones where idDireccion={$eventData['idDireccion']}";
          $result_ctsLugar = mysqli_query($link, $sql);
          $existingPlaceData = mysqli_fetch_assoc($result_ctsLugar);
+         
+         // Remove fields not to be used to detect changes
+         unset($existingPlaceData["idDireccion"]);
+         unset($existingPlaceData["cp"]);
+         unset($existingPlaceData["created"]);
+         unset($existingPlaceData["updated"]);
+         
       }
 
       // Look for the city assignment
@@ -92,7 +121,7 @@ foreach ($data["events"] as $event) {
 
             // Insert the link cityAdh-ciudadCts
             $sql_insertTerritorio = "INSERT INTO adhCiudades_ctsTerritorios (`adhCityId`, `ctsIdTerritorio`) VALUES ({$event["place__city__id"]}, {$placeData["idCiudad"]})";
-//            mysqli_query($link, $sql_insertTerritorio);
+            mysqli_query($link, $sql_insertTerritorio);
          }
          // In case 0 or more than 1 city are found, we will try to use lat-lng of the event to identify the city.
       } else { // City has been already assigned
@@ -130,8 +159,8 @@ foreach ($data["events"] as $event) {
                   $placeData["idCiudad"] = $ciudadId;
 
                   // Insert the link cityAdh-ciudadCts
-                  $sql_insertTerritorio = "INSERT INTO adhCiudades_ctsTerritorios (`adhCityId`, `ctsIdTerritorio`) VALUES ($adhCityId, {$placeData["idCiudad"]})";
-//                  mysqli_query($link, $sql_insertTerritorio);
+                  $sql_insertTerritorio = "INSERT INTO adhCiudades_ctsTerritorios (`adhCityId`, `ctsIdTerritorio`) VALUES ({$event["place__city__id"]}, {$placeData["idCiudad"]})";
+                  mysqli_query($link, $sql_insertTerritorio);
                   break;
                }
             }
@@ -159,11 +188,22 @@ foreach ($data["events"] as $event) {
       }
       if ($placeData["idCiudad"] != "") {
          if ($newPlace) {
-//            $eventData["idDireccion"] = createPlace($placeData);
+            // Get the cp using GoogleMaps API           
+            $placeData["cp"]=getCP($placeData["lat"],$placeData["lng"]);            
+            
+            $eventData["idDireccion"] = createPlace($placeData);            
+            
+            $sql_insertLugar = "INSERT INTO adhLugares_ctsDirecciones (`adhIdLugar`, `ctsIdLugar`) VALUES ({$event["place__id"]}, {$eventData["idDireccion"]})";
+            mysqli_query($link, $sql_insertLugar);
+            
          } else {
             $changes=array_diff_assoc($existingPlaceData,$placeData);
             if (count($changes)!=0) {
-//             updatePlace($placeData,$eventData["idDireccion"]);
+               
+               // Get the cp using GoogleMaps API
+               $placeData["cp"]=getCP($placeData["lat"],$placeData["lng"]);
+               
+               updatePlace($placeData,$eventData["idDireccion"]);
             }   
          }
 
@@ -184,7 +224,6 @@ foreach ($data["events"] as $event) {
       // EVENTOS
       // Place and City have been identified. Event gets updated/created.
 
-      $eventData["idEvento"] = "";
       $eventData["fecha"] = date("c", $event["start_time"]); //Validate if it is satisfactory. 3:33 is reserved for events with no time.
       $eventData["fechaFin"] = "";
       $eventData["clase"] = "eventos";
@@ -192,13 +231,12 @@ foreach ($data["events"] as $event) {
       $eventData["titulo"] = $event["title"];
       $eventData["texto"] = "";
       $eventData["idEntidad"] = ""; //SERÍA POSIBLE ASIGNAR???
-      $eventData["idDireccion"] = "";
       $eventData["url"] = "";
       $eventData["email"] = "";
       $eventData["etiquetas"] = "";
       $eventData["repeatsAfter"] = 0;
       $eventData["eventoActivo"] = 1;
-      $eventData["temperatura"] = ceil($event["visits"]/10); // let's make each 10 $event["visits"]; 1 degree temperature, up to a maximum of 5.
+      $eventData["temperatura"] = ceil(($event["visits"]+1)/10); // let's make each 10 $event["visits"]; 1 degree temperature, up to a maximum of 5. +1 to avoid 0 temperature.
       if ($eventData["temperatura"]>5)
         $eventData["temperatura"]=5;
 
@@ -206,7 +244,7 @@ foreach ($data["events"] as $event) {
       // We look for the event
       $sql = "SELECT * FROM adhEventos_ctsEventos where adhIdEvento={$event["id"]}";
       $result_eventos = mysqli_query($link, $sql);
-      $numEventosEncontrados=mysqli_num_rows($result_lugares);
+      $numEventosEncontrados=mysqli_num_rows($result_eventos);
       if ($numEventosEncontrados == 0) {
          // The event does not exist in CTS. There is still no assignment to an event in CTS
          // We have to create a new event.
@@ -263,13 +301,18 @@ foreach ($data["events"] as $event) {
       unset($ret);
       
       if ($newEvent) {
-//       eventData["idEvento"]=createEvent($eventData);
+         $eventData["idEvento"]=createEvent($eventData);
+         // Include link evento evento?
+
+         $sql_insertEvento = "INSERT INTO adhEventos_ctsEventos (`adhIdEvento`, `ctsIdEvento`) VALUES ({$event["id"]}, {$eventData["idEvento"]})";
+         mysqli_query($link, $sql_insertLugar);
       } else {
          $changes=array_diff_assoc($existingEventData,$eventData);
          if (count($changes)!=0) {
-//          updateEvent($placeData,$eventData["idLugar"]);
+          updateEvent($placeData,$eventData["idLugar"]);
          }   
       }      
    }
 }
+echo "Importados!!";
 ?>

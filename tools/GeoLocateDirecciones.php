@@ -33,6 +33,7 @@ foreach($direcciones as $direccion)
     echo PHP_EOL, $strDireccion, PHP_EOL;
     
     $strDireccionClean = str_replace (" ", "+", $strDireccion);
+    //Seems you could use urlEncode($strDirection);
     $respuesta=json_decode(file_get_contents("http://maps.googleapis.com/maps/api/geocode/json?address=".$strDireccionClean."&sensor=false"),true);
     
     if ($respuesta['status']=='OK') {

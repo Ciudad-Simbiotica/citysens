@@ -134,7 +134,6 @@ function changeUserPassword($email,$token,$nuevoPassword)
     return false;
 }
 
-
 //Follow lists, according to the filters listed in params
 
 function follow($idUser,$params,$clase)
@@ -490,8 +489,6 @@ function createEvent($eventData)
     $tematicas=array();
     foreach($eventData["tematicas"] as $tematica)
         array_push($tematicas,safe($link, $tematica));
-    $idTematica=$tematicas[0];
-    //TODO: fixThis
     $idDireccion=safe($link, $eventData["idDireccion"]);
     $url=safe($link, filter_var($eventData["url"], FILTER_SANITIZE_URL));
     $email=safe($link, filter_var($eventData["email"], FILTER_SANITIZE_EMAIL));
@@ -505,17 +502,90 @@ function createEvent($eventData)
     
     mysqli_query($link, 'SET CHARACTER SET utf8');
 
-    $sql="INSERT INTO eventos (fecha,fechaFin,clase,tipo,titulo,texto,lugar,temperatura,idEntidad,
-                                idTematica,idDireccion,url,email,etiquetas,repeatsAfter,eventoActivo)
-                       VALUES ('$fecha',$fechaFin,'$clase','$tipo','$titulo','$texto','$lugar','$temperatura','$idEntidad',
-                                '$idTematica','$idDireccion','$url','$email','$etiquetas','$repeatsAfter','$eventoActivo')";
+    $sql="INSERT INTO eventos (fecha,fechaFin,clase,tipo,titulo,texto,temperatura,idEntidad,
+                                idDireccion,url,email,etiquetas,repeatsAfter,eventoActivo,created)
+                       VALUES ('$fecha',$fechaFin,'$clase','$tipo','$titulo','$texto','$temperatura','$idEntidad',
+                                '$idDireccion','$url','$email','$etiquetas','$repeatsAfter','$eventoActivo',NULL)";
     mysqli_query($link, $sql);
-    $idEvento=mysql_insert_id();
-    foreach($tematicas as $tematica)
-    {
-        $sql="INSERT INTO eventos_tematicas (idEvento, idTematica) VALUES ('$idEvento', '$tematica')";
-        mysqli_query($link, $sql);
-    }
+    $idEvento=mysqli_insert_id($link);
+    $sql="INSERT INTO eventos_tematicas (idEvento, idTematica) VALUES ";
+    $firstTematica=true;
+    if (count($tematicas)>0) {
+       foreach($tematicas as $tematica) {
+          if ($firstTematica) {
+             $sql.=" ('$idEvento', '$tematica')";
+             $firstTematica=false;
+          }
+          else
+             $sql.=", ('$idEvento','$tematica')";
+       }
+    } else
+       $sql.=" ('$idEvento','38')"; // Assign topic "Others", for those cases with no tematic
+   
+    mysqli_query($link, $sql);
+
+    return $idEvento;
+}
+
+function updateEvent($eventData,$idEvento)
+{
+    $link=connect();
+    //Sanitize inputs
+    $fecha=safe($link, $eventData["fecha"]);
+    $fechaFin=safe($link, $eventData["fechaFin"]);
+    
+    if($fechaFin=="")
+        $fechaFin='NULL';
+    else  //IS THIS NEEDED? WOULDN'T IF BE NEEDED FOR FECHA TOO?
+        $fechaFin="'$fechaFin'";
+    $clase=safe($link, $eventData["clase"]);
+    $tipo=safe($link, $eventData["tipo"]);
+    $titulo=safe($link, $eventData["titulo"]);
+    $texto=safe($link, $eventData["texto"]);
+    $lugar=safe($link, $eventData["lugar"]);
+    $idEntidad=safe($link, $eventData["idEntidad"]);
+    $temperatura=safe($link, $eventData["temperatura"]);
+    $tematicas=array();
+    foreach($eventData["tematicas"] as $tematica)
+        array_push($tematicas,safe($link, $tematica));
+    $idDireccion=safe($link, $eventData["idDireccion"]);
+    $url=safe($link, filter_var($eventData["url"], FILTER_SANITIZE_URL));
+    $email=safe($link, filter_var($eventData["email"], FILTER_SANITIZE_EMAIL));
+    $etiquetas=safe($link, $eventData["etiquetas"]);
+    $repeatsAfter=safe($link, $eventData["repeatsAfter"]);
+    $eventoActivo=safe($link, $eventData["eventoActivo"]);
+    
+    $idEvento=safe($link,$idEvento);
+    
+    $sql="UPDATE direcciones 
+        SET idCiudad={$placeData["idCiudad"]}, idDistrito={$placeData["idDistrito"]}, idBarrio={$placeData["idBarrio"]}, nombre='{$placeData["nombre"]}', direccion='{$placeData["direccion"]}',
+            indicacion='{$placeData["indicacion"]}', cp='{$placeData["cp"]}', lat='{$placeData["lat"]}', lng='{$placeData["lng"]}', zoom='{$placeData["zoom"]}', direccionActiva='{$placeData["direccionActivo"]}'
+        WHERE idDireccion=$idLugar";    
+
+    mysqli_query($link, 'SET CHARACTER SET utf8');
+
+    $sql="UPDATE direcciones SET fecha='$fecha',fechaFin='$fechaFin',clase='$clase',tipo='$tipo',titulo='$titulo',texto='$texto', 
+            lugar='$lugar',temperatura='$temperatura',idEntidad='$idEntidad', idDireccion= '$idDireccion',url='$url',email='$email',
+            etiquetas='$etiquetas',repeatsAfter='$repeatsAfter',eventoActivo='$eventoActivo')";
+    mysqli_query($link, $sql);
+
+    $sql="DELETE FROM eventos_tematicas WHERE $idEvento='$idEvento'";
+    mysqli_query($link, $sql);
+    
+    $sql="INSERT INTO eventos_tematicas (idEvento, idTematica) VALUES ";
+    if (count($tematicas)>0) {
+       $firstTematica=true;
+       foreach($tematicas as $tematica) {
+          if ($firstTematica) {
+             $sql.=" ('$idEvento', '$tematica')";
+             $firstTematica=false;
+          } else
+             $sql.=", ('$idEvento','$tematica')";
+       }
+    } else
+       $sql.=" ('$idEvento','38')"; // Assign topic "Others", for those cases with no tematic
+   
+    mysqli_query($link, $sql);
 }
 
 function getEvento($idEvento)
@@ -1260,15 +1330,16 @@ function createPlace($placeData)
       $parameter=safe($link,$parameter);
     }
     
-
-   $sql="INSERT INTO direcciones (idCiudad, idDistrito, idBarrio, nombre, direccion, indicacion, cp, lat, lng, zoom, direccionActiva)
+   $sql="INSERT INTO direcciones (idCiudad, idDistrito, idBarrio, nombre, direccion, indicacion, cp, lat, lng, zoom, direccionActiva,created)
        VALUES  ('{$placeData["idCiudad"]}', '{$placeData["idDistrito"]}', '{$placeData["idBarrio"]}', '{$placeData["nombre"]}', '{$placeData["direccion"]}', '{$placeData["indicacion"]}', '{$placeData["cp"]}',
-       '{$placeData["lat"]}', '{$placeData["lng"]}', '{$placeData["zoom"]}', '{$placeData["direccionActivo"]}')";    
+       '{$placeData["lat"]}', '{$placeData["lng"]}', '{$placeData["zoom"]}', '{$placeData["direccionActiva"]}',NULL)";    
    
     //$sql="INSERT INTO direcciones (idPadre,nombre,direccion,lat,lng,zoom,direccionActiva)
     //                       VALUES ('$idDistritoPadre','$nombreLugar','$direccion','$lat','$lng','15','0')"; // Needs to be updated (idPadre)
     mysqli_query($link, $sql);
-    return mysqli_insert_id();
+    $temp=mysqli_insert_id($link);
+    return $temp;
+    //return mysqli_insert_id($link);
 }
 
 function updatePlace($placeData,$idLugar)
@@ -1284,8 +1355,8 @@ function updatePlace($placeData,$idLugar)
     
     $sql="UPDATE direcciones 
         SET idCiudad={$placeData["idCiudad"]}, idDistrito={$placeData["idDistrito"]}, idBarrio={$placeData["idBarrio"]}, nombre='{$placeData["nombre"]}', direccion='{$placeData["direccion"]}',
-            indicacion='{$placeData["indicacion"]}', cp='{$placeData["cp"]}', lat='{$placeData["lat"]}', lng='{$placeData["lng"]}', zoom='{$placeData["zoom"]}', direccionActiva='{$placeData["direccionActivo"]}'
-        WHERE idDireccion=$idLugar";    
+            indicacion='{$placeData["indicacion"]}', cp='{$placeData["cp"]}', lat='{$placeData["lat"]}', lng='{$placeData["lng"]}', zoom='{$placeData["zoom"]}', direccionActiva='{$placeData["direccionActiva"]}'
+        WHERE idDireccion=$idLugar";
     mysqli_query($link, $sql);
 }
 
