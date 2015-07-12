@@ -40,7 +40,7 @@ foreach($direcciones as $direccion)
         $lng=$respuesta['results'][0]['geometry']['location']['lng']; // get lng for json
         $queryStr = "UPDATE direcciones SET lat='$lat', lng='$lng' WHERE idDireccion='$idDireccion'";
         echo $queryStr, PHP_EOL;
-
+        usleep(1500000);//google free 2.500 searchs with speed 5 pers sec.
         mysqli_query($link,$queryStr);
     }    
 }
