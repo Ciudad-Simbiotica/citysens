@@ -477,13 +477,12 @@ function createEvent($eventData)
     
     if($fechaFin=="")
         $fechaFin='NULL';
-    else  //IS THIS NEEDED? WOULDN'T IF BE NEEDED FOR FECHA TOO?
+    else
         $fechaFin="'$fechaFin'";
     $clase=safe($link, $eventData["clase"]);
     $tipo=safe($link, $eventData["tipo"]);
     $titulo=safe($link, $eventData["titulo"]);
     $texto=safe($link, $eventData["texto"]);
-    $lugar=safe($link, $eventData["lugar"]);
     $idEntidad=safe($link, $eventData["idEntidad"]);
     $temperatura=safe($link, $eventData["temperatura"]);
     $tematicas=array();
@@ -493,6 +492,7 @@ function createEvent($eventData)
     $url=safe($link, filter_var($eventData["url"], FILTER_SANITIZE_URL));
     $email=safe($link, filter_var($eventData["email"], FILTER_SANITIZE_EMAIL));
     $etiquetas=safe($link, $eventData["etiquetas"]);
+    $organizador=safe($link, $eventData["organizador"]);
     $repeatsAfter=safe($link, $eventData["repeatsAfter"]);
     $eventoActivo=safe($link, $eventData["eventoActivo"]);
 
@@ -503,9 +503,9 @@ function createEvent($eventData)
     mysqli_query($link, 'SET CHARACTER SET utf8');
 
     $sql="INSERT INTO eventos (fecha,fechaFin,clase,tipo,titulo,texto,temperatura,idEntidad,
-                                idDireccion,url,email,etiquetas,repeatsAfter,eventoActivo,created)
+                                idDireccion,url,email,etiquetas,organizador,repeatsAfter,eventoActivo,created)
                        VALUES ('$fecha',$fechaFin,'$clase','$tipo','$titulo','$texto','$temperatura','$idEntidad',
-                                '$idDireccion','$url','$email','$etiquetas','$repeatsAfter','$eventoActivo',NULL)";
+                                '$idDireccion','$url','$email','$etiquetas','$organizador','$repeatsAfter','$eventoActivo',NULL)";
     mysqli_query($link, $sql);
     $idEvento=mysqli_insert_id($link);
     $sql="INSERT INTO eventos_tematicas (idEvento, idTematica) VALUES ";
@@ -527,7 +527,7 @@ function createEvent($eventData)
     return $idEvento;
 }
 
-function updateEvent($eventData,$idEvento)
+function updateEvent($eventData)
 {
     $link=connect();
     //Sanitize inputs
@@ -536,10 +536,14 @@ function updateEvent($eventData,$idEvento)
     
     if($fechaFin=="")
         $fechaFin='NULL';
-    else  //IS THIS NEEDED? WOULDN'T IF BE NEEDED FOR FECHA TOO?
+    else
         $fechaFin="'$fechaFin'";
     $clase=safe($link, $eventData["clase"]);
-    $tipo=safe($link, $eventData["tipo"]);
+    // SI NO ESTÁ DEFINIDO TIPO, no se considera para el update.
+    // Tal vez sería mejor construir el sql al vuelo teniendo en cuenta sólo lo que se ha enviado.
+    if (isset($eventData["tipo"])) {
+      $tipo=safe($link, $eventData["tipo"]);
+    }
     $titulo=safe($link, $eventData["titulo"]);
     $texto=safe($link, $eventData["texto"]);
     $lugar=safe($link, $eventData["lugar"]);
@@ -552,24 +556,26 @@ function updateEvent($eventData,$idEvento)
     $url=safe($link, filter_var($eventData["url"], FILTER_SANITIZE_URL));
     $email=safe($link, filter_var($eventData["email"], FILTER_SANITIZE_EMAIL));
     $etiquetas=safe($link, $eventData["etiquetas"]);
+    $organizador=safe($link, $eventData["organizador"]);
     $repeatsAfter=safe($link, $eventData["repeatsAfter"]);
     $eventoActivo=safe($link, $eventData["eventoActivo"]);
-    
-    $idEvento=safe($link,$idEvento);
-    
-    $sql="UPDATE direcciones 
-        SET idCiudad={$placeData["idCiudad"]}, idDistrito={$placeData["idDistrito"]}, idBarrio={$placeData["idBarrio"]}, nombre='{$placeData["nombre"]}', direccion='{$placeData["direccion"]}',
-            indicacion='{$placeData["indicacion"]}', cp='{$placeData["cp"]}', lat='{$placeData["lat"]}', lng='{$placeData["lng"]}', zoom='{$placeData["zoom"]}', direccionActiva='{$placeData["direccionActivo"]}'
-        WHERE idDireccion=$idLugar";    
+
+    $idEvento=safe($link,$eventData["idEvento"]);   
 
     mysqli_query($link, 'SET CHARACTER SET utf8');
 
-    $sql="UPDATE direcciones SET fecha='$fecha',fechaFin='$fechaFin',clase='$clase',tipo='$tipo',titulo='$titulo',texto='$texto', 
-            lugar='$lugar',temperatura='$temperatura',idEntidad='$idEntidad', idDireccion= '$idDireccion',url='$url',email='$email',
-            etiquetas='$etiquetas',repeatsAfter='$repeatsAfter',eventoActivo='$eventoActivo')";
+    // Campo "tipo"
+    $sql="UPDATE eventos SET fecha='$fecha',fechaFin=$fechaFin,clase='$clase',titulo='$titulo',texto='$texto', 
+            temperatura='$temperatura',idEntidad='$idEntidad',idDireccion= '$idDireccion',url='$url',email='$email',
+            etiquetas='$etiquetas',organizador='$organizador',repeatsAfter='$repeatsAfter',eventoActivo='$eventoActivo'";
+    if (isset($eventData["tipo"])) {
+       $sql.=",tipo='$tipo'";
+    } 
+    $sql.="WHERE idEvento=$idEvento";
+             
     mysqli_query($link, $sql);
 
-    $sql="DELETE FROM eventos_tematicas WHERE $idEvento='$idEvento'";
+    $sql="DELETE FROM eventos_tematicas WHERE idEvento='$idEvento'";
     mysqli_query($link, $sql);
     
     $sql="INSERT INTO eventos_tematicas (idEvento, idTematica) VALUES ";
@@ -1322,41 +1328,52 @@ function createPlace($placeData)
 {
     //Parameter were $nombreLugar,$direccion,$lat,$lng,$idPadre
 
-    $link=connect();
-    mysqli_query($link, 'SET CHARACTER SET utf8');
+   $link=connect();
+   mysqli_query($link, 'SET CHARACTER SET utf8');
 
-    // Sanitize input
-    foreach($placeData as $parameter) {
-      $parameter=safe($link,$parameter);
-    }
-    
+   // Sanitize inputs    
+   $placeData['idCiudad']=safe($link,$placeData['idCiudad']);
+   $placeData['idDistrito']=safe($link,$placeData['idDistrito']);
+   $placeData['idBarrio']=safe($link,$placeData['idBarrio']);
+   $placeData['nombre']=safe($link,$placeData['nombre']);
+   $placeData['direccion']=safe($link,$placeData['direccion']);
+   $placeData['indicacion']=safe($link,$placeData['indicacion']);
+   $placeData['cp']=safe($link,$placeData['cp']);
+   $placeData['lat']=safe($link,$placeData['lat']);
+   $placeData['lng']=safe($link,$placeData['lng']);
+   $placeData['zoom']=safe($link,$placeData['zoom']);
+   $placeData['direccionActiva']=safe($link,$placeData['direccionActiva']);
+   
    $sql="INSERT INTO direcciones (idCiudad, idDistrito, idBarrio, nombre, direccion, indicacion, cp, lat, lng, zoom, direccionActiva,created)
        VALUES  ('{$placeData["idCiudad"]}', '{$placeData["idDistrito"]}', '{$placeData["idBarrio"]}', '{$placeData["nombre"]}', '{$placeData["direccion"]}', '{$placeData["indicacion"]}', '{$placeData["cp"]}',
        '{$placeData["lat"]}', '{$placeData["lng"]}', '{$placeData["zoom"]}', '{$placeData["direccionActiva"]}',NULL)";    
    
-    //$sql="INSERT INTO direcciones (idPadre,nombre,direccion,lat,lng,zoom,direccionActiva)
-    //                       VALUES ('$idDistritoPadre','$nombreLugar','$direccion','$lat','$lng','15','0')"; // Needs to be updated (idPadre)
     mysqli_query($link, $sql);
-    $temp=mysqli_insert_id($link);
-    return $temp;
-    //return mysqli_insert_id($link);
+    return mysqli_insert_id($link);
 }
 
-function updatePlace($placeData,$idLugar)
+function updatePlace($placeData)
 {
     $link=connect();
     mysqli_query($link, 'SET CHARACTER SET utf8');
     
-    // Sanitize input
-    foreach($placeData as $parameter) {
-      $parameter=safe($link,$parameter);
-    }
-    $idLugar=safe($link,$idLugar);
+   // Sanitize inputs    
+   $placeData['idCiudad']=safe($link,$placeData['idCiudad']);
+   $placeData['idDistrito']=safe($link,$placeData['idDistrito']);
+   $placeData['idBarrio']=safe($link,$placeData['idBarrio']);
+   $placeData['nombre']=safe($link,$placeData['nombre']);
+   $placeData['direccion']=safe($link,$placeData['direccion']);
+   $placeData['indicacion']=safe($link,$placeData['indicacion']);
+   $placeData['cp']=safe($link,$placeData['cp']);
+   $placeData['lat']=safe($link,$placeData['lat']);
+   $placeData['lng']=safe($link,$placeData['lng']);
+   $placeData['zoom']=safe($link,$placeData['zoom']);
+   $placeData['direccionActiva']=safe($link,$placeData['direccionActiva']);
     
     $sql="UPDATE direcciones 
         SET idCiudad={$placeData["idCiudad"]}, idDistrito={$placeData["idDistrito"]}, idBarrio={$placeData["idBarrio"]}, nombre='{$placeData["nombre"]}', direccion='{$placeData["direccion"]}',
             indicacion='{$placeData["indicacion"]}', cp='{$placeData["cp"]}', lat='{$placeData["lat"]}', lng='{$placeData["lng"]}', zoom='{$placeData["zoom"]}', direccionActiva='{$placeData["direccionActiva"]}'
-        WHERE idDireccion=$idLugar";
+        WHERE idDireccion={$placeData["idDireccion"]}";
     mysqli_query($link, $sql);
 }
 
