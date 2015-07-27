@@ -2,6 +2,8 @@
 include "../db.php";
 error_reporting(E_ERROR);
 
+exit();
+
 $link=connect();
 $sql="SELECT * FROM territorios where nombre like '% El'";
 $result=mysqli_query($link,$sql);
