@@ -57,7 +57,7 @@ $lastChangedLimit = time()- (1 * 86400); //To be compared with the event's "chan
 //$url = "http://agendadelhenares.org/event-list-json?changed&place__address&place__latitude&place__longitude&place__zoom&body";
 
 // This alternative can be used to obtain past events, for example, to extract events month by month
-$timeFrame="startTime=1370037601&endTime=1398895201";
+$timeFrame="startTime=1438380001&endTime=1441058401";
 $url = "http://agendadelhenares.org/event-list-json?{$timeFrame}&changed&place__address&place__latitude&place__longitude&place__zoom&body";
 //http://agendadelhenares.org/event-list-json?startTime=1370037601&endTime=1372629601&limit=150&changed&place__address&place__latitude&place__longitude&place__zoom&body
 
@@ -268,35 +268,37 @@ foreach ($data["events"] as $event) {
 //      foreach ($ret->find('p[class=demosphere-source-link-top]') as $p) {
 //         $p->outertext = '';
 //      }
-      foreach ($ret->find('h3') as $h3) {
-         $h3->outertext = '<p><strong>' . $h3->innertext . '</strong></p>';
-      }
-      foreach ($ret->find('h4') as $h4) {
-         $h4->outertext = '<p><strong>' . $h4->innertext . '</strong></p>';
-      }
-      foreach ($ret->find('a') as $element) {
-         $href = $element->href;
-         if (substr($href, 0, 1) === '/') {
-            $element->href = "http://agendadelhenares.org" . $href;
+       if (isset($ret)) { // It is rare, but there are cases of events with no body
+         foreach ($ret->find('h3') as $h3) {
+            $h3->outertext = '<p><strong>' . $h3->innertext . '</strong></p>';
          }
-      }
-      foreach ($ret->find('img') as $element) {
-         $source = $element->src;
-         if (substr($source, 0, 1) === '/') {
-            $element->src = "http://agendadelhenares.org" . $source;
+         foreach ($ret->find('h4') as $h4) {
+            $h4->outertext = '<p><strong>' . $h4->innertext . '</strong></p>';
          }
-      }
-      foreach ($ret->find('p[class=demosphere-sources]') as $p_source) {
-         foreach ($p_source->find('a') as $a_source) {
-            $eventData["url"] = $a_source->src;
+         foreach ($ret->find('a') as $element) {
+            $href = $element->href;
+            if (substr($href, 0, 1) === '/') {
+               $element->href = "http://agendadelhenares.org" . $href;
+            }
          }
-         $p->outertext = '';
-      }   
-      //echo "<pre>";
-      //echo($ret);
-      $eventData["texto"] = $ret->save();
-      $ret->clear();
-      unset($ret);
+         foreach ($ret->find('img') as $element) {
+            $source = $element->src;
+            if (substr($source, 0, 1) === '/') {
+               $element->src = "http://agendadelhenares.org" . $source;
+            }
+         }
+         foreach ($ret->find('p[class=demosphere-sources]') as $p_source) {
+            foreach ($p_source->find('a') as $a_source) {
+               $eventData["url"] = $a_source->src;
+            }
+            $p->outertext = '';
+         }      
+         //echo "<pre>";
+         //echo($ret);
+         $eventData["texto"] = $ret->save();
+         $ret->clear();
+         unset($ret);
+      }
       
       // Extract data on Organizer from page
       $html = file_get_html('http://agendadelhenares.org/evento/' . $event["id"]);
@@ -383,7 +385,7 @@ foreach ($data["events"] as $event) {
          }   
       }      
    }
-   usleep(25000000);//google free 2.500 searchs with speed 5 pers sec.
+   usleep(15000000);//google free 2.500 searchs with speed 5 pers sec.
 }
 echo "Importados:".PHP_EOL."Total Events: ".$totalEvents.PHP_EOL."Inserted Events: ".$newEvents.PHP_EOL."Updated Events: ".$updatedEvents.PHP_EOL."Inserted Places: ".$newPlaces.PHP_EOL."Updated Places: ".$updatedPlaces."New Cities: ".$newCities;
 ?>
