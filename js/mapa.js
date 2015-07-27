@@ -292,7 +292,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
         else //está activo pero no tiene hijos, mandamos código especial -1
             addPolygonToMap(conf.idTerritorioMostrado,0,"shp/geoJSON/"+response.nivel+"/"+conf.idTerritorioMostrado+".geojson",response.nombre,'#ffaaaa',-1);
         
-        if  (nivelMostrado>7) // If the territory is of level city or lower, counter is included
+        if  (nivelMostrado>6) // If the territory is of level region or lower, counter is included
         {
             if (typeof window.cantidadPorLugar[idTerritorio] === 'undefined')
                 cantidad = '0';
@@ -329,7 +329,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                     breadcrumbs_dropdown+='<li onclick="irATerritorio('+datos.activo+','+datos.id+',0,\''+datos.nombre+'\')">'+datos.nombre+'</li>';
                 }
                 
-                if(nivelMostrado>7) { // If the territory is of level city or lower, there are counters, and a switcher is needed
+                if(nivelMostrado>6) { // If the territory is of level region or lower, there are counters, and a switcher is needed
                     if(typeof window.cantidadPorLugar[datos.id] === 'undefined')
                         cantidad='0';
                     else
@@ -341,7 +341,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                         }).addTo(map);        
                 }    
             });
-            if (nivelMostrado>7)   // We show the switcher to display amount of items per territory
+            if (nivelMostrado>6)   // We show the switcher to display amount of items per territory
                 incluirPalanca();
  
             $("#listabreadcrumbs").html(breadcrumbs_dropdown);
