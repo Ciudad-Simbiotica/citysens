@@ -641,14 +641,29 @@ function getEvento($idEvento)
 
 }
 
-function getEventos($filtros,$idTerritorio,$alrededores,$cantidad=50)
+// Main function to get the list of events, considering filters applied and other parameters
+// By default is returns a maximum of 50 events, showing events between today and the next complete weekend 
+// (ie: in a Friday the whole next week is included) 
+function getEventos($filtros,$idTerritorio,$alrededores,$cantidad=50,$startDate,$endDate)
 {
     $link=connect();
     //Sanitize inputs
     $cantidad=safe($link, filter_var($cantidad, FILTER_SANITIZE_NUMBER_INT));
     $idTerritorio=safe($link,$idTerritorio);
     $alrededores=safe($link,$alrededores);
-    $nivel= getNivelTerritorio($idTerritorio);
+    $startDate= safe($link,$startDate);
+    $endDate= safe($link,$endDate);
+    
+    if ($startDate==0)
+       $startDate=date('Y-m-d');
+    
+    if ($endDate==0) {
+       $endDate=new DateTime($startDate);
+       $endDate->modify('next Friday + 3 days');
+       $endDate=$endDate->format('Y-m-d');
+    }
+    
+    $nivel=getNivelTerritorio($idTerritorio);
 
     $busqueda="";
     $tematica="";
@@ -695,10 +710,12 @@ function getEventos($filtros,$idTerritorio,$alrededores,$cantidad=50)
         FROM eventos, eventos_tematicas, direcciones, territorios 
        WHERE eventos.idDireccion=direcciones.idDireccion
          AND eventos.eventoActivo='1'
+         AND (eventos.fecha>'".$startDate."' AND eventos.fecha<'".$endDate."')
          AND ";
-//TODO: Por qué forzamos que exista una temática?
-  
-if (!$hayFiltroLugar) {
+//TODO: Por qué forzamos que exista una temática? (Podría haber eventos sin una temática clara - aunque podría definirse como: otros)
+//TODO: Por qué forzamos que exista una dirección? (Hay eventos sin una dirección concreta - aunque podría definirse como dirección vacía)
+
+  if (!$hayFiltroLugar) {
   $lugares[]=$idTerritorio;
   if ($alrededores!=0) {
     $lugares=array_merge($lugares,explode(',',$alrededores));
@@ -749,6 +766,8 @@ if (!$hayFiltroLugar) {
 //       GROUP BY eventos.idEvento        ORDER BY fecha ASC LIMIT 0,50;
 //       
     
+    if($tiempo!="")
+        $sql.="($tiempo) AND ";
     if($busqueda!="")
         $sql.="($busqueda) AND ";
     if($tematica!="")
