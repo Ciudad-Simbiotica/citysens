@@ -25,8 +25,6 @@ function clickSuggestion(imagen,texto1,tipo,id,abrev) //Añadir id, texto buscad
       clone.find('.tagFiltro-texto').html(texto1);
       clone.find('.tagFiltro-imagen').css('background-image', "url("+imagen+")");
 
-      console.log(window.conf.clase);
-
       clone.find('.tagFiltro-x').click(function()
       {
         //Borrado  del filtro
@@ -36,13 +34,12 @@ function clickSuggestion(imagen,texto1,tipo,id,abrev) //Añadir id, texto buscad
           return !coincide;
         });
 
-        //cargarDatos(window.conf.clase,$("#select_ordenar").val());
        // if (window.listado.tipo)
        if (!window.listado.tipo)
-        window.listado.tipo="eventos";
-        if (!window.listado.orden)
-            window.listado.orden="puntuacion";
-        window.listado.orden=$("#select_ordenar").val();      
+          window.listado.tipo="eventos";
+       window.listado.orden=$("#select_ordenar").val();
+       if (!window.listado.orden)
+          window.listado.orden="puntuacion";
         $(this).fadeOut("fast",function(){
           $(this).parent().remove();
         });
@@ -60,7 +57,6 @@ function clickSuggestion(imagen,texto1,tipo,id,abrev) //Añadir id, texto buscad
 
       clone.appendTo(".agenda-filtros-"+tipoFiltro);
       clone.fadeIn("fast");
-
 
       /*
       var sugerencia=new Array();
@@ -166,7 +162,7 @@ function suggestBusqueda(texto)
     window.conf.selectedSuggestion=0;
 
     //Añadimos el tooltip
-    if(window.conf.clase=='eventos')
+    if(window.listado.tipo=='eventos')
       $("#cabecera-suggest").append("<div class='cabecera-suggest-tooltip'>Buscar eventos que tengan que ver con...</div>");
     else
       $("#cabecera-suggest").append("<div class='cabecera-suggest-tooltip'>Buscar entidades que tengan que ver con...</div>");
