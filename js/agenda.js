@@ -574,9 +574,9 @@ function cargarDatos()
                 {
                     case "eventos":
                         if (window.conf.alrededores != 0)
-                            primeraLinea = "Mostrando EVENTOS en <strong>" + data.lugarOriginal.nombre + " y alrededores</strong> en las próximas semanas" + conFiltros;
+                            primeraLinea = "Mostrando EVENTOS próximos en <strong>" + data.lugarOriginal.nombre + " y alrededores</strong>" + conFiltros;
                         else
-                            primeraLinea = "Mostrando EVENTOS en <strong>" + data.lugarOriginal.nombre + "</strong> en las próximas semanas" + conFiltros;
+                            primeraLinea = "Mostrando EVENTOS próximos en <strong>" + data.lugarOriginal.nombre + "</strong>" + conFiltros;
 
                         if (jQuery.isEmptyObject(data.grupos)) {
                             primeraLinea += "<br><br><strong>Ningún evento.</strong>";
@@ -585,9 +585,9 @@ function cargarDatos()
                         break;
                     case "organizaciones":
                         if (window.conf.alrededores != 0)
-                            primeraLinea = "Mostrando ENTIDADES en <strong>" + data.lugarOriginal.nombre + " y alrededores</strong> en las próximas semanas" + conFiltros;
+                            primeraLinea = "Mostrando ENTIDADES en <strong>" + data.lugarOriginal.nombre + " y alrededores</strong>" + conFiltros;
                         else
-                            primeraLinea = "Mostrando ENTIDADES en <strong>" + data.lugarOriginal.nombre + "</strong> en las próximas semanas" + conFiltros;
+                            primeraLinea = "Mostrando ENTIDADES en <strong>" + data.lugarOriginal.nombre + "</strong>" + conFiltros;
 
                         if (jQuery.isEmptyObject(data.grupos)) {
                             primeraLinea += "<br><br><strong>Ninguna entidad.</strong>";
@@ -597,9 +597,9 @@ function cargarDatos()
                         break;
                     case "procesos":
                         if (window.conf.alrededores != 0)
-                            primeraLinea = "Mostrando INICIATIVAS en <strong>" + data.lugarOriginal.nombre + " y alrededores</strong> en las próximas semanas" + conFiltros;
+                            primeraLinea = "Mostrando INICIATIVAS en <strong>" + data.lugarOriginal.nombre + " y alrededores</strong>" + conFiltros;
                         else
-                            primeraLinea = "Mostrando INICIATIVAS en <strong>" + data.lugarOriginal.nombre + "</strong> en las próximas semanas" + conFiltros;
+                            primeraLinea = "Mostrando INICIATIVAS en <strong>" + data.lugarOriginal.nombre + "</strong>" + conFiltros;
                         if (jQuery.isEmptyObject(data.grupos))
                         {
                             primeraLinea += "<br><br><strong>Ninguna iniciativa.</strong>";
@@ -657,7 +657,7 @@ function cargarDatos()
                     window.conf.isFollowing = false;
                 }
                 $(".supergrupo").fadeIn(500);
-                // Show sort-by and register only in case ther was results
+                // Show sort-by and register only in case there were results
                 if (!jQuery.isEmptyObject(data.grupos))
                     $(".agenda-segunda-linea").fadeIn(500);
                 comprobarPlegadoFilas();
