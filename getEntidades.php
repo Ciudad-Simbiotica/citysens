@@ -2,11 +2,14 @@
 error_reporting(E_ERROR);
 include_once "db.php";
 $filtros=json_decode($_GET["filtros"],true);
+$cantidad=$_GET["cantidadMostrada"];
 $idTerritorio=$_GET["idTerritorioOriginal"];
 $alrededores=$_GET["alrededores"];
 
 
-$entidades=getEntidades($filtros,$idTerritorio,$alrededores,100);
+//Por que no funciona
+
+$entidades=getEntidades($filtros,$idTerritorio,$alrededores,$cantidad);
 
 $tipoGrupos=$_GET["orden"];
 

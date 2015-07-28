@@ -36,7 +36,8 @@ var miBusqueda = {
      window.listado.tipo="eventos";
   if(!window.listado.orden)
      window.listado.orden="fecha"; 
-
+  if(!window.conf.cantidadMostrada)
+        window.conf.cantidadMostrada=50;  
 
 /* 
 ---------------------------------------------------------------------------------------------
@@ -112,10 +113,11 @@ function createLine(grupo,datos,animated,nombreSuperGrupo)
   $.each(datos,function(clase,contenido)
   {
    		if(clase=="id")
-      {
+      {   
         clone.attr("id",contenido); //Ponemos ID a la fila
         clone.addClass("id"+contenido);
-        clone.find(".grupo-elemento-handup").click(function() //Añadimos la función de click al botón
+        clone.addClass("grupo-filas2-flex");      
+        clone.find(".grupo-elemento-handup").click(function() //Añadimos la función de click al botón   
         {
           clickHandUp(contenido);
         });
@@ -125,13 +127,13 @@ function createLine(grupo,datos,animated,nombreSuperGrupo)
         });
         clone.mouseenter(function() //Añadimos la función de click a la fila
         {
-          enterFila(contenido);
+          enterFila(contenido);       
         })
         .mouseleave(function() //Añadimos la función de click a la fila
         {
           leaveFila(contenido);
         });
-      }
+      }    
       else if(clase=="tipo")
       {
         //Cambiamos las imágenes según el tipo
@@ -192,16 +194,47 @@ function clickHandUp(id)
 
 function clickFila(id)
 {
+    
+    ///////
+    if($("#thumbnail"+id).hasClass("detalle-abierto")){
+        $("#thumbnail"+id).slideUp("slow",function(){
+            $("#thumbnail"+id).removeClass("detalle-abierto");
+        });
+    }
+    else {
+        $(".grupo-filas2-detalle").slideUp("slow");
+        $(".grupo-filas2-detalle").removeClass("detalle-abierto");
+        if ($("#thumbnail"+id).length>0){
+            $("#thumbnail"+id).slideDown("slow");
+            $("#thumbnail"+id).addClass("detalle-abierto");
+            console.log("abrir");
+        }
+        else {    
+      /*$('.id'+id).addClass("divWrap"+id);*/
+            
+           // $("#thumbnail"+id).css("display","none");
+            $("#thumbnail"+id).hide();
+            $("<div class='informacion-cuerpo  grupo-filas2-detalle divWrap"+id+"' id='thumbnail"+id+"'"+"></div>").insertAfter("#"+id);
+            $(".informacion > div.informacion-cuerpo").clone().appendTo("#thumbnail"+id);
+            $(".informacion > div.informacion-pie").clone().appendTo("#thumbnail"+id);
+            $(".informacion-cuerpo > .informacion-cuerpo > .informacion-cuerpo-contacto").unwrap();
+            $(".informacion-cuerpo > .informacion-cuerpo > .informacion-cuerpo-texto").show();    
+            $("#thumbnail"+id).slideDown("slow",function() {/*retrasar efecto*/
+            $("#thumbnail"+id).addClass("detalle-abierto");
+            });
+            console.log("abrir");
+        }
+    }
+    ///////////
   //alert("Click Fila: "+id);
   $("[class^=grupo-fila-]").removeClass("grupo-fila-selected");
   $(".id"+id).addClass("grupo-fila-selected");
-  //$(".informacion-cabecera").html("Cargando contenido: "+id);
-
-  if($(".cabecera-pestania-izq").hasClass("cabecera-pestania-seleccionada"))
-    cargarContenido(id);
+  if  ($("#thumbnail"+id).length>0){
+  if($(".cabecera-pestania-izq").hasClass("cabecera-pestania-seleccionada")) 
+   cargarContenido(id);
   else if($(".cabecera-pestania-dch").hasClass("cabecera-pestania-seleccionada"))
     cargarContenidoEntidad(id);
-
+  }
   $.each(markers, function( index, value ) 
   {
     if(markers[index]!=null)
@@ -209,22 +242,30 @@ function clickFila(id)
   });
   if(markers[id]!=null)
     markers[id].setOpacity(0.9);
-}
+
+    }
 
 function enterFila(id)
 {
+    /*thumbnail comprobacion*/
+   
     if(!($(".id"+id).hasClass("grupo-fila-selected")))
-       if(markers[id]!=null)   
+       if(markers[id]!==null)   
           markers[id].setOpacity(0.6);
-    $(".id"+id).addClass("grupo-fila-hover");
-}
-
+    $(".id"+id).addClass("grupo-fila-hover");  
+ 
+}   
 function leaveFila(id)
 {
   if(!($(".id"+id).hasClass("grupo-fila-selected")))
     if(markers[id]!=null)
       markers[id].setOpacity(0);  
-  $(".id"+id).removeClass("grupo-fila-hover");
+  $(".id"+id).removeClass("grupo-fila-hover"); 
+//  $(".divWrap"+id).mouseleave(function () {
+//        $("#thumbnail"+id).slideUp("slow");
+//         console.log("cerrar");
+//    });
+
 }
 
 function switchFilas(clase,tipo)
@@ -278,7 +319,7 @@ function paddingZeros(number)
 
 function cargarContenido(id)
 {
-  $(".informacion").slideUp("fast");
+  //$(".informacion").slideUp("fast");
   $.getJSON('getDatos.php', 
   {
    id: id, // appears as $_GET['id'] @ ur backend side
@@ -292,48 +333,54 @@ function cargarContenido(id)
     var monthNames = [ "ENE", "FEB", "MAR", "ABR", "MAY", "JUN",
     "JUL", "AUG", "SEP", "OCT", "NOV", "DIC" ];
 
+    //Ocultamos lo que corresponde a entidades y mostramos los de eventos
+    $(".informacion-cuerpo-contacto-elemento-evento").show();
+    $(".informacion-cuerpo-contacto-elemento-entidad").hide();
 
-    $(".informacion-cabecera-izq-calendario-top").html(monthNames[date.getMonth()]);
-    $(".informacion-cabecera-izq-calendario-bottom").html(date.getDate());
-    $(".informacion-cabecera-izq-horas-top").html(paddingZeros(date.getHours())+":"+paddingZeros(date.getMinutes()));
-    if(data.fechaFin!=null)
-      $(".informacion-cabecera-izq-horas-bottom").html(paddingZeros(dateFin.getHours())+":"+paddingZeros(dateFin.getMinutes()));
+    $("#thumbnail"+id+" .informacion-cabecera-izq-calendario-top").html(monthNames[date.getMonth()]);
+    $("#thumbnail"+id+" .informacion-cabecera-izq-calendario-bottom").html(date.getDate());
+    $("#thumbnail"+id+" .informacion-cabecera-izq-horas-top").html(paddingZeros(date.getHours())+":"+paddingZeros(date.getMinutes()));
+    if(data.fechaFin!=null){
+      $("#thumbnail"+id+" .informacion-cabecera-izq-horas-bottom").html(paddingZeros(dateFin.getHours())+":"+paddingZeros(dateFin.getMinutes()));
+  $("#thumbnail"+id+" .grupo-elemento-hora").html(paddingZeros(dateFin.getHours())+":"+paddingZeros(dateFin.getMinutes()));
+    }
     else
-      $(".informacion-cabecera-izq-horas-bottom").html('');
+      $("#thumbnail"+id+" .informacion-cabecera-izq-horas-bottom").html('');
 
 
-    $(".informacion-cabecera-dch-titulo-top").html(data.titulo);
-    $(".informacion-cabecera-dch-titulo-bottom").html(data.lugar);
+    $("#thumbnail"+id+" .informacion-cabecera-dch-titulo-top").html(data.titulo);
+    $("#thumbnail"+id+" .informacion-cabecera-dch-titulo-bottom").html(data.lugar);
 
 
-    $(".informacion-cuerpo-tematicas-listado").html('');
+    $("#thumbnail"+id+" .informacion-cuerpo-tematicas-listado").html('');
     $.each(data.tematicas, function(i, object) 
     {
-      if($(".informacion-cuerpo-tematicas-listado").html()!="")
-        $(".informacion-cuerpo-tematicas-listado").append(', ');      
-      $(".informacion-cuerpo-tematicas-listado").append(object);      
+      if($("#thumbnail"+id+" .informacion-cuerpo-tematicas-listado").html()!="")
+        $("#thumbnail"+id+" .informacion-cuerpo-tematicas-listado").append(', ');      
+      $("#thumbnail"+id+" .informacion-cuerpo-tematicas-listado").append(object);      
     });
 
-    $(".informacion-cuerpo-etiquetas-listado").html(data.etiquetas);
+    $("#thumbnail"+id+" .informacion-cuerpo-etiquetas-listado").html(data.etiquetas);
 
     if(data.url!=null)
       if((data.url.indexOf("http://") < 0) & (data.url.indexOf("https://") < 0))
         data.url="http://"+data.url;
 
-    $(".informacion-cuerpo-contacto-url").attr("href", data.url);
-    $(".informacion-cuerpo-contacto-url").html(data.url);
-    $(".informacion-cuerpo-contacto-email").attr("href", "mailto:"+data.email);
-    $(".informacion-cuerpo-contacto-email").html(data.email);
+    $("#thumbnail"+id+" .informacion-cuerpo-contacto-url").attr("href", data.url);
+    $("#thumbnail"+id+" .informacion-cuerpo-contacto-url").html(data.url);
+    $("#thumbnail"+id+" .informacion-cuerpo-contacto-email").attr("href", "mailto:"+data.email);
+    $("#thumbnail"+id+" .informacion-cuerpo-contacto-email").html(data.email);
 
-    $(".informacion-cuerpo-contacto-email").append(" ");
+    $("#thumbnail"+id+" .informacion-cuerpo-contacto-email").append(" ");
 
-    $(".informacion-cuerpo-texto").html(data.texto);
-
-    $(".informacion-cabecera").click(function()
+    $("#thumbnail"+id+" .informacion-cuerpo-texto").html(data.texto);
+    
+   /* $("#thumbnail"+id+" .informacion-cabecera").ondblclick( iraevento());
+    function iraevento()
     {
       window.location="?idEvento="+data.idEvento+"&idOrigen="+window.conf.idTerritorio;
-    });
-
+    };
+*/
     url="http://www.citysens.net/?idEvento="+data.idEvento+"%26idOrigen="+window.conf.idTerritorio;
     mensaje="¡¡¡Este evento te puede interesar!!!";
     
@@ -359,7 +406,7 @@ function cargarContenido(id)
       }
     }
 
-    addthis.toolbox("#toolbox",addthis_config,addthis_share);
+    addthis.toolbox("#toolbox","#toolbox"+id,addthis_config,addthis_share);
 
     /*
     $(".share-mail").attr("href", "mailto:?subject="+data.titulo+"&body="+mensaje+"%0D%0A%0D%0A"+url);
@@ -370,10 +417,7 @@ function cargarContenido(id)
     //$(".share-link").attr("href", "#");
     */
 
-    //Ocultamos lo que corresponde a entidades y mostramos los de eventos
-    $(".informacion-cuerpo-contacto-elemento-evento").show();
-    $(".informacion-cuerpo-contacto-elemento-entidad").hide();
-
+    
 
     if(data.tipo=='recurrente')
     {
@@ -395,23 +439,23 @@ function cargarContenido(id)
           textoRepeticion='Se repite cada '+data.repeatsAfter+' días';
           break;         
       }
-      $(".informacion-cabecera-abajo").text(textoRepeticion);
-      $(".informacion-cabecera").height(70);
-      $(".informacion-cabecera-abajo").show();
+      $("#thumbnail"+id+" .informacion-cabecera-abajo").text(textoRepeticion);
+      //$(".informacion-cabecera").height(70);
+      $("#thumbnail"+id+" .informacion-cabecera-abajo").show();
     }
     else
     {
-      $(".informacion-cabecera").height(50);
-      $(".informacion-cabecera-abajo").hide();
+     // $(".informacion-cabecera").height(50);
+      $("#thumbnail"+id+" .informacion-cabecera-abajo").hide();
     }
 
-    $(".informacion").slideDown("fast");
+    //$(".informacion").slideDown("fast");
   });
 }
 
 function cargarContenidoEntidad(id)
 {
-  $(".informacion").slideUp("fast");
+  //$(".informacion").slideUp("fast");
   $.getJSON('getDatosEntidad.php', 
   {
    id: id, // appears as $_GET['id'] @ ur backend side
@@ -420,58 +464,55 @@ function cargarContenidoEntidad(id)
   {
     console.log(data);
 
-    $(".informacion-cabecera-dch-titulo-top").html(data.entidad);
-    $(".informacion-cabecera-dch-titulo-bottom").html(data.direccion);
+    $("#thumbnail"+id+" .informacion-cabecera-dch-titulo-top").html(data.entidad);
+    $("#thumbnail"+id+" .informacion-cabecera-dch-titulo-bottom").html(data.direccion);
 
 
-    $(".informacion-cuerpo-tematicas-listado").html('');
+    $("#thumbnail"+id+" .informacion-cuerpo-tematicas-listado").html('');
     $.each(data.tematicas, function(i, object) 
     {
-      if($(".informacion-cuerpo-tematicas-listado").html()!="")
-        $(".informacion-cuerpo-tematicas-listado").append(', ');      
-      $(".informacion-cuerpo-tematicas-listado").append(object);      
+      if($("#thumbnail"+id+" .informacion-cuerpo-tematicas-listado").html()!="")
+        $("#thumbnail"+id+" .informacion-cuerpo-tematicas-listado").append(', ');      
+      $("#thumbnail"+id+" .informacion-cuerpo-tematicas-listado").append(object);      
     });
 
-    $(".informacion-cuerpo-etiquetas-listado").html(data.etiquetas);
+    $("#thumbnail"+id+" .informacion-cuerpo-etiquetas-listado").html(data.etiquetas);
   
-    $(".informacion-cuerpo-contacto-url")
+    $("#thumbnail"+id+" .informacion-cuerpo-contacto-url")
       .attr("href", data.url)
       .html(data.url);
-    $(".informacion-cuerpo-contacto-email")
+    $("#thumbnail"+id+" .informacion-cuerpo-contacto-email")
       .attr("href", "mailto:"+data.email)
       .html(data.email);
 
-    $(".informacion-cuerpo-contacto-twitter")
+    $("#thumbnail"+id+" .informacion-cuerpo-contacto-twitter")
       .attr("href", "mailto:"+data.twitter)
       .html(data.twitter);
 
-    $(".informacion-cuerpo-contacto-facebook")
+    $("#thumbnail"+id+" .informacion-cuerpo-contacto-facebook")
       .attr("href", "mailto:"+data.facebook)
       .html(data.facebook);
 
-    $(".informacion-cuerpo-contacto-facebook").append(" ");
+    $("#thumbnail"+id+" .informacion-cuerpo-contacto-facebook").append(" ");
 
 
-    $(".informacion-cuerpo-descBreve").html(data.descBreve);
-    $(".informacion-cuerpo-texto").html(data.texto);
+    $("#thumbnail"+id+" .informacion-cuerpo-descBreve").html(data.descBreve);
+    $("#thumbnail"+id+" .informacion-cuerpo-texto").html(data.texto);
 
     if(data.tipoEntidad=="institucion")
-      $(".informacion-cabecera-izq-entidad-izq").css('background-image', "url(css/icons/icon_CitYsens.institucion.png)");
+      $("#thumbnail"+id+" .informacion-cabecera-izq-entidad-izq").css('background-image', "url(css/icons/icon_CitYsens.institucion.png)");
     else if(data.tipoEntidad=="organizacion")
-      $(".informacion-cabecera-izq-entidad-izq").css('background-image', "url(css/icons/icon_CitYsens.organizacion.png)");
+      $("#thumbnail"+id+" .informacion-cabecera-izq-entidad-izq").css('background-image', "url(css/icons/icon_CitYsens.organizacion.png)");
     else if(data.tipoEntidad=="colectivo")
-      $(".informacion-cabecera-izq-entidad-izq").css('background-image', "url(css/icons/CitYsens.People.png)");
+      $("#thumbnail"+id+" .informacion-cabecera-izq-entidad-izq").css('background-image', "url(css/icons/CitYsens.People.png)");
 
 
-    $(".informacion-cabecera").click(function()
-    {
-      window.location="/?idEntidad="+data.idEntidad+"&idOrigen="+window.conf.idTerritorio;
-    });
-
+   /* $("#thumbnail"+id+" .informacion-cabecera").onclick(iraevento());*/
+    
     url="http://www.citysens.net/?idEntidad="+data.idEntidad+"%26idOrigen="+window.conf.idTerritorio;
     mensaje="¡¡¡Esta asociación te puede interesar!!!";
     
-    var tbx = document.getElementById("toolbox");
+    var tbx = document.getElementById("toolbox"+id);
 
     tbx.innerHTML="";
     tbx.innerHTML += '<a class="addthis_button_email"></a>';
@@ -493,15 +534,15 @@ function cargarContenidoEntidad(id)
       }
     }
 
-    addthis.toolbox("#toolbox",addthis_config,addthis_share);
+    addthis.toolbox("#toolbox","#toolbox"+id,addthis_config,addthis_share);
     
 
     //Ocultamos lo que corresponde a entidades y mostramos los de eventos
     $(".informacion-cuerpo-contacto-elemento-evento").hide();
     $(".informacion-cuerpo-contacto-elemento-entidad").show();
-    $(".informacion-cabecera").height(50);
+    //$(".informacion-cabecera").height(50);
 
-    $(".informacion").slideDown("fast");
+   //$(".informacion").slideDown("fast");
   });
 }
 
@@ -520,7 +561,7 @@ function cargarDatos()
 {
     window.listado.orden = $("#select_ordenar").val();
     $(".agenda-segunda-linea").fadeOut("fast");
-    $(".informacion").slideUp("fast");
+    //$(".informacion").slideUp("fast");
     //orden = typeof orden !== 'undefined' ? orden : 'fecha';
     $(".cabecera-logo a").attr("href", "?idTerritorio=" + conf.idTerritorio);
 
@@ -533,7 +574,6 @@ function cargarDatos()
 
 
     var filtros = JSON.stringify(arrayTagsQuery);
-    console.log(filtros);
 
 
     $(".supergrupo").attr('id', "").remove();  //Para que no se inserten en esta les quitamos el ID
@@ -552,7 +592,8 @@ function cargarDatos()
                 idTerritorioOriginal: window.conf.idTerritorio,
                 alrededores:window.conf.alrededores,
                 format: "json",
-                orden: window.listado.orden
+                orden: window.listado.orden,
+                cantidadMostrada: window.conf.cantidadMostrada
             })
             .done(function (data)
             {
@@ -707,7 +748,7 @@ function newEvent()
 
 function isValidEmailAddress(emailAddress) 
 {
-    var pattern = new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i);
+    var pattern = new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|} ~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|} ~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_| ~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_| ~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i);
     return pattern.test(emailAddress);
 };
 

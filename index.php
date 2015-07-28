@@ -24,7 +24,8 @@ include "preload.php";
      
  <link href="css/style.css" rel="stylesheet" type="text/css" />
  <link href="css/cabecera.css" rel="stylesheet" type="text/css" />
- <link href="css/grupos.css" rel="stylesheet" type="text/css" />
+<!-- <link href="css/grupos.css" rel="stylesheet" type="text/css" />-->
+ <link href="css/gruposresponsive.css" rel="stylesheet" type="text/css" />
  <link href="css/newEvent.css" rel="stylesheet" type="text/css" />
  <link href="css/informacion.css" rel="stylesheet" type="text/css" />
  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
@@ -39,6 +40,7 @@ include "preload.php";
  <script src="js/datepicker-es.js" type="text/javascript"></script>
  <script src="js/jquery.custom-animations.js" type="text/javascript"></script>
  <script src="js/spin.min.js" type="text/javascript"></script>
+ <script src="js/live.js" type="text/javascript"></script> <!-- solution for CSS change in live Only for Production-->
  <script src="js/jquery.spin.js" type="text/javascript"></script>
  <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js" type="text/javascript"></script>
  <script src="http://maps.google.com/maps/api/js?v=3&sensor=false" type="text/javascript"></script>
@@ -49,6 +51,8 @@ include "preload.php";
  <script src="js/jNotify.jquery.js" type="text/javascript"></script>
  <script src="js/datetimepicker/jquery.datetimepicker.js" type="text/javascript"></script>
  <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5405f16570d4251b" type="text/javascript"></script>
+       <!-- Latest compiled and minified JavaScript 
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
 
 
 </head>

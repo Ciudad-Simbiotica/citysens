@@ -8,15 +8,15 @@
     font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
     z-index: 25;
-    display:none
+    display:none;
 }
 
 .informacion-cabecera 
 {
-    height: 50px;
+  /*  height: 50px;
     border-bottom:thin solid #CCCCCC;
     width: 100%;
-    cursor:hand;cursor:pointer;
+    cursor:hand;cursor:pointer;*/
 
 }
 
@@ -168,7 +168,7 @@
 .informacion-cuerpo
 {
     padding: 3px;
-    height: 240px;
+    max-height: 180px;
     text-align: left;
     overflow-y: auto;
     border-bottom:thin solid #CCCCCC;
@@ -221,7 +221,7 @@
 
 .informacion-cuerpo-texto
 {
-    margin-top: 10px;    
+  /*  margin-top: 10px;    */
 }
 
 .informacion-pie
