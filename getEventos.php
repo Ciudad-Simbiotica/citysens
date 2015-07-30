@@ -51,14 +51,14 @@ foreach($eventos as $evento)
     $datos["idDistrito"]=$evento["idDistrito"];
     $datos["idBarrio"]=$evento["idBarrio"];
     
-    if($grupo==date("Y-m-d",strtotime("2014-05-13")))
+    if($grupo==date("Y-m-d"))
             $cabeceraIzq="Hoy, ";
-    else if($grupo==date("Y-m-d",strtotime("2014-05-13")+86400))
+    else if($grupo==date("Y-m-d",strtotime(date("Y-m-d"))+86400))
             $cabeceraIzq="Mañana, ";
     else
             $cabeceraIzq="";
 
-    $cabeceraIzq.=ucfirst(strftime("%A %e",strtotime($evento["fecha"])));
+    $cabeceraIzq.=ucfirst(strftime("%A %#d",strtotime($evento["fecha"])));
     $cabeceraIzq.=" de ".ucfirst(strftime("%B",strtotime($evento["fecha"])));
 
     unset($nombreGrupos);
