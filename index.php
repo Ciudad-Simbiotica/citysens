@@ -1,6 +1,6 @@
 <?php
 error_reporting(E_ERROR);
-
+setlocale(LC_ALL,'es_ES.utf8');
 include "settings.php";
 //Página por defecto
 if(($_GET["idTerritorio"]=="")&($_GET["idEvento"]=="")&($_GET["idEntidad"]==""))
@@ -53,8 +53,7 @@ include "preload.php";
  <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5405f16570d4251b" type="text/javascript"></script>
        <!-- Latest compiled and minified JavaScript 
  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
-
-
+   
 </head>
 
 <body>  

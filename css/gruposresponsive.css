@@ -26,7 +26,7 @@
 .grupo-cabecera-dch 
 .grupo-pie
 {
-	width: 635px;
+	max-width: 940px;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size:15px;
 	color: white;
@@ -546,7 +546,7 @@ padding:0px;
 .grupo-filas2-detalle {
     display:none;
     color: #000000;
-    border-bottom: thin solid #CCCCCC;
+    /*border-bottom: thin solid #CCCCCC;*/
 }
 .grupo-filas2-lista{
     display:flex;
@@ -615,4 +615,7 @@ right: 0px;
 .detalle-abierto {
 background-color: #FFF0E0;
  box-shadow: 0 2px 3px #aaa, 0 0px 3px #aaa;
+}
+.expandir-detalles{ 
+float: right;
 }

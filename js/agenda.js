@@ -216,7 +216,7 @@ function clickFila(id)
             $("#thumbnail"+id).hide();
             $("<div class='informacion-cuerpo  grupo-filas2-detalle divWrap"+id+"' id='thumbnail"+id+"'"+"></div>").insertAfter("#"+id);
             $(".informacion > div.informacion-cuerpo").clone().appendTo("#thumbnail"+id);
-            $(".informacion > div.informacion-pie").clone().appendTo("#thumbnail"+id);
+            $(".informacion > div.informacion-pie").clone().prependTo("#thumbnail"+id);
             $(".informacion-cuerpo > .informacion-cuerpo > .informacion-cuerpo-contacto").unwrap();
             $(".informacion-cuerpo > .informacion-cuerpo > .informacion-cuerpo-texto").show();    
             $("#thumbnail"+id).slideDown("slow",function() {/*retrasar efecto*/
@@ -311,7 +311,10 @@ function plegarFilas(clase,tipo,tiempo)
 -----------------------------------Cargado contenido agenda----------------------------------
 ---------------------------------------------------------------------------------------------
 */
-
+function iraevento()
+    {     
+      window.location="?idEvento="+data.idEvento+"&idOrigen="+window.conf.idTerritorio;
+    };
 function paddingZeros(number)
 {
   return ("0" + number).slice(-2);
@@ -374,13 +377,11 @@ function cargarContenido(id)
     $("#thumbnail"+id+" .informacion-cuerpo-contacto-email").append(" ");
 
     $("#thumbnail"+id+" .informacion-cuerpo-texto").html(data.texto);
+    urlevento= "+window.location+"/+data.idEvento+
+   $("#thumbnail"+id+" .expandir-detalles").attr("href", window.location.origin+window.location.pathname+"/?idEvento="+data.idEvento+"&idOrigen="+window.conf.idTerritorio );
+
     
-   /* $("#thumbnail"+id+" .informacion-cabecera").ondblclick( iraevento());
-    function iraevento()
-    {
-      window.location="?idEvento="+data.idEvento+"&idOrigen="+window.conf.idTerritorio;
-    };
-*/
+
     url="http://www.citysens.net/?idEvento="+data.idEvento+"%26idOrigen="+window.conf.idTerritorio;
     mensaje="¡¡¡Este evento te puede interesar!!!";
     
@@ -507,9 +508,8 @@ function cargarContenidoEntidad(id)
       $("#thumbnail"+id+" .informacion-cabecera-izq-entidad-izq").css('background-image', "url(css/icons/CitYsens.People.png)");
 
 
-   /* $("#thumbnail"+id+" .informacion-cabecera").onclick(iraevento());*/
-    
-    url="http://www.citysens.net/?idEntidad="+data.idEntidad+"%26idOrigen="+window.conf.idTerritorio;
+    //$("#thumbnail"+id+" .informacion-cabecera").attr("href", "http://www.citysens.net/?idEvento="+data.idEvento+"&idOrigen="+window.conf.idTerritorio );
+
     mensaje="¡¡¡Esta asociación te puede interesar!!!";
     
     var tbx = document.getElementById("toolbox"+id);

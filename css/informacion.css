@@ -182,18 +182,25 @@
 
 .informacion-cuerpo-tematicas-elemento,.informacion-cuerpo-etiquetas-elemento
 {
-    clear:both;
+    display: inline-flex;
+  /*  clear:both;
     float:left;
     margin-right:5px;
+    */
 }
 
 
 .informacion-cuerpo-tematicas-listado,.informacion-cuerpo-etiquetas-listado
 {
-    margin-left: 87px;
+   
+  /*  margin-left: 87px;
     padding-top: 5px;
+  */
+  
 }
-
+.informacion-cuerpo-tematicas {
+    display:flex;
+}
 
 
 .informacion-cuerpo-tematicas-img
@@ -201,6 +208,7 @@
     position: relative;
     top: 3px;
     width: 15px;
+    height:15px;
 }
 
 
@@ -226,6 +234,7 @@
 
 .informacion-pie
 {
+    dislplay: inline-flex;
     padding: 3px;
     text-align: left;
 }
