@@ -1,6 +1,5 @@
 <?php
 error_reporting(E_ERROR);
-setlocale(LC_ALL,'es_ES.utf8');
 include "settings.php";
 //Página por defecto
 if(($_GET["idTerritorio"]=="")&($_GET["idEvento"]=="")&($_GET["idEntidad"]==""))
