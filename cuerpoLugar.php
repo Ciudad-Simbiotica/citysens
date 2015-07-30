@@ -90,7 +90,7 @@
                         </div>                      
                         <div class='grupo-filas-extder flex-align-center flex-dir-column'>
                         <span class='grupo-elemento-tipo'>
-                            <i title="Haz click para ver el evento completo" ondblclick="iraevento()" class="fa fa-arrows-alt" style="color: #0000FF"></i>      <img class="imagen-tipo"  src='css/icons/Event-Unique.64.png' width="20px">
+                            <img class="imagen-tipo"  src='css/icons/Event-Unique.64.png' width="20px">
                         </span>
                         
                         </div>                        
@@ -243,7 +243,7 @@
         </div>
         <div class='informacion-cuerpo-tematicas'>
             <div class='informacion-cuerpo-tematicas-elemento'><img src='css/icons/etiqueta30x30.png' class="informacion-cuerpo-tematicas-img"> <B>Tematicas: </B></div> 
-            <div class='informacion-cuerpo-tematicas-listado'>Temática 1, Temática 2, Temática 3</div>
+            <span class='informacion-cuerpo-tematicas-listado'>Temática 1, Temática 2, Temática 3</span>
         </div>
         <div class='informacion-cuerpo-etiquetas'>
             <div class='informacion-cuerpo-etiquetas-elemento'><img src='css/icons/etiquetas30x30.png' class="informacion-cuerpo-tematicas-img"> <B>Etiquetas: </B></div>
@@ -267,8 +267,8 @@
     </div>
     <div class='informacion-pie'>
         <!-- Go to www.addthis.com/dashboard to customize your tools -->
-
-        <div id="toolbox" class="addthis_default_style addthis_20x20_style"></div>
+<a href="" class="expandir-detalles flex-align-der"><i title="Haz click para ver el evento completo" class="fa fa-arrows-alt" style="color: #0000FF"></i></a>
+        <div id="toolbox" class="addthis_default_style addthis_20x20_style"></div>      
         <!--<div class="follow_eye_listado">Seguir</div>
 
         <!--
