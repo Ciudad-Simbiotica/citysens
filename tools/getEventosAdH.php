@@ -57,7 +57,7 @@ $lastChangedLimit = time()- (1 * 86400); //To be compared with the event's "chan
 //$url = "http://agendadelhenares.org/event-list-json?changed&place__address&place__latitude&place__longitude&place__zoom&body";
 
 // This alternative can be used to obtain past events, for example, to extract events month by month
-$timeFrame="startTime=1438380001&endTime=1441058401";
+$timeFrame="startTime=1441058401&endTime=1443650401";
 $url = "http://agendadelhenares.org/event-list-json?{$timeFrame}&changed&place__address&place__latitude&place__longitude&place__zoom&body";
 //http://agendadelhenares.org/event-list-json?startTime=1370037601&endTime=1372629601&limit=150&changed&place__address&place__latitude&place__longitude&place__zoom&body
 
@@ -95,9 +95,6 @@ foreach ($data["events"] as $event) {
    if (true) {   
       //PLACE
       // Initialice
-      
-      //TEMPORARY, TO SEE THE DATE
-      $event["fecha"] = date("Y-m-d H:i:s", $event["start_time"]);
       
       $placeData["idCiudad"] = $placeData["nombre"] = $placeData["direccion"] = $placeData["indicacion"] = "";
       $placeData["idDistrito"] = $placeData["idBarrio"] = 0;
@@ -368,8 +365,19 @@ foreach ($data["events"] as $event) {
       }
   
       if ($newEvent) {
-         // When creating the event, tipo is set to "convocatoria", as this is not really coming from AdH.
-         $eventData["tipo"] = "convocatoria";       
+         // Tipo is set to "recurrente" if an event with the same name and address appened in the previos two months; "convocatoria" otherwise.
+         $timeLimit=new DateTime($eventData["fecha"]);
+         $timeLimit->modify('- 2 months');
+         $timeLimit=$timeLimit->format('Y-m-d');
+         $sql = "SELECT count(*) FROM eventos where titulo='{$eventData["titulo"]}' and fecha>$timeLimit";
+         $result = mysqli_query($link, $sql);
+         $recentOccurrences = mysqli_fetch_row($result)[0];
+         if ($recentOccurrences>=1) {
+            $eventData["tipo"]="recurrente";
+         } else {
+            $eventData["tipo"]="convocatoria";
+         } 
+         
          $eventData["idEvento"]=createEvent($eventData);
 
          $sql_insertEvento = "INSERT INTO adhEventos_ctsEventos (`adhIdEvento`, `ctsIdEvento`) VALUES ({$event["id"]}, {$eventData["idEvento"]})";
