@@ -468,6 +468,65 @@ function getTematicas($cadena,$cantidad=10)
     return $returnData;
 }
 
+/* This function creates an entity and its associated "tematic" assignments 
+      $entityData is an array that provides all required data */
+function createEntity($entityData)
+{
+    $link=connect();
+    //Sanitize inputs
+    
+    $entidad = safe($link, $entityData["entidad"]);
+    $nombreCorto = safe($link, $entityData["nombreCorto"]);
+    $tipo = safe($link, $entityData["tipo"]);
+    $idsCiudades = safe($link, $entityData["idsCiudades"]);
+    $idDireccion = safe($link, $entityData["idDireccion"]);
+    $telefono = safe($link, $entityData["telefono"]);
+    $email = safe($link, $entityData["email"]);
+    $points = safe($link, $entityData["points"]);
+    $url = safe($link, $entityData["url"]);
+    $twitter = safe($link, $entityData["twitter"]);
+    $facebook = safe($link, $entityData["facebook"]);
+    $etiquetas = safe($link, $entityData["etiquetas"]);
+    $descBreve = safe($link, $entityData["descBreve"]);
+    $texto = safe($link, $entityData["texto"]);
+    $fechaConstitucion = safe($link, $entityData["fechaConstitucion"]);
+    $tematicas=array();
+    foreach($entityData["tematicas"] as $tematica)
+        array_push($tematicas,safe($link, $tematica));
+
+   //    INSERT INTO `entidades` (`entidad`, `nombreCorto`, `tipo`, `idsCiudades`, `idDireccion`, `telefono`, `email`, `points`, `url`, `twitter`, `facebook`, `etiquetas`, `descBreve`, `texto`, `fechaConstitucion`, `created`, `updated`) VALUES
+   //    ('Asociación Gallega Corredor del Henares', '', 'organizacion', '801280005', 869, '670588667', 'galiciahenares@hotmail.com', 0, '', '', '', '', '', '', NULL, '2015-07-15 08:01:34', '2015-07-27 10:20:36'),
+    
+    mysqli_query($link, 'SET CHARACTER SET utf8');
+
+    $sql="INSERT INTO entidades (entidad, nombreCorto, tipo, idsCiudades, idDireccion, telefono, email, points, 
+                                  url, twitter, facebook, etiquetas, descBreve, texto, fechaConstitucion, created)
+                       VALUES ('$entidad','$nombreCorto','$tipo','$idsCiudades','$idDireccion','$telefono','$email','$points',
+                                '$url','$twitter','$facebook','$etiquetas','$descBreve','$texto','$fechaConstitucion', NULL)";
+    mysqli_query($link, $sql);
+
+    $idEntidad=mysqli_insert_id($link);
+    $sql="INSERT INTO entidades_tematicas (idEntidad, idTematica) VALUES ";
+    $firstTematica=true;
+    if (count($tematicas)>0) {
+       foreach($tematicas as $tematica) {
+          if ($firstTematica) {
+             $sql.=" ('$idEntidad', '$tematica')";
+             $firstTematica=false;
+          }
+          else
+             $sql.=", ('$idEntidad','$tematica')";
+       }
+    } else
+       $sql.=" ('$idEntidad','38')"; // Assign topic "Others", for those cases with no tematic
+   
+    mysqli_query($link, $sql);
+
+    return $idEntidad;
+}
+
+/* This function creates an event and its associated "tematic" assignments 
+      $eventData is an array that provides all required data */
 function createEvent($eventData)
 {
     $link=connect();
