@@ -8,8 +8,8 @@
         &nbsp;
     </div>
     <div class='agenda-filtros'>
-        <div class='agenda-filtros-top'>
-            <div class='agenda-filtros-busqueda'>
+        <div class='agenda-filtros-retop'>
+            <div class='agenda-filtros-tiempo'>
                 <div class='tagFiltro' id='tagFiltroTemplate' style="display:none">
                     <div class='tagFiltro-imagen'>
                     </div>
@@ -20,6 +20,12 @@
                         x
                     </div>
                 </div>
+            </div>
+            <div class='agenda-filtros-tiempo2'>
+            </div>
+        </div>
+        <div class='agenda-filtros-top'>
+            <div class='agenda-filtros-busqueda'>
             </div>
             <div class='agenda-filtros-tematica'>
             </div>

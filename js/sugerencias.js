@@ -246,6 +246,8 @@ function suggestBusqueda(texto)
               icono="css/icons/lupa.png";
             else if(value.tipo=="busqueda")
               icono="css/icons/lupa.png";
+            else if(value.tipo=="tiempo")
+              icono="css/icons/clock.png";
 
             clickSuggestion(icono,value.texto1,value.tipo,value.id,value.abrev);
         });
