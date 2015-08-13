@@ -293,7 +293,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
         else //está activo pero no tiene hijos, mandamos código especial -1
             addPolygonToMap(conf.idTerritorioMostrado,0,"shp/geoJSON/"+response.nivel+"/"+conf.idTerritorioMostrado+".geojson",response.nombre,'#ffaaaa',-1);
         
-        if  (nivelMostrado>6) // If the territory is of level region or lower, counter is included
+        if  (nivelMostrado>6) // If the territory is of level region or lower, counter is included and the switcher shown
         {
             if (typeof window.cantidadPorLugar[idTerritorio] === 'undefined')
                 cantidad = '0';
@@ -303,6 +303,8 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                 {
                 icon: new L.NumberedDivIcon({number: cantidad})
                 }).addTo(map);
+            
+            incluirPalanca();
         }
     }
     else { //Cargamos los polígonos hijos

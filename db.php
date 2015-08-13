@@ -710,39 +710,26 @@ function getEvento($idEvento)
 // Main function to get the list of events, considering filters applied and other parameters
 // By default is returns a maximum of 50 events, showing events between today and the next complete weekend 
 // (ie: in a Friday the whole next week is included) 
-function getEventos($filtros,$idTerritorio,$alrededores,$cantidad=50,$startDate,$endDate)
+function getEventos($filtros,$idTerritorio,$alrededores,$cantidad=50)
 {
     $link=connect();
     //Sanitize inputs
     $cantidad=safe($link, filter_var($cantidad, FILTER_SANITIZE_NUMBER_INT));
     $idTerritorio=safe($link,$idTerritorio);
     $alrededores=safe($link,$alrededores);
-    $startDate= safe($link,$startDate);
-    $endDate= safe($link,$endDate);
-    
-    if ($startDate==0)
-       $startDate=date('Y-m-d');
-    // $startDate=date('2015-05-02'); // Could be temporarily used to get a different day
-    
-    if ($endDate==0) {
-       $endDate=new DateTime($startDate);
-       $endDate->modify('next Friday + 9 days');
-       $endDate=$endDate->format('Y-m-d');
-    }
     
     $nivel=getNivelTerritorio($idTerritorio);
 
-    $busqueda="";
-    $tematica="";
+    $busqueda=$tematica=$lugar=$organizacion=$tiempo="";
+    $startDate=$endDate=0;
     $hayFiltroLugar=false;
-    $lugar="";
     $lugares=array();
-    $organizacion="";
+
     foreach($filtros as $filtro)
     {
-        $tipo=$filtro["tipo"];
-        $texto=$filtro["texto"];
-        $id=$filtro["id"];
+        $tipo=safe($link,$filtro["tipo"]);
+        $texto=safe($link,$filtro["texto"]);
+        $id=safe($link,$filtro["id"]);
         switch($tipo)
         {
             case "busqueda":
@@ -766,9 +753,30 @@ function getEventos($filtros,$idTerritorio,$alrededores,$cantidad=50,$startDate,
                     $organizacion.=" OR ";
                 $organizacion.="idEntidad='$id'";
                 break;
+            case "tiempo":
+                $startDate=safe($link,$filtro["start"]);
+                $endDate=safe($link,$filtro["end"]);
+                if ($endDate=="") {
+                   $endDate=new DateTime($startDate);
+                   $endDate->modify('next Friday + 10 days');
+                   $endDate=$endDate->format('Y-m-d');
+                }
+                if ($tiempo!="")
+                   $tiempo.=" OR ";
+                $tiempo.="(eventos.fecha>'".$startDate."' AND eventos.fecha<'".$endDate."')";
+                break;
         }
     }
+    
+    if ($tiempo=="") {
+       $startDate=date('Y-m-d');
 
+       $endDate=new DateTime($startDate);
+       $endDate->modify('next Friday + 10 days');
+       $endDate=$endDate->format('Y-m-d');
+       $tiempo="(eventos.fecha>'".$startDate."' AND eventos.fecha<'".$endDate."')";
+    }
+    
     $sql="SELECT eventos.*, direcciones.lat, direcciones.lng, direcciones.idCiudad, direcciones.idDistrito, direcciones.idBarrio, territorios.nombre as lugar, territorios.nombreCorto,
             (SELECT GROUP_CONCAT(tematicas.tematica)
                FROM eventos_tematicas, tematicas
@@ -777,17 +785,18 @@ function getEventos($filtros,$idTerritorio,$alrededores,$cantidad=50,$startDate,
         FROM eventos, eventos_tematicas, direcciones, territorios 
        WHERE eventos.idDireccion=direcciones.idDireccion
          AND eventos.eventoActivo='1'
-         AND (eventos.fecha>'".$startDate."' AND eventos.fecha<'".$endDate."')
          AND ";
+    
+    $sql.="($tiempo) AND ";
 //TODO: Por qué forzamos que exista una temática? (Podría haber eventos sin una temática clara - aunque podría definirse como: otros)
 //TODO: Por qué forzamos que exista una dirección? (Hay eventos sin una dirección concreta - aunque podría definirse como dirección vacía)
 
-  if (!$hayFiltroLugar) {
-  $lugares[]=$idTerritorio;
-  if ($alrededores!=0) {
-    $lugares=array_merge($lugares,explode(',',$alrededores));
-  }
-}
+    if (!$hayFiltroLugar) {
+        $lugares[]=$idTerritorio;
+        if ($alrededores!=0) {
+          $lugares=array_merge($lugares,explode(',',$alrededores));
+        }
+    }
     if ($nivel<8) // Levels above city, searches will be done on a city-basis
     {    
       $sql.=" direcciones.idCiudad=territorios.id AND ";
@@ -833,8 +842,6 @@ function getEventos($filtros,$idTerritorio,$alrededores,$cantidad=50,$startDate,
 //       GROUP BY eventos.idEvento        ORDER BY fecha ASC LIMIT 0,50;
 //       
     
-    if($tiempo!="")
-        $sql.="($tiempo) AND ";
     if($busqueda!="")
         $sql.="($busqueda) AND ";
     if($tematica!="")
