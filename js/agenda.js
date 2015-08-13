@@ -611,26 +611,23 @@ function cargarDatos()
                     conFiltros = " que satisfacen los siguientes filtros de búsqueda:";
                 $("#cabecera-suggest").empty();
                 $(".input-busqueda").val('');
+                
+                if (window.conf.alrededores!=0)
+                    window.conf.nombreAmbito=data.lugarOriginal.nombre + " y alrededores";
+                else
+                    window.conf.nombreAmbito=data.lugarOriginal.nombre;
 
                 switch (window.listado.tipo)
                 {
                     case "eventos":
-                        if (window.conf.alrededores != 0)
-                            primeraLinea = "Mostrando EVENTOS próximos en <strong>" + data.lugarOriginal.nombre + " y alrededores</strong>" + conFiltros;
-                        else
-                            primeraLinea = "Mostrando EVENTOS próximos en <strong>" + data.lugarOriginal.nombre + "</strong>" + conFiltros;
-
+                        primeraLinea = "Mostrando EVENTOS en <strong>"+window.conf.nombreAmbito+"</strong>" + conFiltros;
                         if (jQuery.isEmptyObject(data.grupos)) {
                             primeraLinea += "<br><br><strong>Ningún evento.</strong>";
                         }
                         $(".input-busqueda").attr('placeholder', 'Filtrar eventos...');
                         break;
                     case "organizaciones":
-                        if (window.conf.alrededores != 0)
-                            primeraLinea = "Mostrando ENTIDADES en <strong>" + data.lugarOriginal.nombre + " y alrededores</strong>" + conFiltros;
-                        else
-                            primeraLinea = "Mostrando ENTIDADES en <strong>" + data.lugarOriginal.nombre + "</strong>" + conFiltros;
-
+                        primeraLinea = "Mostrando ENTIDADES en <strong>"+window.conf.nombreAmbito+"</strong>" + conFiltros;
                         if (jQuery.isEmptyObject(data.grupos)) {
                             primeraLinea += "<br><br><strong>Ninguna entidad.</strong>";
                             $(".div-avisos").hide();
@@ -638,10 +635,7 @@ function cargarDatos()
                         $(".input-busqueda").attr('placeholder', 'Filtrar entidades...');
                         break;
                     case "procesos":
-                        if (window.conf.alrededores != 0)
-                            primeraLinea = "Mostrando INICIATIVAS en <strong>" + data.lugarOriginal.nombre + " y alrededores</strong>" + conFiltros;
-                        else
-                            primeraLinea = "Mostrando INICIATIVAS en <strong>" + data.lugarOriginal.nombre + "</strong>" + conFiltros;
+                        primeraLinea = "Mostrando INICIATIVAS en <strong>"+window.conf.nombreAmbito+"</strong>" + conFiltros;
                         if (jQuery.isEmptyObject(data.grupos))
                         {
                             primeraLinea += "<br><br><strong>Ninguna iniciativa.</strong>";
