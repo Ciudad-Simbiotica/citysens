@@ -51,16 +51,19 @@ foreach($eventos as $evento)
     $datos["idDistrito"]=$evento["idDistrito"];
     $datos["idBarrio"]=$evento["idBarrio"];
     
-    if($grupo==date("Y-m-d"))
+    $hoy=date("Y-m-d");
+    // $hoy=date("2015-05-02"); // Can be used (temporarily) to display a diferent day
+    
+    if($grupo==$hoy)
             $cabeceraIzq="Hoy, ";
-    else if($grupo==date("Y-m-d",strtotime(date("Y-m-d"))+86400))
+    else if($grupo==date("Y-m-d",$hoy+86400))
             $cabeceraIzq="Mañana, ";
     else
             $cabeceraIzq="";
-
-    $cabeceraIzq.=ucfirst(strftime("%A %#d",strtotime($evento["fecha"])));
+    
+    $cabeceraIzq.=ucfirst(strftime("%A %d",strtotime($evento["fecha"])));
     $cabeceraIzq.=" de ".ucfirst(strftime("%B",strtotime($evento["fecha"])));
-
+ 
     unset($nombreGrupos);
     $nombreGrupos=array();
 

@@ -421,6 +421,13 @@ html,body
 	border: 1px solid #C686AA; 
 }
 
+.tagFiltro-tiempo
+{
+	background: #DDB3CA; 
+	color: #A65700; 
+	border: 1px solid #C68600; 
+}
+
 .tagFiltro-imagen
 {
 	float:left;

@@ -259,6 +259,10 @@
 	background-image: url("icons/icon_CitYsens.institucion.png");	
 }
 
+.cabecera-suggest-icono-tiempo
+{
+	background-image: url("icons/clock.png");	
+}
 
 .cabecera-suggest-icono-IrA
 {

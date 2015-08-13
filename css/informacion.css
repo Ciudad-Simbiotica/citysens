@@ -168,7 +168,7 @@
 .informacion-cuerpo
 {
     padding: 3px;
-    max-height: 180px;
+    max-height: 320px;
     text-align: left;
     overflow-y: auto;
     border-bottom:thin solid #CCCCCC;

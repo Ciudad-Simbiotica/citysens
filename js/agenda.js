@@ -14,7 +14,7 @@ var miBusqueda = {
     
         idOrigen: $.urlParam('idTerritorio'),
         Organismo:'Evento',
-    //    Filtros:typeof(window.arrayTags)!=="undefined"?window.arrayTags[0].texto:"sinfiltro"
+    //    Filtros:typeof(window.arrayFilters)!=="undefined"?window.arrayFilters[0].texto:"sinfiltro"
         //idOrigen: window.idTerritorio// actualmente esta en window.idTerritorio   
         };
     
@@ -552,7 +552,8 @@ function removeAllTags()
   $(".tagFiltro-tematica").remove();
   $(".tagFiltro-lugar").remove();
   $(".tagFiltro-entidad").remove();
-  conf.arrayTags=[];
+  $(".tagFiltro-tiempo").remove();
+  conf.arrayFilters=[];
 
 }
 
@@ -569,11 +570,11 @@ function cargarDatos()
     //window.conf.clase=clase;
     //[{"texto":"Alcal&aacute; De Henares","tipo":"lugar","id":"4284"}] 
     var hayUnLugar = false;
-    var arrayTagsQuery = conf.arrayTags.slice();
+    var arrayFiltersQuery = conf.arrayFilters.slice();
 
 
 
-    var filtros = JSON.stringify(arrayTagsQuery);
+    var filtros = JSON.stringify(arrayFiltersQuery);
 
 
     $(".supergrupo").attr('id', "").remove();  //Para que no se inserten en esta les quitamos el ID
@@ -598,7 +599,7 @@ function cargarDatos()
             .done(function (data)
             {
                 //Esperamos a que se hayan borrado los grupos (por si acaba antes) antes de clonar
-                //console.log(arrayTagsQuery);
+                //console.log(arrayFiltersQuery);
 
                 //console.log(data);
 
@@ -606,7 +607,7 @@ function cargarDatos()
 
                 primeraLinea = "";
                 conFiltros = ":";
-                if (window.conf.arrayTags.length > 0)
+                if (window.conf.arrayFilters.length > 0)
                     conFiltros = " que satisfacen los siguientes filtros de búsqueda:";
                 $("#cabecera-suggest").empty();
                 $(".input-busqueda").val('');
@@ -757,9 +758,9 @@ function subscribe()
   if(isLogged())
   {
     var hayUnLugar=false;
-    var arrayTagsQuery=conf.arrayTags.slice();
+    var arrayFiltersQuery=conf.arrayFilters.slice();
 
-    $.each(arrayTagsQuery, function(i, object) 
+    $.each(arrayFiltersQuery, function(i, object) 
     {
       if(object.tipo=="lugar")
       {
@@ -775,10 +776,10 @@ function subscribe()
         "tipo": "lugar",
         "id": window.conf.idTerritorio
       };
-      arrayTagsQuery.push(sugerencia);
+      arrayFiltersQuery.push(sugerencia);
     }
 
-    var params=JSON.stringify(arrayTagsQuery);
+    var params=JSON.stringify(arrayFiltersQuery);
     if(window.isFollowing)
     {
       $.post( "changeSubscriptionStatus.php", { params: params, clase: window.conf.clase, action: 'unsubscribe' } )

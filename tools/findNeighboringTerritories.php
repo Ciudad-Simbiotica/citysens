@@ -14,6 +14,7 @@ $link=connect();
 
 $nivel=10;  // Level "city" (8) or neighborhood (10)
 $provincia=28;
+$soloNuevos=FALSE;
 $territorios=array();
 $vecinos=array();
 
@@ -28,7 +29,7 @@ $territorios=mysqli_query($link, $sql);
 
 foreach($territorios as $territorio) {
   
-//  if (!isset($territorio["vecinos"])) {
+  if ($soloNuevos && !isset($territorio["vecinos"])) {
       $idTerritorio=$territorio["id"];
       $nombreTerritorio=$territorio["nombre"];
       $poli_ciudad = geoPHP::load(file_get_contents("../shp/geoJSON/$nivel/$idTerritorio.geojson"),'json');	
@@ -58,7 +59,7 @@ foreach($territorios as $territorio) {
         $vecinos=[];
       }
   }
-//}
+}
 
 
 /*

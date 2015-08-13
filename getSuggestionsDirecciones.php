@@ -3,25 +3,25 @@ error_reporting(E_ERROR);
 ini_set('default_charset', 'utf-8');
 include_once "db.php";
 
-$sugestions=array();
+$suggestions=array();
 
 
 $lugares=getDireccionesSuggestions($_GET["query"],$_GET["idTerritorio"]);
 foreach($lugares as $lugar)
 {
 	//print_r($lugar);
-	$sugestion["tipo"]="lugar";
-	$sugestion["texto1"]=substr($lugar[1],0,60);
-	$sugestion["texto2"]=substr($lugar[2],0,60);//htmlentities(ucwords(strtolower(substr($lugar[2],0,50))));
-	$sugestion["id"]=$lugar[0];
-	$sugestion["lat"]=$lugar[3];
-	$sugestion["lon"]=$lugar[4];
-	$sugestion["zoom"]=$lugar[5];
-	array_push($sugestions,$sugestion);
+	$suggestion["tipo"]="lugar";
+	$suggestion["texto1"]=substr($lugar[1],0,60);
+	$suggestion["texto2"]=substr($lugar[2],0,60);//htmlentities(ucwords(strtolower(substr($lugar[2],0,50))));
+	$suggestion["id"]=$lugar[0];
+	$suggestion["lat"]=$lugar[3];
+	$suggestion["lon"]=$lugar[4];
+	$suggestion["zoom"]=$lugar[5];
+	array_push($suggestions,$suggestion);
 }
 
 
-$return["suggestions"]=$sugestions;
+$return["suggestions"]=$suggestions;
 
 echo json_encode($return);
 

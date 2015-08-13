@@ -1,0 +1,37 @@
+﻿Polígonos Municipios
+====================
+
+Descripción
+-----------
+Archivos de Poligonos de Municipios de Líneas Límite del Área del Registro Central de Cartografía del IGN.
+
+Formato
+-------
+Formato shapefile. Geometrías Multipolígono
+
+Descripción de las capas
+------------------------
+- Poligonos_Municipio_ed50: Recintos de municipios. Sistema ED50, coordenadas geográficas.
+- Poligonos_Municipio_etrs89: Recintos de municipios. Sistema ETRS89, coordenadas geográficas.
+
+Atributos
+---------
+* id: Identificador único
+* nombre: Nombre oficial del municipio o de la comunidad conjurisdiccional
+* CodigoINE: Código del Instituto Nacional de Estadística
+* Jurisdicci: códigos INE de los municipios que tienen jurisdicción sobre este territorio. Coincide con el CodigoINE excepto en el caso de las comunidades conjurisdiccionales, en donde aparecen separados por punto y coma.
+* provincia: código INE de la provincia a la que pertenece el municipio.
+
+Notas y aclaraciones
+--------------------
+Hay algunos registros cuyos códigos INE no son los del Instituto Nacional de Estadística sino códigos internos del IGN que son:
+- Comunidades: territorios con jurisdicción compartida entre varios municipios o sin jurisdicción municipal (extramunicipales), cuyo campo CodINE tienen el formato 53???.
+
+Cualquier duda o error de contenido que se encuentre, contactar con:
+
+mbarreda@fomento.es
+amlujan@fomento.es
+
+Para cuestiones de tipo técnico, puede contactar con:
+consulta@cnig.es
+Fecha de generación de los datos: 2014-05-29 14:31:05

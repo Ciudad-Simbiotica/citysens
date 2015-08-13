@@ -1,0 +1,31 @@
+﻿Comunidades Autónomas
+=====================
+
+Descripción
+-----------
+Recintos de Comunidades Autónomas resultantes de agrupar todos los muncipios de una misma comunidad autónoma.
+
+Formato
+-------
+Formato shapefile. Geometrías Multipolígono
+
+Descripción de las capas
+------------------------
+- Poligonos_CCAA_ED50: Elemento polígonos de Líneas límite españolas de CCAA. Sistema ED50, coordenadas geográficas.
+- Poligonos_CCAA_ETRS89: Elemento polígonos de Líneas límite españolas de CCAA. Sistema ETRS89, coordenadas geográficas.
+
+Atributos
+---------
+* ID: Identificador único
+* Nombre: Nombre oficial de la Comunidad Autónoma
+* cod_CCAA: Código de Comunidad Autónoma. Si se diera el caso, los territorios con jurisdicción interautonómica tienen el valor 20
+
+Notas y aclaraciones
+--------------------
+Cualquier duda o error de contenido que se encuentre, contactar con:
+mbarreda@fomento.es
+amlujan@fomento.es
+
+Para cuestiones de tipo técnico, puede contactar con:
+consulta@cnig.es
+Fecha de generación de los datos: 2014-05-29 14:31:05
