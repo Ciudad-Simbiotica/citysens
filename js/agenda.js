@@ -793,7 +793,7 @@ function subscribe()
     else
     {
 
-      $.post( "changeSubscriptionStatus.php", { params: params, clase: window.clase,  action: 'subscribe' } )
+      $.post( "changeSubscriptionStatus.php", { params: params, clase: window.listado.tipo,  action: 'subscribe' } )
       .done(function(data){
         console.log(data);
       });
@@ -943,7 +943,7 @@ $(".cabecera-pestania-ctr").click(function()
   $(".subcabecera-pestania-izq").slideUp("fast");
   $(".subcabecera-pestania-dch").slideUp("fast");
   //cargarDatos("procesos"); 
-  window.listado.orden="procesos";
+  window.listado.tipo="procesos";
   cargarDatos();
  
 
