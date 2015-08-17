@@ -219,10 +219,6 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
     
     // Define to use in footer and other places
     window.conf.idTerritorio=idTerritorio;
-//    if (alrededores!=0 && (response.nivel==10 || response.nivel==8))
-//        window.conf.nombreAmbito=response.nombre+' y alrededores';
-//    else
-//        window.conf.nombreAmbito=response.nombre;
     
       //Breadcrumbs
     var breadcrumbs="";

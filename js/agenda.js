@@ -36,8 +36,11 @@ var miBusqueda = {
      window.listado.tipo="eventos";
   if(!window.listado.orden)
      window.listado.orden="fecha"; 
-  if(!window.conf.cantidadMostrada)
-        window.conf.cantidadMostrada=50;  
+  if(!window.listado.itemsNumber)
+        window.listado.itemsNumber=0;
+  if(!window.listado.itemsLimit)
+        window.listado.itemsLimit=50;  
+
 
 /* 
 ---------------------------------------------------------------------------------------------
@@ -594,7 +597,8 @@ function cargarDatos()
                 alrededores:window.conf.alrededores,
                 format: "json",
                 orden: window.listado.orden,
-                cantidadMostrada: window.conf.cantidadMostrada
+                itemsNumber: window.listado.itemsNumber,
+                itemsLimit: window.listado.itemsLimit
             })
             .done(function (data)
             {
