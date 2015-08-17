@@ -144,16 +144,7 @@ function suggestBusqueda(texto)
         return;
     }
 
-    // TODO: Later it uses the condition     if(window.clase=='eventos') for somthing simmilar.
-    //       Probably it would be better to think of some alternative method to indicate what section we are in.
-    //       Specially considering that there will be other categories in addition to events and entities.
-    if ($(".cabecera-pestania-izq").hasClass("cabecera-pestania-seleccionada"))
-        entidades = "";
-    else
-        entidades = "true";
-
-
-    //Que cargue las sugerencias usando AJAX
+    //Carga las sugerencias usando AJAX
     var getAgenda = "getSuggestions.php?";
     $.getJSON(getAgenda,
             {
@@ -162,7 +153,7 @@ function suggestBusqueda(texto)
                 alrededores: window.conf.alrededores,
                 date: "any",
                 format: "json",
-                entidades: entidades
+                tipo: window.listado.tipo
             })
             .done(function (data)
             {

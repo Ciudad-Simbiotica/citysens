@@ -11,7 +11,7 @@ $suggestions=array();
 //    idTerritorio: window.conf.idTerritorio,
 //    alrededores: window.conf.alrededores,
 //    date: "any",
-//    entidades: entidades
+//    tipo: window.listado.tipo
 //  
 
 //ToDo: Sugerencia de búsquedas comunes
@@ -185,7 +185,7 @@ foreach($lugares as $lugar)
 	array_push($suggestions,$suggestion);
 }
 
-if($_GET["entidades"]=="")	//Sólo las mostramos si NO estamos en página de entidades
+if($_GET["tipo"]=="eventos")	//Sólo las mostramos si NO estamos en página de entidades
 {
 	$entidades=getEntidadesZonaConEventos($_GET["query"],$_GET["idTerritorio"],$_GET["alrededores"],4);
 	foreach($entidades as $entidad)

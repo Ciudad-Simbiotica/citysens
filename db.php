@@ -313,12 +313,13 @@ function getEntidadesZonaConEventos($cadena,$idTerritorio,$alrededores,$cantidad
 }
 
 // Gets the information about Entities to be displayed, taking into account all filters and   
-function getEntidades($filtros, $idTerritorio, $alrededores, $cantidad=10)
+function getEntidades($filtros, $idTerritorio, $alrededores, $itemsStart=0, $itemsLimit=50)
 {
     $link=connect();
 
-    // Sanitize inpusts
-    $cantidad=safe($link, filter_var($cantidad,FILTER_SANITIZE_NUMBER_INT));
+    // Sanitize inputs
+    $itemsStart=safe($link, filter_var($itemsStart,FILTER_SANITIZE_NUMBER_INT));
+    $itemsLimit=safe($link, filter_var($itemsLimit,FILTER_SANITIZE_NUMBER_INT));
     $idTerritorio=safe($link,$idTerritorio);
     $alrededores=safe($link,$alrededores);
     $nivel= getNivelTerritorio($idTerritorio);
@@ -427,7 +428,7 @@ function getEntidades($filtros, $idTerritorio, $alrededores, $cantidad=10)
        $sql_2.="($lugar_2) ";
        $sql.=$sql_2;  
     }
-    $sql.=" GROUP BY entidades.idEntidad ORDER BY points DESC LIMIT 0,$cantidad";
+    $sql.=" GROUP BY entidades.idEntidad ORDER BY points DESC LIMIT $itemsStart,$itemsLimit";
     
     $result=mysqli_query($link, $sql);
     $returnData=array();
@@ -710,11 +711,12 @@ function getEvento($idEvento)
 // Main function to get the list of events, considering filters applied and other parameters
 // By default is returns a maximum of 50 events, showing events between today and the next complete weekend 
 // (ie: in a Friday the whole next week is included) 
-function getEventos($filtros,$idTerritorio,$alrededores,$cantidad=50)
+function getEventos($filtros,$idTerritorio,$alrededores,$itemsStart=0, $itemsLimit=50)
 {
     $link=connect();
     //Sanitize inputs
-    $cantidad=safe($link, filter_var($cantidad, FILTER_SANITIZE_NUMBER_INT));
+    $itemsStart=safe($link, filter_var($itemsStart, FILTER_SANITIZE_NUMBER_INT));
+    $itemsLimit=safe($link, filter_var($itemsLimit, FILTER_SANITIZE_NUMBER_INT));
     $idTerritorio=safe($link,$idTerritorio);
     $alrededores=safe($link,$alrededores);
     
@@ -850,7 +852,7 @@ function getEventos($filtros,$idTerritorio,$alrededores,$cantidad=50)
         $sql.="($lugar) AND ";
     if($organizacion!="")
          $sql.="($organizacion) AND ";
-    $sql.=" eventos.idEvento=eventos_tematicas.idEvento GROUP BY eventos.idEvento ORDER BY fecha ASC LIMIT 0,$cantidad";
+    $sql.=" eventos.idEvento=eventos_tematicas.idEvento GROUP BY eventos.idEvento ORDER BY fecha ASC LIMIT $itemsStart,$itemsLimit";
 
     //echo $sql;
     //exit();

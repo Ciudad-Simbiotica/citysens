@@ -36,8 +36,11 @@ var miBusqueda = {
      window.listado.tipo="eventos";
   if(!window.listado.orden)
      window.listado.orden="fecha"; 
-  if(!window.conf.cantidadMostrada)
-        window.conf.cantidadMostrada=50;  
+  if(!window.listado.itemsNumber)
+        window.listado.itemsNumber=0;
+  if(!window.listado.itemsLimit)
+        window.listado.itemsLimit=50;  
+
 
 /* 
 ---------------------------------------------------------------------------------------------
@@ -594,7 +597,8 @@ function cargarDatos()
                 alrededores:window.conf.alrededores,
                 format: "json",
                 orden: window.listado.orden,
-                cantidadMostrada: window.conf.cantidadMostrada
+                itemsNumber: window.listado.itemsNumber,
+                itemsLimit: window.listado.itemsLimit
             })
             .done(function (data)
             {
@@ -611,26 +615,23 @@ function cargarDatos()
                     conFiltros = " que satisfacen los siguientes filtros de búsqueda:";
                 $("#cabecera-suggest").empty();
                 $(".input-busqueda").val('');
+                
+                if (window.conf.alrededores!=0)
+                    window.conf.nombreAmbito=data.lugarOriginal.nombre + " y alrededores";
+                else
+                    window.conf.nombreAmbito=data.lugarOriginal.nombre;
 
                 switch (window.listado.tipo)
                 {
                     case "eventos":
-                        if (window.conf.alrededores != 0)
-                            primeraLinea = "Mostrando EVENTOS próximos en <strong>" + data.lugarOriginal.nombre + " y alrededores</strong>" + conFiltros;
-                        else
-                            primeraLinea = "Mostrando EVENTOS próximos en <strong>" + data.lugarOriginal.nombre + "</strong>" + conFiltros;
-
+                        primeraLinea = "Mostrando EVENTOS en <strong>"+window.conf.nombreAmbito+"</strong>" + conFiltros;
                         if (jQuery.isEmptyObject(data.grupos)) {
                             primeraLinea += "<br><br><strong>Ningún evento.</strong>";
                         }
                         $(".input-busqueda").attr('placeholder', 'Filtrar eventos...');
                         break;
                     case "organizaciones":
-                        if (window.conf.alrededores != 0)
-                            primeraLinea = "Mostrando ENTIDADES en <strong>" + data.lugarOriginal.nombre + " y alrededores</strong>" + conFiltros;
-                        else
-                            primeraLinea = "Mostrando ENTIDADES en <strong>" + data.lugarOriginal.nombre + "</strong>" + conFiltros;
-
+                        primeraLinea = "Mostrando ENTIDADES en <strong>"+window.conf.nombreAmbito+"</strong>" + conFiltros;
                         if (jQuery.isEmptyObject(data.grupos)) {
                             primeraLinea += "<br><br><strong>Ninguna entidad.</strong>";
                             $(".div-avisos").hide();
@@ -638,10 +639,7 @@ function cargarDatos()
                         $(".input-busqueda").attr('placeholder', 'Filtrar entidades...');
                         break;
                     case "procesos":
-                        if (window.conf.alrededores != 0)
-                            primeraLinea = "Mostrando INICIATIVAS en <strong>" + data.lugarOriginal.nombre + " y alrededores</strong>" + conFiltros;
-                        else
-                            primeraLinea = "Mostrando INICIATIVAS en <strong>" + data.lugarOriginal.nombre + "</strong>" + conFiltros;
+                        primeraLinea = "Mostrando INICIATIVAS en <strong>"+window.conf.nombreAmbito+"</strong>" + conFiltros;
                         if (jQuery.isEmptyObject(data.grupos))
                         {
                             primeraLinea += "<br><br><strong>Ninguna iniciativa.</strong>";
@@ -793,7 +791,7 @@ function subscribe()
     else
     {
 
-      $.post( "changeSubscriptionStatus.php", { params: params, clase: window.clase,  action: 'subscribe' } )
+      $.post( "changeSubscriptionStatus.php", { params: params, clase: window.listado.tipo,  action: 'subscribe' } )
       .done(function(data){
         console.log(data);
       });
@@ -943,7 +941,7 @@ $(".cabecera-pestania-ctr").click(function()
   $(".subcabecera-pestania-izq").slideUp("fast");
   $(".subcabecera-pestania-dch").slideUp("fast");
   //cargarDatos("procesos"); 
-  window.listado.orden="procesos";
+  window.listado.tipo="procesos";
   cargarDatos();
  
 

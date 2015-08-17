@@ -54,7 +54,7 @@ function addPolygonToMap(idTerritorio,alrededores,url,nombre,color,activo)
 
                 geojsonLayer.on('mouseout', function(e) 
                 {
-                    $(".map-footer").html(window.conf.nombre);  
+                    $(".map-footer").html(window.conf.nombreAmbito);  
                     var layer = e.target;
                     layer.resetStyle(e.target);  //layer.resetStyle(); 
                 });        
@@ -219,10 +219,6 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
     
     // Define to use in footer and other places
     window.conf.idTerritorio=idTerritorio;
-    if (alrededores!=0 && (response.nivel==10 || response.nivel==8))
-        window.conf.nombre=response.nombre+' y alrededores';
-    else
-        window.conf.nombre=response.nombre;
     
       //Breadcrumbs
     var breadcrumbs="";
@@ -243,7 +239,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
       }
       else{
           breadcrumbs+='<div id=\'hijos\'><strong>'+lugar[1]+'</strong><ul id=\'listabreadcrumbs\'></ul></div>';
-            $(".map-footer").html(window.conf.nombre);
+            $(".map-footer").html(window.conf.nombreAmbito);
          }      
     });
 
@@ -261,7 +257,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
         });
         $("#upbutton").on('mouseout', function(e) 
         {
-          $(".map-footer").html(window.conf.nombre);
+          $(".map-footer").html(window.conf.nombreAmbito);
         });
     };
 
@@ -546,7 +542,7 @@ function incluirPalanca() {
             });
             $("#circle-button").on('mouseout', function (e)
             {
-                $(".map-footer").html(window.conf.nombre);
+                $(".map-footer").html(window.conf.nombreAmbito);
             });
         }
     }
