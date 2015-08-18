@@ -587,7 +587,7 @@ function cargarDatos()
      $(this).remove();
      });  */
 
-    var getAgenda = "getAgendaXML.php?";
+    var getAgenda = "getData.php?";
     $.getJSON(getAgenda,
             {
                 clase: window.conf.tipo,
