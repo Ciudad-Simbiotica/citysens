@@ -39,7 +39,7 @@ include "preload.php";
  <script src="js/datepicker-es.js" type="text/javascript"></script>
  <script src="js/jquery.custom-animations.js" type="text/javascript"></script>
  <script src="js/spin.min.js" type="text/javascript"></script>
- <script src="js/live.js" type="text/javascript"></script> <!-- solution for CSS change in live Only for Production-->
+ <!--<script src="js/live.js" type="text/javascript"></script>  solution for CSS change in live Only for Develop-->
  <script src="js/jquery.spin.js" type="text/javascript"></script>
  <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js" type="text/javascript"></script>
  <script src="http://maps.google.com/maps/api/js?v=3&sensor=false" type="text/javascript"></script>
