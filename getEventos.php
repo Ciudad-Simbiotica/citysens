@@ -1,10 +1,16 @@
 <?php
 error_reporting(E_ERROR);
 include_once "db.php";
+/* @var $filtros Array with search filters */
 $filtros=json_decode($_GET["filtros"],true);
+/* @var $itemsNumber integer - number of items already listed */
 $itemsNumber=$_GET["itemsNumber"];
+/* @var $itemsLimit integer - number of items to display */
 $itemsLimit=$_GET["itemsLimit"];
+/* @var $idTerritorio integer - ID of the territory to be displayed*/
 $idTerritorio=$_GET["idTerritorioOriginal"];
+
+/* @var $alrededores boolean - Indicates if "alrededores", neighboring territories should be highlighted */
 $alrededores=$_GET["alrededores"];
 
 $eventos=getEventos($filtros,$idTerritorio,$alrededores,$itemsNumber,$itemsLimit);

@@ -429,7 +429,7 @@ function getEntidades($filtros, $idTerritorio, $alrededores, $itemsStart=0, $ite
        $sql.=$sql_2;  
     }
     $sql.=" GROUP BY entidades.idEntidad ORDER BY points DESC LIMIT $itemsStart,$itemsLimit";
-    
+      
     $result=mysqli_query($link, $sql);
     $returnData=array();
     while($fila=mysqli_fetch_assoc($result))

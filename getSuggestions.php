@@ -11,7 +11,7 @@ $suggestions=array();
 //    idTerritorio: window.conf.idTerritorio,
 //    alrededores: window.conf.alrededores,
 //    date: "any",
-//    tipo: window.listado.tipo
+//    tipo: window.conf.tipo
 //  
 
 //ToDo: Sugerencia de búsquedas comunes

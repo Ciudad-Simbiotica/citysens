@@ -64,12 +64,12 @@ function clickSuggestion(filter)
                 return !coincide;
             });
 
-            if (!window.listado.tipo)
-                window.listado.tipo = "eventos";
+            if (!window.conf.tipo)
+                window.conf.tipo = "eventos";
 
-            window.listado.orden = $("#select_ordenar").val();
-            if (!window.listado.orden)
-                window.listado.orden = "puntuacion";
+            window.conf.orden = $("#select_ordenar").val();
+            if (!window.conf.orden)
+                window.conf.orden = "puntuacion";
             $(this).fadeOut("fast", function () {
                 $(this).parent().remove();
             });
@@ -102,7 +102,7 @@ function clickSuggestion(filter)
         conf.arrayFilters.push(sugerencia);
         $("#input-busqueda").val('');
         //cargarDatos(window.conf.clase,$("#select_ordenar").val());
-        window.listado.orden = $("#select_ordenar").val();
+        window.conf.orden = $("#select_ordenar").val();
         cargarDatos();
     }
 
@@ -153,7 +153,7 @@ function suggestBusqueda(texto)
                 alrededores: window.conf.alrededores,
                 date: "any",
                 format: "json",
-                tipo: window.listado.tipo
+                tipo: window.conf.tipo
             })
             .done(function (data)
             {
@@ -174,7 +174,7 @@ function suggestBusqueda(texto)
                 window.conf.selectedSuggestion = 0;
 
                 //Añadimos el tooltip
-                if (window.listado.tipo == 'eventos')
+                if (window.conf.tipo == 'eventos')
                     $("#cabecera-suggest").append("<div class='cabecera-suggest-tooltip'>Buscar eventos que tengan que ver con...</div>");
                 else
                     $("#cabecera-suggest").append("<div class='cabecera-suggest-tooltip'>Buscar entidades que tengan que ver con...</div>");
@@ -209,7 +209,7 @@ function suggestBusqueda(texto)
                                         window.conf.idTerritorio = value.id;
                                         //   cargarMapa(window.conf.idTerritorio);               
                                         // else          
-                                        window.listado.orden = $("#select_ordenar").val();
+                                        window.conf.orden = $("#select_ordenar").val();
                                         removeAllTags();
                                         cargarDatos();
                                         // clickSuggestion(icono,value.texto1,value.tipo,value.id);

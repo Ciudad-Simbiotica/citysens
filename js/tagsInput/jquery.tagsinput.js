@@ -138,7 +138,7 @@
 			});		
 			
 			//cargarDatos("eventos");
-                        window.listado.tipo="eventos";
+                        window.conf.tipo="eventos";
                         cargarDatos();
 			$("#input-busqueda_tag").focus();
 
