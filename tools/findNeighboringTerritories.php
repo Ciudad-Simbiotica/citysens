@@ -5,7 +5,7 @@ error_reporting(E_ERROR);
 set_time_limit(0);
 
 // script deactivated unless needed
-exit();
+//exit();
 
 
 // This scripts determines neighbouring cities and neighbourhoods given cities/neighbourhoods.
@@ -17,6 +17,7 @@ $provincia=28;
 $soloNuevos=FALSE;
 $territorios=array();
 $vecinos=array();
+echo "<pre>";
 
 //Take all cities from a certain province
 //$sql="SELECT * FROM territorios WHERE nivel='$nivel' AND provincia='$provincia'";
@@ -57,6 +58,7 @@ foreach($territorios as $territorio) {
 
       if (isset($vecinos)) {
         $sql="UPDATE territorios SET vecinos='".join($vecinos,",")."' WHERE id='$idTerritorio'";
+        echo $sql, PHP_EOL;
         mysqli_query($link,$sql);    
         $vecinos=[];
       }

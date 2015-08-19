@@ -8,11 +8,12 @@ include_once "../db.php";
 exit();
 
 $link=connect();
+echo "<pre>";
 
 $nivel='10';
 
 //$sql="SELECT * FROM territorios WHERE idPadre like '601100046%' and (xcentroid =0 OR xcentroid is NULL)";  
-$sql="SELECT * FROM territorios WHERE id='1001282311' and nivel='$nivel'";
+$sql="SELECT * FROM territorios WHERE id in ('1001282672','1001282434','1001282431','1001282414','1001282380','1001282361','1001282360') and nivel='$nivel'";
 
 $result=mysqli_query($link, $sql);
 $data=array();
@@ -37,7 +38,7 @@ foreach($data as $idRegion)
 	  xcentroid='$centX', ycentroid='$centY',
 	  xmin='{$bounds["minx"]}',ymin='{$bounds["miny"]}',xmax='{$bounds["maxx"]}',ymax='{$bounds["maxy"]}'
 	  WHERE id='$idRegion'";
-	 //echo $sql;
+	  echo $sql, PHP_EOL;
 	 mysqli_query($link, $sql);
 } 
 echo "Finish!";
