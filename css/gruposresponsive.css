@@ -163,12 +163,12 @@ body {
 {
     color: black;
     border-bottom:thin solid #CCCCCC;
-    min-height: 40px;
+    max-height: 40px;
 }
 
 .grupo-fila-organizaciones
 {
-    min-height: 45px;	
+    max-height: 45px;	
 }
 
 div[class*='grupo-fila-']:hover

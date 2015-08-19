@@ -218,6 +218,12 @@ function clickFila(id)
            // $("#thumbnail"+id).css("display","none");
             $("#thumbnail"+id).hide();
             $("<div class='informacion-cuerpo  grupo-filas2-detalle divWrap"+id+"' id='thumbnail"+id+"'"+"></div>").insertAfter("#"+id);
+            if($(".id"+id).hasClass("grupo-fila-convocatoria")){
+                $("#thumbnail"+id).addClass(("grupo-fila-convocatoria"));
+            }
+            if($(".id"+id).hasClass("grupo-fila-recurrente")){
+                 $("#thumbnail"+id).addClass(("grupo-fila-recurrente"));
+            }
             $(".informacion > div.informacion-cuerpo").clone().appendTo("#thumbnail"+id);
             $(".informacion > div.informacion-pie").clone().prependTo("#thumbnail"+id);
             $(".informacion-cuerpo > .informacion-cuerpo > .informacion-cuerpo-contacto").unwrap();
@@ -380,12 +386,13 @@ function cargarContenido(id)
     $("#thumbnail"+id+" .informacion-cuerpo-contacto-email").append(" ");
 
     $("#thumbnail"+id+" .informacion-cuerpo-texto").html(data.texto);
-    urlevento= "+window.location+"/+data.idEvento+
-   $("#thumbnail"+id+" .expandir-detalles").attr("href", window.location.origin+window.location.pathname+"/?idEvento="+data.idEvento+"&idOrigen="+window.conf.idTerritorio );
+   // urlevento= "+window.location+"/+data.idEvento+
+   $("#thumbnail"+id+" .expandir-detalles").attr("href", window.location.origin+window.location.pathname+"?idEvento="+data.idEvento+"%26idOrigen="+window.conf.idTerritorio );
+console.log("href", window.location.origin+window.location.pathname+"?idEvento="+data.idEvento+"%26idOrigen="+window.conf.idTerritorio );
 
     
 
-    url="http://www.citysens.net/?idEvento="+data.idEvento+"%26idOrigen="+window.conf.idTerritorio;
+    url=window.location.origin+window.location.pathname+"?idEvento="+data.idEvento+"%26idOrigen="+window.conf.idTerritorio;
     mensaje="¡¡¡Este evento te puede interesar!!!";
     
     var tbx = document.getElementById("toolbox");
@@ -467,6 +474,9 @@ function cargarContenidoEntidad(id)
   .done(function(data) 
   {
     console.log(data);
+   //Ocultamos lo que corresponde a eventos y mostramos los de entidades
+   $(".informacion-cuerpo-contacto-elemento-evento").hide();
+   $(".informacion-cuerpo-contacto-elemento-entidad").show();
 
     $("#thumbnail"+id+" .informacion-cabecera-dch-titulo-top").html(data.entidad);
     $("#thumbnail"+id+" .informacion-cabecera-dch-titulo-bottom").html(data.direccion);
