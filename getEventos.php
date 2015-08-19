@@ -68,7 +68,7 @@ foreach($eventos as $evento)
     else
             $cabeceraIzq="";
     
-    $cabeceraIzq.=ucfirst(strftime("%A %d",strtotime($evento["fecha"])));
+    $cabeceraIzq.=utf8_encode(ucfirst(strftime("%A %d",strtotime($evento["fecha"]))));
     $cabeceraIzq.=" de ".ucfirst(strftime("%B",strtotime($evento["fecha"])));
  
     unset($nombreGrupos);

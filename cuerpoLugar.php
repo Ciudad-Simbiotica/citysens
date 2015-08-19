@@ -273,7 +273,7 @@
     </div>
     <div class='informacion-pie'>
         <!-- Go to www.addthis.com/dashboard to customize your tools -->
-<a href="" class="expandir-detalles flex-align-der"><i title="Haz click para ver el evento completo" class="fa fa-arrows-alt" style="color: #0000FF"></i></a>
+<a href="" class="expandir-detalles flex-align-der"><i title="Haz click para ver el evento completo" class="fa fa-arrows-alt" style="color: #0000FF;position: absolute;right: 4%"></i></a>
         <div id="toolbox" class="addthis_default_style addthis_20x20_style"></div>      
         <!--<div class="follow_eye_listado">Seguir</div>
 
