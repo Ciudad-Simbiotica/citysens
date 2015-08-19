@@ -579,7 +579,7 @@ function cargarDatos()
     //orden = typeof orden !== 'undefined' ? orden : 'fecha';
     $(".cabecera-logo a").attr("href", "?idTerritorio=" + conf.idTerritorio);
 
-    console.log("Cargandod datos para:" +window.conf.tipo + " " + window.conf.orden+ " " + window.conf.itemsNumber + " " + window.conf.itemsLimit);
+    console.log("Cargando datos para:" +window.conf.tipo + " " + window.conf.orden+ " " + window.conf.itemsNumber + " " + window.conf.itemsLimit);
     //window.conf.clase=clase;
     //[{"texto":"Alcal&aacute; De Henares","tipo":"lugar","id":"4284"}] 
     //var hayUnLugar = false;
@@ -597,7 +597,7 @@ function cargarDatos()
      $(this).remove();
      });  */
 
-    var getAgenda = "getAgendaXML.php?";
+    var getAgenda = "getData.php?";
     $.getJSON(getAgenda,
             {
                 clase: window.conf.tipo,

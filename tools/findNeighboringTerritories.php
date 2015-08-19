@@ -5,7 +5,7 @@ error_reporting(E_ERROR);
 set_time_limit(0);
 
 // script deactivated unless needed
-exit();
+//exit();
 
 
 // This scripts determines neighbouring cities and neighbourhoods given cities/neighbourhoods.
@@ -17,10 +17,13 @@ $provincia=28;
 $soloNuevos=FALSE;
 $territorios=array();
 $vecinos=array();
+echo "<pre>";
 
 //Take all cities from a certain province
 //$sql="SELECT * FROM territorios WHERE nivel='$nivel' AND provincia='$provincia'";
-$sql="SELECT * FROM territorios WHERE nivel='$nivel'";
+//$sql="SELECT * FROM territorios WHERE nivel='$nivel'";
+$sql="SELECT * FROM territorios WHERE nivel='$nivel' AND provincia='$provincia' and idPadre in (select id from territorios where nivel=9 and idPadre in (select id from territorios where nivel=8 and idPadre='701280008'))";
+ // Todos los barrios de Madrid
 
 //To just take Alcalá
 //$sql="SELECT * FROM territorios WHERE nivel='$nivel' AND id='801280005'";
@@ -29,7 +32,7 @@ $territorios=mysqli_query($link, $sql);
 
 foreach($territorios as $territorio) {
   
-  if ($soloNuevos && !isset($territorio["vecinos"])) {
+  if (!$soloNuevos || !isset($territorio["vecinos"])) {
       $idTerritorio=$territorio["id"];
       $nombreTerritorio=$territorio["nombre"];
       $poli_ciudad = geoPHP::load(file_get_contents("../shp/geoJSON/$nivel/$idTerritorio.geojson"),'json');	
@@ -47,7 +50,7 @@ foreach($territorios as $territorio) {
             $distance=$poli_ciudad->distance($poli_cercano);
 
 //            if ($distance<0.02) { // For cities (8), around 2km
-              if ($distance<0.0025) { // For neighborhoods (10), around 350m
+            if ($distance<0.0025) { // For neighborhoods (10), around 350m
             
               array_push($vecinos,$idCercano);
             }
@@ -55,6 +58,7 @@ foreach($territorios as $territorio) {
 
       if (isset($vecinos)) {
         $sql="UPDATE territorios SET vecinos='".join($vecinos,",")."' WHERE id='$idTerritorio'";
+        echo $sql, PHP_EOL;
         mysqli_query($link,$sql);    
         $vecinos=[];
       }

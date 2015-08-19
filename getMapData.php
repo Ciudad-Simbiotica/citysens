@@ -33,18 +33,18 @@
         
       $coordenadasColindantes=getCoordenadasVecinos($respuesta["nivel"],$vecindad);      
 
-      // In case of cities having a very big neighbour, coordinates are too wide and territory loses central position. Check for it and correct, using a 0,05 margin 
-//      if ($respuesta["nivel"]==8)
-//      {
-//        if ($coordenadasColindantes["xmax"]>$respuesta["xmax"]+0.05)
-//          $coordenadasColindantes["xmax"]=$respuesta["xmax"]+0.05;
-//        if ($coordenadasColindantes["ymax"]>$respuesta["ymax"]+0.05)
-//          $coordenadasColindantes["ymax"]=$respuesta["ymax"]+0.05;
-//        if ($coordenadasColindantes["xmin"]<$respuesta["xmin"]-0.05)
-//          $coordenadasColindantes["xmin"]=$respuesta["xmin"]-0.05;
-//        if ($coordenadasColindantes["ymin"]<$respuesta["ymin"]-0.05)
-//          $coordenadasColindantes["ymin"]=$respuesta["ymin"]-0.05;  
-//      }
+      // In case of having a very big neighbour coordinates are too wide and territory loses relevance and central position. 
+      // Check for it and correct, using a 2x margin 
+        $width=$respuesta["xmax"]-$respuesta["xmin"];
+        $height=$respuesta["ymax"]-$respuesta["ymin"];
+        if ($coordenadasColindantes["xmax"]>1.5*$width+$respuesta["xmax"])
+          $coordenadasColindantes["xmax"]=1.5*$width+$respuesta["xmax"];
+        if ((float) $coordenadasColindantes["ymax"]>1.5*$height+(float)$respuesta["ymax"])
+          $coordenadasColindantes["ymax"]=1.5*$height+$respuesta["ymax"];
+        if ((float) $coordenadasColindantes["xmin"]<-1.5*$width+(float)$respuesta["xmin"])
+          $coordenadasColindantes["xmin"]=-1.5*$width+$respuesta["xmin"];
+        if ((float) $coordenadasColindantes["ymin"]<-1.5*$height+(float)$respuesta["ymin"])
+          $coordenadasColindantes["ymin"]=-1.5*$height+$respuesta["ymin"];  
       
       // Coordinates might not be satisfactory for a peripheric territory, as they get cut. Check for it and correct.
 //      $respuesta["xmax"]=($respuesta["xmax"]>$coordenadasColindantes["xmax"]?$respuesta["xmax"]:$coordenadasColindantes["xmax"]);
