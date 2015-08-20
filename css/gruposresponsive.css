@@ -242,8 +242,7 @@ div[class*='grupo-elemento-']
 {
     font-size: 14px;
     font-weight: bold;
-    top: 4px;
-    left: 26px;
+    align-self: center;
 }
 
 .grupo-elemento-copa
@@ -314,7 +313,7 @@ div[class*='grupo-elemento-']
 .grupo-elemento-titulo
 {
     width: auto;
-    max-width: 455px;
+    max-width: 420px;
     height: auto;
     overflow: hidden;
     white-space: nowrap;
@@ -325,12 +324,12 @@ div[class*='grupo-elemento-']
 
 .grupo-elemento-tituloOrg
 {
-    top:2px;
-    left: 110px;
-    width: 485px;
+   /* top:2px;
+    left: 110px;*/
+    max-width: inherit;
     height: 18px;
     overflow: hidden;
-    white-space: nowrap;
+    /*white-space: nowrap;*/
     text-overflow: ellipsis;
     color:#6666ff;
     font-weight: bold;
@@ -395,10 +394,8 @@ div[class*='grupo-elemento-']
 .grupo-filas2-flex {
     margin: auto;
     display: flex;
-    flex-direction: row;
-    /* border: 8px solid #c3c3c3;*/
     flex-wrap:nowrap;
-     /* background-color: #bacee3;*/
+    flex-direction: row;
 }
 /*******************/
 /*PROPIEADES FLEX  */
