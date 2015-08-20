@@ -218,11 +218,21 @@ function clickFila(id)
            // $("#thumbnail"+id).css("display","none");
             $("#thumbnail"+id).hide();
             $("<div class='informacion-cuerpo  grupo-filas2-detalle divWrap"+id+"' id='thumbnail"+id+"'"+"></div>").insertAfter("#"+id);
+            //Añado la clase correspondiente para que funcionen los acordeones
             if($(".id"+id).hasClass("grupo-fila-convocatoria")){
                 $("#thumbnail"+id).addClass(("grupo-fila-convocatoria"));
             }
             if($(".id"+id).hasClass("grupo-fila-recurrente")){
                  $("#thumbnail"+id).addClass(("grupo-fila-recurrente"));
+            }
+            if($(".id"+id).hasClass("grupo-fila-organizacion")){
+                $("#thumbnail"+id).addClass(("grupo-fila-organizacion"));
+            }
+            if($(".id"+id).hasClass("grupo-fila-colectivo")){
+                 $("#thumbnail"+id).addClass(("grupo-fila-colectivo"));
+            }
+            if($(".id"+id).hasClass("grupo-fila-institucion")){
+                 $("#thumbnail"+id).addClass(("grupo-fila-institucion"));
             }
             $(".informacion > div.informacion-cuerpo").clone().appendTo("#thumbnail"+id);
             $(".informacion > div.informacion-pie").clone().prependTo("#thumbnail"+id);
