@@ -670,21 +670,19 @@ function getEvento($idEvento)
     mysqli_query($link, 'SET CHARACTER SET utf8');
     $sql="SELECT * FROM eventos WHERE idEvento='$idEvento' AND eventos.eventoActivo='1'";
     $result=mysqli_query($link, $sql);
-    if($fila=mysqli_fetch_assoc($result))
+    if($evento=mysqli_fetch_assoc($result))
     {
-        $evento=$fila;
-
-        $sql="SELECT * FROM places WHERE idPlace='{$fila['idPlace']}'";
+        $sql="SELECT * FROM places WHERE idPlace='{$evento['idPlace']}'";
         $result=mysqli_query($link, $sql);
-        if($fila=mysqli_fetch_assoc($result))
+        if($place=mysqli_fetch_assoc($result))
         {
-            $evento['place']=$fila;
+            $evento['place']=$place;
         }
         else
         {
             $evento['place']['direccion']="Sin dirección";
             $evento['place']['idPlace']="0";
-            $evento['place']['idPadre']="0";
+            $evento['place']['idPadre']="0";   // idPadre? TODO: Review
             $evento['place']['lat']=0;
             $evento['place']['lng']=0;
             $evento['place']['nombre']="Sin nombre";
@@ -811,11 +809,11 @@ function getEventos($filtros,$idTerritorio,$alrededores,$itemsStart=0, $itemsLim
       // No need to find descendants, as all ids in $lugares must already be ids from cities
       $lugar="places.idCiudad IN ('".join($lugares,"','")."')";
     }
-    else if ($nivel==8) //Map at city level, searches done on SubCityLevel (city, district, neighborhood) basis
+    else if ($nivel==8) //Map at city level, searches done on SubCityLevel (city?, district, neighborhood) basis
     {
       $sql.=" places.idDistrito=territorios.id AND ";
       $hijos=getAllChildren($lugares,9);
-        $lugar="places.idCiudad='places.idDistrito IN ('".join($hijos,"','")."') OR places.idBarrio IN ('".join($hijos,"','")."')";
+      $lugar="(places.idCiudad='$idTerritorio' AND places.placeStatus>1) OR places.idDistrito IN ('".join($hijos,"','")."') OR places.idBarrio IN ('".join($hijos,"','")."')";
     }
     else if ($nivel==9) //Map at district level, searches done on SubCityLevel (district, neighborhood) basis
     {
