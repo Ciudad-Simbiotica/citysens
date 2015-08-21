@@ -24,54 +24,54 @@ $link=connect();
   }
   
   // Takes addresses that are not linked to any city
-    $sql="SELECT * FROM direcciones WHERE idCiudad is null OR idCiudad='0'";
+    $sql="SELECT * FROM places WHERE idCiudad is null OR idCiudad='0'";
   
-  $direcciones=array();
+  $places=array();
   $asociados=array();
     
   $result=mysqli_query($link,$sql);
   while($fila=mysqli_fetch_assoc($result))
   {
-      array_push($direcciones,$fila);
-      $asociados[$fila["idDireccion"]]="";
+      array_push($places,$fila);
+      $asociados[$fila["idPlace"]]="";
   }
   
-  if (!empty($direcciones)){
+  if (!empty($places)){
     foreach($territorios as $territorio) {
         echo $territorio.PHP_EOL;
         $poligono = geoPHP::load(file_get_contents("../shp/geoJSON/8/$territorio.geojson"),'json');	
 
         //print_r($poligono->asArray());//.PHP_EOL;
 
-        foreach($direcciones as $key=>$direccion)
+        foreach($places as $key=>$place)
         {
-            $punto = geoPHP::load("POINT({$direccion['lng']} {$direccion['lat']})","wkt");
+            $punto = geoPHP::load("POINT({$place['lng']} {$place['lat']})","wkt");
 
             if($poligono->contains($punto))
             {
-                $asociados[$direccion["idDireccion"]]=$territorio;
-                // Since we have already found it... remove it from direcciones, to avoid to process it again. Will it work?
-                unset($direcciones[$key]);
+                $asociados[$place["idPlace"]]=$territorio;
+                // Since we have already found it... remove it from places, to avoid to process it again. Will it work?
+                unset($places[$key]);
             }
         }
     }
 
     foreach($asociados as $id=>$territorio)
     {
-      mysqli_query($link,"UPDATE direcciones SET idCiudad='$territorio' WHERE idDireccion='$id'");
+      mysqli_query($link,"UPDATE places SET idCiudad='$territorio' WHERE idPlace='$id'");
     }
   }
 
   
-  $sql="SELECT * FROM direcciones WHERE (idDistrito is null OR idDistrito='0') AND idCiudad is not null AND idCiudad<>'0'";
+  $sql="SELECT * FROM places WHERE (idDistrito is null OR idDistrito='0') AND idCiudad is not null AND idCiudad<>'0'";
   
-  $direcciones=array();
+  $places=array();
   $asociados=array();
     
   $result=mysqli_query($link,$sql);
   while($fila=mysqli_fetch_assoc($result))
   {
-//      array_push($direcciones,$fila);
+//      array_push($places,$fila);
       $idCiudad=$fila["idCiudad"];
 
       $territorios=array();
@@ -95,25 +95,25 @@ $link=connect();
 
                 if($poligono->contains($punto))
                 {
-                    $asociados[$fila["idDireccion"]]=$territorio;
+                    $asociados[$fila["idPlace"]]=$territorio;
                 }
   }
   
     foreach($asociados as $id=>$territorio)
     {
-          mysqli_query($link,"UPDATE direcciones SET idDistrito='$territorio' WHERE idDireccion='$id'");
+          mysqli_query($link,"UPDATE places SET idDistrito='$territorio' WHERE idPlace='$id'");
     }
   }
 
-  $sql="SELECT * FROM direcciones WHERE (idBarrio is null OR idBarrio='0') AND idCiudad is not null AND idCiudad<>'0'";
+  $sql="SELECT * FROM places WHERE (idBarrio is null OR idBarrio='0') AND idCiudad is not null AND idCiudad<>'0'";
   
-  $direcciones=array();
+  $places=array();
   $asociados=array();
     
   $result=mysqli_query($link,$sql);
   while($fila=mysqli_fetch_assoc($result))
   {
-//      array_push($direcciones,$fila);
+//      array_push($places,$fila);
       $idCiudad=$fila["idCiudad"];
 
       $territorios=array();
@@ -137,13 +137,13 @@ $link=connect();
 
                 if($poligono->contains($punto))
                 {
-                    $asociados[$fila["idDireccion"]]=$territorio;
+                    $asociados[$fila["idPlace"]]=$territorio;
                 }
   }
   
     foreach($asociados as $id=>$territorio)
     {
-          mysqli_query($link,"UPDATE direcciones SET idBarrio='$territorio' WHERE idDireccion='$id'");
+          mysqli_query($link,"UPDATE places SET idBarrio='$territorio' WHERE idPlace='$id'");
     }
   }
   echo "HECHO!";

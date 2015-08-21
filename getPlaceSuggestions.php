@@ -6,7 +6,7 @@ include_once "db.php";
 $suggestions=array();
 
 
-$lugares=getDireccionesSuggestions($_GET["query"],$_GET["idTerritorio"]);
+$lugares=getPlaceSuggestions($_GET["query"],$_GET["idTerritorio"]);
 foreach($lugares as $lugar)
 {
 	//print_r($lugar);

@@ -16,14 +16,14 @@ while($fila=mysqli_fetch_assoc($result))
 	array_push($barrios,$fila["id"]);
 }
 
-$direcciones=array();
+$places=array();
 $link=connect();
-$sql="SELECT * FROM direcciones WHERE idBarrio<>'0'";
+$sql="SELECT * FROM places WHERE idBarrio<>'0'";
 $result=mysqli_query($link,$sql);
 while($fila=mysqli_fetch_assoc($result))
 {
-	array_push($direcciones,$fila);
-	$asociados[$fila["idDireccion"]]="";
+	array_push($places,$fila);
+	$asociados[$fila["idPlace"]]="";
 }
 
 foreach($barrios as $barrio)
@@ -34,19 +34,19 @@ foreach($barrios as $barrio)
 //print_r($poligono->asArray());
 //.PHP_EOL;
 
-	foreach($direcciones as $direccion)
+	foreach($places as $place)
 	{
-		$punto = geoPHP::load("POINT({$direccion['lng']} {$direccion['lat']})","wkt");
+		$punto = geoPHP::load("POINT({$place['lng']} {$place['lat']})","wkt");
 		if($poligono->contains($punto))
 		{
-			$asociados[$direccion["idDireccion"]]=$barrio;
+			$asociados[$place["idPlace"]]=$barrio;
 		}
 	}
 }
 
 foreach($asociados as $id=>$barrio)
 {
-	mysqli_query($link,"UPDATE direcciones SET idBarrio='$barrio' WHERE idDireccion='$id'");
+	mysqli_query($link,"UPDATE places SET idBarrio='$barrio' WHERE idPlace='$id'");
 	echo $barrio."\t".$id.PHP_EOL;
 }
 

@@ -104,10 +104,10 @@ $.getJSON('getDatos.php',
 
     fechaLegible=date.getDate()+" de "+monthNames2[date.getMonth()]+" a las "+paddingZeros(date.getHours())+":"+paddingZeros(date.getMinutes());
 
-    cargarMapa(data.direccion.lat,data.direccion.lng,data.titulo+" → El "+fechaLegible+" @ "+data.direccion.nombre+" - "+data.direccion.direccion);
+    cargarMapa(data.place.lat,data.place.lng,data.titulo+" → El "+fechaLegible+" @ "+data.place.nombre+" - "+data.place.direccion);
     $(".detalle-mapa-cabecera-lugar").text("Evento en "+data.lugar);
-    $(".detalle-mapa-pie-nombre").text(data.direccion.nombre);
-    $(".detalle-mapa-pie-direccion").text(data.direccion.direccion);
+    $(".detalle-mapa-pie-nombre").text(data.place.nombre);
+    $(".detalle-mapa-pie-direccion").text(data.place.direccion);
     $(".detalle-mapa-cabecera-volver").click(function(){
       //  window.location="?idTerritorio="+$.urlParam('idOrigen'); Creo que esta linea sobraba ahora
     });

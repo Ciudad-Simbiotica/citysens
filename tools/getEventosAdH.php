@@ -57,7 +57,8 @@ $lastChangedLimit = time()- (1 * 86400); //To be compared with the event's "chan
 //$url = "http://agendadelhenares.org/event-list-json?changed&place__address&place__latitude&place__longitude&place__zoom&body";
 
 // This alternative can be used to obtain past events, for example, to extract events month by month
-$timeFrame="startTime=1441058401&endTime=1443650401";
+$timeFrame="startTime=1438380001&endTime=1441058401"; // Agosto 2015
+//$timeFrame="startTime=1441058401&endTime=1443650401"; // Septiembre 2015
 $url = "http://agendadelhenares.org/event-list-json?{$timeFrame}&changed&place__address&place__latitude&place__longitude&place__zoom&body";
 //http://agendadelhenares.org/event-list-json?startTime=1370037601&endTime=1372629601&limit=150&changed&place__address&place__latitude&place__longitude&place__zoom&body
 
@@ -98,7 +99,7 @@ foreach ($data["events"] as $event) {
       
       $placeData["idCiudad"] = $placeData["nombre"] = $placeData["direccion"] = $placeData["indicacion"] = "";
       $placeData["idDistrito"] = $placeData["idBarrio"] = 0;
-      $placeData["direccionActiva"] = "1";
+      $placeData["placeStatus"] = "1";
       $placeData["lat"] = ($event["place__latitude"]!=0) ? (string)$event["place__latitude"]: "0";
       $placeData["lng"] = ($event["place__longitude"]!=0) ? (string)$event["place__longitude"]: "0";
       //These can be empty in case place is not geo-located.
@@ -112,13 +113,13 @@ foreach ($data["events"] as $event) {
 
       if ($numLugaresEncontrados == 0) {
          // The place does not exist in CTS. There is still no assignment to a place in CTS
-         // We have to create a new direccion 
+         // We have to create a new place 
          $newPlace=true;
       } else {
          // A place already exists. We will only update in case we detect a change on important fields
-         $eventData["idDireccion"] = $placeData["idDireccion"] = mysqli_fetch_assoc($result_lugares)['ctsIdLugar'];
+         $eventData["idPlace"] = $placeData["idPlace"] = mysqli_fetch_assoc($result_lugares)['ctsIdLugar'];
 
-         $sql= "SELECT * FROM direcciones where idDireccion={$eventData['idDireccion']}";
+         $sql= "SELECT * FROM places where idPlace={$eventData['idPlace']}";
          $result_ctsLugar = mysqli_query($link, $sql);
          $existingPlaceData = mysqli_fetch_assoc($result_ctsLugar);
          
@@ -228,8 +229,8 @@ foreach ($data["events"] as $event) {
    
       if ($placeData["idCiudad"] != "") {
          if ($newPlace) {                                
-            $eventData["idDireccion"] = createPlace($placeData);            
-            $sql = "INSERT INTO adhLugares_ctsDirecciones (`adhIdLugar`, `ctsIdLugar`) VALUES ({$event["place__id"]}, {$eventData["idDireccion"]})";
+            $eventData["idPlace"] = createPlace($placeData);            
+            $sql = "INSERT INTO adhLugares_ctsDirecciones (`adhIdLugar`, `ctsIdLugar`) VALUES ({$event["place__id"]}, {$eventData["idPlace"]})";
             mysqli_query($link, $sql); 
             $newPlaces++;
          } else {

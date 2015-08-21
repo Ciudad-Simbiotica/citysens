@@ -190,23 +190,23 @@ function getEntidad($idEntidad)
         $entidad=$fila;
 
 
-        $sql="SELECT * FROM direcciones WHERE idDireccion='{$fila['idDireccion']}'";
+        $sql="SELECT * FROM places WHERE idPlace='{$fila['idPlace']}'";
         $result=mysqli_query($link, $sql);
         if($fila=mysqli_fetch_assoc($result))
         {
-            $entidad['direccion']=$fila;
+            $entidad['place']=$fila;
         }
         else
         {
-            $entidad['direccion']['direccion']="Sin dirección";
-            $entidad['direccion']['idDireccion']="0";
-            $entidad['direccion']['idCiudad']="0";
-            $entidad['direccion']['idDistrito']="0";
-            $entidad['direccion']['idBarrio']="0";            
-            $entidad['direccion']['lat']=0;
-            $entidad['direccion']['lng']=0;
-            $entidad['direccion']['nombre']="Sin nombre";
-            $entidad['direccion']['zoom']="15";
+            $entidad['place']['direccion']="Sin dirección";
+            $entidad['place']['idPlace']="0";
+            $entidad['place']['idCiudad']="0";
+            $entidad['place']['idDistrito']="0";
+            $entidad['place']['idBarrio']="0";            
+            $entidad['place']['lat']=0;
+            $entidad['place']['lng']=0;
+            $entidad['place']['nombre']="Sin nombre";
+            $entidad['place']['zoom']="15";
         }
 
         $sql="SELECT * FROM entidades_tematicas, tematicas 
@@ -262,35 +262,35 @@ function getEntidadesZonaConEventos($cadena,$idTerritorio,$alrededores,$cantidad
             FROM entidades 
             JOIN eventos
               ON entidades.idEntidad=eventos.idEntidad
-            JOIN direcciones 
-              ON eventos.idDireccion=direcciones.idDireccion
+            JOIN places 
+              ON eventos.idPlace=places.idPlace
             JOIN territorios
-              ON direcciones.idCiudad=territorios.id             
+              ON places.idCiudad=territorios.id             
            WHERE entidad LIKE '%$cadena%'";
 
     if ($nivel<8) // Levels above city, searches will be done on a city-basis
     {    
       $hijos=getDescendantsOfLevel($idTerritorio,8);
-      $sql.=" AND direcciones.idCiudad IN ('".join($hijos,"','")."')";
+      $sql.=" AND places.idCiudad IN ('".join($hijos,"','")."')";
     }
     else if ($nivel==8) {
       $territorios=$idTerritorio;
       if ($alrededores!=0) {
         $territorios.=",".$alrededores;
       }
-      $sql.=" AND direcciones.idCiudad IN ($territorios)";      
+      $sql.=" AND places.idCiudad IN ($territorios)";      
     }
     else if ($nivel==9) // Map under city, searches done on a district neighborhood-basis
     {
         $hijos=getAllChildren(array($idTerritorio),9);
-        $sql.=" AND direcciones.idDistrito IN ('".join($hijos,"','")."')";
+        $sql.=" AND places.idDistrito IN ('".join($hijos,"','")."')";
     }
     else { // Level 10, neighborhood
         $territorios=$idTerritorio;
         if ($alrededores!=0) {
           $territorios.=",".$alrededores;
         }
-        $sql.=" AND direcciones.idBarrio IN ($territorios)";  
+        $sql.=" AND places.idBarrio IN ($territorios)";  
     }
 
     $sql.=" GROUP BY entidades.idEntidad
@@ -299,9 +299,9 @@ function getEntidadesZonaConEventos($cadena,$idTerritorio,$alrededores,$cantidad
 // Ejemplo de query producida:
 // SELECT *	FROM entidades 
 //	JOIN eventos ON entidades.idEntidad=eventos.idEntidad
-//  JOIN direcciones ON eventos.idDireccion=direcciones.direccion
+//  JOIN places ON eventos.idPlace=places.idPlace
 //	WHERE entidad LIKE '%centro%' 
-//    AND direcciones.idDistrito IN ('901280005','901280006')    
+//    AND places.idDistrito IN ('901280005','901280006')    
 //  GROUP BY entidades.idEntidad
 //  LIMIT 0,10;
 
@@ -355,13 +355,13 @@ function getEntidades($filtros, $idTerritorio, $alrededores, $itemsStart=0, $ite
     }
 
 // For entities that have an address defined
-     $sql="SELECT entidades.*,direcciones.direccion as domicilio, direcciones.lng, direcciones.lat, direcciones.idCiudad, direcciones.idDistrito, direcciones.idBarrio, territorios.nombre as nombreLugar, territorios.nombreCorto as nombreCorto,
+     $sql="SELECT entidades.*,places.direccion as domicilio, places.lng, places.lat, places.idCiudad, places.idDistrito, places.idBarrio, territorios.nombre as nombreLugar, territorios.nombreCorto as nombreCorto,
             (SELECT GROUP_CONCAT(tematicas.tematica)
                FROM entidades_tematicas, tematicas
               WHERE entidades_tematicas.idTematica=tematicas.idTematica
                 AND entidades_tematicas.idEntidad = entidades.idEntidad) AS tematicas
-           FROM entidades, entidades_tematicas,direcciones, territorios
-          WHERE entidades.idDireccion=direcciones.idDireccion
+           FROM entidades, entidades_tematicas,places, territorios
+          WHERE entidades.idPlace=places.idPlace
             AND entidades.idEntidad=entidades_tematicas.idEntidad 
             AND ";
  
@@ -373,7 +373,7 @@ function getEntidades($filtros, $idTerritorio, $alrededores, $itemsStart=0, $ite
                      WHERE entidades_tematicas.idTematica=tematicas.idTematica
                      AND entidades_tematicas.idEntidad = entidades.idEntidad) AS tematicas
               FROM entidades, entidades_tematicas,territorios
-             WHERE entidades.idDireccion='0'
+             WHERE entidades.idPlace='0'
                AND territorios.nivel = 8
                AND entidades.idEntidad=entidades_tematicas.idEntidad 
                AND territorios.id in (entidades.idsCiudades)
@@ -388,29 +388,29 @@ function getEntidades($filtros, $idTerritorio, $alrededores, $itemsStart=0, $ite
   }  
 
   if ($nivel<8) {// Levels above city, searches will be done on a city-basis    
-      $sql.=" direcciones.idCiudad=territorios.id AND "; 
+      $sql.=" places.idCiudad=territorios.id AND "; 
       $hijos=getAllDescendantsOfLevel($lugares,8);
-      $lugar="direcciones.idCiudad IN ('".join($hijos,"','")."')";
+      $lugar="places.idCiudad IN ('".join($hijos,"','")."')";
       $lugar_2="territorios.id IN ('".join($hijos,"','")."')";      
   } else if ($nivel==8 && $alrededores!=0) { // Map at City + level, searches based on idCiudad     
-      $sql.=" direcciones.idCiudad=territorios.id AND ";   
+      $sql.=" places.idCiudad=territorios.id AND ";   
       // No need to find descendants, as all ids in $lugares must already be ids from cities
-      $lugar="direcciones.idCiudad IN ('".join($lugares,"','")."')";
+      $lugar="places.idCiudad IN ('".join($lugares,"','")."')";
       $lugar_2="territorios.id IN ('".join($lugares,"','")."')";
   } else if ($nivel==8) { //Map at city, searches done on SubCityLevel (district, neighborhood) basis, District name will be displayed 
-      $sql.=" direcciones.idDistrito=territorios.id AND ";         
+      $sql.=" places.idDistrito=territorios.id AND ";         
       $hijos=getAllChildren($lugares,9);
-      $lugar="direcciones.idDistrito IN ('".join($hijos,"','")."') OR direcciones.idBarrio IN ('".join($hijos,"','")."')";
+      $lugar="places.idDistrito IN ('".join($hijos,"','")."') OR places.idBarrio IN ('".join($hijos,"','")."')";
       $lugar_2="territorios.id='$idTerritorio'";;
   } else if ($nivel==9) { //Map at district level, searches done on SubCityLevel (district, neighborhood) basis, Neighborhood name will be displayed
-      $sql.=" direcciones.idBarrio=territorios.id AND ";         
+      $sql.=" places.idBarrio=territorios.id AND ";         
       $hijos=getAllChildren($lugares,9);
-      $lugar="direcciones.idDistrito IN ('".join($hijos,"','")."') OR direcciones.idBarrio IN ('".join($hijos,"','")."')";
+      $lugar="places.idDistrito IN ('".join($hijos,"','")."') OR places.idBarrio IN ('".join($hijos,"','")."')";
   } else // Map at Neighborhood level, search done on idBarrio basis
   {
-      $sql.=" direcciones.idBarrio=territorios.id AND ";         
+      $sql.=" places.idBarrio=territorios.id AND ";         
       // No need to find descendants, as all ids in $lugares must already be ids from neighborhoods
-      $lugar="direcciones.idBarrio IN ('".join($lugares,"','")."')";        
+      $lugar="places.idBarrio IN ('".join($lugares,"','")."')";        
   }
 
                
@@ -487,7 +487,7 @@ function createEntity($entityData)
     $nombreCorto = safe($link, $entityData["nombreCorto"]);
     $tipo = safe($link, $entityData["tipo"]);
     $idsCiudades = safe($link, $entityData["idsCiudades"]);
-    $idDireccion = safe($link, $entityData["idDireccion"]);
+    $idPlace = safe($link, $entityData["idPlace"]);
     $telefono = safe($link, $entityData["telefono"]);
     $email = safe($link, $entityData["email"]);
     $points = safe($link, $entityData["points"]);
@@ -502,14 +502,14 @@ function createEntity($entityData)
     foreach($entityData["tematicas"] as $tematica)
         array_push($tematicas,safe($link, $tematica));
 
-   //    INSERT INTO `entidades` (`entidad`, `nombreCorto`, `tipo`, `idsCiudades`, `idDireccion`, `telefono`, `email`, `points`, `url`, `twitter`, `facebook`, `etiquetas`, `descBreve`, `texto`, `fechaConstitucion`, `created`, `updated`) VALUES
+   //    INSERT INTO `entidades` (`entidad`, `nombreCorto`, `tipo`, `idsCiudades`, `idPlace`, `telefono`, `email`, `points`, `url`, `twitter`, `facebook`, `etiquetas`, `descBreve`, `texto`, `fechaConstitucion`, `created`, `updated`) VALUES
    //    ('Asociación Gallega Corredor del Henares', '', 'organizacion', '801280005', 869, '670588667', 'galiciahenares@hotmail.com', 0, '', '', '', '', '', '', NULL, '2015-07-15 08:01:34', '2015-07-27 10:20:36'),
     
     mysqli_query($link, 'SET CHARACTER SET utf8');
 
-    $sql="INSERT INTO entidades (entidad, nombreCorto, tipo, idsCiudades, idDireccion, telefono, email, points, 
+    $sql="INSERT INTO entidades (entidad, nombreCorto, tipo, idsCiudades, idPlace, telefono, email, points, 
                                   url, twitter, facebook, etiquetas, descBreve, texto, fechaConstitucion, created)
-                       VALUES ('$entidad','$nombreCorto','$tipo','$idsCiudades','$idDireccion','$telefono','$email','$points',
+                       VALUES ('$entidad','$nombreCorto','$tipo','$idsCiudades','$idPlace','$telefono','$email','$points',
                                 '$url','$twitter','$facebook','$etiquetas','$descBreve','$texto','$fechaConstitucion', NULL)";
     mysqli_query($link, $sql);
 
@@ -555,7 +555,7 @@ function createEvent($eventData)
     $tematicas=array();
     foreach($eventData["tematicas"] as $tematica)
         array_push($tematicas,safe($link, $tematica));
-    $idDireccion=safe($link, $eventData["idDireccion"]);
+    $idPlace=safe($link, $eventData["idPlace"]);
     $url=safe($link, filter_var($eventData["url"], FILTER_SANITIZE_URL));
     $email=safe($link, filter_var($eventData["email"], FILTER_SANITIZE_EMAIL));
     $etiquetas=safe($link, $eventData["etiquetas"]);
@@ -563,16 +563,16 @@ function createEvent($eventData)
     $repeatsAfter=safe($link, $eventData["repeatsAfter"]);
     $eventoActivo=safe($link, $eventData["eventoActivo"]);
 
-   //    INSERT INTO `eventos` (`idEvento`, `fecha`, `fechaFin`, `clase`, `tipo`, `titulo`, `texto`, `temperatura`, `idEntidad`, `idDireccion`, `url`, `email`, `etiquetas`, `repeatsAfter`, `eventoActivo`) VALUES
+   //    INSERT INTO `eventos` (`idEvento`, `fecha`, `fechaFin`, `clase`, `tipo`, `titulo`, `texto`, `temperatura`, `idEntidad`, `idPlace`, `url`, `email`, `etiquetas`, `repeatsAfter`, `eventoActivo`) VALUES
    //    (667, '2014-05-27 20:00:00', NULL, 'eventos', 'convocatoria', 'Bicicrítica Torrejón ¡Usa la bici todos los días, celébralo una vez al mes!', 'Bicicrítica Torrejón ¡Usa la bici todos los días, celébralo una vez al mes!', 1, 31, 266, NULL, NULL, '', 0, 1),
 
     
     mysqli_query($link, 'SET CHARACTER SET utf8');
 
     $sql="INSERT INTO eventos (fecha,fechaFin,clase,tipo,titulo,texto,temperatura,idEntidad,
-                                idDireccion,url,email,etiquetas,organizador,repeatsAfter,eventoActivo,created)
+                                idPlace,url,email,etiquetas,organizador,repeatsAfter,eventoActivo,created)
                        VALUES ('$fecha',$fechaFin,'$clase','$tipo','$titulo','$texto','$temperatura','$idEntidad',
-                                '$idDireccion','$url','$email','$etiquetas','$organizador','$repeatsAfter','$eventoActivo',NULL)";
+                                '$idPlace','$url','$email','$etiquetas','$organizador','$repeatsAfter','$eventoActivo',NULL)";
     mysqli_query($link, $sql);
     $idEvento=mysqli_insert_id($link);
     $sql="INSERT INTO eventos_tematicas (idEvento, idTematica) VALUES ";
@@ -619,7 +619,7 @@ function updateEvent($eventData)
     $tematicas=array();
     foreach($eventData["tematicas"] as $tematica)
         array_push($tematicas,safe($link, $tematica));
-    $idDireccion=safe($link, $eventData["idDireccion"]);
+    $idPlace=safe($link, $eventData["idPlace"]);
     $url=safe($link, filter_var($eventData["url"], FILTER_SANITIZE_URL));
     $email=safe($link, filter_var($eventData["email"], FILTER_SANITIZE_EMAIL));
     $etiquetas=safe($link, $eventData["etiquetas"]);
@@ -633,7 +633,7 @@ function updateEvent($eventData)
 
     // Campo "tipo"
     $sql="UPDATE eventos SET fecha='$fecha',fechaFin=$fechaFin,clase='$clase',titulo='$titulo',texto='$texto', 
-            temperatura='$temperatura',idEntidad='$idEntidad',idDireccion= '$idDireccion',url='$url',email='$email',
+            temperatura='$temperatura',idEntidad='$idEntidad',idPlace= '$idPlace',url='$url',email='$email',
             etiquetas='$etiquetas',organizador='$organizador',repeatsAfter='$repeatsAfter',eventoActivo='$eventoActivo'";
     if (isset($eventData["tipo"])) {
        $sql.=",tipo='$tipo'";
@@ -674,21 +674,21 @@ function getEvento($idEvento)
     {
         $evento=$fila;
 
-        $sql="SELECT * FROM direcciones WHERE idDireccion='{$fila['idDireccion']}'";
+        $sql="SELECT * FROM places WHERE idPlace='{$fila['idPlace']}'";
         $result=mysqli_query($link, $sql);
         if($fila=mysqli_fetch_assoc($result))
         {
-            $evento['direccion']=$fila;
+            $evento['place']=$fila;
         }
         else
         {
-            $evento['direccion']['direccion']="Sin dirección";
-            $evento['direccion']['idDireccion']="0";
-            $evento['direccion']['idPadre']="0";
-            $evento['direccion']['lat']=0;
-            $evento['direccion']['lng']=0;
-            $evento['direccion']['nombre']="Sin nombre";
-            $evento['direccion']['zoom']="15";
+            $evento['place']['direccion']="Sin dirección";
+            $evento['place']['idPlace']="0";
+            $evento['place']['idPadre']="0";
+            $evento['place']['lat']=0;
+            $evento['place']['lng']=0;
+            $evento['place']['nombre']="Sin nombre";
+            $evento['place']['zoom']="15";
         }
 
         $sql="SELECT * FROM eventos_tematicas, tematicas 
@@ -779,13 +779,13 @@ function getEventos($filtros,$idTerritorio,$alrededores,$itemsStart=0, $itemsLim
        $tiempo="(eventos.fecha>'".$startDate."' AND eventos.fecha<'".$endDate."')";
     }
     
-    $sql="SELECT eventos.*, direcciones.lat, direcciones.lng, direcciones.idCiudad, direcciones.idDistrito, direcciones.idBarrio, territorios.nombre as lugar, territorios.nombreCorto,
+    $sql="SELECT eventos.*, places.lat, places.lng, places.idCiudad, places.idDistrito, places.idBarrio, territorios.nombre as lugar, territorios.nombreCorto,
             (SELECT GROUP_CONCAT(tematicas.tematica)
                FROM eventos_tematicas, tematicas
               WHERE eventos_tematicas.idTematica=tematicas.idTematica
                 AND eventos_tematicas.idEvento = eventos.idEvento) AS tematicas
-        FROM eventos, eventos_tematicas, direcciones, territorios 
-       WHERE eventos.idDireccion=direcciones.idDireccion
+        FROM eventos, eventos_tematicas, places, territorios 
+       WHERE eventos.idPlace=places.idPlace
          AND eventos.eventoActivo='1'
          AND ";
     
@@ -801,45 +801,45 @@ function getEventos($filtros,$idTerritorio,$alrededores,$itemsStart=0, $itemsLim
     }
     if ($nivel<8) // Levels above city, searches will be done on a city-basis
     {    
-      $sql.=" direcciones.idCiudad=territorios.id AND ";
+      $sql.=" places.idCiudad=territorios.id AND ";
       $hijos=getAllDescendantsOfLevel($lugares,8);
-      $lugar="direcciones.idCiudad IN ('".join($hijos,"','")."')";
+      $lugar="places.idCiudad IN ('".join($hijos,"','")."')";
     }
     else if ($nivel==8 && $alrededores!=0) // Map at City + level, searches based on idCiudad 
     {
-      $sql.=" direcciones.idCiudad=territorios.id AND ";
+      $sql.=" places.idCiudad=territorios.id AND ";
       // No need to find descendants, as all ids in $lugares must already be ids from cities
-      $lugar="direcciones.idCiudad IN ('".join($lugares,"','")."')";
+      $lugar="places.idCiudad IN ('".join($lugares,"','")."')";
     }
-    else if ($nivel==8) //Map at city level, searches done on SubCityLevel (district, neighborhood) basis
+    else if ($nivel==8) //Map at city level, searches done on SubCityLevel (city, district, neighborhood) basis
     {
-      $sql.=" direcciones.idDistrito=territorios.id AND ";
+      $sql.=" places.idDistrito=territorios.id AND ";
       $hijos=getAllChildren($lugares,9);
-        $lugar="direcciones.idDistrito IN ('".join($hijos,"','")."') OR direcciones.idBarrio IN ('".join($hijos,"','")."')";
+        $lugar="places.idCiudad='places.idDistrito IN ('".join($hijos,"','")."') OR places.idBarrio IN ('".join($hijos,"','")."')";
     }
     else if ($nivel==9) //Map at district level, searches done on SubCityLevel (district, neighborhood) basis
     {
-      $sql.=" direcciones.idBarrio=territorios.id AND ";
+      $sql.=" places.idBarrio=territorios.id AND ";
       $hijos=getAllChildren($lugares,9);
-      $lugar="direcciones.idDistrito IN ('".join($hijos,"','")."') OR direcciones.idBarrio IN ('".join($hijos,"','")."')";
+      $lugar="places.idDistrito IN ('".join($hijos,"','")."') OR places.idBarrio IN ('".join($hijos,"','")."')";
     }
     else // Map at Neighborhood level, search done on SubCityLevel basis
     {
-      $sql.=" direcciones.idBarrio=territorios.id AND ";
+      $sql.=" places.idBarrio=territorios.id AND ";
       // No need to find descendants, as all ids in $lugares must already be ids from neighborhoods
-      $lugar="direcciones.idBarrio IN ('".join($lugares,"','")."')";        
+      $lugar="places.idBarrio IN ('".join($lugares,"','")."')";        
     }
     
 //  Example of the query
-//  SELECT eventos.*, direcciones.lat as y, direcciones.lng as x, direcciones.idCiudad, direcciones.idDistrito, direcciones.idBarrio, territorios.nombre,
+//  SELECT eventos.*, places.lat as y, places.lng as x, places.idCiudad, places.idDistrito, places.idBarrio, territorios.nombre,
 //    (SELECT GROUP_CONCAT(tematicas.tematica)
 //             FROM eventos_tematicas, tematicas
 //             WHERE eventos_tematicas.idTematica=tematicas.idTematica
 //             AND eventos_tematicas.idEvento = eventos.idEvento) AS tematicas
-//       FROM eventos, eventos_tematicas, direcciones 
-//       WHERE eventos.idDireccion=direcciones.idDireccion
+//       FROM eventos, eventos_tematicas, places 
+//       WHERE eventos.idPlace=places.idPlace
 //       AND eventos.eventoActivo='1'
-//       AND direcciones.idDistrito IN ('901280005','901280006','901280007') 
+//       AND places.idDistrito IN ('901280005','901280006','901280007') 
 //       and eventos.idEvento=eventos_tematicas.idEvento 
 //       GROUP BY eventos.idEvento        ORDER BY fecha ASC LIMIT 0,50;
 //       
@@ -874,17 +874,17 @@ function getEventosPorValidar()
     $sql="SELECT eventos.*,
                  territorios.nombre as nombreLugar,
                  entidades.entidad as entidad,
-                 direcciones.nombre as nombreDireccion,
-                 direcciones.direccion as direccion,
-                 direcciones.direccionActiva as direccionActiva,
+                 places.nombre as nombreDireccion,
+                 places.direccion as direccion,
+                 places.placeStatus as placeStatus,
                  (SELECT GROUP_CONCAT(tematicas.tematica)
                  FROM eventos_tematicas, tematicas
                  WHERE eventos_tematicas.idTematica=tematicas.idTematica 
                  AND eventos_tematicas.idEvento = eventos.idEvento) AS tematicas
-            FROM eventos, direcciones, territorios, entidades
+            FROM eventos, places, territorios, entidades
             WHERE eventoActivo=0
-            AND eventos.idDireccion=direcciones.idDireccion 
-            AND direcciones.idPadre=territorios.id 
+            AND eventos.idPlace=places.idPlace 
+            AND places.idPadre=territorios.id 
             AND eventos.idEntidad=entidades.idEntidad
             GROUP BY eventos.idEvento 
             ORDER BY idEvento ASC";    //needs to be updated (idPadre)
@@ -1350,7 +1350,7 @@ function getIrA($cadena,$lugarOriginal)
 
 }
 
-function getDireccionesSuggestions($cadena,$idTerritorio,$cantidad=5)
+function getPlaceSuggestions($cadena,$idTerritorio,$cantidad=5)
 {
 
     //sanitize inputs
@@ -1363,9 +1363,9 @@ function getDireccionesSuggestions($cadena,$idTerritorio,$cantidad=5)
     $inSet=getAllChildren(array($idTerritorio));
     
     //unset($inSet[0]);   //Quitamos el original
-    $sql="SELECT * FROM direcciones WHERE 
+    $sql="SELECT * FROM places WHERE 
             (nombre LIKE '%$cadena%' OR direccion LIKE '%$cadena%') AND
-            idPadre IN (".implode(",",$inSet).")  AND direcciones.direccionActiva='1' 
+            idPadre IN (".implode(",",$inSet).")  AND places.placeStatus='1' 
             LIMIT 0,$cantidad"; // Needs to be updated (idPadre)
     //echo $sql;
     mysqli_query($link, 'SET CHARACTER SET utf8');
@@ -1375,20 +1375,21 @@ function getDireccionesSuggestions($cadena,$idTerritorio,$cantidad=5)
     {
         if($fila["nombre"]==="")
             $fila["nombre"]="Dirección";
-        array_push($returnData,array($fila["idDireccion"],$fila["nombre"],$fila["direccion"],$fila["lat"],$fila["lng"],$fila["zoom"]));
+        array_push($returnData,array($fila["idPlace"],$fila["nombre"],$fila["direccion"],$fila["lat"],$fila["lng"],$fila["zoom"]));
     }
     return $returnData;
 
 }
 
-function getDistritoPadreDireccion($idDireccion) //Needs to be updated (idPadre)
+function getDistritoPadreDireccion($idPlace) 
+//TODO: Needs to be reviewed and updated (idPadre y dirección -> place)??
 {
     $link=connect();
-    $direccion=safe($link, $direccion);
+    $idPlace=safe($link, $idPlace);
 
     //Buscar el padre según las coordenadas
-    $sql="SELECT * FROM direcciones WHERE 
-                    idDireccion='$idDireccion'";
+    $sql="SELECT * FROM places WHERE 
+                    idPlace='$idPlace'";
    
     mysqli_query($link, 'SET CHARACTER SET utf8');
 
@@ -1405,16 +1406,16 @@ function getDistritoPadreDireccion($idDireccion) //Needs to be updated (idPadre)
     return $idDistritoPadre;
 }
 
-function getDireccion($idDireccion)
+function getDireccion($idPlace)
 {
     //Sanitize input
     $link=connect();
-    $idDireccion=safe($link, $idDireccion);
+    $idPlace=safe($link, $idPlace);
 
     mysqli_query($link, 'SET CHARACTER SET utf8');
 
     //Buscar el padre según las coordenadas
-    $sql="SELECT * FROM direcciones WHERE idDireccion='$idDireccion'";
+    $sql="SELECT * FROM places WHERE idPlace='$idPlace'";
     $result=mysqli_query($link, $sql);
     return mysqli_fetch_assoc($result);
 }
@@ -1437,11 +1438,11 @@ function createPlace($placeData)
    $placeData['lat']=safe($link,$placeData['lat']);
    $placeData['lng']=safe($link,$placeData['lng']);
    $placeData['zoom']=safe($link,$placeData['zoom']);
-   $placeData['direccionActiva']=safe($link,$placeData['direccionActiva']);
+   $placeData['placeStatus']=safe($link,$placeData['placeStatus']);
    
-   $sql="INSERT INTO direcciones (idCiudad, idDistrito, idBarrio, nombre, direccion, indicacion, cp, lat, lng, zoom, direccionActiva,created)
+   $sql="INSERT INTO places (idCiudad, idDistrito, idBarrio, nombre, direccion, indicacion, cp, lat, lng, zoom, placeStatus,created)
        VALUES  ('{$placeData["idCiudad"]}', '{$placeData["idDistrito"]}', '{$placeData["idBarrio"]}', '{$placeData["nombre"]}', '{$placeData["direccion"]}', '{$placeData["indicacion"]}', '{$placeData["cp"]}',
-       '{$placeData["lat"]}', '{$placeData["lng"]}', '{$placeData["zoom"]}', '{$placeData["direccionActiva"]}',NULL)";    
+       '{$placeData["lat"]}', '{$placeData["lng"]}', '{$placeData["zoom"]}', '{$placeData["placeStatus"]}',NULL)";    
    
     mysqli_query($link, $sql);
     return mysqli_insert_id($link);
@@ -1453,6 +1454,7 @@ function updatePlace($placeData)
     mysqli_query($link, 'SET CHARACTER SET utf8');
     
    // Sanitize inputs    
+   $placeData['idPlace']=safe($link,$placeData['idPlace']);
    $placeData['idCiudad']=safe($link,$placeData['idCiudad']);
    $placeData['idDistrito']=safe($link,$placeData['idDistrito']);
    $placeData['idBarrio']=safe($link,$placeData['idBarrio']);
@@ -1463,26 +1465,26 @@ function updatePlace($placeData)
    $placeData['lat']=safe($link,$placeData['lat']);
    $placeData['lng']=safe($link,$placeData['lng']);
    $placeData['zoom']=safe($link,$placeData['zoom']);
-   $placeData['direccionActiva']=safe($link,$placeData['direccionActiva']);
+   $placeData['placeStatus']=safe($link,$placeData['placeStatus']);
     
-    $sql="UPDATE direcciones 
+    $sql="UPDATE places 
         SET idCiudad={$placeData["idCiudad"]}, idDistrito={$placeData["idDistrito"]}, idBarrio={$placeData["idBarrio"]}, nombre='{$placeData["nombre"]}', direccion='{$placeData["direccion"]}',
-            indicacion='{$placeData["indicacion"]}', cp='{$placeData["cp"]}', lat='{$placeData["lat"]}', lng='{$placeData["lng"]}', zoom='{$placeData["zoom"]}', direccionActiva='{$placeData["direccionActiva"]}'
-        WHERE idDireccion={$placeData["idDireccion"]}";
+            indicacion='{$placeData["indicacion"]}', cp='{$placeData["cp"]}', lat='{$placeData["lat"]}', lng='{$placeData["lng"]}', zoom='{$placeData["zoom"]}', placeStatus='{$placeData["placeStatus"]}'
+        WHERE idPlace={$placeData["idPlace"]}";
     mysqli_query($link, $sql);
 }
 
-function validarDireccion($idDireccion,$status)
+function validarDireccion($idPlace,$status)
 {
     //Sanitize inputs
     $link=connect();
-    $idDireccion=safe($link, $idDireccion);
+    $idPlace=safe($link, $idPlace);
     $status=safe($link, $status);
    
     mysqli_query($link, 'SET CHARACTER SET utf8');
 
     //Buscar el padre según las coordenadas
-    $sql="UPDATE direcciones SET direccionActiva='$status' WHERE idDireccion='$idDireccion'";
+    $sql="UPDATE places SET placeStatus='$status' WHERE idPlace='$idPlace'";
     mysqli_query($link, $sql);
 }
 
@@ -1558,7 +1560,7 @@ function getEventosCoordenadas($xmin,$xmax,$ymin,$ymax)
     $ymin=safe($link, $ymin);
     $ymax=safe($link, $ymax);
 
-    //TODO: eventos.idDistritoPadre está obsoleto. Es a través del lugar (direcciones) que se localizan los eventos.
+    //TODO: eventos.idDistritoPadre está obsoleto. Es a través del lugar que se localizan los eventos.
     $sql="SELECT * FROM eventos,territorios WHERE 
             x>$xmin AND x<$xmax AND y>$ymin AND y<$ymax AND eventos.idDistritoPadre=territorios.id AND eventos.eventoActivo='1' ";
 
