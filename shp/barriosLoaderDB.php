@@ -1,73 +1,4 @@
 <?php
-function ToLL($north, $east, $utmZone)
-{ 
-  // This is the lambda knot value in the reference
-  $LngOrigin = Deg2Rad($utmZone * 6 - 183);
-
-  // The following set of class constants define characteristics of the
-  // ellipsoid, as defined my the WGS84 datum.  These values need to be
-  // changed if a different dataum is used.    
-
-  $FalseNorth = 0;   // South or North?
-  //if (lat < 0.) FalseNorth = 10000000.  // South or North?
-  //else          FalseNorth = 0.   
-
-  $Ecc = 0.081819190842622;       // Eccentricity
-  $EccSq = $Ecc * $Ecc;
-  $Ecc2Sq = $EccSq / (1. - $EccSq);
-  $Ecc2 = sqrt($Ecc2Sq);      // Secondary eccentricity
-  $E1 = ( 1 - sqrt(1-$EccSq) ) / ( 1 + sqrt(1-$EccSq) );
-  $E12 = $E1 * $E1;
-  $E13 = $E12 * $E1;
-  $E14 = $E13 * $E1;
-
-  $SemiMajor = 6378137.0;         // Ellipsoidal semi-major axis (Meters)
-  $FalseEast = 500000.0;          // UTM East bias (Meters)
-  $ScaleFactor = 0.9996;          // Scale at natural origin
-
-  // Calculate the Cassini projection parameters
-
-  $M1 = ($north - $FalseNorth) / $ScaleFactor;
-  $Mu1 = $M1 / ( $SemiMajor * (1 - $EccSq/4.0 - 3.0*$EccSq*$EccSq/64.0 - 5.0*$EccSq*$EccSq*$EccSq/256.0) );
-
-  $Phi1 = $Mu1 + (3.0*$E1/2.0 - 27.0*$E13/32.0) * sin(2.0*$Mu1);
-    + (21.0*$E12/16.0 - 55.0*$E14/32.0)           * sin(4.0*$Mu1);
-    + (151.0*$E13/96.0)                          * sin(6.0*$Mu1);
-    + (1097.0*$E14/512.0)                        * sin(8.0*$Mu1);
-
-  $sin2phi1 = sin($Phi1) * sin($Phi1);
-  $Rho1 = ($SemiMajor * (1.0-$EccSq) ) / pow(1.0-$EccSq*$sin2phi1,1.5);
-  $Nu1 = $SemiMajor / sqrt(1.0-$EccSq*$sin2phi1);
-
-  // Compute parameters as defined in the POSC specification.  T, C and D
-
-  $T1 = tan($Phi1) * tan($Phi1);
-  $T12 = $T1 * $T1;
-  $C1 = $Ecc2Sq * cos($Phi1) * cos($Phi1);
-  $C12 = $C1 * $C1;
-  $D  = ($east - $FalseEast) / ($ScaleFactor * $Nu1);
-  $D2 = $D * $D;
-  $D3 = $D2 * $D;
-  $D4 = $D3 * $D;
-  $D5 = $D4 * $D;
-  $D6 = $D5 * $D;
-
-  // Compute the Latitude and Longitude and convert to degrees
-  $lat = $Phi1 - $Nu1*tan($Phi1)/$Rho1 * ( $D2/2.0 - (5.0 + 3.0*$T1 + 10.0*$C1 - 4.0*$C12 - 9.0*$Ecc2Sq)*$D4/24.0 + (61.0 + 90.0*$T1 + 298.0*$C1 + 45.0*$T12 - 252.0*$Ecc2Sq - 3.0*$C12)*$D6/720.0 );
-
-  $lat = Rad2Deg($lat);
-
-  $lon = $LngOrigin + ($D - (1.0 + 2.0*$T1 + $C1)*$D3/6.0 + (5.0 - 2.0*$C1 + 28.0*$T1 - 3.0*$C12 + 8.0*$Ecc2Sq + 24.0*$T12)*$D5/120.0) / cos($Phi1);
-
-  $lon = Rad2Deg($lon);
-
-  // Create a object to store the calculated Latitude and Longitude values
-  $PC_LatLon['lat'] = $lat;
-  $PC_LatLon['lon'] = $lon;
-
-  // Returns a PC_LatLon object
-  return $PC_LatLon;
-}
 
 include_once "ShapeFile.inc.php";
 include "../db.php";
@@ -77,89 +8,176 @@ error_reporting(E_ALL);
 //Script not active, unless needed.
 exit();
 
+$arrayNombres =[
+"079011" => "Palacio",
+"079012" => "Embajadores",
+"079013" => "Cortes",
+"079014" => "Justicia",
+"079015" => "Universidad",
+"079016" => "Sol",
+"079021" => "Imperial",
+"079022" => "Las Acacias",
+"079023" => "La Chopera",
+"079024" => "Legazpi",
+"079025" => "Delicias",
+"079026" => "Palos de Moguer",
+"079027" => "Atocha",
+"079031" => "Pacífico",
+"079032" => "Adelfas",
+"079033" => "Estrella",
+"079034" => "Ibiza",
+"079035" => "Jerónimos",
+"079036" => "Niño Jesús",
+"079041" => "Recoletos",
+"079042" => "Goya",
+"079043" => "Fuente del Berro",
+"079044" => "Guindalera",
+"079045" => "Lista",
+"079046" => "Castellana",
+"079051" => "El Viso",
+"079052" => "Prosperidad",
+"079053" => "Ciudad Jardín",
+"079054" => "Hispanoamérica",
+"079055" => "Nueva España",
+"079056" => "Castilla",
+"079061" => "Bellas Vistas",
+"079062" => "Cuatro Caminos",
+"079063" => "Castillejos",
+"079064" => "Almenara",
+"079065" => "Valdeacederas",
+"079066" => "Berruguete",
+"079071" => "Gaztambide",
+"079072" => "Arapiles",
+"079073" => "Trafalgar",
+"079074" => "Almagro",
+"079075" => "Ríos Rosas",
+"079076" => "Vallehermoso",
+"079081" => "El Pardo",
+"079082" => "Fuentelarreina",
+"079083" => "Peña Grande",
+"079084" => "El Pilar",
+"079085" => "La Paz",
+"079086" => "Valverde",
+"079087" => "Mirasierra",
+"079088" => "El Goloso",
+"079091" => "Casa de Campo",
+"079092" => "Argüelles",
+"079093" => "Ciudad Universitaria",
+"079094" => "Valdezarza",
+"079095" => "Valdemarín",
+"079096" => "El Plantío",
+"079097 "=> "Aravaca",
+"079101" => "Los Cármenes",
+"079102" => "Puerta del Ángel",
+"079103" => "Lucero",
+"079104" => "Aluche",
+"079105" => "Campamento",
+"079106" => "Cuatro Vientos",
+"079107" => "Las Águilas",
+"079111" => "Comillas",
+"079112" => "Opañel",
+"079113" => "San Isidro",
+"079114" => "Vista Alegre",
+"079115" => "Puerta Bonita",
+"079116" => "Buenavista",
+"079117" => "Abrantes",
+"079121" => "Orcasitas",
+"079122" => "Orcasur",
+"079123" => "San Fermín",
+"079124" => "Almendrales",
+"079125" => "Moscardó",
+"079126" => "Zofío",
+"079127" => "Pradolongo",
+"079131" => "Entrevías",
+"079132" => "San Diego",
+"079133" => "Palomeras Bajas",
+"079134" => "Palomeras Sureste",
+"079135" => "Portazgo",
+"079136" => "Numancia",
+"079141" => "Pavones",
+"079142" => "Horcajo",
+"079143" => "Marroquina",
+"079144" => "Media Legua",
+"079145" => "Fontarrón",
+"079146" => "Vinateros",
+"079151" => "Ventas",
+"079152" => "Pueblo Nuevo",
+"079153" => "Quintana",
+"079154" => "Concepción",
+"079155" => "San Pascual",
+"079156" => "San Juan Bautista",
+"079157" => "Colina",
+"079158" => "Atalaya",
+"079159" => "Costillares",
+"079161" => "Palomas",
+"079162" => "Piovera",
+"079163" => "Canillas",
+"079164" => "Pinar del Rey",
+"079165" => "Apóstol Santiago",
+"079166" => "Valdefuentes",
+"079171" => "San Andrés",
+"079172" => "San Cristóbal",
+"079173" => "Butarque",
+"079174" => "Los Rosales",
+"079175" => "Los Ángeles",
+"079181" => "Casco Histórico de Vallecas",
+"079182" => "Santa Eugenia",
+"079191" => "Casco Histórico de Vicálvaro",
+"079192" => "Ambroz",
+"079201" => "Simancas",
+"079202" => "Hellín",
+"079203" => "Amposta",
+"079204" => "Arcos",
+"079205" => "Rosas",
+"079206" => "Rejas",
+"079207" => "Canillejas",
+"079208" => "El Salvador",
+"079211" => "Alameda de Osuna",
+"079212" => "Aeropuerto",
+"079213" => "Casco Histórico de Barajas",
+"079214" => "Timón",
+"079215" => "Corralejos",
+];
+// This didn't work. Special chars were not properly handled.
+
 //$shp = new ShapeFile("lineas_limite/SHP_ETRS89/poligonos_municipio_etrs89/poligonos_municipio_etrs89.shp"); // along this file the class will use file.shx and file.dbf
 //$shp = new ShapeFile("Distritos-1/Distritos.shp"); // along this file the class will use file.shx and file.dbf
 //$shp = new ShapeFile("lineas_limite/SHP_ETRS89/poligonos_provincia_etrs89/poligonos_provincia_etrs89.shp"); // along this file the class will use file.shx and file.dbf
-$shp = new ShapeFile("Barrios/AlcaladeH/Dis5.shp"); // along this file the class will use file.shx and file.dbf
+
+$shp = new ShapeFile("Agosto/BarriosdeMadrid.shp"); // along this file the class will use file.shx and file.dbf
+$level = '9';
 
 $link=connect();
-$i=0;
+
+mysqli_query($link,"SET NAMES 'utf8'");
+
+$id=901280111;
+echo "<pre>";
 while ($record = $shp->getNext()) 
 {
-	$i++; 
-    //echo $i;
-
-	$datos=$record->getDbfData();
+	$id++;
+   
+   $datos=$record->getDbfData();
 
 // does not apply	$codbdt=trim(utf8_encode($datos["CODBDT"]));
-// does not apply	$geocodigo=trim(utf8_encode($datos["GEOCODIGO"]));
+// does not apply	
+   $geocodigo=trim(utf8_encode($datos["GEOCODIGO"]));
 // does not apply	$desbdt=trim(utf8_encode($datos["DESBDT"]));
 // not needed	$deleted=trim(utf8_encode($datos["deleted"]));
-    $nombre = trim(utf8_encode($datos["Name"]));
 //    $codine = trim(utf8_encode($datos["CODINE"]));
-    //trim(utf8_encode($datos["COD_CCAA"]));
+   //trim(utf8_encode($datos["COD_CCAA"]));
 
-    $coordenadas=$record->getShpData();   
-
-
-    /* There is no need to convert coordinates. They can be used directly for the geoJSON
-    $latlong=ToLL($coordenadas["ymin"],$coordenadas["xmin"],30);
-    $xmin=$latlong["lon"];
-    $ymin=$latlong["lat"];
-
+   $nombre=$arrayNombres[$geocodigo];
+   
+   echo $id, " ", $geocodigo, " ", $nombre, PHP_EOL;
+   
+   $coordenadas=$record->getShpData();   
     
-    $latlong=ToLL($coordenadas["ymax"],$coordenadas["xmax"],30);
-
-    $xmax=$latlong["lon"];
-    $ymax=$latlong["lat"];
-
-    //print_r($coordenadas);
-
-     */
-    
-    // Seems the transformation is not needed. The existing data from Madrid is consistent with the one in the source file.
     $xmin=$coordenadas["xmin"];
     $ymin=$coordenadas["ymin"];
     $xmax=$coordenadas["xmax"];
     $ymax=$coordenadas["ymax"];
-       
-    /*$geoJSON="";
-    $firstPart=true;
-    if($coordenadas["numparts"]==1)
-        $geoJSON='{"type":"Polygon","coordinates":[[';
-    else
-        $geoJSON='{"type":"MultiPolygon","coordinates":[[[';
-
-    foreach($coordenadas["parts"] as $idPart=>$part)
-    {
-        $first=true;
-        if(!$firstPart)
-            $geoJSON.="]],[[";
-        $firstPart=false;
-        foreach($part["points"] as $point)
-        {
-            /*$latlong=ToLL($point["y"],$point["x"],30);
-            $x=$latlong["lon"];
-            $y=$latlong["lat"];
-            ////print_r($latlong);
-            //exit();
-            */
-    /*
-            $x=$point["x"];
-            $y=$point["y"];
-            $coordenada="[$x,$y]";
-            if(!$first)
-                $geoJSON.=",";
-            $first=false;
-            $geoJSON.=$coordenada;
-        }
-    }
-
-	 	if($coordenadas["numparts"]==1)
-			$geoJSON.=']]}';
-		else
-			$geoJSON.=']]]}';
-*/
+    
 		// id codes are going to be:
         // CCAA: level(1)+country(2)+CCAA(6)    CORRECTO
         //           401000009
@@ -171,25 +189,22 @@ while ($record = $shp->getNext())
         //           801280005
         // District: level(1)+country(2)+Province(2)+DistrictNumber(4)(in province) CORRECTO
         //           901280009
-		//$id=999000000+$i;
-        $id=10012800+$i;
-		//echo $id.PHP_EOL;
-//		file_put_contents("geoJSON/10/$id.geojson", $geoJSON);
-		$sql=utf8_decode("INSERT INTO lugares_shp 
+      
+    $sql=utf8_decode("INSERT INTO territorios
 				(id,nombre,provincia,idPadre,idDescendiente, 
 					xmin,ymin,xmax,ymax,nivel,activo)
-				VALUES ('$id','$nombre','28','901280009','0',
-					'$xmin','$ymin','$xmax','$ymax','10','1')");	
-		//echo $sql;
-		
-		mysqli_query($link,$sql);
-		
-		//echo $geoJSON;
-
-		//echo $id."\t".$nombre."\t".$ine."\t".$jurisdiccion."\t".$provincia."\t".$deleted.PHP_EOL;
-		//exit();
-    }
+				VALUES ('$id','$nombre','28','0','0',
+					'$xmin','$ymin','$xmax','$ymax','$level','1')");
+    mysqli_query($link,$sql);
     
-    //echo PHP_EOL;}	
+	  echo $sql, PHP_EOL;
+     echo "geoJSON/".$level."/".$geocodigo.".geojson", PHP_EOL;
+     
+    $data=file_get_contents("geoJSON/".$level."/".$geocodigo.".geojson");
+    echo $data, PHP_EOL;
+     
+    file_put_contents("geoJSON/".$level."/".$id.".geojson",$data); 
+}
+
 
 ?>
