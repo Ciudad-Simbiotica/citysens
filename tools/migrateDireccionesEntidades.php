@@ -2,8 +2,8 @@
 include "../db.php";
 error_reporting(E_ERROR);
 
-// Script to migrate the Addresses that currently appear at Entidades to the Places (Direcciones) table
-// It creates a place in Direcciones with the entities address and adds a link at Entidades to the newly created place.
+// Script to migrate the Addresses that currently appear at Entidades to the Places table
+// It creates a place with the entities address and adds a link at Entidades to the newly created place.
 
 ini_set('default_charset', 'utf-8');
 
@@ -26,17 +26,17 @@ foreach($entidades as $entidad)
     $strCP = $entidad['cp'];
     $idDistritoPadre= $entidad['idDistritoPadre'];
     
-    $sql="INSERT INTO direcciones (idPadre,idCiudad,nombre,direccion,indicacion,cp,lat,lng,zoom,direccionActiva)
-                           VALUES ('$idDistritoPadre','$idCiudad','$strName','$strDireccion','','$strCP','0','0','15','1')";
+    $sql="INSERT INTO places (idPadre,idCiudad,nombre,direccion,indicacion,cp,lat,lng,zoom,placeStatus)
+                           VALUES ('$idDistritoPadre','$idCiudad','$strName','$strDireccion','','$strCP','0','0','15','1')";  // idPadre?? Probably outdated.
     mysql_query($sql,$link);
     $insertID=mysql_insert_id();
     
     $asociados[$entidad['idEntidad']]=$insertID;
 }
 
-foreach($asociados as $idEntidad=>$idDireccion)
+foreach($asociados as $idEntidad=>$idPlace)
 {
-	$sql = "UPDATE entidades SET idDireccion='$idDireccion' WHERE idEntidad='$idEntidad'";
+	$sql = "UPDATE entidades SET idPlace='$idPlace' WHERE idEntidad='$idEntidad'";
     echo $sql.";\r\n";
 
     mysql_query($queryStr,$link);  
