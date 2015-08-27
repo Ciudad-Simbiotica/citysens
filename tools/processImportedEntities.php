@@ -10,7 +10,7 @@ $link = connect();
 mysqli_query($link, 'SET CHARACTER SET utf8');
 
 // This script processes the data from entities imported into the table importacionEntidades: inserts data into the corresponding 
-// tables (entidades, tematicas_entidades, direcciones), looking for geo-location and CP when needed, etc.
+// tables (entidades, tematicas_entidades, places), looking for geo-location and CP when needed, etc.
 
 // Script is unactive unless it is required
 //exit();
@@ -45,20 +45,20 @@ while($entidadImportada=mysqli_fetch_assoc($result_entidades))
    // If there is still no place
    if ((!$entidadImportada["idLugarCTS"] || $entidadImportada["idLugarCTS"]=="") && $entidadImportada["idCiudadCTS"] && $entidadImportada["idCiudadCTS"]!=0) {
             
-      $sql = "SELECT * FROM direcciones where nombre='{$entidadImportada['nombreDireccion']}' AND direccion='{$entidadImportada['direccion']}' AND idCiudad='{$entidadImportada['idCiudadCTS']}'";
+      $sql = "SELECT * FROM places where nombre='{$entidadImportada['nombreDireccion']}' AND direccion='{$entidadImportada['direccion']}' AND idCiudad='{$entidadImportada['idCiudadCTS']}'";
       $result_lugares = mysqli_query($link, $sql);
       $numLugaresEncontrados=mysqli_num_rows($result_lugares);
 
       if ($numLugaresEncontrados == 0) {
          // The place does not exist in CTS. There is still no assignment to a place in CTS
-         // We have to create a new direccion using a $placeData array
+         // We have to create a new place using a $placeData array
          
          $placeData["idCiudad"] = $entidadImportada["idCiudadCTS"];
          $placeData["nombre"] = $entidadImportada["nombreDireccion"];
          $placeData["direccion"] = $entidadImportada["direccion"];
          $placeData["cp"]=$entidadImportada["cp"];
          $placeData["indicacion"] = "";
-         $placeData["direccionActiva"] = "1";
+         $placeData["placeStatus"] = "1";
          $placeData["idDistrito"] = $placeData["idBarrio"] = $placeData["lat"] = $placeData["lng"] = 0;
          $placeData["zoom"] = 15;
               
@@ -120,9 +120,9 @@ while($entidadImportada=mysqli_fetch_assoc($result_entidades))
          $entidadImportada["idLugarCTS"] = createPlace($placeData);
          $newPlaces++;
       } else {
-         // A place already exists. We will just update the idDireccion and cp
+         // A place already exists. We just update the idPlace and cp
          $lugar=mysqli_fetch_assoc($result_lugares);
-         $entidadImportada["idLugarCTS"] = $lugar['idDireccion'];
+         $entidadImportada["idLugarCTS"] = $lugar['idPlace'];
          if ($entidadImportada['cp']=="") {
             $entidadImportada["cp"] = $lugar['cp'];
          }
@@ -241,7 +241,7 @@ while($entidadImportada=mysqli_fetch_assoc($result_entidades))
       $entityData["tipo"] = $entidadImportada["tipoCTS"];
    else
       $entityData["tipo"]="organizacion";
-   $entityData["idDireccion"] = $entidadImportada["idLugarCTS"];
+   $entityData["idPlace"] = $entidadImportada["idLugarCTS"];
    $entityData["idsCiudades"] = $entidadImportada["idCiudadCTS"];
    $entityData["telefono"] = $entidadImportada["telefono"];
    $entityData["email"] = $entidadImportada["email"];
@@ -321,7 +321,7 @@ while($entidadImportada=mysqli_fetch_assoc($result_entidades))
     }
 
    
-   // $entityData["idDireccion"];
+   // $entityData["idPlace"];
    $entidadImportada["idEntidadCTS"]=createEntity($entityData);
    
    $newEntities++;

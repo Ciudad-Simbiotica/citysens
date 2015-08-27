@@ -489,7 +489,7 @@ function cargarContenidoEntidad(id)
    $(".informacion-cuerpo-contacto-elemento-entidad").show();
 
     $("#thumbnail"+id+" .informacion-cabecera-dch-titulo-top").html(data.entidad);
-    $("#thumbnail"+id+" .informacion-cabecera-dch-titulo-bottom").html(data.direccion);
+    $("#thumbnail"+id+" .informacion-cabecera-dch-titulo-bottom").html(data.place);
 
 
     $("#thumbnail"+id+" .informacion-cuerpo-tematicas-listado").html('');

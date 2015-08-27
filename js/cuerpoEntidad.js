@@ -107,11 +107,11 @@ $.getJSON('getDatosEntidad.php',
 
     contactoScrollPosition=Math.round($("#informacion-cuerpo-contacto").offset().top-177);
     
-    cargarMapa(data.direccion.lat,data.direccion.lng,data.entidad+" @ "+data.direccion.nombre);
-    $(".detalle-mapa-cabecera-lugar").text("Entidad en "+data.direccion.nombre);
+    cargarMapa(data.place.lat,data.place.lng,data.entidad+" @ "+data.place.nombre);
+    $(".detalle-mapa-cabecera-lugar").text("Entidad en "+data.place.nombre);
     
-    $(".detalle-mapa-pie-nombre").text(data.direccion.nombre);
-    $(".detalle-mapa-pie-direccion").text(data.direccion.direccion);
+    $(".detalle-mapa-pie-nombre").text(data.place.nombre);
+    $(".detalle-mapa-pie-direccion").text(data.place.direccion);
     $(".detalle-mapa-cabecera-volver").click(function(){
         window.location="/?idTerritorio="+window.conf.idTerritorio;   //$.urlParam('idOrigen'); De donde es esto¿
     });

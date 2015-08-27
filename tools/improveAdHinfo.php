@@ -9,7 +9,7 @@ include_once "../db.php";
  $link=connect();
 
 // Para poner idCiudad a las entidades que tienen una sola direccion
-//$sql="SELECT idEntidad, idCiudad FROM entidades, direcciones WHERE entidades.idDireccion=direcciones.idDireccion";       
+//$sql="SELECT idEntidad, idCiudad FROM entidades, places WHERE entidades.idPlace=places.idPlace";       
 //$result=mysqli_query($link, $sql);
 //
 //while($fila=mysqli_fetch_assoc($result))

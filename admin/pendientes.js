@@ -8,6 +8,8 @@ function hideOverlay()
   });
 }
 
+// TODO: Pending to migrate from "direccion" to "place", where it makes sense
+
 //--------------------Cargamos los eventos pendientes--------------------
 $.getJSON( "getEventosPendientes.php")
 .done(function(data) 
@@ -48,7 +50,7 @@ $.getJSON( "getEventosPendientes.php")
 
 	clone.find(".eventoPendiente-direccionNombre").html(evento.nombreDireccion);
 	clone.find(".eventoPendiente-direccionText").html(evento.direccion);
-	if(evento.direccionActiva==="0")
+	if(evento.placeStatus==="0")
 	{
 		clone.find(".eventoPendiente-direccionValidar").show().on("click",function()
 		{
@@ -57,7 +59,7 @@ $.getJSON( "getEventosPendientes.php")
 			$(".darkOverlay").fadeIn("fast");
   			$("#overlay").load("validarDireccion.html", function() 
       		{
-				$.getJSON("getDireccion.php",{idDireccion:evento.idDireccion})
+				$.getJSON("getDireccion.php",{idPlace:evento.idPlace})
 				.done(function(direccion)
 				{
 					//Cargamos los parámetros
@@ -88,7 +90,7 @@ $.getJSON( "getEventosPendientes.php")
 					//Acciones botones por Ajax
 					$(".validarDireccion-botonesAceptar").on("click",function()
 					{
-					    $.post( "validarDireccion.php", { idDireccion: direccion.idDireccion, status: 1 } )
+					    $.post( "validarDireccion.php", { idPlace: direccion.idPlace, status: 1 } )
 					    .done(function(data)
 					    {
 							console.log("Dirección Validada");
@@ -103,7 +105,7 @@ $.getJSON( "getEventosPendientes.php")
 					$(".validarDireccion-botonesRechazar").on("click",function()
 					{
 						if(confirm('¿Estás seguro de que quieres rechazar esta dirección?\n\nNo se podrá aceptar el evento si la dirección no es válida'))
-					    $.post( "validarDireccion.php", { idDireccion: direccion.idDireccion, status: -1 } )
+					    $.post( "validarDireccion.php", { idPlace: direccion.idPlace, status: -1 } )
 					    .done(function(data)
 					    {
 						    console.log("Dirección Rechazada");
@@ -119,7 +121,7 @@ $.getJSON( "getEventosPendientes.php")
 			});
 		});
 	}
-	else if(evento.direccionActiva==="-1")
+	else if(evento.placeStatus==="-1")
 	{
 		clone.find(".eventoPendiente-botonesRechazar").show();		
 		clone.find(".eventoPendiente-direccionRechazada").show();		
