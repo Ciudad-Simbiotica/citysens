@@ -16,15 +16,17 @@ echo "<pre>";
 
 /* UPDATE THE POINTS OF ENTITIES, CONSIDERING IF THEY ARE convocatorias/recurrentes AND older/younger THAN A YEAR.
 
+   $today = "2015-09-09";
+   $yearAgo = "2014-09-09"
    $sql = "select puntos.idEntidad, puntos.entidad, floor(sum(puntos.points)) as totalPuntos from 
             (
-              (select en.idEntidad, en.entidad, count(ev.idEvento)/4 as points from entidades as en, eventos as ev where en.idEntidad=ev.idEntidad and ev.tipo='recurrente' and ev.fecha>'2014-08-05' group by en.idEntidad) 
+              (select en.idEntidad, en.entidad, count(ev.idEvento)/4 as points from entidades as en, eventos as ev where en.idEntidad=ev.idEntidad and ev.tipo='recurrente' and ev.fecha>'$yearAgo' group by en.idEntidad) 
                 UNION
-              (select en.idEntidad, en.entidad, count(ev.idEvento)/8 as points from entidades as en, eventos as ev where en.idEntidad=ev.idEntidad and ev.tipo='recurrente' and ev.fecha<'2014-08-05' group by en.idEntidad) 
+              (select en.idEntidad, en.entidad, count(ev.idEvento)/8 as points from entidades as en, eventos as ev where en.idEntidad=ev.idEntidad and ev.tipo='recurrente' and ev.fecha<'$yearAgo' group by en.idEntidad) 
               UNION
-              (select en.idEntidad, en.entidad, count(ev.idEvento) as points from entidades as en, eventos as ev where en.idEntidad=ev.idEntidad and ev.tipo='convocatoria' and ev.fecha>'2014-08-05' group by en.idEntidad)
+              (select en.idEntidad, en.entidad, count(ev.idEvento) as points from entidades as en, eventos as ev where en.idEntidad=ev.idEntidad and ev.tipo='convocatoria' and ev.fecha>'$yearAgo' group by en.idEntidad)
                UNION
-              (select en.idEntidad, en.entidad, count(ev.idEvento)/2 as points from entidades as en, eventos as ev where en.idEntidad=ev.idEntidad and ev.tipo='convocatoria' and ev.fecha<'2014-08-05' group by en.idEntidad)
+              (select en.idEntidad, en.entidad, count(ev.idEvento)/2 as points from entidades as en, eventos as ev where en.idEntidad=ev.idEntidad and ev.tipo='convocatoria' and ev.fecha<'$yearAgo' group by en.idEntidad)
             ) as puntos
             group by idEntidad";
    $result = mysqli_query($link, $sql);
