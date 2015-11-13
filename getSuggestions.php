@@ -25,34 +25,28 @@ array_push($sugestions,$sugestion);
 
 function getFiltrosTiempo($cadena)
 {
-//    
-////- Nombre del mes
-////- Fin de semana
-////- Último mes / semana / año ? (para ver pasado)
-////- Día específico (decían que no era útil, pero sí nos conviene, como día de comienzo, mostrando a partir del previo).
-////- ¿Semana santa / puente mayo / etc.? NO SÉ - Lo mejor sería poder resaltar días festivos, igual que resaltamos el "HOY" y "MAÑANA".
-////- 1 mes, 2 meses??
-////- 2 semanas, 3 semanas, 4 semanas??
+// TIME FILTERS that could be applied (change the date period shown)
+// - Name of a month
+// - Specific date
+// - Último mes / semana / año ? (para ver pasado) (PENDING)
+//
+// DECIDED NOT TU USE:
+//  - 1 month, 2 months... 2 weeks, 3 weeks... 10 days, 20 days...
+//
+//   TODO: This filters would need to be localization dependant. For the moment being, it is good enough.
 //   
-  $months =["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
-  $fechas=array();
-  $matches=array();
-  
-  // Checking for dates
-  // $date_regex ="/^(\d?\d)[\/\-.](\d?\d)([\/\-.]((\d\d)?\d{2}))?$/";
-  $date_regex ="/^(\d?\d)[\/\-.](\d?\d)([\/\-.]((\d\d)?(\d{2})?)?)?$/";
-  $period_regex ="/^(\d?) (s(e(m(a(n(a(s)?)?)?)?)?)?|d((i|í)(a(s)?)?)?|m(es(e(s)?)?)?)$/i";
 
+   $fechas=array();
+   $matches=array();
+   $months =["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"]; // Checking for months
+   $date_regex = "/^(\d?\d)[\/\-.](\d?\d)([\/\-.]((\d\d)?(\d{2})?)?)?$/"; // Checking for dates
+  
   if (preg_match($date_regex, $cadena, $matches)) {
-/*    if ($matches[4]=="") {
-       $matches[4]=date('Y');
-    } else if (strlen($matches[4])==2) {
-       $matches[4]="20".$matches[4];
-    } */
+
     $year=$matches[4];
     if ($year=="") {
        $year=date('Y');
-    } else if (strlen($matches[4])==2) {
+    } else if (strlen($year)==2) {
        $year="20".$year;   
     }
     if (checkdate($matches[2], $matches[1], $year)) {
@@ -66,37 +60,45 @@ function getFiltrosTiempo($cadena)
        array_push($fechas,$fecha);
     }
   }
-  else if (preg_match($period_regex, $cadena, $matches)){
-     switch ($matches[2][0]) {
-        case "s":
-        case "S":
-           $periodo="semanas";
-           break;
-        case "d":
-        case "D":
-           $periodo="días";
-           break;
-        case "m":
-        case "M":
-           $periodo="meses";
-           break;
-     }
-     $fecha["name"]=$matches[1]." ".$periodo;
-     $fecha["start"]="";
-     $fecha["end"]="";
-     array_push($fechas,$fecha);
-  }
-  else { // Ckecking for months
+  
+//    Decided not to apply this kind of filter. It would have used
+//         $period_regex = "/^([12]?\d) (s(e(m(a(n(a(s)?)?)?)?)?)?|d((i|í)(a(s)?)?)?|m(e(s(e(s)?)?)?)?)$/i";
+//         
+//    else if (preg_match($period_regex, $cadena, $matches)){
+//     $fecha["start"]=date("Y-m-d");
+//     switch ($matches[2][0]) {
+//        case "s":
+//        case "S":
+//           $periodo="semanas";
+//           $fecha["end"]=date("Y-m-d", strtotime("+".$matches[1]." week",strtotime($fecha["start"])));
+//           break;
+//        case "d":
+//        case "D":
+//           $periodo="días";
+//           $fecha["end"]=date("Y-m-d", strtotime("+".$matches[1]." day",strtotime($fecha["start"])));
+//           break;
+//        case "m":
+//        case "M":
+//           $periodo="meses";
+//           $fecha["end"]=date("Y-m-j", strtotime("+".$matches[1]." month",strtotime($fecha["start"])));
+//           break;
+//     }
+//     $fecha["name"]=$matches[1]." ".$periodo;
+//     array_push($fechas,$fecha);
+//  }
+  else { // Ckecking for months' names
      $suggestedMonths=preg_grep("/^{$cadena}/i",$months);
   
      if($suggestedMonths) {
+        // For each month that matches, a suggestion for current year is offered
         foreach($suggestedMonths as $index => $month) {
            $year=date('Y');
            $fecha["start"]=$year."-".($index+1)."-1";
-           $fecha["end"]=date("Y-m-t", strtotime($fecha["start"]));  //TO DO: Review, seems to be failing.
+           $fecha["end"]=date("Y-m-t", strtotime($fecha["start"]));
            $fecha["name"]=$month." ".date('Y');
            array_push($fechas,$fecha);
         }
+        // In case only one month matches, the previous and next year are offered, in addition to current year
         if (count($fechas)==1 && strlen($cadena)>2) {
            $year=-1+$year;
            $fecha["start"]=$year."-".($index+1)."-1";
@@ -113,7 +115,6 @@ function getFiltrosTiempo($cadena)
         }
      }
   } 
-
 
 return $fechas;   
 }
