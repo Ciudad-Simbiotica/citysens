@@ -50,7 +50,7 @@ function clean_all(&$items,$leave = ''){
 }
 
 // Script is unactive unless it is required
-//exit();
+exit();
 
 // Standard use of the script, to update with changes from the last day
 $lastChangedLimit = time()- (1 * 86400); //To be compared with the event's "changed" field to see if it got updated since the last time we checked. 
@@ -60,8 +60,7 @@ $lastChangedLimit = time()- (1 * 86400); //To be compared with the event's "chan
 //$timeFrame="startTime=1438380001&endTime=1441058401"; // Agosto 2015
 //$timeFrame="startTime=1441058401&endTime=1443650401"; // Septiembre 2015
 //$timeFrame="startTime=1443650401&endTime=1446332401"; // Octubre 2015
-$timeFrame="startTime=1446310401&endTime=1448924401"; // Noviembre 2015
-//$timeFrame="startTime=1446332401&endTime=1448924401"; // Noviembre 2015
+$timeFrame="startTime=1446332401&endTime=1448924401"; // Noviembre 2015
 //$timeFrame="startTime=1448924401&endTime=1451602801"; // Diciembre 2015
 $url = "http://agendadelhenares.org/event-list-json?{$timeFrame}&changed&place__address&place__latitude&place__longitude&place__zoom&body";
 //http://agendadelhenares.org/event-list-json?startTime=1370037601&endTime=1372629601&limit=150&changed&place__address&place__latitude&place__longitude&place__zoom&body
@@ -118,7 +117,11 @@ foreach ($data["events"] as $event) {
 
       if ($numLugaresEncontrados == 0) {
          // The place does not exist in CTS. There is still no assignment to a place in CTS
-         // We have to create a new place 
+         // We have to create a new place
+         // WARNING: In AdH many times you have different places that refer to the same place. Even if you identify them as duplicates of a main one... they will keep appearing with their PlaceId in the feed.
+         //          This causes that several places are created, even if they refer to duplicates of the same places.
+         //             Manual fix is to identify them, update the adhPlaceID to ctsPlaceID assignment to refer to the same place, update events, and delete duplicates.
+         
          $newPlace=true;
       } else {
          // A place already exists. We will only update in case we detect a change on important fields
@@ -140,12 +143,14 @@ foreach ($data["events"] as $event) {
       if (mysqli_num_rows($result_ciudad) == 1) // City has been already assigned
          $placeData["idCiudad"] = mysqli_fetch_assoc($result_ciudad)['ctsIdTerritorio'];
       else {
-         // There is still no city assigned to the CityId from AdH. We have to identify city and create assignment
+         // There is still no city assigned to the CityId from AdH. We have to identify city based on name (or coordinates) and create assignment.
+         //   In the case of Madrid (AdHID 33) there is no link, as she is treated in CTS as a "comarca/metropoli" (level 7).
+         //    When looking for a city with the name ('Madrid'), nothing will be found, so later coordinates will be used to find out the district (level 8) corresponding to the place.
          $sql = "SELECT id,nombre FROM territorios where nombre like '{$event["place__city__name"]}%' AND nivel=8 AND (provincia=28 OR provincia=19)";
          $result_busqueda_ciudad = mysqli_query($link, $sql);
          $ciudadesEncontradas = mysqli_num_rows($result_busqueda_ciudad);
-         
-         if ($ciudadesEncontradas == 1) { // In case 0 or more than 1 city are found, we will try to use lat-lng of the event to identify the city.
+
+         if ($ciudadesEncontradas == 1) { // In case 0 or more than 1 city are found, we will later try to use lat-lng of the event to identify the city.
             $placeData["idCiudad"] = mysqli_fetch_assoc($result_busqueda_ciudad)['id'];
 
             // Insert the link cityAdh-ciudadCts
@@ -157,7 +162,7 @@ foreach ($data["events"] as $event) {
          }
       }
 
-      // Postal Address treatment
+      // POSTAL ADDRESS TREATMENT
       $direccionCompleta = $event["place__address"];
       
       // Content between brackets is considered an "indication" for the post address     
@@ -195,7 +200,8 @@ foreach ($data["events"] as $event) {
 
          $punto = geoPHP::load("POINT({$placeData["lng"]} {$placeData["lat"]})", "wkt");
 
-         // If no CTS territory was identified for the city using the name, we use the coordinates
+         // If no CTS territory was identified for the city using the name, we use the coordinates.
+         //   This will also identify the district that contains the address in the case of Madrid.
          if ($placeData["idCiudad"] == "") {
             $ciudadesIds = getAllDescendantsOfLevel([601130028, 601080019], 8, 6); //Obtain all cities from Guadalajara and Madrid
             foreach ($ciudadesIds as $ciudadId) {
@@ -203,10 +209,12 @@ foreach ($data["events"] as $event) {
                if ($poligono->contains($punto)) {
                   $placeData["idCiudad"] = $ciudadId;
 
-                  // Insert the link cityAdh-ciudadCts
-                  $sql = "INSERT INTO adhCiudades_ctsTerritorios (`adhCityId`, `ctsIdTerritorio`) VALUES ({$event["place__city__id"]}, {$placeData["idCiudad"]})";
-                  mysqli_query($link, $sql);
-                  $newCities++;
+                  // Insert the link cityAdh-ciudadCts. Not for districts of Madrid (AdHID 33), which is treated in CTS as a "comarca/metropoli" (level 7).
+                  if ($event["place__city__id"]<>'33') {
+                     $sql = "INSERT INTO adhCiudades_ctsTerritorios (`adhCityId`, `ctsIdTerritorio`) VALUES ({$event["place__city__id"]}, {$placeData["idCiudad"]})";
+                     mysqli_query($link, $sql);
+                     $newCities++;
+                  }
                   break;
                }
             }
@@ -234,8 +242,11 @@ foreach ($data["events"] as $event) {
          $placeData["cp"]=getCP($placeData["lat"],$placeData["lng"]);
       }
    
-      if ($placeData["idCiudad"] != "") {
-         if ($newPlace) {                                
+      if ($placeData["idCiudad"] != "") {  
+         if ($newPlace) {
+            // 2015.11.06 BUG: In many cases a place is created twice. And twice the link AdH and CTS was created.
+            // Table has been changed with a UNIQUE constrain and the link will not be created.
+            // But the source problem, why the place is considered a newPlace, remains to be found.
             $eventData["idPlace"] = createPlace($placeData);            
             $sql = "INSERT INTO adhLugares_ctsDirecciones (`adhIdLugar`, `ctsIdLugar`) VALUES ({$event["place__id"]}, {$eventData["idPlace"]})";
             mysqli_query($link, $sql); 

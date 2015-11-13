@@ -365,7 +365,7 @@ function getEntidades($filtros, $idTerritorio, $alrededores, $itemsStart=0, $ite
             AND entidades.idEntidad=entidades_tematicas.idEntidad 
             AND ";
  
- // For entities that have a territory defined
+ // For entities that have a territory (or several) defined
    $sql_2=" UNION
             SELECT entidades.*, '$sinDireccion',0,0,entidades.idsCiudades, 0, 0, territorios.nombre as nombreLugar, territorios.nombreCorto as nombreCorto,
                   (SELECT GROUP_CONCAT(tematicas.tematica)
@@ -373,7 +373,7 @@ function getEntidades($filtros, $idTerritorio, $alrededores, $itemsStart=0, $ite
                      WHERE entidades_tematicas.idTematica=tematicas.idTematica
                      AND entidades_tematicas.idEntidad = entidades.idEntidad) AS tematicas
               FROM entidades, entidades_tematicas,territorios
-             WHERE entidades.idPlace='0'
+             WHERE entidades.idPlace=0
                AND territorios.nivel = 8
                AND entidades.idEntidad=entidades_tematicas.idEntidad 
                AND territorios.id in (entidades.idsCiudades)
@@ -487,6 +487,7 @@ function createEntity($entityData)
     $nombreCorto = safe($link, $entityData["nombreCorto"]);
     $tipo = safe($link, $entityData["tipo"]);
     $idsCiudades = safe($link, $entityData["idsCiudades"]);
+    $idsComarcas = safe($link, $entityData["idsComarcas"]);
     $idPlace = safe($link, $entityData["idPlace"]);
     $telefono = safe($link, $entityData["telefono"]);
     $email = safe($link, $entityData["email"]);
@@ -502,14 +503,14 @@ function createEntity($entityData)
     foreach($entityData["tematicas"] as $tematica)
         array_push($tematicas,safe($link, $tematica));
 
-   //    INSERT INTO `entidades` (`entidad`, `nombreCorto`, `tipo`, `idsCiudades`, `idPlace`, `telefono`, `email`, `points`, `url`, `twitter`, `facebook`, `etiquetas`, `descBreve`, `texto`, `fechaConstitucion`, `created`, `updated`) VALUES
-   //    ('Asociación Gallega Corredor del Henares', '', 'organizacion', '801280005', 869, '670588667', 'galiciahenares@hotmail.com', 0, '', '', '', '', '', '', NULL, '2015-07-15 08:01:34', '2015-07-27 10:20:36'),
+   //    INSERT INTO `entidades` (`entidad`, `nombreCorto`, `tipo`, `idsCiudades`, `idsComarcas`, `idPlace`, `telefono`, `email`, `points`, `url`, `twitter`, `facebook`, `etiquetas`, `descBreve`, `texto`, `fechaConstitucion`, `created`, `updated`) VALUES
+   //    ('Asociación Gallega Corredor del Henares', '', 'organizacion', '801280005', `0`, 869, '670588667', 'galiciahenares@hotmail.com', 0, '', '', '', '', '', '', NULL, '2015-07-15 08:01:34', '2015-07-27 10:20:36'),
     
     mysqli_query($link, 'SET CHARACTER SET utf8');
 
-    $sql="INSERT INTO entidades (entidad, nombreCorto, tipo, idsCiudades, idPlace, telefono, email, points, 
+    $sql="INSERT INTO entidades (entidad, nombreCorto, tipo, idsCiudades, idsComarcas, idPlace, telefono, email, points, 
                                   url, twitter, facebook, etiquetas, descBreve, texto, fechaConstitucion, created)
-                       VALUES ('$entidad','$nombreCorto','$tipo','$idsCiudades','$idPlace','$telefono','$email','$points',
+                       VALUES ('$entidad','$nombreCorto','$tipo','$idsCiudades','$idsComarcas','$idPlace','$telefono','$email','$points',
                                 '$url','$twitter','$facebook','$etiquetas','$descBreve','$texto','$fechaConstitucion', NULL)";
     mysqli_query($link, $sql);
 
@@ -755,6 +756,10 @@ function getEventos($filtros,$idTerritorio,$alrededores,$itemsStart=0, $itemsLim
                 break;
             case "tiempo":
                 $startDate=safe($link,$filtro["start"]);
+                
+                if ($startDate=="") {
+                   $startDate=date('Y-m-d');
+                }
                 $endDate=safe($link,$filtro["end"]);
                 if ($endDate=="") {
                    $endDate=new DateTime($startDate);
@@ -1086,6 +1091,22 @@ function getNivelTerritorio($idTerritorio)
     $result=mysqli_query($link, $sql);
     $fila=mysqli_fetch_assoc($result);
     return $fila["nivel"];
+}
+
+// Returns "Nivel" (level) of the territory with id "idLugar" 
+function getParentID($idTerritorio)
+{
+    //Sanitize input
+    $link=connect();
+    $idTerritorio=safe($link, $idTerritorio);  
+    
+    $sql="SELECT idPadre 
+            FROM  territorios 
+            WHERE id='$idTerritorio'";
+
+    $result=mysqli_query($link, $sql);
+    $fila=mysqli_fetch_assoc($result);
+    return $fila["idPadre"];
 }
 
 // Returns max min coordinates from the "base" territory for idLugar, ie: the first descendent with multiple offspring or no child. 
@@ -1425,7 +1446,8 @@ function createPlace($placeData)
    $link=connect();
    mysqli_query($link, 'SET CHARACTER SET utf8');
 
-   // Sanitize inputs    
+   // Sanitize inputs
+   $placeData['idComarca']=safe($link,$placeData['idComarca']);
    $placeData['idCiudad']=safe($link,$placeData['idCiudad']);
    $placeData['idDistrito']=safe($link,$placeData['idDistrito']);
    $placeData['idBarrio']=safe($link,$placeData['idBarrio']);
@@ -1438,8 +1460,8 @@ function createPlace($placeData)
    $placeData['zoom']=safe($link,$placeData['zoom']);
    $placeData['placeStatus']=safe($link,$placeData['placeStatus']);
    
-   $sql="INSERT INTO places (idCiudad, idDistrito, idBarrio, nombre, direccion, indicacion, cp, lat, lng, zoom, placeStatus,created)
-       VALUES  ('{$placeData["idCiudad"]}', '{$placeData["idDistrito"]}', '{$placeData["idBarrio"]}', '{$placeData["nombre"]}', '{$placeData["direccion"]}', '{$placeData["indicacion"]}', '{$placeData["cp"]}',
+   $sql="INSERT INTO places (idComarca, idCiudad, idDistrito, idBarrio, nombre, direccion, indicacion, cp, lat, lng, zoom, placeStatus,created)
+       VALUES  ('{$placeData["idComarca"]}', '{$placeData["idCiudad"]}', '{$placeData["idDistrito"]}', '{$placeData["idBarrio"]}', '{$placeData["nombre"]}', '{$placeData["direccion"]}', '{$placeData["indicacion"]}', '{$placeData["cp"]}',
        '{$placeData["lat"]}', '{$placeData["lng"]}', '{$placeData["zoom"]}', '{$placeData["placeStatus"]}',NULL)";    
    
     mysqli_query($link, $sql);
