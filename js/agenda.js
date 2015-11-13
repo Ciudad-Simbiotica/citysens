@@ -150,7 +150,7 @@ function createLine(grupo,datos,animated,nombreSuperGrupo)
         else if(contenido=="organizacion")
           clone.find(".imagen-tipo").attr("src", "css/icons/icon_CitYsens.organizacion.png");
         else if(contenido=="colectivo")
-          clone.find(".imagen-tipo").attr("src", "css/icons/CitYsens.People.png");
+          clone.find(".imagen-tipo").attr("src", "css/icons/CitYsens.people.png");
       }
       /*
       else if(clase=="participante")
@@ -528,7 +528,7 @@ function cargarContenidoEntidad(id)
     else if(data.tipoEntidad=="organizacion")
       $("#thumbnail"+id+" .informacion-cabecera-izq-entidad-izq").css('background-image', "url(css/icons/icon_CitYsens.organizacion.png)");
     else if(data.tipoEntidad=="colectivo")
-      $("#thumbnail"+id+" .informacion-cabecera-izq-entidad-izq").css('background-image', "url(css/icons/CitYsens.People.png)");
+      $("#thumbnail"+id+" .informacion-cabecera-izq-entidad-izq").css('background-image', "url(css/icons/CitYsens.people.png)");
 
 
     //$("#thumbnail"+id+" .informacion-cabecera").attr("href", "http://www.citysens.net/?idEvento="+data.idEvento+"&idOrigen="+window.conf.idTerritorio );

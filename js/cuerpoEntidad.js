@@ -73,7 +73,7 @@ $.getJSON('getDatosEntidad.php',
   else if(data.tipo=="organizacion")
     $(".detalle-tipo").css("background-image", "url(css/icons/icon_CitYsens.organizacion.png)");
   else if(data.tipo=="colectivo")
-    $(".detalle-tipo").css("background-image", "url(css/icons/CitYsens.People.png)");
+    $(".detalle-tipo").css("background-image", "url(css/icons/CitYsens.people.png)");
 
   $(".detalle-puntos-puntos").text(data.points);
 
