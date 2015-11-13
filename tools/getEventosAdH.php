@@ -57,8 +57,12 @@ $lastChangedLimit = time()- (1 * 86400); //To be compared with the event's "chan
 //$url = "http://agendadelhenares.org/event-list-json?changed&place__address&place__latitude&place__longitude&place__zoom&body";
 
 // This alternative can be used to obtain past events, for example, to extract events month by month
-$timeFrame="startTime=1438380001&endTime=1441058401"; // Agosto 2015
+//$timeFrame="startTime=1438380001&endTime=1441058401"; // Agosto 2015
 //$timeFrame="startTime=1441058401&endTime=1443650401"; // Septiembre 2015
+//$timeFrame="startTime=1443650401&endTime=1446332401"; // Octubre 2015
+$timeFrame="startTime=1446310401&endTime=1448924401"; // Noviembre 2015
+//$timeFrame="startTime=1446332401&endTime=1448924401"; // Noviembre 2015
+//$timeFrame="startTime=1448924401&endTime=1451602801"; // Diciembre 2015
 $url = "http://agendadelhenares.org/event-list-json?{$timeFrame}&changed&place__address&place__latitude&place__longitude&place__zoom&body";
 //http://agendadelhenares.org/event-list-json?startTime=1370037601&endTime=1372629601&limit=150&changed&place__address&place__latitude&place__longitude&place__zoom&body
 
@@ -66,6 +70,7 @@ $raw_data = file_get_contents($url);
 $data = json_decode($raw_data, true);
 
 $newCities=$newPlaces=$newEvents=$updatedEvents=$updatedPlaces=$totalEvents=0;
+$newCityNames=array();
 
 foreach ($data["events"] as $event) {
    $totalEvents++;
@@ -147,6 +152,8 @@ foreach ($data["events"] as $event) {
             $sql = "INSERT INTO adhCiudades_ctsTerritorios (`adhCityId`, `ctsIdTerritorio`) VALUES ({$event["place__city__id"]}, {$placeData["idCiudad"]})";
             mysqli_query($link, $sql);
             $newCities++;
+            //Not really tested, the $newCityNames thing
+            array_push($newCityNames,$event["place__city__id"].' - '.$event["place__city__name"]);
          }
       }
 
@@ -266,7 +273,7 @@ foreach ($data["events"] as $event) {
 //      foreach ($ret->find('p[class=demosphere-source-link-top]') as $p) {
 //         $p->outertext = '';
 //      }
-       if (isset($ret)) { // It is rare, but there are cases of events with no body
+       if (isset($ret)) { // It is rare, but there are cases of events with no body (not sure if this avoids failure)
          foreach ($ret->find('h3') as $h3) {
             $h3->outertext = '<p><strong>' . $h3->innertext . '</strong></p>';
          }
@@ -396,5 +403,9 @@ foreach ($data["events"] as $event) {
    }
    usleep(15000000);//google free 2.500 searchs with speed 5 pers sec.
 }
-echo "Importados:".PHP_EOL."Total Events: ".$totalEvents.PHP_EOL."Inserted Events: ".$newEvents.PHP_EOL."Updated Events: ".$updatedEvents.PHP_EOL."Inserted Places: ".$newPlaces.PHP_EOL."Updated Places: ".$updatedPlaces."New Cities: ".$newCities;
+echo "Importados:".PHP_EOL."Total Events: ".$totalEvents.PHP_EOL."Inserted Events: ".$newEvents.PHP_EOL."Updated Events: ".$updatedEvents.PHP_EOL."Inserted Places: ".$newPlaces.PHP_EOL."Updated Places: ".$updatedPlaces.PHP_EOL."New Cities: ".$newCities.PHP_EOL;
+if ($newCityNames) {
+   echo "New City Names: ";
+   print_r($newCityNames);
+}
 ?>
