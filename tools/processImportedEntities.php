@@ -183,8 +183,8 @@ while($entidadImportada=mysqli_fetch_assoc($result_entidades))
    else
       $entityData["tipo"]="organizacion";
    $entityData["idPlace"] = $entidadImportada["idLugarCTS"];
-   $entityData["idsCiudades"] = $entidadImportada["idCiudadCTS"];
-   $entityData["idsComarcas"] = $entidadImportada["idComarcaCTS"];
+   $entityData["idCiudad"] = $entidadImportada["idCiudadCTS"];
+   $entityData["idComarca"] = $entidadImportada["idComarcaCTS"];
    $entityData["telefono"] = $entidadImportada["telefono"];
    $entityData["email"] = $entidadImportada["email"];
    $entityData["points"] = 0;

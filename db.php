@@ -365,39 +365,48 @@ function getEntidades($filtros, $idTerritorio, $alrededores, $itemsStart=0, $ite
             AND entidades.idEntidad=entidades_tematicas.idEntidad 
             AND ";
  
- // For entities that have a territory (or several) defined
+ // For entities that have no address, but are assigned to a cityId or metropoliId
    $sql_2=" UNION
-            SELECT entidades.*, '$sinDireccion',0,0,entidades.idsCiudades, 0, 0, territorios.nombre as nombreLugar, territorios.nombreCorto as nombreCorto,
+            SELECT entidades.*, '$sinDireccion',0,0,entidades.idCiudad, 0, 0, territorios.nombre as nombreLugar, territorios.nombreCorto as nombreCorto,
                   (SELECT GROUP_CONCAT(tematicas.tematica)
                      FROM entidades_tematicas, tematicas   
                      WHERE entidades_tematicas.idTematica=tematicas.idTematica
                      AND entidades_tematicas.idEntidad = entidades.idEntidad) AS tematicas
               FROM entidades, entidades_tematicas,territorios
-             WHERE entidades.idPlace=0
-               AND territorios.nivel = 8
+             WHERE entidades.idPlace = 0
+               AND ((entidades.idCiudad <> 0 AND territorios.nivel = 8 AND territorios.id = entidades.idCiudad)
+                     OR
+                    (entidades.idComarca <> 0 AND territorios.nivel = 7 AND territorios.id = entidades.idComarca))
                AND entidades.idEntidad=entidades_tematicas.idEntidad 
-               AND territorios.id in (entidades.idsCiudades)
                AND ";
-   // idsCiudades contains the IDs of cities where an Entity with no direction operates
-    
-  if (!$hayFiltroLugar) {
+   // entidades.idCiudad contains the ID of the city where an Entity with no direction operates
+   // entidades.idComarca contains the ID of the metropoli where an Entity with no direction operates
+   
+   // In case there is no territory filter, the base territory (+ neighbour territories if surroundings are shown) are used
+   if (!$hayFiltroLugar) {
     $lugares[]=$idTerritorio;
     if ($alrededores!=0) {
       $lugares=array_merge($lugares,explode(',',$alrededores));
     }
   }  
 
-  if ($nivel<8) {// Levels above city, searches will be done on a city-basis    
+  if ($nivel<7) {// Levels above region, searches will be done on a city- and region-basis    
+      $sql.=" places.idCiudad=territorios.id AND ";
+      $comarcas=getAllDescendantsOfLevel($lugares,7);
+      $ciudades=getAllDescendantsOfLevel($lugares,8);
+      $lugar="places.idCiudad IN ('".join($ciudades,"','")."')";
+      $lugar_2="territorios.id IN ('".join($ciudades,"','")."','".join($comarcas,"','")."')";
+  } else if ($nivel==7 ) {// Map at a region level, searches will be done on a city-basis    
       $sql.=" places.idCiudad=territorios.id AND "; 
-      $hijos=getAllDescendantsOfLevel($lugares,8);
-      $lugar="places.idCiudad IN ('".join($hijos,"','")."')";
-      $lugar_2="territorios.id IN ('".join($hijos,"','")."')";      
+      $ciudades=getAllDescendantsOfLevel($lugares,8);
+      $lugar="places.idCiudad IN ('".join($ciudades,"','")."')";
+      $lugar_2="territorios.id IN ('".join($ciudades,"','")."','".join($lugares,"','")."')";  
   } else if ($nivel==8 && $alrededores!=0) { // Map at City + level, searches based on idCiudad     
       $sql.=" places.idCiudad=territorios.id AND ";   
       // No need to find descendants, as all ids in $lugares must already be ids from cities
       $lugar="places.idCiudad IN ('".join($lugares,"','")."')";
       $lugar_2="territorios.id IN ('".join($lugares,"','")."')";
-  } else if ($nivel==8) { //Map at city, searches done on SubCityLevel (district, neighborhood) basis, District name will be displayed 
+  } else if ($nivel==8) { //Map at city level, searches done on SubCityLevel (district, neighborhood) basis, District name will be displayed 
       $sql.=" places.idDistrito=territorios.id AND ";         
       $hijos=getAllChildren($lugares,9);
       $lugar="places.idDistrito IN ('".join($hijos,"','")."') OR places.idBarrio IN ('".join($hijos,"','")."')";
@@ -486,8 +495,8 @@ function createEntity($entityData)
     $entidad = safe($link, $entityData["entidad"]);
     $nombreCorto = safe($link, $entityData["nombreCorto"]);
     $tipo = safe($link, $entityData["tipo"]);
-    $idsCiudades = safe($link, $entityData["idsCiudades"]);
-    $idsComarcas = safe($link, $entityData["idsComarcas"]);
+    $idCiudad = safe($link, $entityData["idCiudad"]);
+    $idComarca = safe($link, $entityData["idComarca"]);
     $idPlace = safe($link, $entityData["idPlace"]);
     $telefono = safe($link, $entityData["telefono"]);
     $email = safe($link, $entityData["email"]);
@@ -503,14 +512,14 @@ function createEntity($entityData)
     foreach($entityData["tematicas"] as $tematica)
         array_push($tematicas,safe($link, $tematica));
 
-   //    INSERT INTO `entidades` (`entidad`, `nombreCorto`, `tipo`, `idsCiudades`, `idsComarcas`, `idPlace`, `telefono`, `email`, `points`, `url`, `twitter`, `facebook`, `etiquetas`, `descBreve`, `texto`, `fechaConstitucion`, `created`, `updated`) VALUES
+   //    INSERT INTO `entidades` (`entidad`, `nombreCorto`, `tipo`, `idCiudad`, `idComarca`, `idPlace`, `telefono`, `email`, `points`, `url`, `twitter`, `facebook`, `etiquetas`, `descBreve`, `texto`, `fechaConstitucion`, `created`, `updated`) VALUES
    //    ('Asociación Gallega Corredor del Henares', '', 'organizacion', '801280005', `0`, 869, '670588667', 'galiciahenares@hotmail.com', 0, '', '', '', '', '', '', NULL, '2015-07-15 08:01:34', '2015-07-27 10:20:36'),
     
     mysqli_query($link, 'SET CHARACTER SET utf8');
 
-    $sql="INSERT INTO entidades (entidad, nombreCorto, tipo, idsCiudades, idsComarcas, idPlace, telefono, email, points, 
+    $sql="INSERT INTO entidades (entidad, nombreCorto, tipo, idCiudad, idComarca, idPlace, telefono, email, points, 
                                   url, twitter, facebook, etiquetas, descBreve, texto, fechaConstitucion, created)
-                       VALUES ('$entidad','$nombreCorto','$tipo','$idsCiudades','$idsComarcas','$idPlace','$telefono','$email','$points',
+                       VALUES ('$entidad','$nombreCorto','$tipo','$idCiudad','$idComarca','$idPlace','$telefono','$email','$points',
                                 '$url','$twitter','$facebook','$etiquetas','$descBreve','$texto','$fechaConstitucion', NULL)";
     mysqli_query($link, $sql);
 

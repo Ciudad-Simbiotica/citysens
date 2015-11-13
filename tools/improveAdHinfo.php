@@ -18,7 +18,7 @@ include_once "../db.php";
 //    $idCiudad=$fila['idCiudad'];
 //
 //     $sql="UPDATE entidades SET 
-//	  idsCiudades='$idCiudad' 
+//	  idCiudad='$idCiudad' 
 //	  WHERE idEntidad='$idEntidad'";
 //	 echo $sql.PHP_EOL;;
 //	 mysqli_query($link, $sql);

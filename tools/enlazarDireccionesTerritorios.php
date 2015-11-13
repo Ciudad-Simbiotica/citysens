@@ -7,7 +7,7 @@ set_time_limit(0);
 // Disabled unless needed
 exit();
 
-// Links addresses of a province to the correponding city (level 8), disctrict (9) and neighborhood (10) territories
+// Links addresses of a province to the corresponding city (level 8), disctrict (9) and neighborhood (10) territories
 
 $provincia=28;
 
@@ -62,7 +62,7 @@ $link=connect();
     }
   }
 
-  
+  $territorios=array();
   $sql="SELECT * FROM places WHERE (idDistrito is null OR idDistrito='0') AND idCiudad is not null AND idCiudad<>'0'";
   
   $places=array();
@@ -105,7 +105,8 @@ $link=connect();
     }
   }
 
-  $sql="SELECT * FROM places WHERE (idBarrio is null OR idBarrio='0') AND idCiudad is not null AND idCiudad<>'0'";
+    $territorios=array();
+    $sql="SELECT * FROM places WHERE (idBarrio is null OR idBarrio='0') AND idCiudad is not null AND idCiudad<>'0'";
   
   $places=array();
   $asociados=array();
