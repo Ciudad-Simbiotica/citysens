@@ -132,6 +132,7 @@ if ($fechas) {
 		$suggestion["start"]=$fecha["start"];
       $suggestion["end"]=$fecha["end"];
 		array_push($suggestions,$suggestion);
+      unset($suggestion);
 	} 
 }
 
@@ -148,6 +149,7 @@ foreach($tematicas as $tematica)
    $suggestion["textoBuscado"]=htmlentities($_GET["query"]);//for bold hint string
 	$suggestion["id"]=$tematica["idTematica"];
 	array_push($suggestions,$suggestion);
+   unset($suggestion);
 }
 
 
@@ -184,6 +186,7 @@ foreach($lugares as $lugar)
    $suggestion["textoBuscado"]=htmlentities($_GET["query"]);//for bold hint string
 	$suggestion["id"]=$lugar["id"];
 	array_push($suggestions,$suggestion);
+   unset($suggestion);
 }
 
 if($_GET["tipo"]=="eventos")	//Sólo las mostramos si NO estamos en página de entidades
@@ -200,6 +203,7 @@ if($_GET["tipo"]=="eventos")	//Sólo las mostramos si NO estamos en página de e
         $suggestion["textoBuscado"]=htmlentities($_GET["query"]);//for bold hint string
 		$suggestion["id"]=$entidad["idEntidad"];
 		array_push($suggestions,$suggestion);
+      unset($suggestion);
 	}
 }
 
