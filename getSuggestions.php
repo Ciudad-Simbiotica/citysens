@@ -179,10 +179,13 @@ foreach($lugares as $lugar)
 	//print_r($lugar);
 	$suggestion["tipo"]="lugar";
 //	$sugestion["texto1"]=htmlentities(ucwords(strtolower(substr($lugar[1],0,50))));
-   $suggestion["texto1"]=htmlentities($lugar["nombre"]);
-   if(mb_strlen($lugar["nombre"])>30)
-      $suggestion["abrev"]=htmlentities(rtrim(substr($lugar["nombre"],0,27))."...");
-	$suggestion["texto2"]="";
+   $suggestion["abrev"]=$suggestion["texto1"]=htmlentities($lugar["nombre"]);
+   if(mb_strlen($lugar["nombre"])>25)
+      $suggestion["abrev"]=htmlentities(rtrim(substr($lugar["nombre"],0,22))."...");
+   if ($lugar['nombreCortoPadre']!="") {
+      $suggestion["texto1"].=" (".htmlentities($lugar['nombreCortoPadre']).")";
+   }
+   $suggestion["texto2"]="";
    $suggestion["textoBuscado"]=htmlentities($_GET["query"]);//for bold hint string
 	$suggestion["id"]=$lugar["id"];
 	array_push($suggestions,$suggestion);
@@ -196,11 +199,11 @@ if($_GET["tipo"]=="eventos")	//Sólo las mostramos si NO estamos en página de e
 	{
 		$suggestion["tipo"]=$entidad["tipo"];
 		//$sugestion["texto1"]=htmlentities(ucwords(strtolower(substr($entidad["entidad"],0,50))));
-        $suggestion["texto1"]=htmlentities($entidad["entidad"]);         
-        if(mb_strlen($entidad["entidad"])>30)
-           $suggestion["abrev"]=htmlentities(rtrim(substr($entidad["entidad"],0,27))."...");
-        $suggestion["texto2"]=htmlentities($entidad["nombre"]);
-        $suggestion["textoBuscado"]=htmlentities($_GET["query"]);//for bold hint string
+      $suggestion["texto1"]=htmlentities($entidad["entidad"]);         
+      if(mb_strlen($entidad["entidad"])>30)
+         $suggestion["abrev"]=htmlentities(rtrim(substr($entidad["entidad"],0,27))."...");
+      $suggestion["texto2"]=htmlentities($entidad["nombre"]);
+      $suggestion["textoBuscado"]=htmlentities($_GET["query"]);//for bold hint string
 		$suggestion["id"]=$entidad["idEntidad"];
 		array_push($suggestions,$suggestion);
       unset($suggestion);
