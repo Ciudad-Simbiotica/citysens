@@ -241,12 +241,13 @@ foreach ($data["events"] as $event) {
          // Get the cp using GoogleMaps API for new and potentially updated locations
          $placeData["cp"]=getCP($placeData["lat"],$placeData["lng"]);
       }
+      // TODO: It could make sense that, in case there are no coordinates, GoogleMapsAPI is used to find them
    
       if ($placeData["idCiudad"] != "") {  
          if ($newPlace) {
             // 2015.11.06 BUG: In many cases a place is created twice. And twice the link AdH and CTS was created.
-            // Table has been changed with a UNIQUE constrain and the link will not be created.
-            // But the source problem, why the place is considered a newPlace, remains to be found.
+            // Table has been changed with a UNIQUE constrain and the link will now not be created.
+            // But the source problem, why an existing place is considered a newPlace, remains to be found.
             $eventData["idPlace"] = createPlace($placeData);            
             $sql = "INSERT INTO adhLugares_ctsDirecciones (`adhIdLugar`, `ctsIdLugar`) VALUES ({$event["place__id"]}, {$eventData["idPlace"]})";
             mysqli_query($link, $sql); 

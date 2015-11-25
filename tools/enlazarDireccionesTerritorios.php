@@ -63,6 +63,7 @@ $link=connect();
   }
 
   $territorios=array();
+  // Take addresses that are not linked to a district but already have a city
   $sql="SELECT * FROM places WHERE (idDistrito is null OR idDistrito='0') AND idCiudad is not null AND idCiudad<>'0'";
   
   $places=array();
