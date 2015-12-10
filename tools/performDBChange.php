@@ -5,8 +5,9 @@ error_reporting(E_ERROR);
 set_time_limit(0);
 ini_set('default_charset', 'utf-8');
 mysql_query("SET NAMES 'utf8'");
+
 // Disabled unless needed
-exit();
+//exit();
 
 $link = connect();
 echo "<pre>";
@@ -35,6 +36,7 @@ echo "<pre>";
       echo $sql,PHP_EOL;
       mysqli_query($link, $sql);
    }
+
 */
 
  /* ASSIGN THEMATIC "Otros" TO ENTITIES THAT HAVE NO THEMATIC ASSIGNED
@@ -58,7 +60,78 @@ echo "<pre>";
       mysqli_query($link,$sql);
       echo $sql;
    }
+
  */
+
+
+ /* Remove address assignment for events to addresses with no coordinates. 
+  * Change for a direct idCiudad or idComarca assignment and delete the wrong address.
+
+
+   $idsPlaceToDelete=array();
+   
+   // First, events from municipalities
+   $sql= "select e.idEvento, p.idCiudad, p.direccion, p.idPlace
+            from eventos e, places p
+            where e.idPlace=p.idPlace
+             and p.lng=0 and p.lat=0
+             and p.idCiudad <>0";
+   echo $sql,PHP_EOL;
+   $result = mysqli_query($link, $sql);
+   while ($fila = mysqli_fetch_assoc($result)) {   
+      $sql="update eventos 
+            SET idPlace=0, idCiudad={$fila["idCiudad"]}, detalleDireccion='{$fila["direccion"]}'
+            where idEvento={$fila["idEvento"]}";
+      
+      echo $sql,PHP_EOL;
+      mysqli_query($link, $sql);
+      
+      $idsPlaceToDelete[]=$fila["idPlace"];
+   }
+   
+   // Second, events from Metropolis
+   $sql= "select e.idEvento, p.idComarca, p.direccion, p.idPlace
+            from eventos e, places p
+            where e.idPlace=p.idPlace
+             and p.lng=0 and p.lat=0
+             and p.idCiudad=0";
+   echo $sql,PHP_EOL;
+   $result = mysqli_query($link, $sql);
+   while ($fila = mysqli_fetch_assoc($result)) {   
+      $sql="update eventos
+             SET idPlace=0, idComarca={$fila["idComarca"]}, detalleDireccion='{$fila["direccion"]}'
+             where idEvento={$fila["idEvento"]}";
+      echo $sql,PHP_EOL;
+      mysqli_query($link, $sql);
+      
+      $idsPlaceToDelete[]=$fila["idPlace"]; 
+   }
+   
+      // First, entities from municipalities
+   $sql= "select e.idEntidad, p.idCiudad, p.direccion, p.idPlace
+            from entidades e, places p
+            where e.idPlace=p.idPlace
+             and p.lng=0 and p.lat=0
+             and p.idCiudad <>0";
+   echo $sql,PHP_EOL;
+   $result = mysqli_query($link, $sql);
+   while ($fila = mysqli_fetch_assoc($result)) {   
+      $sql="update entidades
+            SET idPlace=0, idCiudad={$fila["idCiudad"]}, detalleDireccion='{$fila["direccion"]}'
+            where idEntidad={$fila["idEntidad"]}";
+      echo $sql,PHP_EOL;
+      mysqli_query($link, $sql);
+      
+      $idsPlaceToDelete[]=$fila["idPlace"];      
+   }
+   
+   foreach($idsPlaceToDelete as $idPlace) {
+      $sql="DELETE FROM places WHERE idPlace='$idPlace'";
+      echo $sql,PHP_EOL;
+      mysqli_query($link, $sql);
+   }
+
+   */
 
     echo "HECHO!";
 ?>
