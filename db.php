@@ -319,7 +319,7 @@ function getEntidades($filtros, $idTerritorio, $alrededores, $itemsStart=0, $ite
    // Therefore, this piece of code (that assumes districts only applied on lower levels) does no longer work, needs fixing.
 {
     $link=connect();
-
+    
     // Sanitize inputs
     $itemsStart=safe($link, filter_var($itemsStart,FILTER_SANITIZE_NUMBER_INT));
     $itemsLimit=safe($link, filter_var($itemsLimit,FILTER_SANITIZE_NUMBER_INT));
@@ -330,13 +330,12 @@ function getEntidades($filtros, $idTerritorio, $alrededores, $itemsStart=0, $ite
     $sinDireccion=safe($link,'[sin direccion]');
 
     $hayFiltroLugar=false;
-    $busqueda="";
-    $tematica="";
-    $lugar="";
+    $busqueda=$tematica=$lugar="";
     $lugares=array();
     $filtrosHermanos=array();
     $filtrosHijos=array();
     $filtrosNietos=array();
+
     foreach($filtros as $filtro)
     {
         $tipo=$filtro["tipo"];
@@ -368,7 +367,7 @@ function getEntidades($filtros, $idTerritorio, $alrededores, $itemsStart=0, $ite
     }
 
 // Base query for entities that have an address defined
-     $sql="SELECT entidades.*,places.direccion as domicilio, places.lng, places.lat, places.idCiudad, places.idDistrito, places.idBarrio, territorios.nombre as nombreLugar, territorios.nombreCorto as nombreCorto,
+     $sql="SELECT entidades.*,places.direccion as domicilio, places.lng, places.lat, places.idComarca, places.idCiudad, places.idDistrito, places.idBarrio, territorios.nombre as nombreLugar, territorios.nombreCorto,
             (SELECT GROUP_CONCAT(tematicas.tematica)
                FROM entidades_tematicas, tematicas
               WHERE entidades_tematicas.idTematica=tematicas.idTematica
@@ -380,7 +379,7 @@ function getEntidades($filtros, $idTerritorio, $alrededores, $itemsStart=0, $ite
  
  // Base query for entities that have no address, but are assigned to a cityId or metropoliId
    $sql_2=" UNION
-            SELECT entidades.*, '$sinDireccion',0,0,entidades.idCiudad, 0, 0, territorios.nombre as nombreLugar, territorios.nombreCorto as nombreCorto,
+            SELECT entidades.*, '$sinDireccion',0,0,entidades.idComarca, entidades.idCiudad, 0, 0, territorios.nombre as nombreLugar, territorios.nombreCorto,
                   (SELECT GROUP_CONCAT(tematicas.tematica)
                      FROM entidades_tematicas, tematicas   
                      WHERE entidades_tematicas.idTematica=tematicas.idTematica
@@ -647,6 +646,9 @@ function createEvent($eventData)
     foreach($eventData["tematicas"] as $tematica)
         array_push($tematicas,safe($link, $tematica));
     $idPlace=safe($link, $eventData["idPlace"]);
+    $idCiudad=safe($link, $eventData["idCiudad"]);
+    $idComarca=safe($link, $eventData["idComarca"]);
+    $detalleDireccion=safe($link, $eventData["detalleDireccion"]);
     $url=safe($link, filter_var($eventData["url"], FILTER_SANITIZE_URL));
     $email=safe($link, filter_var($eventData["email"], FILTER_SANITIZE_EMAIL));
     $etiquetas=safe($link, $eventData["etiquetas"]);
@@ -660,10 +662,12 @@ function createEvent($eventData)
     
     mysqli_query($link, 'SET CHARACTER SET utf8');
 
-    $sql="INSERT INTO eventos (fecha,fechaFin,clase,tipo,titulo,texto,temperatura,idEntidad,
+    $sql="INSERT INTO eventos (fecha,fechaFin,clase,tipo,titulo,texto,temperatura,
+                                idEntidad,idComarca,idCiudad,detalleDireccion,
                                 idPlace,url,email,etiquetas,organizador,repeatsAfter,eventoActivo,created)
-                       VALUES ('$fecha',$fechaFin,'$clase','$tipo','$titulo','$texto','$temperatura','$idEntidad',
-                                '$idPlace','$url','$email','$etiquetas','$organizador','$repeatsAfter','$eventoActivo',NULL)";
+                       VALUES ('$fecha',$fechaFin,'$clase','$tipo','$titulo','$texto','$temperatura',$idEntidad,
+                                $idComarca, $idCiudad,'$detalleDireccion', $idPlace,
+                                '$url','$email','$etiquetas','$organizador','$repeatsAfter',$eventoActivo,NULL)";
     mysqli_query($link, $sql);
     $idEvento=mysqli_insert_id($link);
     $sql="INSERT INTO eventos_tematicas (idEvento, idTematica) VALUES ";
@@ -711,6 +715,9 @@ function updateEvent($eventData)
     foreach($eventData["tematicas"] as $tematica)
         array_push($tematicas,safe($link, $tematica));
     $idPlace=safe($link, $eventData["idPlace"]);
+    $idCiudad=safe($link, $eventData["idCiudad"]);
+    $idComarca=safe($link, $eventData["idComarca"]);
+    $detalleDireccion=safe($link, $eventData["detalleDireccion"]);
     $url=safe($link, filter_var($eventData["url"], FILTER_SANITIZE_URL));
     $email=safe($link, filter_var($eventData["email"], FILTER_SANITIZE_EMAIL));
     $etiquetas=safe($link, $eventData["etiquetas"]);
@@ -724,8 +731,9 @@ function updateEvent($eventData)
 
     // Campo "tipo"
     $sql="UPDATE eventos SET fecha='$fecha',fechaFin=$fechaFin,clase='$clase',titulo='$titulo',texto='$texto', 
-            temperatura='$temperatura',idEntidad='$idEntidad',idPlace= '$idPlace',url='$url',email='$email',
-            etiquetas='$etiquetas',organizador='$organizador',repeatsAfter='$repeatsAfter',eventoActivo='$eventoActivo'";
+            temperatura='$temperatura',idEntidad=$idEntidad,idComarca=$idComarca,
+            idCiudad=$idCiudad,detalleDireccion='$detalleDireccion',idPlace= $idPlace,url='$url',email='$email',
+            etiquetas='$etiquetas',organizador='$organizador',repeatsAfter='$repeatsAfter',eventoActivo=$eventoActivo";
     if (isset($eventData["tipo"])) {
        $sql.=",tipo='$tipo'";
     } 
@@ -809,13 +817,16 @@ function getEventos($filtros,$idTerritorio,$alrededores,$itemsStart=0, $itemsLim
     $itemsLimit=safe($link, filter_var($itemsLimit, FILTER_SANITIZE_NUMBER_INT));
     $idTerritorio=safe($link,$idTerritorio);
     $alrededores=safe($link,$alrededores);
+    $nivel= getNivelTerritorio($idTerritorio);
+    $nivelHijo=strval($nivel+1);
     
-    $nivel=getNivelTerritorio($idTerritorio);
-
+    $hayFiltroLugar=false;
     $busqueda=$tematica=$lugar=$organizacion=$tiempo="";
     $startDate=$endDate=0;
-    $hayFiltroLugar=false;
     $lugares=array();
+    $filtrosHermanos=array();
+    $filtrosHijos=array();
+    $filtrosNietos=array();
 
     foreach($filtros as $filtro)
     {
@@ -835,9 +846,15 @@ function getEventos($filtros,$idTerritorio,$alrededores,$itemsStart=0, $itemsLim
                 $tematica.="eventos_tematicas.idTematica='$id'";
                 break;
             case "lugar":
-                $hayFiltroLugar=true;
-                array_push($lugares,$id);
-                break;
+               $hayFiltroLugar=true;
+               if ($id[0]==$nivel[0]) { // Apaño para resolver el que nivel de barrio sea 10  TODO: Simplificar niveles
+                  array_push($filtrosHermanos,$id);
+               } elseif ($id[0]==$nivelHijo[0]) {
+                  array_push($filtrosHijos,$id);
+               } else {
+                  array_push($filtrosNietos,$id);
+               }
+               break;
             case "organizacion":
             case "institucion":
             case "colectivo":
@@ -870,87 +887,175 @@ function getEventos($filtros,$idTerritorio,$alrededores,$itemsStart=0, $itemsLim
        $endDate=new DateTime($startDate);
        $endDate->modify('next Friday + 10 days');
        $endDate=$endDate->format('Y-m-d');
-       $tiempo="(eventos.fecha>'".$startDate."' AND eventos.fecha<'".$endDate."')";
+       $tiempo="eventos.fecha>'".$startDate."' AND eventos.fecha<'".$endDate."'";
     }
     
-    $sql="SELECT eventos.*, places.lat, places.lng, places.idCiudad, places.idDistrito, places.idBarrio, territorios.nombre as lugar, territorios.nombreCorto,
+    // TODO: the query could be optimised if ", eventos_tematicas" and "eventos.idEntidad=entidades_tematicas.idEntidad" only where included in case there was a thematic filter.
+    // The $sql strings would need to be divided in two. Currently... it is not worth it.
+    
+    // Base query for events that have an address defined
+     $sql="SELECT eventos.*, places.lng, places.lat, places.idComarca, places.idCiudad, places.idDistrito, places.idBarrio, territorios.nombre as nombreLugar, territorios.nombreCorto,
             (SELECT GROUP_CONCAT(tematicas.tematica)
                FROM eventos_tematicas, tematicas
               WHERE eventos_tematicas.idTematica=tematicas.idTematica
                 AND eventos_tematicas.idEvento = eventos.idEvento) AS tematicas
-        FROM eventos, eventos_tematicas, places, territorios 
-       WHERE eventos.idPlace=places.idPlace
-         AND eventos.eventoActivo='1'
-         AND ";
-    
-    $sql.="($tiempo) AND ";
+           FROM eventos, eventos_tematicas, places, territorios
+          WHERE eventos.eventoActivo=1
+            AND eventos.idPlace=places.idPlace
+            AND eventos.idEvento=eventos_tematicas.idEvento  
+            AND ";
+ 
+     
+ // Base query for entities that have no address, but are assigned to a cityId or metropoliId
+   $sql_2=" UNION
+            SELECT eventos.*,0,0,eventos.idComarca,eventos.idCiudad, 0, 0, territorios.nombre as nombreLugar, territorios.nombreCorto,
+                  (SELECT GROUP_CONCAT(tematicas.tematica)
+                     FROM eventos_tematicas, tematicas   
+                     WHERE eventos_tematicas.idTematica=tematicas.idTematica
+                     AND eventos_tematicas.idEvento = eventos.idEvento) AS tematicas
+              FROM eventos, eventos_tematicas, territorios
+             WHERE eventos.eventoActivo=1
+               AND eventos.idPlace = 0
+               AND ((eventos.idCiudad <> 0 AND territorios.nivel = 8 AND territorios.id = eventos.idCiudad)
+                     OR
+                    (eventos.idComarca <> 0 AND territorios.nivel = 7 AND territorios.id = eventos.idComarca))
+               AND eventos.idEvento=eventos_tematicas.idEvento 
+               AND ";
+   // eventos.idCiudad contains the ID of the city where an Entity with no direction operates (idComarca=0 in this case)
+   // enventos.idComarca contains the ID of the metropoli where an Entity with no direction operates (idCiudad=0 in this case)
+   
 //TODO: Por qué forzamos que exista una temática? (Podría haber eventos sin una temática clara - aunque podría definirse como: otros)
-//TODO: Por qué forzamos que exista una dirección? (Hay eventos sin una dirección concreta - aunque podría definirse como dirección vacía)
 
-    if (!$hayFiltroLugar) {
-        $lugares[]=$idTerritorio;
-        if ($alrededores!=0) {
-          $lugares=array_merge($lugares,explode(',',$alrededores));
-        }
-    }
-    if ($nivel<8) // Levels above city, searches will be done on a city-basis
-    {    
-      $sql.=" places.idCiudad=territorios.id AND ";
-      $hijos=getAllDescendantsOfLevel($lugares,8);
-      $lugar="places.idCiudad IN ('".join($hijos,"','")."')";
-    }
-    else if ($nivel==8 && $alrededores!=0) // Map at City + level, searches based on idCiudad 
-    {
-      $sql.=" places.idCiudad=territorios.id AND ";
-      // No need to find descendants, as all ids in $lugares must already be ids from cities
-      $lugar="places.idCiudad IN ('".join($lugares,"','")."')";
-    }
-    else if ($nivel==8) //Map at city level, searches done on SubCityLevel (city?, district, neighborhood) basis
-    {
-      $sql.=" places.idDistrito=territorios.id AND ";
-      $hijos=getAllChildren($lugares,9);
-      $lugar="(places.idCiudad='$idTerritorio' AND places.placeStatus>1) OR places.idDistrito IN ('".join($hijos,"','")."') OR places.idBarrio IN ('".join($hijos,"','")."')";
-    }
-    else if ($nivel==9) //Map at district level, searches done on SubCityLevel (district, neighborhood) basis
-    {
-      $sql.=" places.idBarrio=territorios.id AND ";
-      $hijos=getAllChildren($lugares,9);
-      $lugar="places.idDistrito IN ('".join($hijos,"','")."') OR places.idBarrio IN ('".join($hijos,"','")."')";
-    }
-    else // Map at Neighborhood level, search done on SubCityLevel basis
-    {
-      $sql.=" places.idBarrio=territorios.id AND ";
-      // No need to find descendants, as all ids in $lugares must already be ids from neighborhoods
-      $lugar="places.idBarrio IN ('".join($lugares,"','")."')";        
-    }
-    
-//  Example of the query
-//  SELECT eventos.*, places.lat as y, places.lng as x, places.idCiudad, places.idDistrito, places.idBarrio, territorios.nombre,
-//    (SELECT GROUP_CONCAT(tematicas.tematica)
-//             FROM eventos_tematicas, tematicas
-//             WHERE eventos_tematicas.idTematica=tematicas.idTematica
-//             AND eventos_tematicas.idEvento = eventos.idEvento) AS tematicas
-//       FROM eventos, eventos_tematicas, places 
-//       WHERE eventos.idPlace=places.idPlace
-//       AND eventos.eventoActivo='1'
-//       AND places.idDistrito IN ('901280005','901280006','901280007') 
-//       and eventos.idEvento=eventos_tematicas.idEvento 
-//       GROUP BY eventos.idEvento        ORDER BY fecha ASC LIMIT 0,50;
-//       
-    
-    if($busqueda!="")
+      // In case there is no territory filter, the base territory (+ neighbour territories if surroundings are shown) are used
+   if (!$hayFiltroLugar) {
+      $lugares[]=$idTerritorio;
+      if ($alrededores!=0) {
+         $lugares=array_merge($lugares,explode(',',$alrededores));
+      }
+   }
+          
+  if ($nivel<6) {
+      // Levels above province, searches will be done on a city-basis for with address case, comarca and city Id for no address case    
+      $sql.=" places.idCiudad=territorios.id AND "; // TODO: Problem: we are returning name of City/Great District, but for metropolis we would need Comarca/Metropoli name
+      if ($hayFiltroLugar) {
+         $lugares=array_merge($filtrosHijos,$filtrosNietos);
+      }
+      $comarcas=getAllDescendantsOfLevel($lugares,7);
+      $ciudades=getAllDescendantsOfLevel($lugares,8);
+      $lugar="places.idComarca IN ('".join($comarcas,"','")."')";
+      $lugar_2="territorios.id IN ('".join($ciudades,"','")."','".join($comarcas,"','")."')";
+  } elseif ($nivel==6) {
+      // Level province, searches will be done on a city-basis for with address case, comarca and city Id for no address case    
+      $sql.=" places.idCiudad=territorios.id AND "; // TODO: We are returning name of City/Great District; for metropolis it could be better Comarca/Metropoli name. But it is not horrible
+      if ($hayFiltroLugar) {
+         $lugares=array_merge($filtrosHijos,$filtrosNietos);
+      }
+      $comarcas=getAllDescendantsOfLevel($lugares,7);
+      $ciudades=getAllDescendantsOfLevel($lugares,8);
+      $lugar="places.idCiudad IN ('".join($ciudades,"','")."')";
+      $lugar_2="territorios.id IN ('".join($ciudades,"','")."','".join($comarcas,"','")."')";
+  } elseif ($nivel==7 && $alrededores!=0) {
+      // Map at a Comarca and surroundings level, searches will be done on a city- and district- basis for with adresses case, comarca and city Id for no address case
+      $sql.=" places.idCiudad=territorios.id AND "; // name of city/great district returned
+      if ($hayFiltroLugar) {
+         $lugar="( OR places.idComarca IN ('".join($filtrosHermanos,"','")."') OR places.idCiudad IN ('".join($filtrosHijos,"','")."') OR places.idDistrito IN ('".join($filtrosNietos,"','")."') )";
+         if (count($filtrosHijos)>0 || count($filtrosHermanos)>0) {
+            $ciudades=getAllDescendantsOfLevel($filtrosHermanos,8);
+            $lugar_2="territorios.id IN ('".join($filtrosHermanos,"','")."','".join($filtrosHijos,"','")."','".join($ciudades,"','")."')";
+         }
+      } else {
+         $lugar="places.idComarca IN ('".join($lugares,"','")."')";
+         $ciudades=getAllDescendantsOfLevel($lugares,8);
+         $lugar_2="territorios.id IN ('".join($ciudades,"','")."','".join($lugares,"','")."')";
+      }
+  } elseif ($nivel==7) {
+      // Map at a comarca level, searches will be done on a city- and district- basis for with adresses case, comarca and city Id for no address case
+      $sql.=" places.idCiudad=territorios.id AND "; // name of city/great district returned
+      if ($hayFiltroLugar) {
+         $lugar="( places.idCiudad IN ('".join($filtrosHijos,"','")."') OR places.idDistrito IN ('".join($filtrosNietos,"','")."') )";
+         if (count($filtrosHijos)>0) {
+            $lugar_2="territorios.id IN ('".join($filtrosHijos,"','")."')";
+         }
+      } else {
+         $lugar="places.idComarca = $idTerritorio ";
+         $ciudades=getAllDescendantsOfLevel($lugares,8);
+         $lugar_2="territorios.id IN ('".join($ciudades,"','")."','".join($lugares,"','")."')";
+      }        
+  } elseif ($nivel==8 && $alrededores!=0) { 
+      // Map at City and surroundings level, searches based on City, District and Neighbourhood level for "with addres" case, cityId for "no address" case
+      $sql.=" places.idCiudad=territorios.id AND ";   // name of city/great district returned
+      if ($hayFiltroLugar) {
+         $lugar="( places.idCiudad IN ('".join($filtrosHermanos,"','")."') OR places.idDistrito IN ('".join($filtrosHijos,"','")."') OR places.idBarrio IN ('".join($filtrosNietos,"','")."') )";
+         if (count($filtrosHermanos)>0) {
+            $lugar_2="territorios.id IN ('".join($filtrosHermanos,"','")."')";
+         }
+      } else {
+         $lugar="places.idCiudad IN ('".join($lugares,"','")."')";
+         $ciudades=getAllDescendantsOfLevel($lugares,8);
+         $lugar_2="territorios.id IN ('".join($ciudades,"','")."','".join($lugares,"','")."')";
+      }            
+  } elseif ($nivel==8) { 
+      //Map at city level, searches based on District and Neighbourhood level for "with address" case, cityId for "no address" case 
+      $sql.=" places.idDistrito=territorios.id AND "; // District name will be displayed
+      if ($hayFiltroLugar) {
+         $lugar="( places.idDistrito IN ('".join($filtrosHijos,"','")."') OR places.idBarrio IN ('".join($filtrosNietos,"','")."') )";       
+      } else {
+         $lugar="places.idCiudad = $idTerritorio ";
+         $lugar_2="territorios.id = $idTerritorio ";         
+      }
+  } elseif ($nivel==9 && $alrededores!=0) { 
+      // Map at District and surroundings level, searches based on District and Neighbourhood level for "with addres" case; No "no address" displayed, as they are linked to Comarca or City
+      $sql.=" places.idDistrito=territorios.id AND ";   // name of city/great district returned
+      if ($hayFiltroLugar) {
+         $lugar="( places.idDistrito IN ('".join($filtrosHermanos,"','")."') OR places.idBarrio IN ('".join($filtrosHijos,"','")."') )";
+      } else {
+         $lugar="places.idDistrito IN ('".join($lugares,"','")."')";
+      }            
+  } elseif ($nivel==9) { 
+      //Map at district level, searches done on district, neighborhood basis for "with address" case; No "no address" displayed, as they are linked to Comarca or City
+      $sql.=" places.idBarrio=territorios.id AND "; //Neighborhood name will be displayed
+      if ($hayFiltroLugar) {
+         $lugar="( places.idBarrio IN ('".join($filtrosHijos,"','")."') )";       
+      } else {
+         $lugar="places.idDistrito = $idTerritorio ";         
+      }
+   } elseif ($nivel==10 && $alrededores!=0)  { 
+      // Map at Neighborhood and surroundings level, search done on idBarrio basis for "with addres" case; No "no address" displayed, as they are linked to Comarca or City
+      $sql.=" places.idBarrio=territorios.id AND ";   // name of city/great district returned
+      if ($hayFiltroLugar) {
+         $lugar="( places.idBarrio IN ('".join($filtrosHermanos,"','")."') )";
+      } else {
+         $lugar="places.idBarrio IN ('".join($lugares,"','")."')";
+      }            
+  } else { 
+      //Map at neighborhood level, searches done on idBarrio basis for "with address" case; No "no address" displayed, as they are linked to Comarca or City
+      $sql.=" places.idBarrio=territorios.id AND "; //Neighborhood name will be displayed
+      // There cannot be any Territory Filter
+      $lugar="places.idDistrito = $idTerritorio ";
+   }
+        
+    $sql.="($tiempo) AND ";
+    $sql_2.="($tiempo) AND";
+    if($busqueda!="") {
         $sql.="($busqueda) AND ";
-    if($tematica!="")
+        $sql_2.="($busqueda) AND ";
+    }
+    if($tematica!="") {
         $sql.="($tematica) AND ";
-    if($lugar!="")
-        $sql.="($lugar) AND ";
-    if($organizacion!="")
-         $sql.="($organizacion) AND ";
-    $sql.=" eventos.idEvento=eventos_tematicas.idEvento GROUP BY eventos.idEvento ORDER BY fecha ASC LIMIT $itemsStart,$itemsLimit";
-
-    //echo $sql;
-    //exit();
-
+        $sql_2.="($tematica) AND ";
+    }
+    if($organizacion!="") {
+       $sql.="($organizacion) AND ";
+       $sql_2.="($organizacion) AND ";
+    }
+    $sql.="($lugar) ";    
+    if ($nivel<=8 && $lugar_2) { // The second SQL is only used in case of search based on idCiudad
+       $sql_2.="($lugar_2) ";
+       $sql.=$sql_2;
+    }
+    
+    $sql.=" GROUP BY eventos.idEvento ORDER BY fecha ASC LIMIT $itemsStart,$itemsLimit";
+    
     $result=mysqli_query($link, $sql);
     $returnData=array();
     while($fila=mysqli_fetch_assoc($result))
@@ -1170,7 +1275,7 @@ function getDatosLugar($idTerritorio)
     return $fila;
 }
 
-// Returns "Nivel" (level) of the territory with id "idLugar" 
+// Returns "Nivel" (level) of the territory with id "idTerritorio" 
 function getNivelTerritorio($idTerritorio)
 {
     //Sanitize input
@@ -1186,7 +1291,7 @@ function getNivelTerritorio($idTerritorio)
     return $fila["nivel"];
 }
 
-// Returns "Nivel" (level) of the territory with id "idLugar" 
+// Returns parent territory ID (idPadre) of the territory with id "idTerritorio" 
 function getParentID($idTerritorio)
 {
     //Sanitize input

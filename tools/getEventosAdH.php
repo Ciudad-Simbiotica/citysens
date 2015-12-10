@@ -52,6 +52,8 @@ function clean_all(&$items,$leave = ''){
 // Script is unactive unless it is required
 exit();
 
+$madridAdhId = 701280008;  // It is inserted directly for events from Madrid with no coords. If we change IDs format, this line should be updated.
+
 // Standard use of the script, to update with changes from the last day
 $lastChangedLimit = time()- (1 * 86400); //To be compared with the event's "changed" field to see if it got updated since the last time we checked. 
 //$url = "http://agendadelhenares.org/event-list-json?changed&place__address&place__latitude&place__longitude&place__zoom&body";
@@ -60,8 +62,8 @@ $lastChangedLimit = time()- (1 * 86400); //To be compared with the event's "chan
 //$timeFrame="startTime=1438380001&endTime=1441058401"; // Agosto 2015
 //$timeFrame="startTime=1441058401&endTime=1443650401"; // Septiembre 2015
 //$timeFrame="startTime=1443650401&endTime=1446332401"; // Octubre 2015
-$timeFrame="startTime=1446332401&endTime=1448924401"; // Noviembre 2015
-//$timeFrame="startTime=1448924401&endTime=1451602801"; // Diciembre 2015
+//$timeFrame="startTime=1446332401&endTime=1448924401"; // Noviembre 2015
+$timeFrame="startTime=1448924401&endTime=1451602801"; // Diciembre 2015
 $url = "http://agendadelhenares.org/event-list-json?{$timeFrame}&changed&place__address&place__latitude&place__longitude&place__zoom&body";
 //http://agendadelhenares.org/event-list-json?startTime=1370037601&endTime=1372629601&limit=150&changed&place__address&place__latitude&place__longitude&place__zoom&body
 
@@ -108,13 +110,17 @@ foreach ($data["events"] as $event) {
       $placeData["lng"] = ($event["place__longitude"]!=0) ? (string)$event["place__longitude"]: "0";
       //These can be empty in case place is not geo-located.
       $placeData["zoom"] = ($event["place__zoom"]!=0) ? $event["place__zoom"]: "0";
+      $eventData["idPlace"] = $eventData["idCiudad"] = $eventData["idComarca"] = 0;
+      $eventData["detalleDireccion"]='';
+
+      $withCoords =  ($placeData["lat"]!=0)? true: false; // For places with no geolocation no CTS place is created. Just a link to the city in the event.
       
       // We look for the place assignment
       $newPlace = false;
       $sql = "SELECT * FROM adhLugares_ctsDirecciones where adhIdLugar={$event["place__id"]}";
       $result_lugares = mysqli_query($link, $sql);
       $numLugaresEncontrados=mysqli_num_rows($result_lugares);
-
+      
       if ($numLugaresEncontrados == 0) {
          // The place does not exist in CTS. There is still no assignment to a place in CTS
          // We have to create a new place
@@ -122,7 +128,7 @@ foreach ($data["events"] as $event) {
          //          This causes that several places are created, even if they refer to duplicates of the same places.
          //             Manual fix is to identify them, update the adhPlaceID to ctsPlaceID assignment to refer to the same place, update events, and delete duplicates.
          
-         $newPlace=true;
+            $newPlace=true;
       } else {
          // A place already exists. We will only update in case we detect a change on important fields
          $eventData["idPlace"] = $placeData["idPlace"] = mysqli_fetch_assoc($result_lugares)['ctsIdLugar'];
@@ -243,26 +249,44 @@ foreach ($data["events"] as $event) {
       }
       // TODO: It could make sense that, in case there are no coordinates, GoogleMapsAPI is used to find them
    
+      // There could be a idCiudad because: the place already existed, the city was identified based on the name, or it was identified based on the coordinates
+      //   In case of events from Madrid, coordinates will have identified the Great District
+      //   In case of events with no coordinates, the city name could have revealed the city.
+      //   In case of events with no coordinates in Madrid, there will be no idCiudad identified.
       if ($placeData["idCiudad"] != "") {  
-         if ($newPlace) {
-            // 2015.11.06 BUG: In many cases a place is created twice. And twice the link AdH and CTS was created.
-            // Table has been changed with a UNIQUE constrain and the link will now not be created.
-            // But the source problem, why an existing place is considered a newPlace, remains to be found.
-            $eventData["idPlace"] = createPlace($placeData);            
-            $sql = "INSERT INTO adhLugares_ctsDirecciones (`adhIdLugar`, `ctsIdLugar`) VALUES ({$event["place__id"]}, {$eventData["idPlace"]})";
-            mysqli_query($link, $sql); 
-            $newPlaces++;
-         } else {
-            $changes=array_diff_assoc($placeData,$existingPlaceData);
-            if (count($changes)!=0) {
-               updatePlace($placeData);
-               $updatedPlaces++;
-            }   
+         $placeData["idComarca"] = getParentID($placeData["idCiudad"]);
+         if ($withCoords) { // No place is created for AdH places with no coords. Event will be directly assigned to idCiudad or idComarca 
+            if ($newPlace) {
+               // 2015.11.06 BUG: In many cases a place is created twice. And twice the link AdH and CTS was created.
+               // Table has been changed with a UNIQUE constrain and the link will now not be created.
+               // But the source problem, why an existing place is considered a newPlace, remains to be found.
+               $eventData["idPlace"] = createPlace($placeData);            
+               $sql = "INSERT INTO adhLugares_ctsDirecciones (`adhIdLugar`, `ctsIdLugar`) VALUES ({$event["place__id"]}, {$eventData["idPlace"]})";
+               mysqli_query($link, $sql); 
+               $newPlaces++;
+            } else {
+               $changes=array_diff_assoc($placeData,$existingPlaceData);
+               if (count($changes)!=0) {
+                  updatePlace($placeData);
+                  $updatedPlaces++;
+               }   
+            }
+         } else {  // Event in a municipality but no coordinates
+            $eventData["idCiudad"] = $placeData["idCiudad"];
+            $eventData["idComarca"] = 0; 
+            $eventData["detalleDireccion"] = $event["place__address"];
          }
       } else {
-         // If it was not possible to find a city, it should be logged.
-         // No city -> no place -> no event can be created. Jump to next event
-         continue;
+         if ($withCoords) {
+            // If it was not possible to find a city, it should be logged.
+            // No city -> no place -> no event can be created. Jump to next event
+            continue;
+         }
+         else { // Event in Madrid, with no coordinates ( $event["place__city__id"] should be '33' )
+           $eventData["idCiudad"] = 0;
+           $eventData["idComarca"] = $madridAdhId;
+           $eventData["detalleDireccion"] = $event["place__address"];
+         }
       }
       
       // EVENTOS
