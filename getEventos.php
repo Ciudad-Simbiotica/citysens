@@ -49,7 +49,7 @@ foreach($eventos as $evento)
     if($evento["nombreCorto"]!="")
       $datos["lugar"]=utf8_encode($evento["nombreCorto"]);
     else
-      $datos["lugar"]=utf8_encode($evento["lugar"]);
+      $datos["lugar"]=utf8_encode($evento["nombreLugar"]);
     $datos["temperatura"]=$evento["temperatura"];
     $datos["tematicas"]=utf8_encode($evento["tematicas"]);
     $datos["x"]=$evento["lng"];
