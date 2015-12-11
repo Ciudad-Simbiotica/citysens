@@ -1468,7 +1468,7 @@ function getLugares($cadena,$territorioOriginal,$nivel,$cantidad=3,$inSet=array(
 
 }
 
-function getTerritoriosSuggestions($cadena,$idTerritorio,$alrededores,$cantidad=4)
+function getSuggestedTerritories($cadena,$idTerritorio,$alrededores,$cantidad=4)
 {
     //Sanitize input
     $link=connect();
@@ -1524,7 +1524,7 @@ function getTerritoriosSuggestions($cadena,$idTerritorio,$alrededores,$cantidad=
     
 }
 
-function getIrA($cadena,$lugarOriginal)
+function getSuggestedGoTo($cadena,$lugarOriginal)
 {
     //echo $lugarOriginal;      
     //Sanitize inputs
@@ -1556,13 +1556,11 @@ function getIrA($cadena,$lugarOriginal)
         $sql="SELECT id, nombre, activo, 1 as flag 
                 FROM territorios 
                 WHERE nombre LIKE '$cadena%' AND "
-                . "(nivel<7 "
-                . "OR nivel=8 )"
+                . "(nivel<=8 )"
       . " UNION SELECT id, nombre, activo, 2 as flag 
                 FROM territorios 
                 WHERE nombre LIKE '%$cadena%' AND "
-                . "(nivel<7 "
-                . "OR nivel=8 "
+                . "(nivel<=8 "
                 . "$sqlRegion "
                 . "$sqlCity )"
                 . "ORDER BY flag, nombre, activo DESC, id DESC "
@@ -1583,7 +1581,7 @@ function getIrA($cadena,$lugarOriginal)
 
 }
 
-function getPlaceSuggestions($cadena,$idTerritorio,$cantidad=5)
+function getSuggestedPlaces($cadena,$idTerritorio,$cantidad=5)
 {
 
     //sanitize inputs

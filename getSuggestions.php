@@ -173,7 +173,7 @@ $sugestion["texto2"]="";
 array_push($sugestions,$sugestion);
 */
 
-$lugares=getTerritoriosSuggestions($_GET["query"],$_GET["idTerritorio"],$_GET["alrededores"]);
+$lugares=getSuggestedTerritories($_GET["query"],$_GET["idTerritorio"],$_GET["alrededores"]);
 foreach($lugares as $lugar)
 {
 	//print_r($lugar);
@@ -211,7 +211,7 @@ if($_GET["tipo"]=="eventos")	//Sólo las mostramos si NO estamos en página de e
 }
 
 
-$lugaresIrA=getIrA($_GET["query"],$_GET["idTerritorio"]);
+$lugaresIrA=getSuggestedGoTo($_GET["query"],$_GET["idTerritorio"]);
 if($lugaresIrA) {
 	//print_r($lugaresIrA);
 	$suggestion["tipo"]="IrA";
