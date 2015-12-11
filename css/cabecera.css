@@ -264,6 +264,11 @@
 	background-image: url("icons/clock.png");	
 }
 
+.cabecera-suggest-icono-action
+{
+	background-image: url("icons/sanidad.png");	
+}
+
 .cabecera-suggest-icono-IrA
 {
 	background-image: url("icons/gps.png");	

@@ -43,6 +43,9 @@ function clickSuggestion(filter)
             case "tiempo":
                 imagen = "css/icons/clock.png";
                 break;
+            case "action":
+                imagen = "css/icons/sanidad.png";
+                break;
         }
 
         //console.log("Clic Sugerencia: " + imagen + "/" + filter.texto1 + "/" + filter.tipo);
@@ -63,6 +66,9 @@ function clickSuggestion(filter)
                 var coincide = ((value.texto == filter.texto1) & (value.tipo == filter.tipo) & (value.id == filter.id));
                 return !coincide;
             });
+            if (filter.tipo=='action' & filter.id=='alrededores') {
+                window.conf.alrededores=0;
+            }
 
             if (!window.conf.tipo)
                 window.conf.tipo = "eventos";
@@ -97,6 +103,9 @@ function clickSuggestion(filter)
         if (filter.tipo == 'tiempo') {
             sugerencia["start"] = filter.start;
             sugerencia["end"] = filter.end;
+        }
+        if (filter.tipo == 'action' & filter.id=='alrededores') {
+            window.conf.alrededores = 1;
         }
 
         conf.arrayFilters.push(sugerencia);
@@ -138,7 +147,7 @@ function suggestBusqueda(texto)
     }
 
     window.previousSuggestText = texto;
-    if (texto == "")
+    if (texto == "" || texto.length<3)
     {
         $("#cabecera-suggest").empty();
         return;
@@ -192,7 +201,7 @@ function suggestBusqueda(texto)
                 });
                 var num_fila = 1;
                 $.each(data.suggestions, function (key, value)
-                        //Order of suggestions is: time, thematic, territory, entities, goTo
+                        //Order of suggestions is: action, time, thematic, territory, entities, goTo
                         {
                             if (value.tipo == "IrA")
                             {
