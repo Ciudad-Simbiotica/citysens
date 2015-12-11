@@ -4,7 +4,7 @@
 	
     $idTerritorio=$_GET["idTerritorio"];
     if($_GET["alrededores"]!=0)
-      $respuesta=getDatosLugar($idTerritorio);
+      $respuesta=getTerritory($idTerritorio);
     else
       $respuesta=getDatosLugarBase($idTerritorio);
     
