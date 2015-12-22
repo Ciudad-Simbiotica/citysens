@@ -1389,6 +1389,9 @@ function getCoordenadasCentroidesColindantes($type,$xmin,$xmax,$ymin,$ymax)
 
 
 // Returns data from the "base" territory for idLugar, ie: the first descendent with multiple offspring or no child.
+//  It also "stops" at municipality level, because it was confusing that it jumps directly to display neighborhoods
+//  when you click from Comarca level in case there is only one district, since the district level map centers on the
+//  area of the existing neighborhoods.
 function getDatosLugarBase($idTerritorio)
 {
         //Sanitize input
@@ -1407,9 +1410,8 @@ function getDatosLugarBase($idTerritorio)
         //it has just one child
         return getDatosLugarBase($descendiente);
     else
-        // it has many or cero children
+        // it has many or cero children, or is level 8 - city
         return $fila;
-    
 }
 
 function getChildAreas($lugarOriginal,$nivel)
@@ -1552,7 +1554,6 @@ function getSuggestedGoTo($cadena,$lugarOriginal)
         ORDER BY activo DESC, nombre, id DESC
         LIMIT 0,1";
    
-   // Order by flag to show first territories starting with the string received, then those who have it anywhere
    // Order by name to show alphabetically
    // Order by activo DESC, to show first active territories
    // Order by id, so the lower level appear before higher levels with the same name. Guadalajara (city), Guadalajara (province)
