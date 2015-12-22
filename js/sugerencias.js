@@ -158,7 +158,7 @@ function suggestBusqueda(texto)
     $.getJSON(getAgenda,
             {
                 query: texto,
-                idTerritorio: window.conf.idTerritorio,
+                idTerritorio: window.conf.idTerritorioMostrado,
                 alrededores: window.conf.alrededores,
                 date: "any",
                 format: "json",
@@ -217,6 +217,7 @@ function suggestBusqueda(texto)
                                     if (value.activo == 1)
                                     {
                                         window.conf.idTerritorio = value.id;
+                                        window.conf.alrededores = 0;   // Reset navigation with neighbors
                                         //   cargarMapa(window.conf.idTerritorio);               
                                         // else          
                                         window.conf.orden = $("#select_ordenar").val();
