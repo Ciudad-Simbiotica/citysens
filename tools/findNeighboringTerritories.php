@@ -12,17 +12,17 @@ exit();
 
 $link=connect();
 
-$nivel=6;  // Originally it was for "city" (8) or neighborhood (10), but now it can be applied to everything but states (4)
+$nivel=9;  // Originally it was for "city" (8) or neighborhood (10), but now it can be applied to everything but states (4)
 $provincia=28;
-$soloNuevos=TRUE;
+$soloNuevos=FALSE;
 $territorios=array();
 $vecinos=array();
 echo "<pre>";
 
-//Take all cities from a certain province
-//$sql="SELECT * FROM territorios WHERE nivel='$nivel' AND provincia='$provincia'";
+//Take all territories with a certain level from a given province
+$sql="SELECT * FROM territorios WHERE nivel='$nivel' AND provincia='$provincia'";
 
-$sql="SELECT * FROM territorios WHERE nivel='$nivel'";
+//$sql="SELECT * FROM territorios WHERE nivel='$nivel'";
 //$sql="SELECT * FROM territorios WHERE nivel='$nivel'";
 
 // Todos los barrios de Madrid
@@ -50,9 +50,9 @@ foreach ($territorios as $territorio) {
 
          $distance = $poli_ciudad->distance($poli_cercano);
 
-         if ($distance < 0.06) { // For provinces and comarcas (6 y 97), around 6km
-//              if ($distance<0.02) { // For cities and districts (8 y 9), around 2km
-//              if ($distance<0.0025) { // For neighborhoods (10), around 350m
+//         if ($distance < 0.06) { // For provinces and comarcas (6 y 97), around 6km
+//         if ($distance<0.02) { // For cities and districts (8), around 2km
+         if ($distance<0.0025) { // For neighborhoods and districts (10 y 9), around 350m
             array_push($vecinos, $idCercano);
          }
       }
