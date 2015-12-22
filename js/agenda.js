@@ -576,6 +576,7 @@ function removeAllTags()
   $(".tagFiltro-lugar").remove();
   $(".tagFiltro-entidad").remove();
   $(".tagFiltro-tiempo").remove();
+  $(".tagFiltro-action").remove();
   conf.arrayFilters=[];
 
 }
