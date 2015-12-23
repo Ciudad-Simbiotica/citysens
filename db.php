@@ -499,7 +499,7 @@ function getEntidades($filtros, $idTerritorio, $alrededores, $itemsStart=0, $ite
       //Map at neighborhood level, searches done on idBarrio basis for "with address" case; No "no address" displayed, as they are linked to Comarca or City
       $sql.=" places.idBarrio=territorios.id AND "; //Neighborhood name will be displayed
       // There cannot be any Territory Filter
-      $lugar="places.idDistrito = $idTerritorio ";
+      $lugar="places.idBarrio = $idTerritorio ";
    }
                
     if($busqueda!="") {
