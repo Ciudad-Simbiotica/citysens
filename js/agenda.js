@@ -207,7 +207,7 @@ function clickFila(id)
     else {
         $(".grupo-filas2-detalle").slideUp("slow");
         $(".grupo-filas2-detalle").removeClass("detalle-abierto");
-        if ($("#thumbnail"+id).length>0){
+        if ($("#thumbnail"+id).length>0) {
             $("#thumbnail"+id).slideDown("slow");
             $("#thumbnail"+id).addClass("detalle-abierto");
             console.log("abrir");
@@ -239,8 +239,8 @@ function clickFila(id)
             $(".informacion-cuerpo > .informacion-cuerpo > .informacion-cuerpo-contacto").unwrap();
             $(".informacion-cuerpo > .informacion-cuerpo > .informacion-cuerpo-texto").show();    
             $("#thumbnail"+id).slideDown("slow",function() {/*retrasar efecto*/
-            $("#thumbnail"+id).addClass("detalle-abierto");
-            });
+                $("#thumbnail"+id).addClass("detalle-abierto");
+                });
             console.log("abrir");
         }
     }
@@ -250,7 +250,7 @@ function clickFila(id)
   $(".id"+id).addClass("grupo-fila-selected");
   if  ($("#thumbnail"+id).length>0){
   if($(".cabecera-pestania-izq").hasClass("cabecera-pestania-seleccionada")) 
-   cargarContenido(id);
+   cargarContenidoEvento(id);
   else if($(".cabecera-pestania-dch").hasClass("cabecera-pestania-seleccionada"))
     cargarContenidoEntidad(id);
   }
@@ -339,10 +339,10 @@ function paddingZeros(number)
   return ("0" + number).slice(-2);
 }
 
-function cargarContenido(id)
+function cargarContenidoEvento(id)
 {
   //$(".informacion").slideUp("fast");
-  $.getJSON('getDatos.php', 
+  $.getJSON('getDatosEvento.php', 
   {
    id: id, // appears as $_GET['id'] @ ur backend side
   })
