@@ -4,7 +4,7 @@
 	
     $idTerritorio=$_GET["idTerritorio"];
     if($_GET["alrededores"]!=0)
-      $respuesta=getDatosLugar($idTerritorio);
+      $respuesta=getTerritory($idTerritorio);
     else
       $respuesta=getDatosLugarBase($idTerritorio);
     
@@ -18,8 +18,8 @@
       $respuesta["xmin"]=$coordenadasInteriores["xmin"];
       $respuesta["ymin"]=$coordenadasInteriores["ymin"];      
     }
-// For the case of neighborhoods and city surroundings, we want a special navigation with no uncles
-    if ($_GET["alrededores"]!=0 && ($respuesta["nivel"]==10 || $respuesta["nivel"]==8)) 
+// For the case of navigation with surroundings, no uncles are shown, only territories with the same level as the one displayed
+    if ($_GET["alrededores"]!=0) 
     {
       //$coordenadasColindantes=getCoordenadasColindantes($respuesta["nivel"],$respuesta["xmin"],$respuesta["xmax"],$respuesta["ymin"],$respuesta["ymax"]); 
       //$coordenadasColindantes=getCoordenadasCentroidesColindantes($respuesta["nivel"],$respuesta["xmin"],$respuesta["xmax"],$respuesta["ymin"],$respuesta["ymax"]);
@@ -59,7 +59,7 @@
     }
     
     //Data for the Breadcrumbs
-	$lugares=  getFertileAncestors($respuesta["id"]);
+	$lugares=getFertileAncestors($respuesta["id"]);
 	$cantidad=0;
 	$breadcrumbs=array();
 	for($i=1;$i<=10;$i++)

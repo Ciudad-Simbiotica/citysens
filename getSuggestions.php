@@ -23,6 +23,24 @@ $sugestion["id"]=0;
 array_push($sugestions,$sugestion);
 */
 
+function getActionFilters($cadena)
+{
+   //Used to activate other filters using the search field. For example: to see alrededores
+   $actions=array();
+   $actionNames=["alrededores","OtraAccion"]; // Checking for actions
+
+   $suggestedActions=preg_grep("/^{$cadena}/i",$actionNames);
+  
+   if($suggestedActions) {
+     // For each month that matches, a suggestion for current year is offered
+     foreach($suggestedActions as $index => $actionName) {
+        $action["name"]=$actionName;
+        array_push($actions,$action);
+     }
+   }
+   return $actions; 
+}
+
 function getFiltrosTiempo($cadena)
 {
 // TIME FILTERS that could be applied (change the date period shown)
@@ -120,6 +138,19 @@ return $fechas;
 }
 
 
+$actions=getActionFilters($_GET["query"]);
+
+if ($actions) {
+   foreach($actions as $action)
+	{
+		$suggestion["tipo"]="action";
+      $suggestion["texto1"]=$suggestion["id"]=htmlentities($action["name"]);         
+      $suggestion["textoBuscado"]=htmlentities($_GET["query"]); //for bold hint string
+		array_push($suggestions,$suggestion);
+      unset($suggestion);
+	} 
+}
+
 $fechas=getFiltrosTiempo($_GET["query"]);
 if ($fechas) {
    foreach($fechas as $fecha)
@@ -173,7 +204,7 @@ $sugestion["texto2"]="";
 array_push($sugestions,$sugestion);
 */
 
-$lugares=getTerritoriosSuggestions($_GET["query"],$_GET["idTerritorio"],$_GET["alrededores"]);
+$lugares=getSuggestedTerritories($_GET["query"],$_GET["idTerritorio"],$_GET["alrededores"]);
 foreach($lugares as $lugar)
 {
 	//print_r($lugar);
@@ -211,12 +242,12 @@ if($_GET["tipo"]=="eventos")	//Sólo las mostramos si NO estamos en página de e
 }
 
 
-$lugaresIrA=getIrA($_GET["query"],$_GET["idTerritorio"]);
+$lugaresIrA=getSuggestedGoTo($_GET["query"],$_GET["idTerritorio"]);
 if($lugaresIrA) {
 	//print_r($lugaresIrA);
 	$suggestion["tipo"]="IrA";
 //	$sugestion["texto1"]=htmlentities(ucwords(strtolower(substr($lugaresIrA["nombre"],0,50))));   
-   $suggestion["texto1"]=htmlentities($lugaresIrA["nombre"]);
+   $suggestion["texto1"]=htmlentities($lugaresIrA["nombre"].' ('.$lugaresIrA["nombreCortoPadre"].')');
    $suggestion["textoBuscado"]=htmlentities($_GET["query"]);//for bold hint string
 	$suggestion["texto2"]="";
 	$suggestion["id"]=$lugaresIrA["id"];

@@ -576,6 +576,7 @@ function removeAllTags()
   $(".tagFiltro-lugar").remove();
   $(".tagFiltro-entidad").remove();
   $(".tagFiltro-tiempo").remove();
+  $(".tagFiltro-action").remove();
   conf.arrayFilters=[];
 
 }
@@ -695,11 +696,14 @@ function cargarDatos()
                                     window.cantidadPorLugar[item.idDistrito] = 0;
                                 if (typeof window.cantidadPorLugar[item.idCiudad] === 'undefined')
                                     window.cantidadPorLugar[item.idCiudad] = 0;
+                                if (typeof window.cantidadPorLugar[item.idComarca] === 'undefined')
+                                    window.cantidadPorLugar[item.idComarca] = 0;
                                 if (item.primeraOcurrencia==1)
                                 {
                                     window.cantidadPorLugar[item.idBarrio]++;
                                     window.cantidadPorLugar[item.idDistrito]++;
                                     window.cantidadPorLugar[item.idCiudad]++;
+                                    window.cantidadPorLugar[item.idComarca]++;
                                 }
                             });
                         });

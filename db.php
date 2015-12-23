@@ -499,7 +499,7 @@ function getEntidades($filtros, $idTerritorio, $alrededores, $itemsStart=0, $ite
       //Map at neighborhood level, searches done on idBarrio basis for "with address" case; No "no address" displayed, as they are linked to Comarca or City
       $sql.=" places.idBarrio=territorios.id AND "; //Neighborhood name will be displayed
       // There cannot be any Territory Filter
-      $lugar="places.idDistrito = $idTerritorio ";
+      $lugar="places.idBarrio = $idTerritorio ";
    }
                
     if($busqueda!="") {
@@ -1194,13 +1194,13 @@ function getDescendantsOfLevel($idTerritorio,$nivelFinal)
 //Devuelve array con los datos de los territorios ancestros de idLugar.
 function getAllAncestors($idTerritorio)
 {
-    $lugar=getDatosLugar($idTerritorio); 
+    $lugar=getTerritory($idTerritorio); 
     $lugares[$lugar["nivel"]]=$lugar;
     $idPadre=$lugar["idPadre"];
     
     while($idPadre!=0)
     {
-            $lugar=getDatosLugar($idPadre);
+            $lugar=getTerritory($idPadre);
             $lugares[$lugar["nivel"]]=$lugar;
             $idPadre=$lugar["idPadre"];
     }
@@ -1213,12 +1213,12 @@ function getAllAncestors($idTerritorio)
 //Usado para generar el breadcrumb de un territorio
 function getFertileAncestors($idTerritorio)
 {
-    $lugar=getDatosLugar($idTerritorio);
+    $lugar=getTerritory($idTerritorio);
     $lugares[$lugar["nivel"]] = $lugar;    
     $idPadre = $lugar["idPadre"];
     while($idPadre!=0)
     {
-            $lugar=getDatosLugar($idPadre);
+            $lugar=getTerritory($idPadre);
 
             // idDescendiente es 0 si no tiene hijos, id del hijo si sólo tiene un hijo, o "2" si tiene múltiples hijos.
             // NULL corresponde a un estado indeterminado.
@@ -1260,7 +1260,7 @@ function getFertility($idTerritorio)
     return $fertility; 
 }
 
-function getDatosLugar($idTerritorio)
+function getTerritory($idTerritorio)
 {
     //Sanitize input
     $link=connect();
@@ -1389,6 +1389,9 @@ function getCoordenadasCentroidesColindantes($type,$xmin,$xmax,$ymin,$ymax)
 
 
 // Returns data from the "base" territory for idLugar, ie: the first descendent with multiple offspring or no child.
+//  It also "stops" at municipality level, because it was confusing that it jumps directly to display neighborhoods
+//  when you click from Comarca level in case there is only one district, since the district level map centers on the
+//  area of the existing neighborhoods.
 function getDatosLugarBase($idTerritorio)
 {
         //Sanitize input
@@ -1407,9 +1410,8 @@ function getDatosLugarBase($idTerritorio)
         //it has just one child
         return getDatosLugarBase($descendiente);
     else
-        // it has many or cero children
+        // it has many or cero children, or is level 8 - city
         return $fila;
-    
 }
 
 function getChildAreas($lugarOriginal,$nivel)
@@ -1468,7 +1470,7 @@ function getLugares($cadena,$territorioOriginal,$nivel,$cantidad=3,$inSet=array(
 
 }
 
-function getTerritoriosSuggestions($cadena,$idTerritorio,$alrededores,$cantidad=4)
+function getSuggestedTerritories($cadena,$idTerritorio,$alrededores,$cantidad=4)
 {
     //Sanitize input
     $link=connect();
@@ -1524,66 +1526,70 @@ function getTerritoriosSuggestions($cadena,$idTerritorio,$alrededores,$cantidad=
     
 }
 
-function getIrA($cadena,$lugarOriginal)
+function getSuggestedGoTo($cadena,$lugarOriginal)
 {
     //echo $lugarOriginal;      
     //Sanitize inputs
     $link=connect();
     $cadena=safe($link, $cadena);
     $lugarOriginal=safe($link, $lugarOriginal);
-    //Datos del idProvincia
-    $datosLugar=getDatosLugar($lugarOriginal);
+    
+    $datosLugar=getTerritory($lugarOriginal);
     $nivel= $datosLugar["nivel"];
+    
+    $nivel=getNivelTerritorio($idTerritorio);
                       
-    if ($nivel>5)
-    {
-        if ($nivel==6)    
-            $idProvincia=$lugarOriginal;
-        else if  ($nivel==7)
-            $idProvincia=$datosLugar['idPadre'];
-        else
-        {
-            $ancestors=getAllAncestors($lugarOriginal);
-            $idProvincia=$ancestors["6"]["id"];
-            
-            $idCiudad=$ancestors["8"]["id"];
-            $inSet=getAllChildren(array($idCiudad));
-
-            $sqlCity="OR id IN (".implode(",",$inSet).") ";           
-        }
-        $sqlRegion="OR idPadre=$idProvincia"; // OR (nivel=7 AND idPadre=$idProvincia)"
-    }           
-        $sql="SELECT id, nombre, activo, 1 as flag 
-                FROM territorios 
-                WHERE nombre LIKE '$cadena%' AND "
-                . "(nivel<7 "
-                . "OR nivel=8 )"
-      . " UNION SELECT id, nombre, activo, 2 as flag 
-                FROM territorios 
-                WHERE nombre LIKE '%$cadena%' AND "
-                . "(nivel<7 "
-                . "OR nivel=8 "
-                . "$sqlRegion "
-                . "$sqlCity )"
-                . "ORDER BY flag, nombre, activo DESC, id DESC "
-                . "LIMIT 0,1";
-
+    if ($nivel>7) {
+         $ancestors=getAllAncestors($lugarOriginal);
+         $idCiudad=$ancestors["8"]["id"];
+         $idsBarriosDistritos=getAllChildren(array($idCiudad));
+         $sqlCity=" OR id IN (".implode(",",$idsBarriosDistritos).") ";           
+    }
+    $sql="SELECT t1.id, t1.nombre, t1.activo, t1.nivel, t2.nombreCorto as nombreCortoPadre, t2.idPadre idAbuelo
+         FROM territorios t1, territorios t2
+        WHERE t1.nombre LIKE '$cadena%' 
+          AND (t1.nivel<=8
+                 $sqlCity )
+          AND t2.id = t1.idPadre
+        ORDER BY activo DESC, nombre, id DESC
+        LIMIT 0,1";
    
-   // Order by, so the lower level appear before higher levels with the same name. Guadalajara (city), Guadalajara (province)
-   // Order by activo DESC for show first
-
+   // Order by name to show alphabetically
+   // Order by activo DESC, to show first active territories
+   // Order by id, so the lower level appear before higher levels with the same name. Guadalajara (city), Guadalajara (province)
 
     mysqli_query($link, 'SET CHARACTER SET utf8');
     $result=mysqli_query($link, $sql);
     $returnData=array();
-    if($fila=mysqli_fetch_assoc($result))
-        return $fila;
-    else
-        return false;
-
+    if($fila=mysqli_fetch_assoc($result)) {
+       if ($fila['nivel']==8) {
+          $fila['nombreCortoPadre']=getTerritory($fila['idAbuelo'])['nombre'];
+       }
+       return $fila;
+    }
+    else {
+        $sql="SELECT t1.id, t1.nombre, t1.activo, t1.nivel, t2.nombreCorto as nombreCortoPadre, t2.idPadre idAbuelo
+         FROM territorios t1, territorios t2
+        WHERE t1.nombre LIKE '%$cadena%' 
+          AND (t1.nivel<=8
+                 $sqlCity )
+          AND t2.id = t1.idPadre
+        ORDER BY activo DESC, nombre, id DESC
+        LIMIT 0,1";
+        
+        $result=mysqli_query($link, $sql);
+        $returnData=array();
+        if($fila=mysqli_fetch_assoc($result)) {
+           if ($fila['nivel']==8) {
+              $fila['nombreCortoPadre']=getTerritory($fila['idAbuelo'])['nombre'];
+           }
+           return $fila;
+        } else
+           return false;
+    }
 }
 
-function getPlaceSuggestions($cadena,$idTerritorio,$cantidad=5)
+function getSuggestedPlaces($cadena,$idTerritorio,$cantidad=5)
 {
 
     //sanitize inputs

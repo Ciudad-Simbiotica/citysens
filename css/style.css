@@ -400,6 +400,13 @@ html,body
 	border: 1px solid #a5d24a; 
 }
 
+.tagFiltro-action
+{
+	background: #cde69c; 
+	color: #638421; 
+	border: 1px solid #a5d24a; 
+}
+
 .tagFiltro-tematica
 {
 	background: #C6DAF7; 

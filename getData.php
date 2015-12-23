@@ -34,7 +34,7 @@ else
 }
 
 //Añadimos los datos del lugar original
-$returnData["lugarOriginal"]=getDatosLugar($_GET["idTerritorioOriginal"]);
+$returnData["lugarOriginal"]=getTerritory($_GET["idTerritorioOriginal"]);
 
 $returnJSON=json_encode($returnData);
 

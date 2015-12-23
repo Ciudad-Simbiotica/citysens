@@ -65,6 +65,7 @@ if($tipoGrupos=="puntuacion")
         $datos["idCiudad"]=$entidad["idCiudad"];
         $datos["idDistrito"]=$entidad["idDistrito"];
         $datos["idBarrio"]=$entidad["idBarrio"];
+        $datos["idComarca"]=$entidad["idComarca"];
         $datos["tematica"]=utf8_encode($entidad["tematica"]);
         $datos["primeraOcurrencia"]=1; //Usado para contabilizar entidades en mapa (necesario para evitar duplicados en ordenación Temáticas)
 
@@ -120,6 +121,7 @@ else {
         $datos["tematicas"]=utf8_encode($entidad["tematicas"]);
         $datos["x"]=$entidad["lng"];
         $datos["y"]=$entidad["lat"];
+        $datos["idComarca"]=$entidad["idComarca"];
         $datos["idCiudad"]=$entidad["idCiudad"];
         $datos["idDistrito"]=$entidad["idDistrito"];
         $datos["idBarrio"]=$entidad["idBarrio"];
