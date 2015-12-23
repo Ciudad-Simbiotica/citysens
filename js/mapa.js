@@ -267,29 +267,33 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
     nivelHijos=nivelMostrado+1;
     nivelTios=nivelMostrado-1; // It could be adjusted if there is some level that is not considered significant (like districts, regions, etc.)
    
-       
+    // DISPLAY OF THE INNER OF TERRITORY SELECTED
     if (alrededores!=0) // We are on "and surroundings" navigation. We always allow to click on it to zoom into it.
     {
         addPolygonToMap(conf.idTerritorioMostrado,0,"shp/geoJSON/"+response.nivel+"/"+conf.idTerritorioMostrado+".geojson",response.nombre,'#ffaaaa',response.activo);
 
-        if (typeof window.cantidadPorLugar[idTerritorio] === 'undefined')
-            cantidad = '0';
-        else
-            cantidad = window.cantidadPorLugar[idTerritorio];
-        new L.Marker([response.ycentroid, response.xcentroid],
-            {
-            icon: new L.NumberedDivIcon({number: cantidad})
-            }).addTo(map);
+        if  (nivelMostrado>6) // If the territory is of level province or lower, counter is included and the switcher shown
+        {
+            if (typeof window.cantidadPorLugar[idTerritorio] === 'undefined')
+                cantidad = '0';
+            else
+                cantidad = window.cantidadPorLugar[idTerritorio];
+            new L.Marker([response.ycentroid, response.xcentroid],
+                {
+                icon: new L.NumberedDivIcon({number: cantidad})
+                }).addTo(map);
+        }
     }
-    // If the territory has no child, the territory is shown
+    // Normal navigation: the territories within selected territory are displayed
     else if (response.idDescendiente==0) 
     {
+        // If the territory has no child, the territory is shown
         if (response.activo==0)
             addPolygonToMap(conf.idTerritorioMostrado,0,"shp/geoJSON/"+response.nivel+"/"+conf.idTerritorioMostrado+".geojson",response.nombre,'#ffaaaa',0);
         else //está activo pero no tiene hijos, mandamos código especial -1
             addPolygonToMap(conf.idTerritorioMostrado,0,"shp/geoJSON/"+response.nivel+"/"+conf.idTerritorioMostrado+".geojson",response.nombre,'#ffaaaa',-1);
         
-        if  (nivelMostrado>6) // If the territory is of level region or lower, counter is included and the switcher shown
+        if  (nivelMostrado>5) // If the territory is of level province or lower, counter is included and the switcher shown
         {
             if (typeof window.cantidadPorLugar[idTerritorio] === 'undefined')
                 cantidad = '0';
@@ -328,7 +332,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                     breadcrumbs_dropdown+='<li onclick="irATerritorio('+datos.activo+','+datos.id+',0,\''+datos.nombre+'\')">'+datos.nombre+'</li>';
 //                }
                 
-                if(nivelMostrado>6) { // If the territory is of level region or lower, there are counters, and a switcher is needed
+                if(nivelMostrado>5) { // If the territory is of level province or lower, there are counters, and a switcher is needed
                     if(typeof window.cantidadPorLugar[datos.id] === 'undefined')
                         cantidad='0';
                     else
@@ -340,7 +344,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                         }).addTo(map);        
                 }    
             });
-            if (nivelMostrado>6)   // We show the switcher to display amount of items per territory
+            if (nivelMostrado>5)   // We show the switcher to display amount of items per territory, for levels under province
                 incluirPalanca();
  
             $("#listabreadcrumbs").html(breadcrumbs_dropdown);
@@ -354,6 +358,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
         });
     }
 
+    // DISPLAY OF SURROUNDING OF SELECTED TERRITORY
     if (alrededores!=0)
     {        // For navigations with neighbours, neighboring territories are shown in a different colour.
         $.getJSON("getTerritorios.php",
@@ -366,19 +371,25 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                 $.each(data, function(i,datos)
                     {
                         addPolygonToMap(datos.id,datos.vecinos,"shp/geoJSON/"+nivelMostrado+"/"+datos.id+".geojson",datos.nombre+" y alrededores",'#FFE4C5',datos.activo);
-
-                        if(typeof window.cantidadPorLugar[datos.id] === 'undefined')
-                            cantidad='0';
-                        else
-                            cantidad=window.cantidadPorLugar[datos.id];
-
-                        new L.Marker([datos.ycentroid,datos.xcentroid], 
+                        
+                        if  (nivelMostrado>6) // If the territory is of level province or lower, counter is included
                         {
-                            icon: new L.NumberedDivIcon({number: cantidad})
-                        }).addTo(map); 
+                            if(typeof window.cantidadPorLugar[datos.id] === 'undefined')
+                                cantidad='0';
+                            else
+                                cantidad=window.cantidadPorLugar[datos.id];
+
+                            new L.Marker([datos.ycentroid,datos.xcentroid], 
+                            {
+                                icon: new L.NumberedDivIcon({number: cantidad})
+                            }).addTo(map); 
+                        }
                     });
-                // We show the switcher to display amount of items per territory
-                incluirPalanca();
+                    if  (nivelMostrado>6) // If the territory is of level province or lower, switcher is shown
+                    {
+                    // We show the switcher to display amount of items per territory
+                        incluirPalanca();
+                    }
                 });
                 
         $.getJSON("getTerritoriosColindantes.php",

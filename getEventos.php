@@ -54,6 +54,7 @@ foreach($eventos as $evento)
     $datos["tematicas"]=utf8_encode($evento["tematicas"]);
     $datos["x"]=$evento["lng"];
     $datos["y"]=$evento["lat"];
+    $datos["idComarca"]=$evento["idComarca"];
     $datos["idCiudad"]=$evento["idCiudad"];
     $datos["idDistrito"]=$evento["idDistrito"];
     $datos["idBarrio"]=$evento["idBarrio"];
