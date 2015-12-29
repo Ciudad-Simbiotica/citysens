@@ -300,6 +300,9 @@ while($entidadImportada=mysqli_fetch_assoc($result_entidades))
      $entityData["tematicas"]=array(); // TODO: Verify if recreated empty
      $etiquetas=""; 
 
+// Process the tipo field
+//     TODO: when the same code is added twice in the temáticas string (as a result of processing several fields)
+//           the creation of the tematic assignments fails. The array should be "cleaned", to make sure each appears just once.
      switch($entidadImportada["tipo"]) {
         case "Asamblea":
             $entityData["tematicas"][]=9; // Democracia            

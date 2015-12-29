@@ -7,7 +7,7 @@ ini_set('default_charset', 'utf-8');
 mysql_query("SET NAMES 'utf8'");
 
 // Disabled unless needed
-//exit();
+exit();
 
 $link = connect();
 echo "<pre>";
@@ -17,8 +17,8 @@ echo "<pre>";
 
 /* UPDATE THE POINTS OF ENTITIES, CONSIDERING IF THEY ARE convocatorias/recurrentes AND older/younger THAN A YEAR.
 
-   $today = "2015-09-09";
-   $yearAgo = "2014-09-09"
+   $today = "2015-12-24";
+   $yearAgo = "2014-12-24";
    $sql = "select puntos.idEntidad, puntos.entidad, floor(sum(puntos.points)) as totalPuntos from 
             (
               (select en.idEntidad, en.entidad, count(ev.idEvento)/4 as points from entidades as en, eventos as ev where en.idEntidad=ev.idEntidad and ev.tipo='recurrente' and ev.fecha>'$yearAgo' group by en.idEntidad) 
@@ -38,6 +38,7 @@ echo "<pre>";
    }
 
 */
+
 
  /* ASSIGN THEMATIC "Otros" TO ENTITIES THAT HAVE NO THEMATIC ASSIGNED
    $sql= "select entidades.* from entidades
@@ -133,5 +134,61 @@ echo "<pre>";
 
    */
 
-    echo "HECHO!";
+
+ /*  Recreate thematic assignment for Madrid agents that didn't get them
+   
+   // First, events from municipalities
+   $sql= "select ie.idEntidadCTS, ie.tematicasCTS from importacionEntidades ie where ie.codImport='CIVICS' and not exists (select * from entidades_tematicas et where ie.idEntidadCTS=et.idEntidad)";
+   $tematicas=array();
+   
+   echo $sql,PHP_EOL;
+   $result = mysqli_query($link, $sql);
+   while ($fila = mysqli_fetch_assoc($result)) {   
+      
+    $tematicas=explode(',',$fila['tematicasCTS']);
+    $idEntidad=$fila['idEntidadCTS'];
+    
+    $sql="INSERT INTO entidades_tematicas (idEntidad, idTematica) VALUES ";
+    $firstTematica=true;
+    if (count($tematicas)>0) {
+       foreach($tematicas as $tematica) {
+          if ($firstTematica) {
+             $sql.=" ('$idEntidad', '$tematica')";
+             $firstTematica=false;
+          }
+          else
+             $sql.=", ('$idEntidad','$tematica')";
+       }
+    } else
+       $sql.=" ('$idEntidad','38')"; // Assign topic "Others", for those cases with no tematic
+      
+      echo $sql,PHP_EOL;
+      mysqli_query($link, $sql);
+
+   } */
+
+/* ASSIGN THEMATICS TO SOME ENTITIES, BASED ON NAMES
+ 
+   $sql= "select e.idEntidad from entidades e where (e.entidad like '%deportiva%' or e.entidad like '%liga%') and not exists (select * from entidades_tematicas et where e.idEntidad=et.idEntidad and et.idTematica=10)";
+   $tematicas=array();
+   
+   echo $sql,PHP_EOL;
+   $result = mysqli_query($link, $sql);
+   $firstTematica = true;
+   $sql = "INSERT INTO entidades_tematicas (idEntidad, idTematica) VALUES ";
+   while ($fila = mysqli_fetch_assoc($result)) {      
+
+      if ($firstTematica) {
+         $sql.=" ('{$fila['idEntidad']}',10)";
+         $firstTematica = false;
+      } else
+         $sql.=", ('{$fila['idEntidad']}',10)";
+
+   }
+   echo $sql, PHP_EOL;
+   mysqli_query($link, $sql);
+ 
+ */
+
+echo "HECHO!";
 ?>

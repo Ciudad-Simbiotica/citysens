@@ -50,7 +50,7 @@ function clean_all(&$items,$leave = ''){
 }
 
 // Script is unactive unless it is required
-exit();
+//exit();
 
 $madridAdhId = 701280008;  // It is inserted directly for events from Madrid with no coords. If we change IDs format, this line should be updated.
 

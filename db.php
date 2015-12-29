@@ -185,16 +185,13 @@ function getEntidad($idEntidad)
     mysqli_query($link, 'SET CHARACTER SET utf8');
     $sql="SELECT * FROM entidades WHERE idEntidad='$idEntidad'";
     $result=mysqli_query($link, $sql);
-    if($fila=mysqli_fetch_assoc($result))
+    if($entidad=mysqli_fetch_assoc($result))
     {
-        $entidad=$fila;
-
-
-        $sql="SELECT * FROM places WHERE idPlace='{$fila['idPlace']}'";
+        $sql="SELECT * FROM places WHERE idPlace='{$entidad['idPlace']}'";
         $result=mysqli_query($link, $sql);
-        if($fila=mysqli_fetch_assoc($result))
+        if($place=mysqli_fetch_assoc($result))
         {
-            $entidad['place']=$fila;
+            $entidad['place']=$place;
         }
         else
         {
@@ -212,7 +209,7 @@ function getEntidad($idEntidad)
         $sql="SELECT * FROM entidades_tematicas, tematicas 
                 WHERE entidades_tematicas.identidad='$idEntidad' AND
                 entidades_tematicas.idTematica=tematicas.idTematica";
-        $result=mysqli_query($sql,$link);
+        $result=mysqli_query($link,$sql);
         while($fila=mysqli_fetch_assoc($result))
         {
             $entidad['tematicas'][$fila['idTematica']]=ucfirst(strtolower($fila['tematica']));
@@ -517,7 +514,7 @@ function getEntidades($filtros, $idTerritorio, $alrededores, $itemsStart=0, $ite
        $sql.=$sql_2;
     }
 //    $sql.=" GROUP BY entidades.idEntidad ORDER BY points DESC LIMIT $itemsStart,$itemsLimit";
-    $sql.=" GROUP BY entidades.idEntidad ORDER BY points DESC LIMIT $itemsStart,800";
+    $sql.=" GROUP BY entidades.idEntidad ORDER BY points DESC, entidad LIMIT $itemsStart,800";
       
     $result=mysqli_query($link, $sql);
     $returnData=array();
@@ -808,7 +805,7 @@ function getEvento($idEvento)
 // Main function to get the list of events, considering filters applied and other parameters
 // By default is returns a maximum of 50 events, showing events between today and the next complete weekend 
 // (ie: in a Friday the whole next week is included) 
-function getEventos($filtros,$idTerritorio,$alrededores,$itemsStart=0, $itemsLimit=50)
+function getEventos($filtros,$idTerritorio,$alrededores,$itemsStart=0, $itemsLimit=100)
 // TODO: Code changed to allow including District filters from up to example, Comarca level. Therefore, this does no longer work, needs fixing.
 {
     $link=connect();
@@ -1031,7 +1028,7 @@ function getEventos($filtros,$idTerritorio,$alrededores,$itemsStart=0, $itemsLim
       //Map at neighborhood level, searches done on idBarrio basis for "with address" case; No "no address" displayed, as they are linked to Comarca or City
       $sql.=" places.idBarrio=territorios.id AND "; //Neighborhood name will be displayed
       // There cannot be any Territory Filter
-      $lugar="places.idDistrito = $idTerritorio ";
+      $lugar="places.idBarrio = $idTerritorio ";
    }
         
     $sql.="($tiempo) AND ";

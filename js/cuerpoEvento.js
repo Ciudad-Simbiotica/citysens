@@ -48,7 +48,7 @@ function hideOverlay(url)
   });
 }
 
-$.getJSON('getDatos.php', 
+$.getJSON('getDatosEvento.php', 
 {
       id: $.urlParam('idEvento'),
 })
