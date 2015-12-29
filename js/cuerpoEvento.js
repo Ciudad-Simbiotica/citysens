@@ -48,7 +48,7 @@ function hideOverlay(url)
   });
 }
 
-$.getJSON('getDatos.php', 
+$.getJSON('getDatosEvento.php', 
 {
       id: $.urlParam('idEvento'),
 })
@@ -104,12 +104,12 @@ $.getJSON('getDatos.php',
 
     fechaLegible=date.getDate()+" de "+monthNames2[date.getMonth()]+" a las "+paddingZeros(date.getHours())+":"+paddingZeros(date.getMinutes());
 
-    cargarMapa(data.direccion.lat,data.direccion.lng,data.titulo+" → El "+fechaLegible+" @ "+data.direccion.nombre+" - "+data.direccion.direccion);
+    cargarMapa(data.place.lat,data.place.lng,data.titulo+" → El "+fechaLegible+" @ "+data.place.nombre+" - "+data.place.direccion);
     $(".detalle-mapa-cabecera-lugar").text("Evento en "+data.lugar);
-    $(".detalle-mapa-pie-nombre").text(data.direccion.nombre);
-    $(".detalle-mapa-pie-direccion").text(data.direccion.direccion);
+    $(".detalle-mapa-pie-nombre").text(data.place.nombre);
+    $(".detalle-mapa-pie-direccion").text(data.place.direccion);
     $(".detalle-mapa-cabecera-volver").click(function(){
-        window.location="?idLugar="+$.urlParam('idOrigen');
+      //  window.location="?idTerritorio="+$.urlParam('idOrigen'); Creo que esta linea sobraba ahora
     });
 
 
@@ -128,7 +128,7 @@ $.getJSON('getDatos.php',
 
 
     //Sharing code
-    url="http://www.citysens.net/?idEvento="+data.idEvento+"%26idOrigen="+$.urlParam('idOrigen');
+    url="http://www.citysens.net/?idEvento="+data.idEvento+"%26idOrigen="+$.urlParam('idOrigen');//TODO revisar los link nuevos
     mensaje="¡¡¡Este evento te puede interesar!!!";
     
     var tbx = document.getElementById("toolbox");
@@ -224,13 +224,13 @@ $("#contacto").click(function ()
 
 $(".cabecera-pestania-izq").click(function()
 {
-    window.location="?idLugar="+$.urlParam('idOrigen');
+    window.location="?idTerritorio="+window.conf.idTerritorio;
 });
 
 
 $(".cabecera-pestania-dch").click(function()
 {
-    window.location="?idLugar="+$.urlParam('idOrigen')+'&category=ent';
+    window.location="?idTerritorio="+window.conf.idTerritorio+'&category=ent';
 });
 
 $('#input-busqueda').attr('placeholder','Buscar en el evento...');
@@ -240,9 +240,9 @@ $('#input-busqueda').keyup(function(event)
 {
   if((event.which==13)||($('#input-busqueda').val()==""))
   {
-   if($('#input-busqueda').val()!=window.lastSearch)
+   if($('#input-busqueda').val()!=window.conf.lastSearch)
    {
-     window.lastSearch=$('#input-busqueda').val();
+     window.conf.lastSearch=$('#input-busqueda').val();
      var page = $('#detalle-cuerpo-texto');
      var pageHtml = page.html().replace(/<span>/igm,"").replace(/<\/span>/igm,"");
      if($('#input-busqueda').val()!="")

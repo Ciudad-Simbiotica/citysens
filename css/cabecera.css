@@ -139,6 +139,7 @@
 	margin-left: 225px;
 	margin-top: 46px;
 	box-shadow:0 2px 3px 0px #aaa, 2px 0px 3px 0px #aaa, -2px 0px 3px 0px #aaa ;
+        overflow:hidden;
 }
 
 
@@ -159,7 +160,7 @@
 {
 	width:100%;
 	height:40px;
-    vertical-align: middle
+    vertical-align: middle;
 	cursor: pointer; cursor: hand;		
 }
 
@@ -174,12 +175,19 @@
 	position:relative;
 	left:40px;
 	top:5px;
+        width:435px; /*TODO OJO, NO RESPONSIVE*/
+        overflow: hidden;
+	white-space: nowrap;
+        text-overflow: ellipsis;
 }
 .cabecera-suggest-texto1-sinTexto2
 {
 	position:relative;
 	left:40px;
 	top:10px;
+        overflow: hidden;
+	white-space: nowrap;
+        text-overflow: ellipsis;
 }
 
 
@@ -195,7 +203,7 @@
 .cabecera-suggest-fila-IrA
 {
 	border-top:thin solid #aaa;	
-	background-color: #e0e9ff;	
+	background-color: #efefef;       
 }
 
 .cabecera-suggest-fila-selected
@@ -251,6 +259,15 @@
 	background-image: url("icons/icon_CitYsens.institucion.png");	
 }
 
+.cabecera-suggest-icono-tiempo
+{
+	background-image: url("icons/clock.png");	
+}
+
+.cabecera-suggest-icono-action
+{
+	background-image: url("icons/sanidad.png");	
+}
 
 .cabecera-suggest-icono-IrA
 {

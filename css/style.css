@@ -174,11 +174,19 @@ html,body
 }
 
 .scroll-curtain-gradient
-{
-	background-image: -webkit-gradient(
-	  linear, left top, left bottom, from(rgba(240,240,240,1)),
-	  to(rgba(255,255,255,0)), color-stop(.5,#EEEEEE)
-	); 	
+{   
+    //Why color transition. should be transmparent?
+        background-image: -webkit-gradient(
+            linear, top,left top, left bottom, from(rgba(240,240,240,1)),
+	  to(rgba(255,255,255,0)),
+          color-stop(0.5,#EEEEEE)); /* For Safari 5.1 to 6.0 */
+        background-image: -o-gradient(to top, rgba(255,255,255,0), rgba(240,240,240,1), color-stop(.5,#EEEEEE)
+	); /* For Opera 11.1 to 12.0 */
+        background-image: -moz-gradient(to top,rgba(255,255,255,0), rgba(2240,240,240,1)
+	); /* For Firefox 3.6 to 15 */
+        background-image: linear-gradient(to top left, rgba(255,255,255,0), rgba(240,240,240,1)
+	); /* Standard syntax (must be last) */
+        
 	width:100%;
  	height: 35px;
  	left:0px;
@@ -227,7 +235,8 @@ html,body
 .map-breadcrumbs
 {
 	margin-top: 5px;
-	margin-left: 5px;
+	margin-left: 5px;    
+        cursor: pointer; cursor: hand;	
 }
 
 .map-map
@@ -360,11 +369,11 @@ html,body
 .agenda-filtros-busqueda,.agenda-filtros-tematica,.agenda-filtros-lugar,.agenda-filtros-entidad
 {
 	float:left;
-	/*display: inline-block;*/
+	display: inline;
 	width: 50%;
 	height: auto;
 	overflow: hidden;
-	vertical-align: top;
+	vertical-align: top;      
 }
 
 .tagFiltro
@@ -381,10 +390,17 @@ html,body
 	margin-right: 5px; 
 	margin-bottom:5px;
 	font-family: helvetica;  
-	font-size:16px;
+	font-size:16px;     
 }
 
 .tagFiltro-busqueda
+{
+	background: #cde69c; 
+	color: #638421; 
+	border: 1px solid #a5d24a; 
+}
+
+.tagFiltro-action
 {
 	background: #cde69c; 
 	color: #638421; 
@@ -412,6 +428,13 @@ html,body
 	border: 1px solid #C686AA; 
 }
 
+.tagFiltro-tiempo
+{
+	background: #DDB3CA; 
+	color: #A65700; 
+	border: 1px solid #C68600; 
+}
+
 .tagFiltro-imagen
 {
 	float:left;
@@ -420,7 +443,7 @@ html,body
 	opacity:0.5;
 	background-size: contain;
 	background-repeat: no-repeat;
-    background-position: center;
+        background-position: center;
 	background-image: url("icons/Event-Unique.64.png");	
 	margin-right: 4px;
 }
@@ -429,6 +452,7 @@ html,body
 	float:left;
 	margin-top: 1px;
 	margin-right: 4px;
+        text-overflow:clip;
 }
 .tagFiltro-x
 {
@@ -476,5 +500,112 @@ html,body
 	line-height: 21px;
 	cursor:hand;cursor:pointer;
 	background-image: url("icons/follow_eye20x20.png");		
-	background-repeat: no-repeat;
+	background-repeat: no-repeat;       
+}
+.controles
+{
+    position:absolute;  
+    Padding:5px 10px 3px 3px;
+    align: center;
+  	height: inherit;
+  	width: inherit;
+  	z-index:1000;
+  	display:block;
+  	float:right;
+}
+#upbutton
+{
+	position:absolute;
+ 	top:14%;	
+	right:2%;	
+ 	z-index:90;
+ 	display:block;
+	
+}
+#circle-button
+{
+	bottom:9%;
+ 	right:2%;
+	
+	position:absolute;
+    z-index:90;
+    float:right; 
+    clear:both;
+    align: inherit;
+}
+
+#flechaarriba
+{
+    color:black;
+}
+
+#circulo{
+    color:white;
+    opacity:0.4;
+    
+}
+#aro{
+    color:black;
+    opacity:0.7;
+}
+
+#circulo:hover
+{
+    color:lightgreen;
+}
+div.map-breadcrumbs.ulli
+{
+    display: inline;
+    list-style: outside none none;
+    float: none; 
+    border-top: 1px solid #6b727c;
+    border-bottom: 1px solid #575f6a;
+    position: relative;
+    
+    
+}
+#listabreadcrumbs
+{ 
+    width: inherit;
+    display:none;
+    background: #fff;
+    position: absolute;
+    align-self: flex-start; 
+    z-index:100;
+    max-height: 241px;
+    text-align:left;
+    cursor: default;
+    clear:both; 
+    overflow-y: auto; 
+    text-align: -webkit-match-parent;
+    border-radius: 0em 0em 1em 0em;
+    box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.2);
+    border: 1px solid #e7e7e4;
+    padding-left: 0.6em;
+    
+}
+
+ul#listabreadcrumbs{
+    display:none;
+    list-style: outside none none;
+    left:3em;
+    margin-top:0;
+    padding-top:0;
+    cursor: pointer; cursor: hand;	
+}
+
+#hijos{
+    z-index:10;
+    display:inline-block;   	
+}
+
+.loading{
+    visibility: visible !important;
+    display: -webkit-flex;
+    align-items: center;
+    height: 200%;
+    width:200%;
+    position:absolute;
+    top:20%;
+    left:50%;
 }

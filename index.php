@@ -1,11 +1,10 @@
 <?php
 error_reporting(E_ERROR);
-
 include "settings.php";
 //Página por defecto
-if(($_GET["idLugar"]=="")&($_GET["idEvento"]=="")&($_GET["idEntidad"]==""))
+if(($_GET["idTerritorio"]=="")&($_GET["idEvento"]=="")&($_GET["idEntidad"]==""))
 {
-    header('Location: '.BASE_URL.'?idLugar=701280002');
+    header('Location: '.BASE_URL.'?idTerritorio=701280002');
     exit();
 }
 
@@ -19,9 +18,13 @@ include "preload.php";
  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
  <title>CitYsens</title>
  <base href="<?php echo BASE_URL; //Base URL?>">
+ 
+ <link rel="shortcut icon" href="css\icons\CitYsens.monigote.color.fw.png" />
+     
  <link href="css/style.css" rel="stylesheet" type="text/css" />
  <link href="css/cabecera.css" rel="stylesheet" type="text/css" />
- <link href="css/grupos.css" rel="stylesheet" type="text/css" />
+<!-- <link href="css/grupos.css" rel="stylesheet" type="text/css" />-->
+ <link href="css/gruposresponsive.css" rel="stylesheet" type="text/css" />
  <link href="css/newEvent.css" rel="stylesheet" type="text/css" />
  <link href="css/informacion.css" rel="stylesheet" type="text/css" />
  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
@@ -29,23 +32,27 @@ include "preload.php";
  <link rel="stylesheet" href="css/leafletCustom.css" />
  <link rel="stylesheet" type="text/css" href="css/jNotify.jquery.css" media="screen" />
  <link rel="stylesheet" type="text/css" href="js/datetimepicker/jquery.datetimepicker.css"/ >
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
-
- <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
- <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
- <script src="js/datepicker-es.js"></script>
- <script src="js/jquery.custom-animations.js"></script>
- <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
- <script src="http://maps.google.com/maps/api/js?v=3&sensor=false"></script>
- <script src="js/leaflet-plugins-master/layer/Leaflet.ContinuousZoom.js"></script>
- <script src="js/leaflet-plugins-master/layer/tile/Google.js"></script>
- <script src="js/wysihtml5/parser_rules/advanced.js"></script>
- <script src="js/wysihtml5/dist/wysihtml5-0.3.0.min.js"></script>
- <script type="text/javascript" src="js/jNotify.jquery.js"></script>
- <script src="js/datetimepicker/jquery.datetimepicker.js"></script>
-
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5405f16570d4251b"></script>
-
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js" type="text/javascript"></script>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js" type="text/javascript"></script>
+ <script src="js/datepicker-es.js" type="text/javascript"></script>
+ <script src="js/jquery.custom-animations.js" type="text/javascript"></script>
+ <script src="js/spin.min.js" type="text/javascript"></script>
+ <!--<script src="js/live.js" type="text/javascript"></script>  solution for CSS change in live Only for Develop-->
+ <script src="js/jquery.spin.js" type="text/javascript"></script>
+ <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js" type="text/javascript"></script>
+ <script src="http://maps.google.com/maps/api/js?v=3&sensor=false" type="text/javascript"></script>
+ <script src="js/leaflet-plugins-master/layer/Leaflet.ContinuousZoom.js" type="text/javascript"></script>
+ <script src="js/leaflet-plugins-master/layer/tile/Google.js" type="text/javascript"></script>
+ <script src="js/wysihtml5/parser_rules/advanced.js" type="text/javascript"></script>
+ <script src="js/wysihtml5/dist/wysihtml5-0.3.0.min.js" type="text/javascript"></script>
+ <script src="js/jNotify.jquery.js" type="text/javascript"></script>
+ <script src="js/datetimepicker/jquery.datetimepicker.js" type="text/javascript"></script>
+ <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5405f16570d4251b" type="text/javascript"></script>
+       <!-- Latest compiled and minified JavaScript 
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
+   
 </head>
 
 <body>  
@@ -112,7 +119,7 @@ include "preload.php";
  
  <div class='cuerpo'>
 	<?php
-		if($_GET["idLugar"]!="")
+		if($_GET["idTerritorio"]!="")
 			include "cuerpoLugar.php";
 		else if($_GET["idEvento"]!="")
 			include "cuerpoEvento.php";

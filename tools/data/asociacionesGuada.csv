@@ -1,0 +1,301 @@
+"codImport";"idEntImport";"nombre";"nombreCorto";"fechaConstitucion";"nombreDireccion";"detalleDireccion";"direccion";"direccionBreve";"cp";"ciudad";"email";"telefono";"url";"facebook";"twitter";"clasificacion";"tipo";"descBreve"
+"GUADA";"001";"Asociación de Pensionistas por Enfermedad e Invalidez";;;"Centro Social Cifuentes";;"Calle Cifuentes, 26";;"19003";"Guadalajara";;"949010380";;;;"Mayores";;
+"GUADA";"002";"Asociación de Pensionistas y Tercera Edad";"ASVAT";;"Centro Social Cifuentes";;"Calle Cifuentes, 26";;"19003";"Guadalajara";;"949217792, 949010380";;;;"Mayores";;
+"GUADA";"003";"Asociación de Jubilados y Pensionistas Los Manantiales";;;"Centro Social Los Manantiales";;"Calle Buenafuente, s/n";;"19004";"Guadalajara";;"949201509";;;;"Mayores";;
+"GUADA";"004";"Asociación de Jubilados y Pensionistas de Usanos";;;"Centro Social Usanos";;"Plaza Mayor, 1";;"19181";"Usanos";;;;;;"Mayores";;
+"GUADA";"005";"Asociación de Jubilados Colonia y Era del Canario";;;"Centro Social Venezuela";;"Avenida de Venezuela, 5";;"19005";"Guadalajara";;"949211390";;;;"Mayores";;
+"GUADA";"006";"Asociación Hogar del Jubilado de Taracena";;;"Centro Social Taracena";;"Calle de Real, 3";;"19193";"Guadalajara";;"949253535";;;;"Mayores";;
+"GUADA";"007";"Asociación de Jubilados y Pensionistas de Valdenoches";;;"Centro Social Taracena";;"Calle de Real, 3";;"19197";"Guadalajara";;"949208154
+609115307949208154
+609115307949208154
+609115307949208154
+609115307949208154
+609115307949208154
+609115307949208154
+609115307949208154
+609115307949208154
+609115307949208154
+609115307949208154
+609115307949208154
+609115307949208154
+609115307949208154
+609115307949208154
+609115307";;;;"Mayores";;
+"GUADA";"008";"Asociación de Jubilados y Pensionistas Fuente de la Niña";;;"Centro Social Adoratrices";;"Calle Adoratrices, 37";;"19002";"Guadalajara";;;;;;"Mayores";;
+"GUADA";"009";"Federación de Jubilados, Pensionistas y Tercera Edad Alcarreña";;;;;"Calle Gustavo Adolfo Bécquer, 6 - local 5";"Calle Gustavo Adolfo Bécquer, 6";"19004";"Guadalajara";"federacionalcar@hotmail.com";"949208154";"www.federacionalcarrena.com";;;"Mayores";;
+"GUADA";"010";"Asociación de Jubilados, Pensionistas y Tercera Edad Ramón de Garciasol";;;;;"Avenida de Pedro San Vazquez, 21";;"19004";"Guadalajara";;"650785097";;;;"Mayores";;
+"GUADA";"011";"Asociación de Jubilados y Pensionistas  La Amistad";;;"Centro Social La Amistad";;"Calle Felipe Solano Antelo, 15";;"19002";"Guadalajara";;"949223818";;;;"Mayores";;
+"GUADA";"012";"Asociación Hogar del Jubilado Castilla";;;;;"Calle General Moscardó Guzmán, 39 bis";;"19004";"Guadalajara";;"949214810";;;;"Mayores";;
+"GUADA";"013";"Asociación de Prejubilados, Jubilados y Pensionistas - MCA UGT Castilla La Mancha";;;"Palacio del Infantado";"2ª planta";"Plaza de los Caídos, 11";;"19001";"Guadalajara";;"949213807";;;;"Mayores";;
+"GUADA";"014";"Asociación de Pensionistas y Jubilados El Doncel";;;"Centro Social Cifuentes";;"Calle Cifuentes, 26";;"19003";"Guadalajara";"udpguadalajara@gmail.com";"949030551";;;;"Mayores";;
+"GUADA";"015";"Asociación Diocesana Scout Guadalajara MSC";;;;;"Calle Constitución, 8 - bajo A";"Calle Constitución, 8";"19003";"Guadalajara";"deleguada@hotmail.com";"949201384, 645584982";;;;"Juveniles";;
+"GUADA";"016";"Seminario de Literatura Infantil y Juvenil";;;;;"Plaza de Dávalos, s/n";;"19001";"Guadalajara";"maratoncuentos@gmail.com";"949885229";"www.maratondeloscuentos.org";;;"Culturales";;
+"GUADA";"017";"Centro Juvenil Don Bosco";;;;;"Calle Toledo, 24";;"19002";"Guadalajara";"cjdbguada@valdoro.com";"949212012
+696232268949212012
+696232268949212012
+696232268949212012
+696232268949212012
+696232268949212012
+696232268949212012
+696232268949212012
+696232268949212012
+696232268949212012
+696232268949212012
+696232268949212012
+696232268949212012
+696232268949212012
+696232268";;;;"Juveniles";;
+"GUADA";"018";"Club Juvenil Luz Viva";;;;;"Avenida Pedro Sanz Vázquez, 27";;"19004";"Guadalajara";"alveus.msc@scout-es.net";"949254245";;;;"Juveniles";;
+"GUADA";"019";"Vasija";;;;;"Calle Córdoba, 10 - 1ºB";"Calle Córdoba, 10";"19005";"Guadalajara";"vasija@asociacionvasija.com";"949217035";;;;"Social";;
+"GUADA";"020";"Asociación Provincial de Diabéticos (ADE)";"ADE";;"Escuela Universitaria de Enfermería";"4º";"Calle Ferial, 31";;;"Guadalajara";;;;;;"Sanitaria";;
+"GUADA";"021";"Asociación de Enfermos del Corazón (AECO)";"AECO";;"Centro Social Cifuentes";;"Calle Cifuentes, 26";;"19003";"Guadalajara";"corazonguada@gmail.com";"949010380";;;;"Sanitaria";;
+"GUADA";"022";"Asociación de Voluntariado Alcarria";;;;;"Calle Gustavo Adolfo Bécquer, 6 - local 5";"Calle Gustavo Adolfo Bécquer, 6";"19004";"Guadalajara";;"949273242, 949200098";;;;"Mayores";;
+"GUADA";"023";"Asociación Banco de Alimentos de Guadalajara";;;;;"Calle Gustavo Adolfo Bécquer, 6 - local 5";"Calle Gustavo Adolfo Bécquer, 6";"19004";"Guadalajara";"bancodeguadalajara@hotmail.com";"949200098, 609115307";;;;"Social";;
+"GUADA";"024";"Asociación Cáritas Diocesana Sigüenza-Guadalajara";;;;;"Avenida de Venezuela, 9";;"19005";"Guadalajara";"coordinacion.cdsigu@caritas.es, caritas.cdsigu@caritas.es";"949220027";"www.siguenzaguadalajara.caritas.es";;;"Social";;
+"GUADA";"025";"Asociación Cruz Roja Española - Guadalajara";;;;;"Avenida de Venezuela, 1";;"19005";"Guadalajara";"guadalajara@cruzroja.es";"949211184, 949226212";"www.cruzroja.es";;;"Social";;
+"GUADA";"026";"Asociación de Amigos del Pueblo Saharaui";;;"Centro de Ocio Divervalles";;"Apartado de Correos 1053";;"19080";"Guadalajara";"saharaguada@yahoo.es";"676259398, 696967372";"www.saharaguada.com";"https://es-es.facebook.com/pueblosahara";;"Social";;
+"GUADA";"027";"Guada Acoge";;;;;"Avenida de Venezuela, 9 - 1º";"Avenida Venezuela, 9";"19005";"Guadalajara";"guada.acoge@redacoge.org";"949253076";;;;"Social";;
+"GUADA";"028";"Asociación Partir-Con";;;;;"Calle Toledo, 24";;"19002";"Guadalajara";"partircon@gmail.com";"949247299, 636248283";;;;"Social";;
+"GUADA";"029";"AMPA del Colegio Aldonza de Mendoza";;;;;"Calle Constitución, 22 D";;"19003";"Guadalajara";;"949214233";;;;"Padres";;
+"GUADA";"030";"Lactavida, Lactancia Materna";;;;;"Calle Viña Plana, 42";;"19005";"Guadalajara";"lactavida@gmail.com";"949337347, 639567008";"http://lactavida.blogspot.com.es/";;;"Mujeres";;
+"GUADA";"031";"AMPA del Colegio Maristas Champagnat";;;;;"Calle Pedro Pascual, 2";;"19001";"Guadalajara";;;;;;"Padres";;
+"GUADA";"032";"Federación de AMPAs Cristobal Oñate";;;;;"Avenida de Beleña, 9";;"19005";"Guadalajara";"fapagu@teleline.es";"949881106";;;;"Padres";;
+"GUADA";"034";"Asociación de Madres, Padres y Tutores de Usuarios del Centro Ocupacional Las Encinas";;;;;"Poligono Industrial de Cabanillas, Parcela - 16 A";;"19171";"Cabanillas del Campo";"marisaalique@gmail.com";"949253374, 639945482";;;;"Sanitaria";;
+"GUADA";"035";"AMPA Cardenal Mendoza";;;;;"Calle Laguna Grande, 10-12";;"19005";"Guadalajara";"cardenalmendoza@hotmail.com";;;;;"Padres";;
+"GUADA";"036";"AMPA ""San Roque"" del CRA Francisco Ibáñez de Iriépal";;;;;"Plaza de la Constitución, s/n, Iriépal";;"19150";"Guadalajara";;"949228427";;;;"Padres";;
+"GUADA";"038";"Club Deportivo Básico Usanos Club de Fútbol";;;;;"Calle Camino de Malaga, s/n";;"19181";"Usanos";;"949339039";;;;"Deportivas";;
+"GUADA";"040";"Club Deportivo de Bolos Castellanos Prejubilados Mca-Ugt";;;;;"Plaza de Pablo Iglesias, 2";;"19001";"Guadalajara";;;;;;"Deportivas";;
+"GUADA";"041";"Club Deportivo Elemental Pelota de Guadalajara";;;;;"Calle La Corredera, 17";;"19005";"Guadalajara";;;;;;"Deportivas";;
+"GUADA";"042";"Club Natación Guadalajara";;;"Piscina municipal cubierta";;"Calle Regino Pradillo, s/n";;"19001";"Guadalajara";;"949210672";;;;"Deportivas";;
+"GUADA";"043";"Asociación Club Sevillista Leal Graciani";;;;;"Calle Viña Plana, 9";;"19005";"Guadalajara";"futbolambrona23@hotmail.com";"949234997, 679766208";;;;"Deportivas";;
+"GUADA";"044";"Asociación Deportiva Wado Ryu Alcarria Karate Do";;;;;"Calle Chorrón, 22";;"19005";"Guadalajara";"senseiherraiz@yahoo.es";"949219105";;;;"Deportivas";;
+"GUADA";"045";"Asociación Deportiva Peña Txuri-Urdin Alcarreña";;;;;"Calle Doctor Rafael de la Rica, 33 - 4º B";"Calle Doctor Rafael de la Rica, 33";"19005";"Guadalajara";"franklozano2000@hotmail.com";"949256000, 663994853";"http://alkarre.blogspot.com.es/";;;"Deportivas";;
+"GUADA";"046";"Asociación Sala de Armas de Guadalajara";;;;"3º Izq";"Calle Padre Tabernero, 18";;"19002";"Guadalajara";"salaarmas_gu@yahoo.es";;"www.sagu.es";"https://www.facebook.com/salaarmas.guadalajara";;"Deportivas";;
+"GUADA";"047";"Asociación para el Síndrome de Down Guadalajara";"ASIDGU";;;;"Calle Tomás Camarillo, 21";;"19005";"Guadalajara";"asidgu@telefonica.net";"949222744, 607612239";"www.downguadalajara.org";;;"Sanitaria";;
+"GUADA";"048";"Asociación para la Integración de Enfermos Psíquicos Alcarreña";"APIEPA";;;;"Avenida de Barcelona, 18 Bajo";;"19005";"Guadalajara";"apiepa@yahoo.es, jasper2@hotmail.es";"949222607";"www.apiepa.es";;;"Sanitaria";;
+"GUADA";"049";"Asociación para la Lucha Contra Las Enfermedades del Riñón";"ALCER";;"Centro Social Cifuentes";;"Calle Cifuentes, 26";;"19003";"Guadalajara";"alcerguada@hotmail.com";"949210380, 606457226";;;;"Sanitaria";;
+"GUADA";"050";"Asociación Alcarreña de Riñón y Discapacitados";"ASARYD";;;"local 21";"Calle Zaragoza, 6";;"19005";"Guadalajara";"conchita-marcos@hotmail.com";"949221926
+616776116949221926
+616776116949221926
+616776116949221926
+616776116949221926
+616776116949221926
+616776116949221926
+616776116949221926
+616776116949221926
+616776116949221926
+616776116949221926
+616776116949221926
+616776116949221926
+616776116";;;;"Sanitaria";;
+"GUADA";"051";"Asociación Las Encinas";;;;;"Calle Jorge Luis Borges, 9";;"19004";"Guadalajara";"asociacionlasencinas@hotmail.com";"949206360";"www.asociacionlasencinas.com";;;"Sanitaria";;
+"GUADA";"052";"Asociación de Senegaleses en Guadalajara";;;;;"Calle Nuevo Alamín 6 - 2ºD";"Calle Nuevo Alamín, 6";"19005";"Guadalajara";"senegalesesgu@gmail.com";"949211706, 662147320";;;;"Culturales";;
+"GUADA";"053";"Asociación Cultural Annus La Negra";;;;;"Travesía de Medina, 19 - Bajo A";"Travesía de Medina, 19";"19002";"Guadalajara";"ayelencarmen@gmail.com";"689875899";;;;"Culturales";;
+"GUADA";"054";"Asociación Cultural Peña El Bizcocho Borracho";;;;;"Calle Toledo, 42 - 4ºB";"Calle Toledo, 42";"19002";"Guadalajara";"info@elbizcochoborracho.com";"618880091";"www.elbizcochoborracho.com";;;"Culturales";;
+"GUADA";"055";"Asociación Cultural Peña Los Choitos";;;;;"Calle Antonio Buero Vallejo, 22 - 2º 3";"Calle Antonio Buero Vallejo, 22";"19004";"Guadalajara";"rocialex_@hotmail.com";;;;;"Culturales";;
+"GUADA";"056";"Asociación Cultural de Vecinos y Amigos de Usanos";;;;;"Plaza de la Iglesia";;"19181";"Usanos (Guadalajara)";;;;;;"Vecinos";;
+"GUADA";"057";"Asociación Cultural Amigos del Archivo Histórico Provincial de Guadalajara";;;"Palacio del Infantado";"2ª planta";"Plaza de los Caídos, 11";;"19001";"Guadalajara";"ahp.guadalajara@jccm.es";"949885652";"www.amigosahpgu.es";;;"Culturales";;
+"GUADA";"059";"Asociación Cultural Los Dulzaineros de Guadalajara";;;;;"Calle San Isidro, 19 - 3ºA";"Calle San Isidro, 19";"19005";"Guadalajara";;;;;;"Culturales";;
+"GUADA";"060";"Asociación Cultural Francófona de Guadalajara";;;"Centro Cívico";;"Plaza del Concejo, s/n";;"19001";"Guadalajara";;;;;;"Culturales";;
+"GUADA";"061";"Asociación Casino Principal de Guadalajara";;;;;"Calle Mayor 22-24";;"19001";"Guadalajara";"luisalfonso@casinoguadalajara.es";"949226106";"www.casinoguadalajara.es";"https://es-es.facebook.com/casinogu";;"Culturales";;
+"GUADA";"062";"Asociación Alcarreña para la defensa de la Naturaleza";"DALMA";;"Centro Cívico";;"Plaza del Concejo, s/n";;"19001";"Guadalajara";;;;;;"Culturales";;
+"GUADA";"063";"Asociación Músico-Cultural La Esperanza";;;;;"Calle Felipe Solano Antelo, 8-C 6º3";;"19002";"Guadalajara";;;;;;"Culturales";;
+"GUADA";"064";"Asociación para la Innovación y Desarrollo de la Artesanía de Guadalajara";"AIDA";;"Estación de Autobuses";;"Calle Dos de mayo, s/n";;"19004";"Guadalajara";"info@artesaniadeguadalajara.com";"949224522, 679043318";"http://artesaniadeguadalajara.wordpress.com";;;"Culturales";;
+"GUADA";"065";"Asociación Cultural Natuistoria";;;"Centro Social La Amistad";;"Calle Felipe Solano Antelo, 15";;"19002";"Guadalajara";;;;;;"Culturales";;
+"GUADA";"066";"Agrupación Fotográfica de Guadalajara";;;"Centro San José";"3º - desp. 315";"Calle Atienza, 4 ";"Calle Atienza, 4";"19003";"Guadalajara";"agrupacion.afgu@gmail.com";;"www.afgu.org";;;"Culturales";;
+"GUADA";"068";"Asociación Cultural de Mayores Mundo del Trabajo";;;;;"Plaza de Europa, 3 - 5º";"Plaza de Europa, 3";"19002";"Guadalajara";"acmmundodeltrabajo@gmail.com";"949253080";;;;"Mayores";;
+"GUADA";"069";"Asociación Cultural de Vecinos y Propietarios Vega del Cañal";;;;;"Calle José Antonio Ochaita, 22";;"19004";"Guadalajara";"pacocampina@gmail.com";"669339766";;;;"Vecinos";;
+"GUADA";"070";"Asociación Cultural Grupo de Teatro Toronjil";;;;"4º Izq";"Calle Padre Tabernero, 18";;"19002";"Guadalajara";;;;;;"Culturales";;
+"GUADA";"071";"Asociación EncuadernArte";;;;;"Calle Bulevar de Entrepeñas, 17 - 5ºB";"Calle Bulevar de Entrepeñas, 17";;"Guadalajara";;;;;;"Culturales";;
+"GUADA";"072";"Asociación Artesana Nació en Belén";;;;;"Calle Hermanos Ros Emperador, 6";;"19002";"Guadalajara";"fernandolopezrey@hotamail.com";"659474668, 609267251";;;;"Culturales";;
+"GUADA";"073";"Asociación de Mujeres Paz y Perdón";;;;;"Calle Castellón, 7";;"19005";"Guadalajara";"garcimamen@hotmail.com";"949232749";"http://asociacionpazyperdon.blogspot.com.es/";;;"Mujeres";;
+"GUADA";"074";"Coordinadora de Asociaciones de Mujeres de Guadalajara";;;;;"Calle Miguel Hernández, 10";;"19004";"Guadalajara";"lolivalverde@yahoo.es";"949201029";;;;"Mujeres";;
+"GUADA";"075";"Asociación de Viudas Virgen de la Antigua";;;;;"Plaza del Carmen, 1";;"19001";"Guadalajara";"av.virgendelaantigua@hotmail.com";"949220456, 699040205";;;;"Mujeres";;
+"GUADA";"076";"Asociación de Mujeres de Iriépal";;;;;"Plaza del Ayuntamiento, 1";;"19150";"Iriepal (Guadalajara)";"esperanzaheras@hotmail.com";;;;;"Mujeres";;
+"GUADA";"077";"Asociación Provincial de Amas de Casa, Consumidores y Usuarios Concepción Arenal.";;;;;"Calle Capitán Luis Pizaño, 11, Portal 6 - Bajo";"Calle Capitán Luis Pizaño, 11";"19001";"Guadalajara";"apaccu.c.arenal@gmail.com";"949211792";;;;"Mujeres";;
+"GUADA";"078";"Asociación de Mujeres Atenea";;;;"3º";"Plaza del Concejo, s/n";;"19001";"Guadalajara";"pilarmmenendez@gmail.com";"949215097, 699575305";;;;"Mujeres";;
+"GUADA";"079";"Asociación de Mujeres  Mayores Nuevo Milenio";;;"Centro Social Alamín";;"Calle Alamín, 30";;"19005";"Guadalajara";;"949214153";;;;"Mayores";;
+"GUADA";"080";"Asociación de Mujeres La Amistad";;;"Centro Social La Amistad";;"Calle Felipe Solano Antelo, 15";;"19002";"Guadalajara";"a.mujeresamistad@hotmail.com";"696572163";;;;"Mujeres";;
+"GUADA";"081";"Asociación Cultural Centroafricana";;;"Centro Social La Amistad";;"Calle Felipe Solano Antelo, 15";;"19002";"Guadalajara";;;;;;"Culturales";;
+"GUADA";"082";"AVV Ferial, Panteón y Adyacentes";;;;;"Calle Azuqueca de Henares, 10- 4ºD";"Calle Azuqueca de Henares, 10";"19002";"Guadalajara";"jmlm@cnat.es";"949214157, 629329187";;;;"Vecinos";;
+"GUADA";"083";"AVV Castilla";;;;;"Calle General Moscardó Guzmán, 39 bis";;"19004";"Guadalajara";;"949214810";;;;"Vecinos";;
+"GUADA";"084";"AVV La Esperanza";;;"Centro Social La Amistad";;"Calle Felipe Solano Antelo, 15";;;"Guadalajara";;;;;;"Vecinos";;
+"GUADA";"085";"AVV Miguel Hernández";;;"Centro Social Alamín";;"Calle Alamín, 30";;"19005";"Guadalajara";"aavv.miguelhernandez@yahoo.es";"678707297
+678707298678707297
+678707298678707297
+678707298678707297
+678707298678707297
+678707298678707297
+678707298678707297
+678707298678707297
+678707298678707297
+678707298678707297
+678707298";;;;"Vecinos";;
+"GUADA";"086";"Federación de Asociaciones de Vecinos de Guadalajara";;;"Centro San José";"3º";"Calle Atienza, 4";;"19003";"Guadalajara";"federacionaavv@yahoo.es";"949217236";;;;"Vecinos";;
+"GUADA";"087";"AVV Valdenoches";;;"Centro Social Taracena";;"Calle de Real, 3";;"19197";"Guadalajara";"asociacionvecinosvaldenoches@hotmail.com";;;;;"Vecinos";;
+"GUADA";"089";"Unión de Consumidores de Guadalajara";;;;;"Calle Jorge Luis Borges, 5";;"19004";"Guadalajara";;;;;;"Consumo";;
+"GUADA";"090";"Asociación de Jubilados y Pensionistas El Alamín";;;"Centro Social Alamín";;"Calle Alamín, 30";;"19005";"Guadalajara";;"949210845";;;;"Mayores";;
+"GUADA";"092";"Club Atletismo La Esperanza";;;"Centro Social La Amistad";;"Calle Felipe Solano Antelo, 15";;"19002";"Guadalajara";"c.a.esperanza2000@hotmail.es";"689412185";"http://lamediadeguada.blogsport.com.es";;;"Deportivas";;
+"GUADA";"093";"AVV La Merced";;;;;"Avenida del Vado, 5 - 2º C";"Avenida del Vado, 5";"19005";"Guadalajara";"aavv.lamercedguada@gmail.com";"949214352";;;;"Vecinos";;
+"GUADA";"094";"Asociación Internacional Mujeres";;;"Centro Social Cifuentes";;"Calle Cifuentes, 26";;"19003";"Guadalajara";"mujeresinternacionales@gmail.com";"949226312";"www.mujeresinternacionales.org";;;"Mujeres";;
+"GUADA";"096";"AVV Estación La Chopera";;;;;"Calle Federico López, 110";;"19004";"Guadalajara";"estacionlachopera@yahoo.es";"949227992, 686087286";;;;"Vecinos";;
+"GUADA";"098";"Asociación Cultural de Botargas de Guadalajara";;;;;"Calle Ferial, 64B - 4ºA";"Calle Ferial, 64-B";"19002";"Guadalajara";;;;;;"Culturales";;
+"GUADA";"099";"AMPA del Colegio Público Río Henares";;;;;"Calle Cuesta de Hita, 25";;"19005";"Guadalajara";;;;;;"Padres";;
+"GUADA";"100";"Asociación de Pensionistas de la Administración Local";;;"Centro Social La Amistad";;"Calle Felipe Solano Antelo, 15";;"19002";"Guadalajara";;"949215491";;;;"Mayores";;
+"GUADA";"101";"AMPA del Colegio Público Isidro Almazán Los Manantiales";;;;;"Calle Buenafuente, 15-17";;"19004";"Guadalajara";;;;;;"Padres";;
+"GUADA";"102";"Asociación Española Contra el Cáncer - Guadalajara";"AECC-Guada";;"Escuela Universitaria de Enfermería";"3º";"Calle Ferial, 31";"Calle Ferial, 31";"19002";"Guadalajara";;;;;;"Sanitaria";;
+"GUADA";"103";"Asociación Club Deportivo Elemental Academia Albiceleste";;;;;"Calle Alcala de Henares, 16 - 5º A";"Calle Alcala de Henares, 16";"19003";"Guadalajara";;;;;;"Deportivas";;
+"GUADA";"104";"Asociación de Enfermos de Fibromialgia y Síndrome de Fatiga Crónica de Guadalajara";"AFIGUADA";;;"local 19";"Calle Zaragoza, 6";;"19005";"Guadalajara";"afiguada@gmail.com";"665533369, 949109014";"www.afiguada.es";;;"Sanitaria";;
+"GUADA";"105";"Asociación Cultural Centro de Cultura Teológica y Foro de Estudios de Guadalajara";;;;;"Calle Balcón del Parque Fluvial, 7 bajo";"Calle Balcón del Parque Fluvial, 7";"19001";"Guadalajara";"cctguadalajara@cctguadalajara.org";;;;;"Culturales";;
+"GUADA";"106";"Asociación en Defensa de los Enfermos de Anorexia y Bulimia Alcarreña";"ADABAL";;"Centro San José";;"Calle Atienza, 4";;"19003";"Guadalajara";"asociacion.adabal@gmail.com";"949235956, 618024152";;;;"Sanitaria";;
+"GUADA";"107";"AVV Los Manantiales";;;"Centro Social Los Manantiales";;"Calle Buenafuente, s/n";;"19004";"Guadalajara";;"949201509, 677827826";;;;"Vecinos";;
+"GUADA";"108";"Asociación Cooperación Social Guadalajara";;;"Centro Cívico";"3º";"Plaza del Concejo, s/n";;"19001";"Guadalajara";"javierblecua@hotmail.com";"696055407";;;;"Social";;
+"GUADA";"109";"Asociación de Esclerosis Múltiple de Guadalajara";"ADEMGU";;;;"Calle Antonio Machado, 13";;"19004";"Guadalajara";"ademgu@msn.com";"949203381, 630838582";;;;"Sanitaria";;
+"GUADA";"113";"Asociación Comparsa de Gigantes y Cabezudos de Guadalajara";;;;;"Calle Juan Diges Antón, 23 - 1ºC";"Calle Juan Diges Antón, 23";"19003";"Guadalajara";;;;;;"Culturales";;
+"GUADA";"114";"Asociación Cultural de Rumanos Alcarreños";;;;;"Calle Constitucion, 7 - 7ºA";"Calle Constitucion, 7";"19003";"Guadalajara";"dinalidia@hotmail.com";;;;;"Culturales";;
+"GUADA";"115";"Asociación Cultural de Mujeres Aguededas";;;;;"Calle Isabela, 16 - 1ºB";"Calle Isabela, 16";"19004";"Guadalajara";;;;;;"Mujeres";;
+"GUADA";"116";"Asociación Cultural Coro Novi Cantores";;;;;"Travesia Arrabal del Agua, 1 - 2º C";"Travesia Arrabal del Agua, 1";"19005";"Guadalajara";;;;;;"Culturales";;
+"GUADA";"117";"AVV Antonio Buero Vallejo";;;;;"Calle Gustavo Adolfo Becquer, 6 - local 7";"Calle Gustavo Adolfo Becquer, 6";"19004";"Guadalajara";"avantoniobuerovallejo@gmail.com";"949208812, 665285987";;;;"Vecinos";;
+"GUADA";"118";"Asociación de Padres y Familiares de Toxicómanos de Guadalajara";;;;;"Calle General Moscardó Guzmán, 16 post";"Calle General Moscardó Guzmán, 16 post";"19004";"Guadalajara";;;;;;"Social";;
+"GUADA";"119";"Asociación Amigos del Inglés One Way";;;"Centro Cívico";"4º";"Plaza del Concejo, s/n";;"19001";"Guadalajara";"calvoescribano@terra.com";;;;;"Culturales";;
+"GUADA";"121";"Asociación Guadalajareña para la Rehabilitación de Jugadores de Juegos de Azar y su Ámbito Familiar en Guadalajara";"BANCARROTA";;;;"Calle Valencia, 25";;"19005";"Guadalajara";;;;;;"Social";;
+"GUADA";"122";"Federación Provincial de Asociaciones de Mujeres de Guadalajara";;;"Centro San José";;"Calle Atienza, 4";;"19003";"Guadalajara";"federmujergu@gmail.com";;;;;"Mujeres";;
+"GUADA";"124";"Asociación Cultural de Mujeres Quejigos";;;"Colegio Alvarfáñez";;"Calle Constitución, 31";;"19003";"Guadalajara";;;;;;"Mujeres";;
+"GUADA";"125";"Asociación de Mujeres Barbacana";;;"Centro Social Bejanque";;"Calle Castellón, 7 - Bajo";"Calle Castellón, 7";"19005";"Guadalajara";"asociacion_barbacana@hotmail.com";;;;;"Mujeres";;
+"GUADA";"126";"Asociación Sociocultural de Adultos y Área de la Mujer";;;"Centro Social Los Manantiales";;"Calle Buenafuente, s/n";;"19004";"Guadalajara";"asociaciondeadultosguada@hotmail.com";"949201509";;;;"Mujeres Culturales";;
+"GUADA";"127";"Asociación Arriacense de Mujeres";;;;;"Avenida Pedro Sanz Vázquez, 17 - Bajo";"Avenida Pedro Sanz Vázquez, 17";"19004";"Guadalajara";"arriacensemujer@gmail.com";"677032968";;;;"Mujeres";;
+"GUADA";"128";"Asociación de Mujeres El Alcázar";;;"Centro Social Venezuela";;"Avenida de Venezuela, 5";;"19005";"Guadalajara";"mariage_gp@hotmail.com";;;;;"Mujeres";;
+"GUADA";"130";"Asociación Grupo de Estudios de Actualidad";;;;;"Avenida Castilla, 8A - 4ºC";"Avenida Castilla, 8A";"19003";"Guadalajara";;;;;;"Culturales";;
+"GUADA";"133";"Asociación de Daño Cerebral Sobrevenido de Castilla La Mancha";"ADACE";;"Hospital La Merced";;"Paseo de la Estación, 2";;"19004";"Guadalajara";"guadalajara@adaceclm.org, ecretaria@adaceclm.org";"949219375, 696097179";"www.adaceclm.org";;;"Sanitaria";;
+"GUADA";"134";"Asociación Micológica Alcarreña La Senderuela";;;"Centro Social Adoratrices";;"Calle Adoratrices, 37";;"19002";"Guadalajara";"amalasenderuela@yahoo.es";"696557096";;;;"Culturales";;
+"GUADA";"135";"Asociación Provincial de Encajer@as de Bolillos de Guadalajara";;;"Centro Social La Amistad";;"Calle Felipe Solano Antelo, 15";;"19002";"Guadalajara";"encajerasdeguadalajara@gmail.com";;;;;"Culturales";;
+"GUADA";"136";"Asociación de Padres y Amigos de niños con Deficiencia Auditiva de Guadalajara";"APANDAGU";;"Centro San José";;"Calle Atienza, 4";;"19003";"Guadalajara";"apandagu@gmail.com";"655670327, 949221449";"http://www.apandagu.com/
+https://es-es.facebook.com/apandagu.guadalajara
+https://twitter.com/Apandaguhttp://www.apandagu.com/
+https://es-es.facebook.com/apandagu.guadalajara
+https://twitter.com/Apandaguhttp://www.apandagu.com/
+https://es-es.facebook.com/apandagu.guadalajara
+https://twitter.com/Apandaguhttp://www.apandagu.com/
+https://es-es.facebook.com/apandagu.guadalajara
+https://twitter.com/Apandaguhttp://www.apandagu.com/
+https://es-es.facebook.com/apandagu.guadalajara
+https://twitter.com/Apandaguhttp://www.apandagu.com/
+https://es-es.facebook.com/apandagu.guadalajara
+https://twitter.com/Apandaguhttp://www.apandagu.com/
+https://es-es.facebook.com/apandagu.guadalajara
+https://twitter.com/Apandaguhttp://www.apandagu.com/
+https://es-es.facebook.com/apandagu.guadalajara
+https://twitter.com/Apandagu";;;"Sanitaria";;
+"GUADA";"137";"Asociación Cultural Alamín";;;"Centro Social Alamín";;"Calle Alamín, 30";;"19005";"Guadalajara";"aculturalalamin@yahoo.es";"949210845, 686262301";;;;"Culturales";;
+"GUADA";"138";"Asociación Rondalla La Rosaleda";;;;;"Calle Roncesvalles, 25";;"19004";"Guadalajara";;;;;;"Culturales";;
+"GUADA";"139";"Asociación Católica Internacional de Servicios a la Juventud Femenina";;;;;"Calle Enrique Benito Chávarri, 3";;"19001";"Guadalajara";"acisjfgu@hotmail.com";"949219824, 629576709";;;;"Social";;
+"GUADA";"140";"Asociación Provincial de Discapacitados Físicos";"APRODISFIGU";;;;"Calle Cardenal González de Mendoza, 8 post";;"19001";"Guadalajara";"aprodisfigu@gmail.com";;;;;"Sanitaria";;
+"GUADA";"141";"Asociación Donantes de Sangre de Guadalajara";;;"Hospital del SESCAM";;"Calle Donantes de Sangre, s/n";;"19002";"Guadalajara";"dsangregu@hotmail.com";;;;;"Sanitaria";;
+"GUADA";"142";"Asociación Provincial de Enfermos Reumáticos de Guadalajara";"APERG";;"Hospital La Merced";;"Paseo de la Estacion, 2";;"19004";"Guadalajara";"aperg.guadalajara@gmail.com";"949048774, 658945486";;;;"Sanitaria";;
+"GUADA";"143";"Sin Barreras";;;;;"Avenida de Castilla, 19";;"19002";"Guadalajara";"virtudespastor@hotmail.es";"949210255";;;;"Sanitaria";;
+"GUADA";"144";"Fundación Tutelar de Castilla La Mancha";"FUTUCAM";;;;"Calle Mago de Oz, 1 - 2º B";"Calle Mago de Oz, 1";"19005";"Guadalajara";"futucam@futucam.org";"660474917";"www.futucam.org";;;"Social";;
+"GUADA";"145";"Asociación Independiente de Mujeres de Guadalajara";"AIMA";;;;"Calle Subida del Castillo, 16";;"19197";"Guadalajara";"ciemgu@terra.com";;;;;"Mujeres";;
+"GUADA";"146";"Asociación Española Contra la Leucodistrofia y enfermedades neurológicas de Guadalajara";;;;;"Calle Hermanos Hernández Galiano, 11C - 1ºC";"Calle Hermanos Hernández Galiano, 11C";"19004";"Guadalajara";"margalera@hotmail.com";"949219767, 696327417";;;;"Sanitaria";;
+"GUADA";"147";"Fundación Madre";;;;;"Calle Constitución, 24 - 1º Entreplantas";"Calle Constitución, 24";"19003";"Guadalajara";"fmadre@fundacionmadre.org";"949202343, 949202051";"www.fundacionmadre.org";"https://es-es.facebook.com/pages/Fundación-Madre";;"Sanitaria";;
+"GUADA";"148";"Asociación Taichi Chuan - Río de Piedra";;;;;"Plaza de las Burgas, 1A - 2º B";"Plaza de las Burgas, 1A";"19004";"Guadalajara";"riodepiedrastaichi@yahoo.es, measensi@yahoo.es";;;;;"Culturales";;
+"GUADA";"149";"Asociación Provincial de Familiares de Enfermos de Alzheimer";;;;;"Calle Antonio Machado, 2";;"19004";"Guadalajara";"afaguadalajara@hotmail.com";"949200263";;;;"Sanitaria";;
+"GUADA";"150";"Asociación de Padres de Niños Autistas de Guadalajara";"APANAG";;;;"Calle Hermanos Ros Emperador, 20A - 1ºA";"Calle Hermanos Ros Emperador, 20A";"19002";"Guadalajara";"apanag@apanag.es";;;;;"Sanitaria";;
+"GUADA";"151";"Asociación de Discapacitados de Reparaciones de Guadalajara";"ADREGU";;;;"Calle Zaragoza, 6";;"19005";"Guadalajara";"conchita-marcos@hotmail.com";;;;;"Sanitaria";;
+"GUADA";"152";"Asociación Afaus Pro Salud Mental";;;;;"Calle Felipe Solano Antelo, 11 - Bajo";"Calle Felipe Solano Antelo, 11";"19002";"Guadalajara";"afauspro@gmail.com";"949235895, 949235140";"www.afaus.es";;;"Sanitaria";;
+"GUADA";"153";"Asociación Sociocultural mixta La Unión";;;"Centro Social Casas del Rey";;"Calle Luis Ibarra Laudete, s/n";;"19004";"Guadalajara";"antoniamoratilla@gmail.com";;;;;"Mujeres";;
+"GUADA";"154";"Asociación de Vecinos y Amigos de Taracena";;;"Centro Social Taracena";;"Calle de Real, 3";;"19193";"Guadalajara";"amigosdetaracena@hotmail.com";;;;;"Vecinos";;
+"GUADA";"155";"Asociación de Mujeres Separadas y Divorciadas La Cometa";;;"Centro Social Casas del Rey";;"Calle Luis Ibarra Laudete, s/n";;"19004";"Guadalajara";"aliaragones@hotmail.com";;;;;"Mujeres";;
+"GUADA";"156";"Federación Provincial de Discapacitados Físicos de Guadalajara";"COCEMFE";;;;"Calle Doctor Layna Serrano, 22";;"19005";"Guadalajara";"cocemfeguada@gmail.com";"949211560, 678677204";;;;"Sanitaria";;
+"GUADA";"157";"Asociación Juvenil Mujeres";;;"Centro Social Cifuentes";;"Calle Cifuentes, 26";;"19003";"Guadalajara";"mujeresinternacionales@gmail.com";"949226312";;;;"Mujeres";;
+"GUADA";"158";"Fundación Amigos de las Abejas";;;;;"Calle El Redondel, 75";;"19005";"Guadalajara";"fundacion@abejas.org";"618327446, 949710030";"www.abejas.org";;;"Medio Ambiente";;
+"GUADA";"159";"Asociación Red Madre de Guadalajara";;;;;"Calle Teniente Figueroa, 24 - bajo,local";"Calle Teniente Figueroa, 24";"19001";"Guadalajara";"guadalajara@redmadre.es";"949230221, 75532676";"www.redmadre.es";;;"Mujeres";;
+"GUADA";"160";"Fundación para el Desarrollo de la Enfermería";"FUDEN";;;;"Bulevar del Alto Tajo, 1 - local 1";"Bulevar del Alto Tajo, 1";"19005";"Guadalajara";"fuden_cooperacion@fuden.es";"949218364";;;;"Sanitaria";;
+"GUADA";"161";"Asociación de Celiacos de Castilla - La Mancha";;;"Centro Social Los Manantiales";;"Calle Buenafuente, s/n";;"19004";"Guadalajara";"acclm.guadalajara@gmail.com";"687478083, 967558903";"www.celiacosmancha.org";;;"Sanitaria";;
+"GUADA";"162";"Asociación Provincial de Empresarias y Emprendedoras de Guadalajara";;;;;"Calle León Felipe, 4";;"19004";"Guadalajara";"fcg@upta.es";;;;;"Mujeres";;
+"GUADA";"163";"Asociación del Trastorno de Déficit de Atención con o sin Hiperactividad";"TDAH";;;;"Calle Salazaras, 2";;"19005";"Guadalajara";"tdahguadalajara@gmail.com";"949339785, 619060990";"http://tdahguadalajara.org";"http://www.facebook.com/asociaciones.guadalajara";"http://twitter.com/TDHAGuadalajara";"Sanitaria";;
+"GUADA";"164";"AVV Barrio de Cobos";;;;;"Calle La Fábrica, 3";;"19004";"Guadalajara";"barriodecobos@hotmail.com";;;;;"Vecinos";;
+"GUADA";"165";"Asociación Luna Guadalajara";;;;;"Calle Doctor Layna Serrano, 22";;"19002";"Guadalajara";"luna.guadalajara@gmail.com";"600289804, 646859977";;"www.facebook.com/luna.guadalajara.3";;"Mujeres";;
+"GUADA";"166";"Fundación Nipace";;;;;"Calle Francisco Aritio, 66 - bajo 17";"Calle Francisco Aritio, 66";"19004";"Guadalajara";"control@fundacionnipace.org";"902040320";"www.fundacionnipace.org";"https://es-es.facebook.com/fundacionnipace.guadalajara";;"Sanitaria";;
+"GUADA";"168";"Asociación Cultural Artefasto";;;;;"Calle Río de la Solana, 17";;"19005";"Guadalajara";"riofrio70@hotmail.com";"699660308";"https://www.facebook.com/artefastoteatro";;;"Culturales";;
+"GUADA";"169";"Asociación Orfeón Joaquín Turina";;;"Centro Social Los Valles";;"Virgen de la Hoz, s/n";;"19005";"Guadalajara";"orfeon@orfeonjoaquinturina.es";"626543659";"www.orfeonjoaquinturina.es";;;"Culturales";;
+"GUADA";"170";"Asociación de Vecinos El Balconcillo";;;"Centro Social Cifuentes";;"Calle Cifuentes, 26";;"19003";"Guadalajara";"asociacionbalconcillo@hotmail.com";"949216088, 636229875";;;;"Vecinos";;
+"GUADA";"171";"Asociación de Jubilados y Pensionistas Zona Centro de Guadalajara";;;"Centro Social Cifuentes";;"Calle Cifuentes, 26";;"19003";"Guadalajara";;"949010380";;;;"Mayores";;
+"GUADA";"172";"Asociación Amigos de la Biblioteca de Guadalajara";;;;;"Plaza de Dávalos, s/n";;"19001";"Guadalajara";"asocabibliogu1@gmail.com";;;;;"Culturales";;
+"GUADA";"173";"Asociación Chiquilicuatres";;;;;"Calle Laguna de Taravilla, 4 - local";"Calle Laguna de Taravilla, 4";"19005";"Guadalajara";"asociacionchiquilicuatres@yahoo.es";"638418536";"http://asociacionchiquilicuatres.blogspot.com";;;"Sanitaria";;
+"GUADA";"174";"Asociación Cultural de Diseñadores Gráficos de Guadalajara";;;;;"Bulevar de Entrepeñas, 2 - portal 7 - 4ºB";"Bulevar de Entrepeñas, 2";"19005";"Guadalajara";;;;;;"Culturales";;
+"GUADA";"175";"Asociación de Mujeres Pinceladas Guadalajara";;;"Centro Social Los Manantiales";;"Calle Buenafuente, s/n";;"19180";"Guadalajara";;;;;;"Mujeres";;
+"GUADA";"176";"Asociación Comunidad Papa XXIII";;;;;"Avenida Santa María Micaela, 19";;"19002";"Guadalajara";"admin.espana@apg23.org, rdz.espana@apg23.org";;;;;"Social";;
+"GUADA";"178";"Asociación de Vecinos Colonia-Eras";;;"Centro Social Venezuela";;"Avenida de Venezuela, 5";;"19005";"Guadalajara";"anaisabelpigal@gmail.com";"656383979";;;;"Vecinos";;
+"GUADA";"179";"Asociación de Emigrantes Saharauis en Guadalajara";;;;;"Calle Doctor Flemming, 9 - 4º I";"Doctor Flemming, 9";"19003";"Guadalajara";;;;;;"Culturales";;
+"GUADA";"181";"Asociación Cultural Horizonte Flamenco de Guadalajara";;;;;"Calle General Moscardó Guzmán, 18";;"19005";"Guadalajara";"horizonteflamenco@live.com";"635111853";"http://horizonteflamenco.blogspot.com";;;"Culturales";;
+"GUADA";"182";"Asociación Proyecto Despertar";;;;;"Calle El Redondel, 47";;"19005";"Guadalajara";"proyecto_despertar@hotmail.com";;;;;"Social";;
+"GUADA";"183";"Asociación de Alérgicos a Alimentos de Guadalajara";"ALERGUADA";;;;"Calle Bulevar de Entrepeñas, 19 - 4ºC";"Calle Bulevar de Entrepeñas, 19";"19005";"Guadalajara";"alerguada@gmail.com";"689511799";"http://www.alerguada.org";"https://www.facebook.com/pages/Alerguada/229799747068308";"https://twitter.com/alerguada";"Sanitaria";;
+"GUADA";"184";"Asociación Sounds From The Deep";;;;;"Calle El Romeral, 10";;"19005";"Guadalajara";"sounds.from.the.deep@gmail.com";;"http://www.soundsfromthedeep.com";;;"Culturales";;
+"GUADA";"185";"Asociación de Mujeres Moteras Las Rompemanetas";;;;;"Avenida del Atance, 11 - 4ºB";"Avenida del Atance, 11";"19005";"Guadalajara";"lasrompemanetas@gmail.com";;;;;"Mujeres";;
+"GUADA";"186";"Asociación de Mujeres Pensionistas Minerva";;;"Centro San José";;"Calle Atienza, 4";;"19003";"Guadalajara";"asocmpminerva@gmail.com";;;;;"Mayores";;
+"GUADA";"187";"Federación Progresista de Ayuda a la Mujer";;;"Centro San José";;"Calle Atienza, 4";;"19003";"Guadalajara";"feproamlilith@gmail.com";;;;;"Mujeres";;
+"GUADA";"188";"Asociación de Vecinos Casco Antiguo";;;"Centro Cívico";"3º";"Plaza del Concejo, s/n";;"19001";"Guadalajara";"cascoantguada@yahoo.es";;;;;"Vecinos";;
+"GUADA";"190";"Asociación de Trabajadores Autónomos de Castilla La Mancha";"ATA";;;;"Plaza de Santo domingo, 10";;"19001";"Guadalajara";;;;;;"Trabajo";;
+"GUADA";"191";"Asociación de Vecinos Los Valles";;;"Centro Social Los Valles";;"Calle Virgen de la Hoz, s/n";;"19005";"Guadalajara";"asociaciondevecinoslosvalles@hotmail.com";"949298960";;;;"Vecinos";;
+"GUADA";"192";"Asociación Europea Danubio-Cárpatos";;;;;"Calle Buenafuente, 11";;"19004";"Guadalajara";"danubio.carpatos@yahoo.es";;;;;"Culturales";;
+"GUADA";"193";"Asociación de Glaucoma para Afectados y Familiares";"AGAF";;;;"Calle La Alameda, 6 - 4ºC";"Calle La Alameda, 6";"19003";"Guadalajara";"asociaciondeglaucoma@yahoo.es";"630269587";;;;"Sanitaria";;
+"GUADA";"194";"Asociación Contrapicado Films";;;;;"Calle Travesía Hermanos Ros Emperador, 7 - P1 5ºB";"Calle Travesía Hermanos Ros Emperador, 7";"19002";"Guadalajara";"contrapicadofilms@gmail.com";"645210917, 691487543";;;;"Culturales";;
+"GUADA";"195";"AVV El Clavín";;;"Urbanización El Clavín";;"Calle Los Pinos, s/n - Buzón 266";"Calle Los Pinos, s/n";"19163";"Guadalajara";"asociacion.vecinos.elclavin@gmail.com, pejimtor@hotmail.com";;;;;"Vecinos";;
+"GUADA";"196";"AVV Río Henares";;;;;"Calle Francisco Borabia, 5";;"19004";"Guadalajara";"presidente@riohenares.es";;;;;"Vecinos";;
+"GUADA";"197";"Asociación Cultural de Jubilados El Infantado";;;"Centro Social Cifuentes";;"Calle Cifuentes, 26";;"19003";"Guadalajara";;"949010380";;;;"Mayores";;
+"GUADA";"198";"Solidaridad Proyecto del Henares";;;;;"Calle Bolarque, 3";;"19005";"Guadalajara";"administracion@phcastillalamancha.es";;;;;"Social";;
+"GUADA";"199";"Asociación San Vicente de Paúl en España";;;"Parroquia de San Nicolás";;"Calle Mayor, 21";;"19002";"Guadalajara";"sanvicentedepaulguadalajara@gmail.com";"663043458, 949218731";;;;"Social";;
+"GUADA";"200";"Congregación de las Hermanitas de los Ancianos Desamparados del Asilo Santa Teresa de Jornet de Guadalajara";;;;;"Plaza Capitán Boixareu Ribera, 99";;"19002";"Guadalajara";;"949220708";;;;"Social";;
+"GUADA";"201";"Federación Progresista de Asociaciones de Mujeres y Consumidores de Guadalajara";"FEPAMUC-GU";;"Centro Social Cifuentes";;"Calle Cifuentes, 26";;"19003";"Guadalajara";"federacionprogresistamujeresgu@yahoo.es";"949226312, 659960952";;;;"Mujeres";;
+"GUADA";"202";"Asociación Comisión Católica Española de Migración";"ACCEM";;;;"Avenida de Venezuela, 9";;"19005";"Guadalajara";"guadalajara@accem.es";"949219567, 639345215";;;;"Social";;
+"GUADA";"203";"Synergia - Entidad prestadora de servicios a la juventud";;;;;"Calle Sigüenza, 18 - 4º 12 esc.dcha";"Calle Sigüenza, 18";"19003";"Guadalajara";"asociacion.synergia@gmail.com";"657783707";"www.asociacionsynergia.com";"www.facebook.com/asociacionsynergia";"https://twitter.com/synergiasexo";"Social";;
+"GUADA";"204";"Unicef Comité Guadalajara";;;"Centro Social Cifuentes";;"Calle Cifuentes, 26";;"19003";"Guadalajara";;"949232986";;;;"Social";;
+"GUADA";"205";"Asociación Familiar de Ayuda a un Niño";"AFAN";;;;"Calle Cuesta de Hita, 32C - 3ºA";"Calle Cuesta de Hita, 32C";"19005";"Guadalajara";"afan@vvapardillo.org";"639083453";;;;"Social";;
+"GUADA";"206";"Manos Unidas - Guadalajara";;;;;"Avenida de Venezuela, 9";;"19005";"Guadalajara";"guadalajara@manosunidas.org";"949218220";;;;"Social";;
+"GUADA";"207";"Valdefuentes";;;;;"Avenida 1º de mayo, 58 local 5";"Avenida 1º de mayo, 58";"19197";"Guadalajara";;"605780290";;;;"Culturales";;
+"GUADA";"208";"Asociación de Ajedrez de Guadalajara";;;;;"Calle Constitución, 10 - bajo A";"Calle Constitución, 10";"19003";"Guadalajara";"ajedrezguadalajara@gmail.com";"617480739";;;;"Culturales";;
+"GUADA";"213";"Asociación Filatélica de Guadalajara";;;;;"Calle General Medrano de Miguel, 2 - Bajo A";"Calle General Medrano de Miguel, 2";"19003";"Guadalajara";;;;;;"Culturales";;
+"GUADA";"214";"Asociación Tsis";;;;;"Avenida del Ejército, 9H - Bajo derecha";"Avenida del Ejército, 9H";"19004";"Guadalajara";"cira@asociaciontsis.es, aaliste@asociaciontsis.es";"667482830, 606698753";;;;"Social";;
+"GUADA";"216";"Asociación Cultural Federico Engels de Guadalajara";;;;;"Calle Jorge Luis Borges, 14 - 3º A";"Calle Jorge Luis Borges, 14";"19004";"Guadalajara";;"629724830";;;;"Culturales";;
+"GUADA";"217";"La Puerta del Bienestar";;;;;"Plaza del General Prim, 1";;"19001";"Guadalajara";"info@lapuertadelbienestar.org";"949328969";"hppt://www.lapuertadelbienestar.org";;;"Social";;
+"GUADA";"218";"Asociación para la Integración de Discapacitados de Castilla La Mancha";"AIDISCAM";;;;"Plaza Marcelino Gómez Pintado, 6";;"45400";"Guadalajara";;"603337342";;;;"Sanitaria";;
+"GUADA";"219";"Asociación de Acuarelistas de Guadalajara";"AGUADA";;;;"Calle Salvia, 18";;"19004";"Guadalajara";"aguada.acuarelistas@gmail.com";"637492457";"http://asociacionacuarelaaguada.blogspot.com.es/";;;"Culturales";;
+"GUADA";"220";"Asociación de Enfermedades Raras de Guadalajara";"GUADAERA";;;;"Calle Roncesvalles, 5B - Bajo E2";"Calle Roncesvalles, 5B";"19004";"Guadalajara";"guadaera@hotmail.es";"616797855";;;;"Sanitaria";;
+"GUADA";"221";"Asociación Salud Deporte y Formación de Guadalajara y Henares";"ASDFGH";;;;"Calle San Esteban, 2 - 1º";"Calle San Esteban, 2";"19001";"Guadalajara";"info@asdfgh.es";"949218104";"www.asdfgh.es";"www.facebook.com/AsociacionDeporteSaludFormacionGuadalajara";"https://twitter.com/InfoASDFGH ";"Deportivas";;
+"GUADA";"222";"Asociación Protectora de Animales El Lebrel";;;;;"Avenida de Castilla, 18C - 4ºC";"Avenida de Castilla, 18C";"19002";"Guadalajara";"ellebrel@hotmail.es";"635515000";;"https://www.facebook.com/apa.ellebrel";;"Animales";;
+"GUADA";"223";"Fundación Pía Autónoma de Acción Social Caritativa Año 2.000";;;;;"Avenida de Venezuela, 9";;"19005";"Guadalajara";"vsocial@siguenza-guadalajara.org";;;;;"Social";;
+"GUADA";"224";"Centro Juvenil Juan Pablo II";;;;;"Calle Inclusa, 5";;"19005";"Guadalajara";"centrojuanpablo@wadi.es";"949873263, 640323036";;;;"Juveniles";;
+"GUADA";"225";"Asociación Juvenil Wadi";;;;;"Calle La Inclusa, 5";;"19005";"Guadalajara";"asociacion@wadi.es";"949873263, 640323036";;;;"Juveniles";;
+"GUADA";"226";"Asociación Juvenil Encuentro Guadalajara";;;;;"Calle Bolarque, 7";;"19005";"Guadalajara";"asociacionjuvenilencuentro@gmail.com";"654961326";;;;"Juveniles";;
+"GUADA";"227";"Asociación Ahí le has dao";;;;;"Pasaje Sierra Menera, 69";;"19004";"Guadalajara";"jmlopez46@gmail.com";"646643988";;;;"Juveniles";;
+"GUADA";"228";"Entidad Prestadora de Servicios a la Juventud Don Bosco";;;;;"Calle Jesús Garcia Perdices, 9 - 3ºC";"Calle Jesús Garcia Perdices, 9";"19004";"Guadalajara";"donbosco313@acoutaclm.org";;;;;"Juveniles";;
+"GUADA";"229";"AVV El Fuerte";;;;;"Calle Holanda, 4, portal 5 - 4º B";"Calle Holanda, 4";"19005";"Guadalajara";"asociacionelfuerte@gmail.com";"676791327, 653979096";;;;"Vecinos";;
+"GUADA";"230";"Asociación de Emigrantes Mauritanos y Mauritanas originales de Bouanze en España";"AEMBRE";;;;"Calle La Isabela, 16 - P05";"Calle La Isabela, 16";"19004";"Guadalajara";"wawmusa5306@gmail.com";"644757694, 602073141";;;;"Culturales";;
+"GUADA";"231";"Asociación Músico-Cultural Las Colmenas";;;;;"Avenida de Beleña, 7, portal 6 - 2ºD";"Avenida de Beleña, 7";"19005";"Guadalajara";"lascolmenas2012@hotmail.es";"699158353";;"https://es-es.facebook.com/pages/Grupo-Folk-Las-Colmenas/602028739890938";"https://twitter.com/GFLascolmenas";"Culturales";;
+"GUADA";"232";"Asociación de Jardicultura";;;;;"Calle Doctor Flemming, 6A - 1º B derecha";"Calle Doctor Flemming, 6A";"19003";"Guadalajara";"info@asociaciondejardicultura.org";"653993561";"www.asociaciondejardicultura.org";;;"Culturales";;
+"GUADA";"233";"Hogar Extremeño de Guadalajara";;;;;"Calle Ingeniero Mariño, 39";;"19001";"Guadalajara";"extremaduraenguadalajara@hotmail.com";"627762705, 679291611";;;;"Culturales";;
+"GUADA";"234";"Asociación de Discapacitados Físicos de Guadalajara (ADISFIGU)";"ADISFIGU";;;;"Calle Zaragoza, 39";;"19005";"Guadalajara";"adisfigu@gmail.com";"685181244, 626004067";;;;"Sanitaria";;
+"GUADA";"235";"Asociación Ecologistas en Acción - Guadalajara";;;"Centro Cívico";"4º";"Plaza del Concejo, s/n";;"19001";"Guadalajara";"guadalajara@ecologistasenaccion.org";"686335872, 659155339";"www.ecologistasenaccion.org/guadalajara";;;"Medio Ambiente";;
+"GUADA";"236";"InteRed";;;;;"Calle Fernández Iparraguirre, 45";;"19003";"Guadalajara";"castillalama@intered.org, nicolas.ost@intered.org";"645957663";"www.intered.org";;;"Social";;
+"GUADA";"238";"Asociación Cultural de Alumnos de la Universidad de Mayores de Guadalajara";"ACAUMA";;"Facultad de Educación";;"Calle Madrid, 1";;"19001";"Guadalajara";"acasenior@gmail.com";"696918005";"www.acauma.es";;;"Culturales";;
+"GUADA";"239";"Asociación Paleontológica Alcarreña Nautilus";;;;;"Calle Constitución, 33";;"19003";"Guadalajara";;"949231831, 606861086";"www.paleontologia-nautilus.com";;;"Culturales";;
+"GUADA";"240";"Sin Ánimo de Luto";;;;;"Calle Río Berbellido, 17";;"19005";"Guadalajara";"sinanimodeluto@gmail.com";"620562780";"www.sinanimodeluto.es";;;"Culturales";;
+"GUADA";"241";"Asociación Amigos de Siempre de Guadalajara";;;;;"Calle Fernando Palanca, 4";"Calle Fernando Palanca, 4";"19005";"Guadalajara";"a.jaraba@hotmail.es";"692122714, 949490451";;;;"Culturales";;
+"GUADA";"242";"Asociación Diversos Tertulia Literaria";;;;;"Calle López de Haro, 4 - 1º";"Calle López de Haro, 4";"19001";"Guadalajara";"arquimato@hotmail.com";"629165706, 616905685";"http://di-versos-guada.blogspot.com.es/";;;"Culturales";;
+"GUADA";"243";"Artyco";;;;;"Calle La Barca, 11 - 3ºA";"Calle La Barca, 11";"19005";"Guadalajara";"ac.art.yco@gmail.com";"685976417";"http://acartyco.wix.com/artyco";;;"Culturales";;
+"GUADA";"244";"Asociación para la Integración del Menor";"PAIDEIA";;;;"Avenida de América, 1B, Esc A - 2ºB";"Avenida de América, 1B";"45004";"Guadalajara";"paideiaclm@asociacionpaideia.org";"925239637";"http://www.asociacionpaideia.org/";;;"Social";;
+"GUADA";"245";"Imagina Animación Educación y Ocio Creativo";;;;;"Calle General Medrano de Miguel, 24";;"19003";"Guadalajara";"info@imaginaanimacion.es";"636504214, 949221919";"http://www.imaginaanimacion.es";"https://www.facebook.com/imaginaanimacion.ociocreativo";;"Social";;
+"GUADA";"246";"Espacio Al Quantara";;;;;"Calle General Moscardó Guzmán, 75 - 2º";"Calle General Moscardó Guzmán, 75";"19004";"Guadalajara";"e.alquantara@gmail.com";"664712854";;;;"Social";;
+"GUADA";"247";"Asociación Musical Tempo y Matiz";;;;;"Avenida del Ejército, 9D - 2ºA";"Avenida del Ejercito, 9D";"19004";"Guadalajara";"tempoymatiz@hotmail.com";"949231054, 608923219";;;;"Culturales";;
+"GUADA";"248";"Asociación Cultural Bonsai Alcarria";;;"Jardín Botánico del Minizoo";;"Avenida Pedro Sanz Vázquez, s/n";;"19004";"Guadalajara";"bonsaisalcarria@gmail.com";"616849598";"http://bonsaialcarria.blogspot.com.es/";"https://es-es.facebook.com/pages/Asociaci%C3%B3n-Cultural-Bons%C3%A1i-Alcarria/452259134853985";;"Culturales";;
+"GUADA";"249";"Uno+Teatro";;;;;"Plaza de Oñate, 3 - Bajo A";"Plaza de Oñate, 3";"19001";"Guadalajara";"unomasteatro@gmail.com";"695490186";;;;"Culturales";;
+"GUADA";"250";"Coro Lírico Miguel de Cervantes";;;;;"Calle Capitán Arenas, 15";;"19003";"Guadalajara";"coroalcervantes@yahoo.es";;;;;"Culturales";;
+"GUADA";"251";"Cine Club Alcarreño";;;;;"Apartado de Correos 205";;"19080";"Guadalajara";"cineclubalcarreno@gmail.com";"639275137, 605426403";"https://cineclubalcarreno.wordpress.com";"https://es-la.facebook.com/pages/Cineclub-Alcarre%C3%B1o/282007358489631";;"Culturales";;
+"GUADA";"252";"Asociación Sociocultural La Hoz";;;;;"Calle Virgen del Amparo, 23 - 3ºA";"Calle Virgen del Amparo, 23";"19001";"Guadalajara";"la_hoz@hotmail.com";"660836068";"https://asociacionlahozguadalajara.wordpress.com/";;;"Culturales";;
+"GUADA";"253";"Asociación Musical y Folklórica Arrabal Folk";;;;;"Calle Tendilla, 10";;"19002";"Guadalajara";;;;;;"Culturales";;
+"GUADA";"254";"Asociación España con Acnur";;;;;"Plaza de San Antonio, 3 - 3º derecha";"Plaza de San Antonio, 3";"19001";"Guadalajara";"guadalajara@eacnur.org, castilla@eacnur.org";"666412814, 648107043";;;;"Social";;
+"GUADA";"255";"Asociación Cultural Cristiana Guadalajara";;;;;"Calle Cifuentes, 25 - sótano";"Calle Cifuentes, 25";"19004";"Guadalajara";"tristansaavedra.tsr@gmail.com";"697886631, 672056875";;;;"Religiosas";;
+"GUADA";"256";"Red de Consumo Solidario";;;;;"Calle Virgen del Saz, 8, portal 3 - 4ºD";"Calle Virgen del Saz, 8";"19005";"Guadalajara";"clm@xarxaconsum.net";;;;;"Social";;
+"GUADA";"257";"Fundación Balia por la Infancia";;;"Centro Social Cifuentes";;"Calle Cifuentes, 26";;"19003";"Guadalajara";"info@fundacionbalia.org";"915705519, 607503755";"https://fundacionbalia.org";;;"Social";;
+"GUADA";"258";"Cooperación Vicenciana para el Desarrollo de Acción Misionera Vicenciana de España";"COVIVE AMVE";;;;"Calle Madrid, 30";;"19001";"Guadalajara";"covideamve@gmail.com";;;;;"Social";;
+"GUADA";"259";"Asociación Cultural Cicerón";;;;;"Plaza del Ayuntamiento, 1";;"19150";"Guadalajara";;"691511595";;;;"Culturales";;

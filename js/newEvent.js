@@ -256,20 +256,20 @@ function nextLugarSuggestionNewEvent()
 function clickSuggestionNewEvent(index)
 {
   console.log(index);
-  console.log(window.arraySuggestionsDirecciones[index]);
+  console.log(window.arraySuggestionsPlaces[index]);
   $("#newEvent-lugarSuggest").empty();
-  updateMapLocationDireccion(window.arraySuggestionsDirecciones[index]);
-  $(".newEvent-lugarDiv-texto1").html(window.arraySuggestionsDirecciones[index].texto1);
-  $(".newEvent-lugarDiv-texto2").html(window.arraySuggestionsDirecciones[index].texto2);
+  updateMapLocationDireccion(window.arraySuggestionsPlaces[index]);
+  $(".newEvent-lugarDiv-texto1").html(window.arraySuggestionsPlaces[index].texto1);
+  $(".newEvent-lugarDiv-texto2").html(window.arraySuggestionsPlaces[index].texto2);
   $("#newEvent-lugar").hide();
-  $("#newEvent-idLugar").val(window.arraySuggestionsDirecciones[index].id);
+  $("#newEvent-idLugar").val(window.arraySuggestionsPlaces[index].id);
 
 }
 
-function updateMapLocationDireccion(direccion)
+function updateMapLocationDireccion(place)
 {
-    var latlng = L.latLng(direccion.lat, direccion.lon);
-    mapNewEvent.setView(latlng,direccion.zoom);
+    var latlng = L.latLng(place.lat, place.lon);
+    mapNewEvent.setView(latlng,place.zoom);
     if(!(typeof window.marker==='undefined'))
       mapNewEvent.removeLayer(window.marker);
     window.marker = L.marker(latlng).addTo(mapNewEvent);
@@ -289,24 +289,24 @@ function suggestLugar(texto)
  
 
   //Que cargue las sugerencias usando AJAX
-  var getAgenda = "getSuggestionsDirecciones.php?";
+  var getAgenda = "getPlaceSuggestions.php?";
   $.getJSON(getAgenda, 
   {
     query: texto,
-    idLugar: window.newEventCiudadID,
+    idTerritorio: window.newEventCiudadID,
   })
   .done(function(data) 
   {
     $("#newEvent-lugarSuggest").empty();    
-    window.arraySuggestionsDirecciones=[];
+    window.arraySuggestionsPlaces=[];
 
-    //window.selectedSuggestion=0;
+    //window.conf.selectedSuggestion=0;
 
     //Que esto lo clone de una fila por defecto      
     var i=0;
     $.each(data.suggestions, function(key, value)
     {
-      window.arraySuggestionsDirecciones[value.id]=value;
+      window.arraySuggestionsPlaces[value.id]=value;
       //Creamos la sugerencia
       $("#newEvent-lugarSuggest").append("<div class='newEvent-lugarSuggest-fila'><div class='newEvent-lugarSuggest-texto1'>"+value.texto1.replace(texto,"<strong>"+texto+"</strong>")+"</div><div class='newEvent-lugarSuggest-texto2'>"+value.texto2+"</div></div>");
       $("#newEvent-lugarSuggest").find(".newEvent-lugarSuggest-fila:last").attr("id","newEvent-lugarSuggest-fila-"+i);
@@ -419,9 +419,9 @@ $('#newEvent-lugar').bind('keyup',function(event)
     case 13:  //Intro
       //updateMapLocationNewEvent($('#newEvent-direccion').val()+", "+$('#newEvent-ciudad').val());
       /*
-      if(window.selectedSuggestion==0)
-        window.selectedSuggestion=1;
-      var fila="#cabecera-suggest-fila-"+(window.selectedSuggestion-1);
+      if(window.conf.selectedSuggestion==0)
+        window.conf.selectedSuggestion=1;
+      var fila="#cabecera-suggest-fila-"+(window.conf.selectedSuggestion-1);
       $(fila).trigger("click");
       */
       /*
@@ -588,7 +588,7 @@ $('#newEvent-propose').bind('mousedown',function(event)
     datosAEnviar["tematicas"]=arrayTematicasNuevoEvento;
     datosAEnviar["idCiudad"]=$("#newEvent-idCiudad").val();
     datosAEnviar["ciudad"]=$("#newEvent-ciudad").val();
-    datosAEnviar["idLugar"]=$("#newEvent-idLugar").val();
+    datosAEnviar["idTerritorio"]=$("#newEvent-idLugar").val();
     datosAEnviar["lugar"]=$("#newEvent-lugar").val();
     datosAEnviar["nombreLugar"]=$(".newEvent-lugarDiv-texto1").html();
     datosAEnviar["coordenadas"]=window.marker.getLatLng();

@@ -7,7 +7,7 @@ exit();
 
 $link2=connect();
 
-$nivel9=getColindantes(-1,9,-19,5,0,44);
+$nivel9=getTerritoriosColindantes(-1,9,-19,5,0,44);
 
 foreach($nivel9 as $distrito)
 {
@@ -16,7 +16,7 @@ foreach($nivel9 as $distrito)
 	$poly1 = geoPHP::load(file_get_contents("../shp/geoJSON/9/$idFichero.geojson"),'json');	
 	$boundingBox=$poly1->getBBox();
 	//print_r($boundingBox);
-	$nivel8=getColindantes(-1,8,$boundingBox["minx"],$boundingBox["maxx"],$boundingBox["miny"],$boundingBox["maxy"]);
+	$nivel8=getTerritoriosColindantes(-1,8,$boundingBox["minx"],$boundingBox["maxx"],$boundingBox["miny"],$boundingBox["maxy"]);
 	$maxArea=-1;
 	$idMunicipioMax=-1;
 	$municipioMax="";

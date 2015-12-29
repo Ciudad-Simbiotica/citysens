@@ -137,7 +137,9 @@
 		
 			});		
 			
-			cargarDatos("eventos");
+			//cargarDatos("eventos");
+                        window.conf.tipo="eventos";
+                        cargarDatos();
 			$("#input-busqueda_tag").focus();
 
 			return false;
@@ -333,9 +335,9 @@
 					switch (event.which) 
 					{
 						case 13: 	//Intro
-							if(window.selectedSuggestion==0)
-								window.selectedSuggestion=1;
-							var fila="#cabecera-suggest-fila-"+(window.selectedSuggestion-1);
+							if(window.conf.selectedSuggestion==0)
+								window.conf.selectedSuggestion=1;
+							var fila="#cabecera-suggest-fila-"+(window.conf.selectedSuggestion-1);
 							var icono=$(fila).find(".cabecera-suggest-icono").css('background-image');
 							icono=icono.substring(4,icono.length-1);
 							var texto=$(fila).find(".cabecera-suggest-texto1").text();

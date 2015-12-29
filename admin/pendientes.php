@@ -41,6 +41,9 @@
 
 <script type="text/javascript" src="pendientes.js"></script>
 <!--
+
+TODO: Pending to migrate from direccion to place where appropriate.
+
 idEvento
 fecha
 fechaFin
@@ -55,7 +58,7 @@ y
 idDistritoPadre
 idEntidad
 idTematica
-idDireccion
+idPlace
 url
 email
 etiquetas
