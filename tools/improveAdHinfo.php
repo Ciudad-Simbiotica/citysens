@@ -4,7 +4,7 @@ set_time_limit(0);
 include_once "../db.php";
 
 // Script is unactive unless it is required
-//exit();
+exit();
 
  $link=connect();
 

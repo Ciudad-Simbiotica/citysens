@@ -509,20 +509,34 @@ function cargarContenidoEntidad(id)
             });
 
             $("#thumbnail" + id + " .informacion-cuerpo-etiquetas-listado").html(data.etiquetas);
-
+     
+            if (data.url.indexOf('http')!=-1) {
             $("#thumbnail" + id + " .informacion-cuerpo-contacto-url")
                     .attr("href", data.url)
                     .html(data.url);
+            } else {
+              $("#thumbnail" + id + " .informacion-cuerpo-contacto-url")
+                    .attr("href", "http://"+data.url)
+                    .html(data.url);
+            }
+            
             $("#thumbnail" + id + " .informacion-cuerpo-contacto-email")
                     .attr("href", "mailto:" + data.email)
                     .html(data.email);
-
-            $("#thumbnail" + id + " .informacion-cuerpo-contacto-twitter")
-                    .attr("href", "mailto:" + data.twitter)
+            
+            if (data.twitter.indexOf('http')!=-1) {
+              $("#thumbnail" + id + " .informacion-cuerpo-contacto-twitter")
+                    .attr("href", data.twitter)
                     .html(data.twitter);
+            } else {
+              $("#thumbnail" + id + " .informacion-cuerpo-contacto-twitter")
+                    .attr("href", "http://twitter.com/"+data.twitter.replace('@', ''))
+                    .html(data.twitter);
+            }
+            
 
             $("#thumbnail" + id + " .informacion-cuerpo-contacto-facebook")
-                    .attr("href", "mailto:" + data.facebook)
+                    .attr("href", data.facebook)
                     .html(data.facebook);
 
             $("#thumbnail" + id + " .informacion-cuerpo-contacto-facebook").append(" ");
