@@ -955,7 +955,7 @@ function getEventos($filtros,$idTerritorio,$alrededores,$itemsStart=0, $itemsLim
       // Map at a Comarca and surroundings level, searches will be done on a city- and district- basis for with adresses case, comarca and city Id for no address case
       $sql.=" places.idCiudad=territorios.id AND "; // name of city/great district returned
       if ($hayFiltroLugar) {
-         $lugar="( OR places.idComarca IN ('".join($filtrosHermanos,"','")."') OR places.idCiudad IN ('".join($filtrosHijos,"','")."') OR places.idDistrito IN ('".join($filtrosNietos,"','")."') )";
+         $lugar="( places.idComarca IN ('".join($filtrosHermanos,"','")."') OR places.idCiudad IN ('".join($filtrosHijos,"','")."') OR places.idDistrito IN ('".join($filtrosNietos,"','")."') )";
          if (count($filtrosHijos)>0 || count($filtrosHermanos)>0) {
             $ciudades=getAllDescendantsOfLevel($filtrosHermanos,8);
             $lugar_2="territorios.id IN ('".join($filtrosHermanos,"','")."','".join($filtrosHijos,"','")."','".join($ciudades,"','")."')";
