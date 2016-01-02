@@ -8,30 +8,19 @@
         &nbsp;
     </div>
     <div class='agenda-filtros'>
+          <div class='tagFiltro' id='tagFiltroTemplate' style="display:none">
+              <div class='tagFiltro-imagen'></div>
+              <div class='tagFiltro-texto'>
+                  Filtro Ejemplo
+              </div>
+              <div class='tagFiltro-x'>
+                  x
+              </div>
+          </div>
         <div class='agenda-filtros-retop'>
             <div class='agenda-filtros-tiempo'>
-                <div class='tagFiltro' id='tagFiltroTemplate' style="display:none">
-                    <div class='tagFiltro-imagen'>
-                    </div>
-                    <div class='tagFiltro-texto'>
-                        Filtro Ejemplo
-                    </div>
-                    <div class='tagFiltro-x'>
-                        x
-                    </div>
-                </div>
             </div>
             <div class='agenda-filtros-action'>
-                <div class='tagFiltro' id='tagFiltroTemplate' style="display:none">
-                    <div class='tagFiltro-imagen'>
-                    </div>
-                    <div class='tagFiltro-texto'>
-                        Filtro Ejemplo
-                    </div>
-                    <div class='tagFiltro-x'>
-                        x
-                    </div>
-                </div>
             </div>
         </div>
         <div class='agenda-filtros-top'>

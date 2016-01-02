@@ -21,18 +21,18 @@ include "preload.php";
  
  <link rel="shortcut icon" href="css\icons\CitYsens.monigote.color.fw.png" />
      
- <link href="css/style.css" rel="stylesheet" type="text/css" />
- <link href="css/cabecera.css" rel="stylesheet" type="text/css" />
-<!-- <link href="css/grupos.css" rel="stylesheet" type="text/css" />-->
- <link href="css/gruposresponsive.css" rel="stylesheet" type="text/css" />
- <link href="css/newEvent.css" rel="stylesheet" type="text/css" />
- <link href="css/informacion.css" rel="stylesheet" type="text/css" />
- <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
- <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
- <link rel="stylesheet" href="css/leafletCustom.css" />
- <link rel="stylesheet" type="text/css" href="css/jNotify.jquery.css" media="screen" />
- <link rel="stylesheet" type="text/css" href="js/datetimepicker/jquery.datetimepicker.css"/ >
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+ <link rel="stylesheet" type="text/css" href="css/style.css">
+ <link rel="stylesheet" href="css/cabecera.css" type="text/css">
+<!-- <link rel="stylesheet" href="css/grupos.css" type="text/css">-->
+ <link rel="stylesheet" href="css/gruposresponsive.css" type="text/css">
+ <link rel="stylesheet" href="css/newEvent.css" type="text/css">
+ <link rel="stylesheet" href="css/informacion.css" type="text/css">
+ <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css">
+ <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css">
+ <link rel="stylesheet" href="css/leafletCustom.css">
+ <link rel="stylesheet" type="text/css" href="css/jNotify.jquery.css" media="screen">
+ <link rel="stylesheet" type="text/css" href="js/datetimepicker/jquery.datetimepicker.css">
+ <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js" type="text/javascript"></script>
  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js" type="text/javascript"></script>
