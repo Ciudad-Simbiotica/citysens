@@ -692,7 +692,7 @@ function cargarDatos()
 
             window.cantidadPorLugar = {};
 
-            if (typeof data.grupos !== 'undefined')
+            if (typeof data.grupos !== 'undefined' && null != data.grupos)
             {
               $.each(data.grupos, function (nombreSuperGrupo, datosSuperGrupo)
               {
