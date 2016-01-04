@@ -591,7 +591,8 @@ function removeAllTags()
   $(".tagFiltro-lugar").remove();
   $(".tagFiltro-entidad").remove();
   $(".tagFiltro-tiempo").remove();
-  $(".tagFiltro-action").remove();
+  //$(".tagFiltro-action").remove();
+  // By now, "Alrededores" filter remains until removed
   conf.arrayFilters = [];
 
 }
