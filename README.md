@@ -1,5 +1,5 @@
 ![Logo of CitySENS]
-(https://raw.githubusercontent.com/CiudadSimbiotica/citysens/master/css/icons/citysens_logo.png)
+(https://raw.githubusercontent.com/Ciudad-Simbiotica/citysens/develop/css/icons/citysens_logo.png)
 
 # CitySENS
 
