@@ -214,28 +214,7 @@ function suggestBusqueda(texto)
                                 $("#cabecera-suggest").find(".cabecera-suggest-fila:last").attr("id", "cabecera-suggest-fila-" + num_fila);
                                 $("#cabecera-suggest").find(".cabecera-suggest-fila:last").click(function ()
                                 {
-                                    if (value.activo == 1)
-                                    {
-                                        window.conf.idTerritorio = value.id;
-                                        window.conf.alrededores = 0;   // Reset navigation with neighbors
-                                        //   cargarMapa(window.conf.idTerritorio);               
-                                        // else          
-                                        window.conf.orden = $("#select_ordenar").val();
-                                        removeAllTags();
-                                        cargarDatos();
-                                    }
-                                    else
-                                    {
-                                        $("#overlay").addClass("overlayPeque");
-                                        $(".darkOverlay").fadeIn("fast");
-                                        $("#overlay").load("cityNotReadyYet.html", function ()
-                                        {
-                                            $('#overlay').html($('#overlay').html().replace(/{CIUDAD}/g, value.texto1)); //need rev. sometimes load after show an change text
-                                            $('#input-email-idLugar').val(value.id);
-                                            $('#input-email-nombreCiudad').val(value.texto1);
-                                        });
-                                    }
-                                    //clickSuggestion("css/icons/gps.png",texto,"IrA",0); //Añadir value.id, texto buscado
+                                  irATerritorio(value.activo,value.id,0,value.texto1);
                                 });
                             }
                             else

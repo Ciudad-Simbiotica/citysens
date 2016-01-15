@@ -322,7 +322,10 @@ function getEntidades($filtros, $idTerritorio, $alrededores, $itemsStart=0, $ite
     $itemsLimit=safe($link, filter_var($itemsLimit,FILTER_SANITIZE_NUMBER_INT));
     $idTerritorio=safe($link,$idTerritorio);
     $alrededores=safe($link,$alrededores);
-    $nivel= getNivelTerritorio($idTerritorio);
+    $territory=getTerritory($idTerritorio);
+    $nivel= $territory["nivel"];
+    $vecinos= $territory["vecinos"];
+    //$nivel= getNivelTerritorio($idTerritorio);
     $nivelHijo=strval($nivel+1);
     $sinDireccion=safe($link,'[sin direccion]');
 
@@ -395,7 +398,7 @@ function getEntidades($filtros, $idTerritorio, $alrededores, $itemsStart=0, $ite
    if (!$hayFiltroLugar) {
     $lugares[]=$idTerritorio;
     if ($alrededores!=0) {
-      $lugares=array_merge($lugares,explode(',',$alrededores));
+      $lugares=array_merge($lugares,explode(',',$vecinos));
     }
   }  
 
@@ -806,7 +809,6 @@ function getEvento($idEvento)
 // By default is returns a maximum of 50 events, showing events between today and the next complete weekend 
 // (ie: in a Friday the whole next week is included) 
 function getEventos($filtros,$idTerritorio,$alrededores,$itemsStart=0, $itemsLimit=100)
-// TODO: Code changed to allow including District filters from up to example, Comarca level. Therefore, this does no longer work, needs fixing.
 {
     $link=connect();
     //Sanitize inputs
@@ -814,7 +816,10 @@ function getEventos($filtros,$idTerritorio,$alrededores,$itemsStart=0, $itemsLim
     $itemsLimit=safe($link, filter_var($itemsLimit, FILTER_SANITIZE_NUMBER_INT));
     $idTerritorio=safe($link,$idTerritorio);
     $alrededores=safe($link,$alrededores);
-    $nivel= getNivelTerritorio($idTerritorio);
+    $territory=getTerritory($idTerritorio);
+    $nivel= $territory["nivel"];
+    $vecinos= $territory["vecinos"];
+    
     $nivelHijo=strval($nivel+1);
     
     $hayFiltroLugar=false;
@@ -927,7 +932,7 @@ function getEventos($filtros,$idTerritorio,$alrededores,$itemsStart=0, $itemsLim
    if (!$hayFiltroLugar) {
       $lugares[]=$idTerritorio;
       if ($alrededores!=0) {
-         $lugares=array_merge($lugares,explode(',',$alrededores));
+         $lugares=array_merge($lugares,explode(',',$vecinos));
       }
    }
           
@@ -955,7 +960,7 @@ function getEventos($filtros,$idTerritorio,$alrededores,$itemsStart=0, $itemsLim
       // Map at a Comarca and surroundings level, searches will be done on a city- and district- basis for with adresses case, comarca and city Id for no address case
       $sql.=" places.idCiudad=territorios.id AND "; // name of city/great district returned
       if ($hayFiltroLugar) {
-         $lugar="( OR places.idComarca IN ('".join($filtrosHermanos,"','")."') OR places.idCiudad IN ('".join($filtrosHijos,"','")."') OR places.idDistrito IN ('".join($filtrosNietos,"','")."') )";
+         $lugar="( places.idComarca IN ('".join($filtrosHermanos,"','")."') OR places.idCiudad IN ('".join($filtrosHijos,"','")."') OR places.idDistrito IN ('".join($filtrosNietos,"','")."') )";
          if (count($filtrosHijos)>0 || count($filtrosHermanos)>0) {
             $ciudades=getAllDescendantsOfLevel($filtrosHermanos,8);
             $lugar_2="territorios.id IN ('".join($filtrosHermanos,"','")."','".join($filtrosHijos,"','")."','".join($ciudades,"','")."')";
@@ -1257,15 +1262,15 @@ function getFertility($idTerritorio)
     return $fertility; 
 }
 
-function getTerritory($idTerritorio)
+function getTerritory($idTerritory)
 {
     //Sanitize input
     $link=connect();
-    $idTerritorio=safe($link, $idTerritorio);  
+    $idTerritory=safe($link, $idTerritory);  
     
     $sql="SELECT * 
             FROM  territorios 
-            WHERE id='$idTerritorio'";
+            WHERE id='$idTerritory'";
     mysqli_query($link, 'SET CHARACTER SET utf8');
     $result=mysqli_query($link, $sql);
     $fila=mysqli_fetch_assoc($result);

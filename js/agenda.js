@@ -591,7 +591,8 @@ function removeAllTags()
   $(".tagFiltro-lugar").remove();
   $(".tagFiltro-entidad").remove();
   $(".tagFiltro-tiempo").remove();
-  $(".tagFiltro-action").remove();
+  //$(".tagFiltro-action").remove();
+  // By now, "Alrededores" filter remains until removed
   conf.arrayFilters = [];
 
 }
@@ -692,7 +693,7 @@ function cargarDatos()
 
             window.cantidadPorLugar = {};
 
-            if (!(typeof data.grupos === 'undefined'))
+            if (typeof data.grupos !== 'undefined' && null != data.grupos)
             {
               $.each(data.grupos, function (nombreSuperGrupo, datosSuperGrupo)
               {

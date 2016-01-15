@@ -355,7 +355,7 @@ html,body
 	width: 640px;
 }
 
-.agenda-filtros-top,.agenda-filtros-bottom
+.agenda-filtros-top,.agenda-filtros-bottom,.agenda-filtros-retop
 {
 	display: inline-table;
 	width: 640px;
@@ -366,7 +366,7 @@ html,body
 }
 
 
-.agenda-filtros-busqueda,.agenda-filtros-tematica,.agenda-filtros-lugar,.agenda-filtros-entidad
+.agenda-filtros-busqueda,.agenda-filtros-tematica,.agenda-filtros-lugar,.agenda-filtros-entidad,.agenda-filtros-action,.agenda-filtros-tiempo
 {
 	float:left;
 	display: inline;
@@ -402,9 +402,9 @@ html,body
 
 .tagFiltro-action
 {
-	background: #cde69c; 
-	color: #638421; 
-	border: 1px solid #a5d24a; 
+	background: #E6DB9C; 
+	color: #807748; 
+	border: 1px solid #B39F2A; 
 }
 
 .tagFiltro-tematica

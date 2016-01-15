@@ -10,7 +10,7 @@
     
 // For the case of districts, whose surface normally is only partially covered by the neighbourhoods within, zoom is adjusted 
 // to the surface covered by the neighbourhood polygons 
-    if ($respuesta["nivel"]==9 && $respuesta["idDescendiente"]!=0) 
+    if ($respuesta["nivel"]==9 && $respuesta["idDescendiente"]!=0 && $_GET["alrededores"]==0) 
     {
       $coordenadasInteriores=getCoordenadasInteriores($respuesta["id"]);
       $respuesta["xmax"]=$coordenadasInteriores["xmax"];

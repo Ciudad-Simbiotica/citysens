@@ -370,7 +370,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                 {
                 $.each(data, function(i,datos)
                     {
-                        addPolygonToMap(datos.id,datos.vecinos,"shp/geoJSON/"+nivelMostrado+"/"+datos.id+".geojson",datos.nombre+" y alrededores",'#FFE4C5',datos.activo);
+                        addPolygonToMap(datos.id,1,"shp/geoJSON/"+nivelMostrado+"/"+datos.id+".geojson",datos.nombre+" y alrededores",'#FFE4C5',datos.activo);
                         
                         if  (nivelMostrado>6) // If the territory is of level province or lower, counter is included
                         {
@@ -406,7 +406,7 @@ function cargarMapa(idTerritorio,alrededores)//alrededores [0,1]
                 {
                 $.each(data, function(i,datos)
                     {
-                        addPolygonToMap(datos.id,datos.vecinos,"shp/geoJSON/"+nivelMostrado+"/"+datos.id+".geojson",datos.nombre+" y alrededores",'#aaaaff',datos.activo);
+                        addPolygonToMap(datos.id,1,"shp/geoJSON/"+nivelMostrado+"/"+datos.id+".geojson",datos.nombre+" y alrededores",'#aaaaff',datos.activo);
                     });
                 });
     }
@@ -512,6 +512,8 @@ function irATerritorio(activo,idTerritorio,alrededores,nombre)
    {             
         window.conf.idTerritorio = idTerritorio;                          
         window.conf.alrededores=alrededores;
+        if (!alrededores)
+          $(".tagFiltro-action").remove();    
         removeAllTags();
         cargarDatos();       
     }
